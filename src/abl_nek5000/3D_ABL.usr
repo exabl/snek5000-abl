@@ -1,18 +1,20 @@
 c-----------------------------------------------------------------------
-c  nek5000 user-file template
-c
-c  user specified routines:
-c     - uservp  : variable properties
-c     - userf   : local acceleration term for fluid
-c     - userq   : local source term for scalars
-c     - userbc  : boundary conditions
-c     - useric  : initial conditions
-c     - userchk : general purpose routine for checking errors etc.
-c     - userqtl : thermal divergence for lowMach number flows 
-c     - usrdat  : modify element vertices 
-c     - usrdat2 : modify mesh coordinates
-c     - usrdat3 : general purpose routine for initialization
-c     
+c> @defgroup abl The ABL case user-file
+c> Contains:
+c>
+c>  - user specified routines:
+c>     - uservp  : variable properties
+c>     - userf   : local acceleration term for fluid
+c>     - userq   : local source term for scalars
+c>     - userbc  : boundary conditions
+c>     - useric  : initial conditions
+c>     - userchk : general purpose routine for checking errors etc.
+c>     - userqtl : thermal divergence for lowMach number flows
+c>     - usrdat  : modify element vertices
+c>     - usrdat2 : modify mesh coordinates
+c>     - usrdat3 : general purpose routine for initialization
+c>
+c> @{
 c----------------------------------------------------------------------
 c drive flow with pressure gradient
 #define DPDX uparam(3)
@@ -25,24 +27,29 @@ c define constant parameters
 #define YLEN (1)
 #define ZLEN PI
 
+c> Set variable properties
+c> @param ix x-index
+c> @param iy y-index
+c> @param iz z-index
+c> @param ieg element index
       subroutine uservp(ix,iy,iz,ieg) ! set variable properties
 
 c      implicit none
 
-     
+
       include 'SIZE'
       include 'TOTAL'
       include 'NEKUSE'
       integer ix,iy,iz,ieg,ie
       common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
      $              , dg2 (lx1,ly1,lz1,lelv)
-      
+
 
       ie     = gllel(ieg)
 c     save total viscoity
       udiff  = ediff(ix,iy,iz,ie)
-      
-      
+
+
       utrans = 1.
 
       return
@@ -95,15 +102,15 @@ c
 c     NOTE ::: This subroutine MAY NOT be called by every process
 c
 c      implicit none
-   
-     
+
+
       integer ix,iy,iz,iside,eg,ie
       real u1_2,absu,y1_2
 
       include 'SIZE'
       include 'TOTAL'
       include 'NEKUSE'
-      
+
 
 c      if (cbc(iside,gllel(eg),ifield).eq.'v01')
 
@@ -112,18 +119,18 @@ c--------Calculate Moeng's model parameters
        ie=gllel(eg)
        u1_2=(vx(ix,2,iz,ie)+vx(ix,1,iz,ie))/2
        w1_2=(vz(ix,2,iz,ie)+vz(ix,1,iz,ie))/2
-       absu=sqrt(u1_2**2+w1_2**2) 
+       absu=sqrt(u1_2**2+w1_2**2)
        y1_2=(ym1(ix,2,iz,ie)+ym1(ix,1,iz,ie))/2
-       
+
 
 c--------Calculate Stresses
        trx = -KAPPA**2*(u1_2*absu)/(log(y1_2/y0)**2)
        try= 0.0
        trz= -KAPPA**2*(w1_2*absu)/(log(y1_2/y0)**2)
        temp = 0.0
-       
-       
-       
+
+
+
       return
       end
 c-----------------------------------------------------------------------
@@ -142,10 +149,10 @@ c      ux   = 1.0
 c      uy   = 0.0
 c      uz   = 0.0
       temp = 0.0
-      
+
       ie=gllel(eg)
       ux   = (0.0445/KAPPA)*log((ym1(ix,iy,iz,ie)+y0)/y0)
-      
+
 c     perturbation tries!! (not working)
       CALL RANDOM_NUMBER(rand1)
       CALL RANDOM_NUMBER(rand2)
@@ -158,15 +165,15 @@ c      rand3 = sin(rand2*big)
       ux = ux*rand1
       uy = 1e-2*rand2
       uz = 1e-2*rand3
-      
+
       eps = 1e-3
       kx  = 101
       kz  = 31
 
       alpha = kx * 2*PI
-      beta  = kz * 2*PI 
+      beta  = kz * 2*PI
 
-      ux  = ux  + eps*beta  * sin(alpha*x)*cos(beta*z) 
+      ux  = ux  + eps*beta  * sin(alpha*x)*cos(beta*z)
       uy  = uy      eps       * sin(alpha*x)*sin(beta*z)
       uz  = uz     -eps*alpha * cos(alpha*x)*sin(beta*z)
 
@@ -180,10 +187,10 @@ c      implicit none
       include 'SIZE'
       include 'TOTAL'
       include 'ZPER'
-      
-      
+
+
       integer e,i
-      real gradux(lx1,ly1,lz1,lelv) 
+      real gradux(lx1,ly1,lz1,lelv)
       real graduy(lx1,ly1,lz1,lelv)
       real graduz(lx1,ly1,lz1,lelv)
       real vgrad(lx1,ly1,lz1,lelv)
@@ -192,13 +199,13 @@ c      implicit none
       save x0
 
 
-c     call common blocks 
-      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)  
+c     call common blocks
+      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
      $              , dg2 (lx1,ly1,lz1,lelv)
-     
+
       common /scrsf/ trx(lx1,ly1,lz1)
-     $             , trz(lx1,ly1,lz1)     
-     
+     $             , trz(lx1,ly1,lz1)
+
       common /ctorq/ dragx(0:maxobj),dragpx(0:maxobj),dragvx(0:maxobj)
      $             , dragy(0:maxobj),dragpy(0:maxobj),dragvy(0:maxobj)
      $             , dragz(0:maxobj),dragpz(0:maxobj),dragvz(0:maxobj)
@@ -209,61 +216,61 @@ c
 c
      $             , dpdx_mean,dpdy_mean,dpdz_mean
      $             , dgtq(3,4)
-     
+
       common /cforce/ ffx_new,ffy_new,ffz_new
 
-c     Define Delta for Smagorinsky method  
-      call set_grid_spacing(dg2) 
-        
+c     Define Delta for Smagorinsky method
+      call set_grid_spacing(dg2)
+
       n=nx1*ny1*nz1*nelv
       ngll=nx1*ny1*nz1
-  
+
 c      calculate eddy viscosiy and total viscosity
       if(ifuservp) then
         if(nid.eq.0) write(6,*) 'Calculating eddy viscosity'
-        do e=1,nelv   
+        do e=1,nelv
            call eddy_visc(e)
         enddo
         call copy(t,ediff,n)
       endif
-      
+
       if (istep.eq.0) then
          call set_obj                   ! objects for surface integrals
          call rzero(x0,3)               ! torque w.r.t. x0
       endif
-      
+
       ! driving force for Ubar = 1
       call set_forcing(ffx_new,vx,1)
-      
+
       ! Calculate forces:
       call torque_calc(1.0,x0,.false.,.false.) ! wall shear
-      
+
       rho    = 1.
       A_w    = XLEN * ZLEN
-       
-      ! Calculate friction velocity 
+
+      ! Calculate friction velocity
       utau= sqrt(dragx(1)**2+dragz(1)**2)/A_w
       utau=sqrt(utau)
-      
+
       !call gradients
       call gradm1(gradux,graduy,graduz,vx)
-      
+
       !generate PHI statistic
       do i=1,n
 	vgrad(i,1,1,1)=KAPPA*ym1(i,1,1,1)/utau*graduy(i,1,1,1)
 	utauv(i,1,1,1)=utau
       enddo
-      
+
       !Output new statistics
-      if (mod(istep,iostep).eq.0) 
+      if (mod(istep,iostep).eq.0)
      $ call outpost(dg2,vgrad,ediff,pr,t,'vgr')
-      
+
       return
       end
 c-----------------------------------------------------------------------
       subroutine userqtl ! Set thermal divergence
 
-      call userqtl_scig 
+      call userqtl_scig
 
       return
       end
@@ -274,16 +281,16 @@ c      implicit none
 
       include 'SIZE'
       include 'TOTAL'
-      
+
       common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
      $              , dg2 (lx1,ly1,lz1,lelv)
-     
+
       ! initialize variables
-      n = nx1*ny1*nz1*nelt 
+      n = nx1*ny1*nz1*nelt
       call cfill(ediff,param(2),n)
       call cfill(dg2,1,n)
-      
-      
+
+
       return
       end
 c-----------------------------------------------------------------------
@@ -293,7 +300,7 @@ c      implicit none
 
       include 'SIZE'
       include 'TOTAL'
-      
+
       ! apply mass flux to drive the flow such that Ubar = 1
 c       param(54) = -1   ! x-direction
 c       param(55) = 1    ! Ubar
@@ -310,7 +317,7 @@ c      implicit none
 
       return
       end
-c-----------------------------------------------------------------------      
+c-----------------------------------------------------------------------
       subroutine eddy_visc(e)
 c
 c     Compute eddy viscosity using dynamic smagorinsky model
@@ -325,7 +332,7 @@ c
       common /dynsmg/ sij (lx1*ly1*lz1,ldim,ldim)
      $              , snrm(lx1*ly1*lz1,lelv)
      $              , Cs(lx1*ly1*lz1,lelv)
-      real sij,snrm,Cs,Csa,Csb     
+      real sij,snrm,Cs,Csa,Csb
 
 
       ntot = nx1*ny1*nz1
@@ -337,7 +344,7 @@ c------need to be by element ->
       call mag_tensor_e(snrm(1,e),sij)
       call cmult(snrm(1,e),2.0,ntot)
 c---------------------------
-      
+
 c------now do for every GLL point
       ntot = nx1*ny1*nz1*nelt
       if (e.eq.nelv) then
@@ -348,12 +355,12 @@ c------now do for every GLL point
             ediff(i,1,1,1) = param(2)+Cs(i,1)*dg2(i,1,1,1)*snrm(i,1)
         enddo
       endif
-c----------      
+c----------
 
       return
       end
 c-----------------------------------------------------------------------
-      
+
       subroutine set_grid_spacing(dg2)
 c
 c     Compute D^2, the grid spacing used in the DS sgs model.
@@ -414,7 +421,7 @@ c               write(6,*) ip,im,jp,jm
       return
       end
 c-----------------------------------------------------------------------
-      
+
       subroutine set_obj  ! define objects for surface integrals
 c
       include 'SIZE'
@@ -463,7 +470,7 @@ c     write(6,*) 'number',(nmember(k),k=1,4)
 c
       return
       end
-c-----------------------------------      
+c-----------------------------------
       subroutine set_forcing(f_new,u,idir)  ! driving force for Ubar = 1
 
       include 'SIZE'
@@ -502,9 +509,12 @@ c-----------------------------------
 
       f_min = 0.00001                 ! ad hoc limits
       f_new = max(f_new,f_min)
-      
+
       f_max = 0.10000                 ! ad hoc limits
       f_new = min(f_new,f_max)
-      
+
       return
       end
+
+c> @}
+c end of group abl
