@@ -1,0 +1,34 @@
+    #
+# nek parameter file
+#
+[GENERAL]
+startFrom ./3D_ABL0.f00310
+stopAt = numSteps
+numSteps  = 10000
+
+variableDT=yes
+
+targetCFL=0.8
+
+writeControl = timeStep
+writeInterval = 10
+
+filtering=explicit
+filterCutoffRatio=0.5
+filterWeight=12.0
+
+userParam03 = 1
+
+[PROBLEMTYPE]
+equation = incompNS
+stressFormulation=yes
+variableProperties = yes
+
+[PRESSURE]
+residualTol = 1e-5
+residualProj = yes
+
+[VELOCITY]
+residualTol = 1e-8
+density = 1
+viscosity = -1e10
