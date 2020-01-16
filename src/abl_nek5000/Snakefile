@@ -1,28 +1,13 @@
 from glob import glob
-from datetime import datetime
 import os
+from pathlib import Path
+from eturb.util import modification_date, now
 
+
+configfile: "../../Snakeconfig.yml"
 
 # Wildcard
 FILES = glob_wildcards('{case}.usr').case
-
-
-# Functions used in rules
-def isoformat(dt):
-    return dt.isoformat(timespec="seconds").replace(':', '-')
-
-
-def modification_date(path):
-    """Modification date of a file or directory"""
-    if os.path.exists(path):
-        t = os.path.getmtime(path)
-        return isoformat(datetime.fromtimestamp(t))
-    else:
-        return ''
-
-
-def now():
-    return isoformat(datetime.now())
 
 
 def tar_name():
@@ -31,6 +16,14 @@ def tar_name():
                 modification_date(f) for f in ('compiler.out', 'SESSION.NAME')
             )
     )
+
+subworkflow Nek5000:
+    workdir:
+        "../../lib/Nek5000"
+    snakefile:
+        "../../lib/Nek5000/Snakefile"
+    configfile:
+        "../../Snakeconfig.yml"
 
 # default rule
 rule all:
@@ -54,10 +47,8 @@ rule compile:
         expand('{case}.f', case=FILES),
         'compiler.out',
         'nek5000'
-    params:
-        flags = "-mcmodel=medium -march=native"
     shell:
-        'CFLAGS="{params.flags}" FFLAGS="{params.flags}" '
+        'CC="{config[MPICC]}" FC="{config[MPIFC]}" CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]}" '
         'makenek'
 
 # run
@@ -73,14 +64,27 @@ rule run:
         touch SESSION.NAME
         echo {params.case} > SESSION.NAME
         echo `pwd`'/' >>  SESSION.NAME
-        mpiexec -np {params.nproc} ./nek5000 > .snakemake/{params.logfile} &
+        {config[MPIEXEC]} -np {params.nproc} ./nek5000 > .snakemake/{params.logfile} &
         ln -sf .snakemake/{params.logfile} {params.case}.log
         """
 
 # clean compiler output
 rule clean:
-    input: 'makefile'
+    input: 'makefile',
     shell: 'echo "N" | makenek clean'
+
+# FIXME: do not throw exception
+rule cleanall:
+    input: Nek5000("tools_clean")
+
+rule cleansimul:
+    params:
+        pattern = expand('*{case}?.f?????', case=FILES)
+    shell:
+        """
+        ls {params.pattern}
+        rm -I {params.pattern}
+        """
 
 # create an archive with all of our results
 # requires pigz - parallelized gzip
@@ -109,10 +113,13 @@ rule archive:
 # ==============
 # generate a box mesh
 rule generate_box:
-    input: expand('{case}.box', case=FILES)
-    output: 'box.re2'
+    input:
+        Nek5000('bin/genbox'),
+        box=expand('{case}.box', case=FILES)
+    output:
+        'box.re2'
     shell:
-        'echo {input} | '
+        'echo {input.box} | '
         'genbox'
 
 # rename mesh file re2
@@ -124,8 +131,11 @@ rule move_box:
 
 # generate map / connectivity matrix
 rule generate_map:
-    input: expand('{case}.re2', case=FILES)
-    output: expand('{case}.ma2', case=FILES)
+    input:
+        Nek5000('bin/genmap'),
+        expand('{case}.re2', case=FILES)
+    output:
+        expand('{case}.ma2', case=FILES)
     params:
         prefix = expand('{case}', case=FILES),
         tolerance = 0.01
