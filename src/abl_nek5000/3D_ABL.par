@@ -1,10 +1,11 @@
-    #
+#
 # nek parameter file
 #
 [GENERAL]
-startFrom ./3D_ABL0.f00310
+startFrom = 3D_ABL0.f00008
 stopAt = numSteps
-numSteps  = 10000
+numSteps  = 1
+# endTime = 10
 
 variableDT=yes
 
