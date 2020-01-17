@@ -57,7 +57,7 @@ rule run:
         'nek5000'
     params:
         logfile = "run_" + now() + ".log",
-        nproc = str(os.cpu_count()),
+        nproc = str(os.cpu_count() // 2),
         case = expand("{case}", case=FILES)
     shell:
         """
@@ -73,17 +73,28 @@ rule clean:
     input: 'makefile',
     shell: 'echo "N" | makenek clean'
 
-# FIXME: do not throw exception
-rule cleanall:
-    input: Nek5000("tools_clean")
-
+# clean simulation files
 rule cleansimul:
     params:
-        pattern = expand('*{case}?.f?????', case=FILES)
+        pattern = expand('*{case}?.f?????', case=FILES),
+        tarball = tar_name()
     shell:
         """
+        if [ ! -f {params.tarball} ]; then
+            echo "ERROR: Archive {params.tarball} not found. Refusing to clean simulation files! Run 'snakemake archive'"
+            exit 1
+        fi
+        set +e
         ls {params.pattern}
-        rm -I {params.pattern}
+        rm -I -f {params.pattern}
+        exit 0
+        """
+
+# clean everything
+rule cleanall:
+    shell:
+        """
+        snakemake clean cleansimul
         """
 
 # create an archive with all of our results
