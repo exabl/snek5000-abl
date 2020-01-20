@@ -2,7 +2,7 @@
 # nek parameter file
 #
 [GENERAL]
-startFrom = 3D_ABL0.f00008
+# startFrom = abl0.f00000
 stopAt = numSteps
 numSteps  = 1
 # endTime = 10

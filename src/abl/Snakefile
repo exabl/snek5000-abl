@@ -1,13 +1,12 @@
 from glob import glob
 import os
 from pathlib import Path
-from eturb.util import modification_date, now
-
+from eturb.util import modification_date, now, activate_paths
 
 configfile: "../../Snakeconfig.yml"
 
 # Wildcard
-FILES = glob_wildcards('{case}.usr').case
+CASES = glob_wildcards('{case}.usr').case
 
 
 def tar_name():
@@ -33,18 +32,18 @@ rule all:
 # shorthand for mesh
 rule mesh:
     input:
-        expand('{case}.re2', case=FILES),
-        expand('{case}.ma2', case=FILES)
+        expand('{case}.re2', case=CASES),
+        expand('{case}.ma2', case=CASES)
 
 # compile
 rule compile:
     input:
-        expand('{case}.re2', case=FILES),
-        expand('{case}.ma2', case=FILES)
+        expand('{case}.re2', case=CASES),
+        expand('{case}.ma2', case=CASES)
     output:
         # temp('makefile'),
         'makefile',
-        expand('{case}.f', case=FILES),
+        expand('{case}.f', case=CASES),
         'compiler.out',
         'nek5000'
     shell:
@@ -55,17 +54,18 @@ rule compile:
 rule run:
     input:
         'nek5000'
+    log:
+        "logs/run_" + now() + ".log"
     params:
-        logfile = "run_" + now() + ".log",
-        nproc = str(os.cpu_count() // 2),
-        case = expand("{case}", case=FILES)
+        nproc = str(os.cpu_count()),
+        case = expand("{case}", case=CASES)
     shell:
         """
         touch SESSION.NAME
         echo {params.case} > SESSION.NAME
         echo `pwd`'/' >>  SESSION.NAME
-        {config[MPIEXEC]} -np {params.nproc} ./nek5000 > .snakemake/{params.logfile} &
-        ln -sf .snakemake/{params.logfile} {params.case}.log
+        {config[MPIEXEC]} -np {params.nproc} ./nek5000 > {log} &
+        ln -sf {log} {params.case}.log
         """
 
 # clean compiler output
@@ -76,7 +76,8 @@ rule clean:
 # clean simulation files
 rule cleansimul:
     params:
-        pattern = expand('*{case}?.f?????', case=FILES),
+        field_files = expand('*{case}?.f?????', case=CASES),
+        case = expand('{case}', case=CASES),
         tarball = tar_name()
     shell:
         """
@@ -85,8 +86,14 @@ rule cleansimul:
             exit 1
         fi
         set +e
-        ls {params.pattern}
-        rm -I -f {params.pattern}
+        _remove() {{
+            echo -e "Removing $@ ..."
+            rm -Ifv $@
+        }}
+        _remove {params.case}.{{re2,ma2,log,f,nek5000}}
+        _remove makefile box.tmp compiler.out SESSION.NAME GIT_REVISION.txt nek5000
+        _remove -r obj
+        _remove {params.field_files}
         exit 0
         """
 
@@ -99,14 +106,15 @@ rule cleanall:
 
 # create an archive with all of our results
 # requires pigz - parallelized gzip
+#  ["{dataset}/a.txt".format(dataset=dataset) for dataset in DATASETS]
 rule archive:
     input:
-        *glob('3D_ABL0.f*'),
-        *glob('vgr3D_ABL0.f*'),
-        expand('{case}.usr', case=FILES),
-        expand('{case}.par', case=FILES),
-        expand('{case}.re2', case=FILES),
-        expand('{case}.ma2', case=FILES),
+        [glob(f'{case}0.f*') for case in CASES],
+        [glob(f'vgr{case}0.f*') for case in CASES],
+        expand('{case}.usr', case=CASES),
+        expand('{case}.par', case=CASES),
+        expand('{case}.re2', case=CASES),
+        expand('{case}.ma2', case=CASES),
         'SIZE',
         'compiler.out',
         'SESSION.NAME',
@@ -126,7 +134,7 @@ rule archive:
 rule generate_box:
     input:
         Nek5000('bin/genbox'),
-        box=expand('{case}.box', case=FILES)
+        box=expand('{case}.box', case=CASES)
     output:
         'box.re2'
     shell:
@@ -136,7 +144,7 @@ rule generate_box:
 # rename mesh file re2
 rule move_box:
     input: 'box.re2'
-    output: expand('{case}.re2', case=FILES)
+    output: expand('{case}.re2', case=CASES)
     shell:
         'mv -f {input} {output}'
 
@@ -144,11 +152,11 @@ rule move_box:
 rule generate_map:
     input:
         Nek5000('bin/genmap'),
-        expand('{case}.re2', case=FILES)
+        expand('{case}.re2', case=CASES)
     output:
-        expand('{case}.ma2', case=FILES)
+        expand('{case}.ma2', case=CASES)
     params:
-        prefix = expand('{case}', case=FILES),
+        prefix = expand('{case}', case=CASES),
         tolerance = 0.01
     shell:
         'echo "{params.prefix}\n{params.tolerance}" | '
