@@ -6,10 +6,6 @@ User API
 
 - A path object :code:`abl.root` points to the directory containing the case files.
 
-.. autofunction:: get_paths
-
-.. autofunction:: copy
-
 """
 import importlib.resources
 import os
