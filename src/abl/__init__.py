@@ -8,10 +8,13 @@ import os
 import pkgutil
 import shutil
 from pathlib import Path
-from eturb.log import logger
+
+from fluidsim.base.output.base import OutputBase
+
+from eturb import logger, mpi
 
 
-class Case:
+class Output(OutputBase):
     """Container and methods for getting paths of and copying case files.
 
     A path object :code:`self.root` points to the directory containing the
@@ -19,32 +22,65 @@ class Case:
 
     """
 
-    def __init__(self):
+    @staticmethod
+    def _complete_info_solver(info_solver):
+        """Complete the ParamContainer info_solver."""
+        OutputBase._complete_info_solver(info_solver)
+
+        classes = info_solver.classes.Output.classes
+
+        classes.PrintStdOut.module_name = "eturb.output.print_stdout"
+        classes.PrintStdOut.class_name = "PrintStdOut"
+        classes.PhysFields.module_name = "eturb.output.phys_fields"
+        classes.PhysFields.class_name = "PhysFields"
+
+    @staticmethod
+    def _complete_params_with_default(params, info_solver):
+        """This static method is used to complete the *params* container.
+        """
+        # Bare minimum
+        attribs = {
+            "ONLINE_PLOT_OK": True,
+            "period_refresh_plots": 1,
+            "HAS_TO_SAVE": True,
+            "sub_directory": "",
+        }
+        params._set_child("output", attribs=attribs)
+
+    def __init__(self, sim=None):
+        self.sim = sim
+        try:
+            self.name_solver = sim.info.solver.short_name
+        except AttributeError:
+            pass
+
         # Same as package name __name__
-        self.name = self.__module__
+        self.name_pkg = self.__module__
 
         # Better than
         # >>> root = Path(__file__).parent?
-        with importlib.resources.path(self.name, "__init__.py") as f:
+        with importlib.resources.path(self.name_pkg, "__init__.py") as f:
             self.root = f.parent
 
-        self.blacklist = {"prefix": "__", "suffix": (".vimrc", ".tar.gz", ".o")}
+        self._blacklist = {"prefix": "__", "suffix": (".vimrc", ".tar.gz", ".o")}
+        if sim:
+            super().__init__(sim)
 
-    def _get_resources(self, pkg_name=None):
+    def _get_resources(self, name_pkg=None):
         """Get a generator of resources (files) in a package, excluding
         directories (subpackages).
 
         :returns: generator
 
         """
-        blacklist = self.blacklist
-        if not pkg_name:
-            pkg_name = self.name
+        blacklist = self._blacklist
+        if not name_pkg:
+            name_pkg = self.name_pkg
         return (
             f
-            for f in importlib.resources.contents(pkg_name)
+            for f in importlib.resources.contents(name_pkg)
             if (
-                importlib.resources.is_resource(pkg_name, f)
+                importlib.resources.is_resource(name_pkg, f)
                 and not any(f.startswith(ext) for ext in blacklist["prefix"])
                 and not any(f.endswith(ext) for ext in blacklist["suffix"])
             )
@@ -57,14 +93,14 @@ class Case:
         :returns: dict
 
         """
-        pkg_path = self.root
-        pkg_name = self.name
+        path_pkg = self.root
+        name_pkg = self.name_pkg
         return {
             subpkg.name.lstrip(f"{self.root.name}."): self._get_resources(
                 subpkg.name
             )
             for subpkg in pkgutil.walk_packages(
-                [str(pkg_path)], prefix=f"{pkg_name}."
+                [str(path_pkg)], prefix=f"{name_pkg}."
             )
         }
 
@@ -93,6 +129,10 @@ class Case:
         :param force: Force copy would overwrite if files already exist.
 
         """
+        # Avoid race conditions! Should be only executed by rank 0.
+        if mpi.rank != 0:
+            return
+
         abs_paths = self.get_paths()
         subpackages = self._get_subpackages()
         root = self.root
