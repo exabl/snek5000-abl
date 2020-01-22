@@ -1,14 +1,15 @@
 import shutil
 import tempfile
 
-import abl
+from abl import Case
 
 
 def test_copy():
     new_dir = tempfile.mkdtemp(__name__)
+    case = Case()
     # Fresh copy
-    abl.copy(new_dir)
+    case.copy(new_dir)
     # Redo copy, skip files
-    abl.copy(new_dir)
+    case.copy(new_dir)
     # Redo copy, overwrite files
-    abl.copy(new_dir, force=True)
+    case.copy(new_dir, force=True)
