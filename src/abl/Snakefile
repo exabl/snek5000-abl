@@ -1,9 +1,17 @@
-from glob import glob
 import os
+from glob import glob
 from pathlib import Path
+from socket import gethostname
+
+from abl import Output
 from eturb.util import modification_date, now, activate_paths
 
-configfile: "../../Snakeconfig.yml"
+
+# TODO: define configuration files for SNIC clusters
+HOST = os.getenv("SNIC_RESOURCE", gethostname())
+ROOT = Output().root
+CONFIG = ROOT / "etc" / f"{HOST}.yml"
+configfile: CONFIG
 
 # Wildcard
 CASES = glob_wildcards('{case}.usr').case
@@ -18,11 +26,11 @@ def tar_name():
 
 subworkflow Nek5000:
     workdir:
-        "../../lib/Nek5000"
+        os.getenv("SOURCE_ROOT", ROOT / "../../lib/Nek5000")
     snakefile:
-        "../../lib/Nek5000/Snakefile"
+        os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000")) + "/Snakefile"
     configfile:
-        "../../Snakeconfig.yml"
+        CONFIG
 
 # default rule
 rule all:
@@ -66,6 +74,7 @@ rule run:
         echo `pwd`'/' >>  SESSION.NAME
         {config[MPIEXEC]} -np {params.nproc} ./nek5000 > {log} &
         ln -sf {log} {params.case}.log
+        echo "Log file: $PWD"/{params.case}.log
         """
 
 # clean compiler output
@@ -75,7 +84,8 @@ rule clean:
     shell:
         """
         echo "cleaning Nek5000 ..."
-        rm -fv {params.case}.f obj nek5000
+        rm -fv {params.case}.f nek5000
+        rm -rf obj
         rm -fv $SOURCE_ROOT/core/mpif.h
         """
 
@@ -171,6 +181,4 @@ rule generate_map:
 # record git revision
 rule git_rev:
     output: 'GIT_REVISION.txt'
-    version: subprocess.getoutput('git rev-parse --short HEAD')
-    shell:
-        'printf {version} > GIT_REVISION.txt'
+    shell: 'git rev-parse --short HEAD > GIT_REVISION.txt'
