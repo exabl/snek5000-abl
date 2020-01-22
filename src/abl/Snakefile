@@ -10,11 +10,11 @@ CASES = glob_wildcards('{case}.usr').case
 
 
 def tar_name():
-    return 'archive-{timestamp}.tar.gz'.format(
-            timestamp=max(
-                modification_date(f) for f in ('compiler.out', 'SESSION.NAME')
-            )
+    timestamp = max(
+        modification_date(f) for f in ('compiler.out', 'SESSION.NAME')
     )
+    return f'archive-{timestamp}.tar.gz' if timestamp else ""
+
 
 subworkflow Nek5000:
     workdir:
@@ -70,8 +70,14 @@ rule run:
 
 # clean compiler output
 rule clean:
-    input: 'makefile',
-    shell: 'echo "N" | makenek clean'
+    params:
+        case = expand('{case}', case=CASES),
+    shell:
+        """
+        echo "cleaning Nek5000 ..."
+        rm -fv {params.case}.f obj nek5000
+        rm -fv $SOURCE_ROOT/core/mpif.h
+        """
 
 # clean simulation files
 rule cleansimul:
@@ -81,7 +87,7 @@ rule cleansimul:
         tarball = tar_name()
     shell:
         """
-        if [ ! -f {params.tarball} ]; then
+        if [ "{params.tarball}" ] && [  ! -f "{params.tarball}" ]; then
             echo "ERROR: Archive {params.tarball} not found. Refusing to clean simulation files! Run 'snakemake archive'"
             exit 1
         fi
