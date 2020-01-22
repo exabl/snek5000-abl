@@ -7,11 +7,25 @@ import importlib.resources
 import os
 import pkgutil
 import shutil
+from socket import gethostname
 from pathlib import Path
 
 from fluidsim.base.output.base import OutputBase
 
 from eturb import logger, mpi
+
+
+def get_configfile():
+    host = os.getenv("SNIC_RESOURCE", os.getenv("GITHUB_WORKFLOW", gethostname()))
+    root = get_root()
+    return root / "etc" / f"{host}.yml"
+
+
+def get_root():
+    # Better than
+    # >>> root = Path(__file__).parent?
+    with importlib.resources.path(__name__, "__init__.py") as f:
+        return f.parent
 
 
 class Output(OutputBase):
@@ -56,11 +70,7 @@ class Output(OutputBase):
 
         # Same as package name __name__
         self.name_pkg = self.__module__
-
-        # Better than
-        # >>> root = Path(__file__).parent?
-        with importlib.resources.path(self.name_pkg, "__init__.py") as f:
-            self.root = f.parent
+        self.root = get_root()
 
         self._blacklist = {"prefix": "__", "suffix": (".vimrc", ".tar.gz", ".o")}
         if sim:

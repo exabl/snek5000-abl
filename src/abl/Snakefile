@@ -3,14 +3,14 @@ from glob import glob
 from pathlib import Path
 from socket import gethostname
 
-from abl import Output
+from abl import get_configfile, get_root
 from eturb.util import modification_date, now, activate_paths
 
 
+CONFIG = get_configfile()
+ROOT = get_root()
+
 # TODO: define configuration files for SNIC clusters
-HOST = os.getenv("SNIC_RESOURCE", gethostname())
-ROOT = Output().root
-CONFIG = ROOT / "etc" / f"{HOST}.yml"
 configfile: CONFIG
 
 # Wildcard
