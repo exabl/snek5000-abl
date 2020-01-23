@@ -1,7 +1,6 @@
 """
 Python package for managing case files.
 
-
 """
 import importlib.resources
 import os
@@ -16,6 +15,10 @@ from eturb import logger, mpi
 
 
 def get_configfile():
+    """Get path of the Snakemake configuration file for the current machine.
+    All configuration files are stored under ``etc`` sub-package.
+
+    """
     host = os.getenv("SNIC_RESOURCE", os.getenv("GITHUB_WORKFLOW", gethostname()))
     root = get_root()
     return root / "etc" / f"{host}.yml"
