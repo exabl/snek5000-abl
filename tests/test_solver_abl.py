@@ -1,12 +1,15 @@
-import os
-from eturb.solvers.abl import Simul
+import pytest
 
 
-def test_init():
-    params = Simul.create_default_params()
-    params.output.sub_directory = "test"
-    sim = Simul(params)
-    sim.make.list()
+def test_init(sim):
+    pass
+
+
+def test_make(sim):
     sim.make.exec(["mesh", "compile"])
-    dryrun = not bool(os.getenv("ETURB_DEBUG", ""))
-    sim.make.exec(["run"], dryrun=dryrun)
+    sim.make.exec(["run"], dryrun=True)
+
+
+@pytest.mark.slow
+def test_make_run(sim):
+    sim.make.exec()
