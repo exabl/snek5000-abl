@@ -1,0 +1,15 @@
+{% set indent = 42 %}
+{{ dim.ljust(indent) }} spatial dimension (dim<0 will create box.re2)
+{{ nb_fields.ljust(indent) }} number of fields
+#========================================================
+#
+{% for comment in comments.splitlines() -%}
+#    {{ comment }}
+{% endfor -%}
+#
+#========================================================
+#
+Box
+{% for comment, grid in grid_info.items() -%}
+{{ grid.ljust(indent) }}{{comment}}
+{% endfor -%}
