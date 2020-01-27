@@ -12,7 +12,8 @@ import jinja2
 
 
 env = jinja2.Environment(
-    loader=jinja2.PackageLoader('abl', 'templates'),
+    loader=jinja2.PackageLoader("abl", "templates"),
+    undefined=jinja2.StrictUndefined,
 )
 
 box = env.get_template("abl.box.j2")
