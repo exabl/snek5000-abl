@@ -1,3 +1,13 @@
+"""Jinja templates for rendering case files
+
+Provides the following Template_ instances:
+
+- ``box``
+- ``size``
+
+.. _Template: https://jinja.palletsprojects.com/en/2.10.x/api/#jinja2.Template
+
+"""
 import jinja2
 
 

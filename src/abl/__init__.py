@@ -1,6 +1,14 @@
 """
 Python package for managing case files.
 
+
+**Sub-packages**
+
+.. autosummary::
+   :toctree:
+
+   templates
+
 """
 import importlib.resources
 import os
@@ -25,6 +33,7 @@ def get_configfile():
 
 
 def get_root():
+    """Get the path to the current package, ``abl``."""
     # Better than
     # >>> root = Path(__file__).parent?
     with importlib.resources.path(__name__, "__init__.py") as f:
