@@ -1,8 +1,6 @@
 c-----------------------------------------------------------------------
 c> @defgroup abl The ABL case user-file
-c> Contains:
-c>
-c>  - user specified routines:
+c> Contains: user specified routines for the ABL case
 c>     - uservp  : variable properties
 c>     - userf   : local acceleration term for fluid
 c>     - userq   : local source term for scalars
