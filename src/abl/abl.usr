@@ -27,7 +27,7 @@ c define constant parameters
 #define YLEN (1)
 #define ZLEN PI
 
-c> Set variable properties
+c> Set variable properties, does not call any subroutines / functions.
 c> @param ix x-index
 c> @param iy y-index
 c> @param iz z-index
@@ -55,6 +55,7 @@ c     save total viscoity
       return
       end
 c-----------------------------------------------------------------------
+c
       subroutine userf(ix,iy,iz,eg) ! set acceleration term
 c
 c     Note: this is an acceleration term, NOT a force!
@@ -134,7 +135,9 @@ c--------Calculate Stresses
       return
       end
 c-----------------------------------------------------------------------
-      subroutine useric(ix,iy,iz,eg) ! set up initial conditions
+c> Set up initial conditions
+c> @callgraph
+      subroutine useric(ix,iy,iz,eg)
 
 c      implicit none
 
@@ -154,6 +157,8 @@ c      uz   = 0.0
       ux   = (0.0445/KAPPA)*log((ym1(ix,iy,iz,ie)+y0)/y0)
 
 c     perturbation tries!! (not working)
+c> Use standard subroutine RANDOM_NUMBER.
+c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
       CALL RANDOM_NUMBER(rand1)
       CALL RANDOM_NUMBER(rand2)
       CALL RANDOM_NUMBER(rand3)
@@ -180,6 +185,8 @@ c      rand3 = sin(rand2*big)
       return
       end
 c-----------------------------------------------------------------------
+c> Compute the turbulent stress tensors and write statistics
+c> @callgraph
       subroutine userchk()
 
 c      implicit none
@@ -268,6 +275,7 @@ c      calculate eddy viscosiy and total viscosity
       return
       end
 c-----------------------------------------------------------------------
+c> @callgraph
       subroutine userqtl ! Set thermal divergence
 
       call userqtl_scig
@@ -275,6 +283,7 @@ c-----------------------------------------------------------------------
       return
       end
 c-----------------------------------------------------------------------
+c> @callgraph
       subroutine usrdat()   ! This routine to modify element vertices
 
 c      implicit none
@@ -318,10 +327,9 @@ c      implicit none
       return
       end
 c-----------------------------------------------------------------------
+c> Compute eddy viscosity using dynamic smagorinsky model
+c> @callgraph
       subroutine eddy_visc(e)
-c
-c     Compute eddy viscosity using dynamic smagorinsky model
-c
       include 'SIZE'
       include 'TOTAL'
       include 'ZPER'
@@ -360,11 +368,9 @@ c----------
       return
       end
 c-----------------------------------------------------------------------
-
+c> Compute D^2, the grid spacing used in the DS sgs model.
+c> @callgraph
       subroutine set_grid_spacing(dg2)
-c
-c     Compute D^2, the grid spacing used in the DS sgs model.
-c
       include 'SIZE'
       include 'TOTAL'
 
@@ -421,8 +427,9 @@ c               write(6,*) ip,im,jp,jm
       return
       end
 c-----------------------------------------------------------------------
-
-      subroutine set_obj  ! define objects for surface integrals
+c> Define objects for surface integrals
+c> @callgraph
+      subroutine set_obj
 c
       include 'SIZE'
       include 'TOTAL'
@@ -471,7 +478,9 @@ c
       return
       end
 c-----------------------------------
-      subroutine set_forcing(f_new,u,idir)  ! driving force for Ubar = 1
+c> Compute inflow / outflow conditions a.k.a. driving force. Ubar=1
+c> @callgraph
+      subroutine set_forcing(f_new,u,idir)
 
       include 'SIZE'
       include 'TOTAL'
