@@ -9,6 +9,7 @@
 -%}
 {{ rule_string }}
 {% endmacro -%}
+# {{comments}}
 
 {% for sources in list_of_sources -%}
 {{ make(sources) }}
