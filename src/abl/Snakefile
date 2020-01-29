@@ -3,7 +3,13 @@ from glob import glob
 from pathlib import Path
 from socket import gethostname
 
-from abl import get_configfile, get_root
+from abl import (
+    get_configfile,
+    get_root,
+    makefile_usr_sources,
+    makefile_usr_obj,
+    Output
+)
 from eturb.util import modification_date, now, activate_paths
 
 
@@ -46,17 +52,12 @@ rule mesh:
 # compile
 rule compile:
     input:
-        expand('{case}.re2', case=CASES),
-        expand('{case}.ma2', case=CASES)
+        'makefile'
     output:
-        # temp('makefile'),
-        'makefile',
         expand('{case}.f', case=CASES),
-        'compiler.out',
-        'nek5000'
+        exe='nek5000'
     shell:
-        'CC="{config[MPICC]}" FC="{config[MPIFC]}" CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]}" '
-        'makenek'
+        'make {output.exe}'
 
 # run
 rule run:
@@ -85,7 +86,7 @@ rule clean:
         """
         echo "cleaning Nek5000 ..."
         rm -fv {params.case}.f nek5000
-        rm -rf obj
+        rm -rf obj makefile_usr.inc
         rm -fv $SOURCE_ROOT/core/mpif.h
         """
 
@@ -132,7 +133,6 @@ rule archive:
         expand('{case}.re2', case=CASES),
         expand('{case}.ma2', case=CASES),
         'SIZE',
-        'compiler.out',
         'SESSION.NAME',
         'GIT_REVISION.txt'
     output:
@@ -177,6 +177,40 @@ rule generate_map:
     shell:
         'echo "{params.prefix}\n{params.tolerance}" | '
         'genmap'
+
+# generate makefile_usr.inc
+rule generate_makefile_usr:
+    input:
+        "templates/makefile_usr.inc.j2"
+    output:
+        "makefile_usr.inc"
+    run:
+        o = Output()
+        with open(str(output), "w") as fp:
+            o.write_makefile_usr(fp=fp)
+
+# generate makefile
+rule generate_makefile:
+    input:
+        expand('{case}.re2', case=CASES),
+        expand('{case}.ma2', case=CASES),
+        expand('{case}.usr', case=CASES),
+        makefile_usr = "makefile_usr.inc"
+    output:
+        # temp('makefile'),
+        'makefile',
+    params:
+        case = expand('{case}', case=CASES),
+        inc = " ".join((f"-I{inc_dir}" for inc_dir in makefile_usr_sources)),
+        usr = " ".join(makefile_usr_obj)
+    shell:
+        """
+        CC="{config[MPICC]}" FC="{config[MPIFC]}" \
+            CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]} {params.inc}" \
+            USR="{params.usr}" \
+            makenek {params.case} -nocompile
+        echo "include {input.makefile_usr}" >> makefile
+        """
 
 # record git revision
 rule git_rev:

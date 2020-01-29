@@ -18,3 +18,4 @@ env = jinja2.Environment(
 
 box = env.get_template("abl.box.j2")
 size = env.get_template("SIZE.j2")
+makefile_usr = env.get_template("makefile_usr.inc.j2")
