@@ -275,5 +275,5 @@ class Output(OutputBase):
                     [f"{path_dir}/{file}" for file in sources]
                 )
 
-        output = makefile_usr.render(list_of_sources=list_of_relative_sources)
+        output = makefile_usr.render(list_of_sources=list_of_relative_sources, comments=comments)
         fp.write(output)
