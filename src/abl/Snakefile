@@ -19,15 +19,21 @@ ROOT = get_root()
 # TODO: define configuration files for SNIC clusters
 configfile: CONFIG
 
+if os.getenv("ETURB_DEBUG"):
+    config["CFLAGS"] += " -O0 -g"
+    config["FFLAGS"] += " -O0 -g -ffpe-trap=invalid,zero,overflow,underflow"
+
 # Wildcard
 CASES = glob_wildcards('{case}.usr').case
 
 
 def tar_name():
-    timestamp = max(
-        modification_date(f) for f in ('compiler.out', 'SESSION.NAME')
-    )
-    return f'archive-{timestamp}.tar.gz' if timestamp else ""
+    modified_dates = [modification_date(f) for f in glob("*.f?????")]
+    if modified_dates:
+        timestamp = max(modified_dates)
+        return f'archive-{timestamp}.tar.gz'
+    else:
+        return ""
 
 
 subworkflow Nek5000:
