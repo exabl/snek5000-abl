@@ -1,4 +1,7 @@
 # vim: set ft=make
+{% for comment in comments.splitlines() -%}
+# {{ comment }}
+{% endfor -%}
 {% macro make(sources) -%}
 {# A cosmetic macro to indent comments nicely #}
 {%- set target = sources[0].replace(".f", ".o").split("/")[-1] -%}
@@ -9,7 +12,6 @@
 -%}
 {{ rule_string }}
 {% endmacro -%}
-# {{comments}}
 
 {% for sources in list_of_sources -%}
 {{ make(sources) }}
