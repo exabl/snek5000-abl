@@ -25,7 +25,7 @@ def tar_name():
     modified_dates = [modification_date(f) for f in glob("*.f?????")]
     if modified_dates:
         timestamp = max(modified_dates)
-        return f'archive-{timestamp}.tar.gz'
+        return f'data/archive-{timestamp}.tar.gz'
     else:
         return ""
 
@@ -145,6 +145,7 @@ rule archive:
         tarball=tar_name()
     shell:
         """
+        mkdir -p data
         tar --use-compress-program=pigz -cvf {output.tarball} {input}
         rm -f GIT_REVISION.txt
         """
