@@ -13,6 +13,10 @@ ROOT = get_root()
 # TODO: define configuration files for SNIC clusters
 configfile: CONFIG
 
+if os.getenv("ETURB_DEBUG"):
+    config["CFLAGS"] += " -O0 -g"
+    config["FFLAGS"] += " -O0 -g -ffpe-trap=invalid,zero,overflow,underflow"
+
 # Wildcard
 CASES = glob_wildcards('{case}.usr').case
 
