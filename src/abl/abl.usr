@@ -192,6 +192,10 @@ c      implicit none
       include 'SIZE'
       include 'TOTAL'
       include 'ZPER'
+      ! The following are required by KTH toolbox, but it is already
+      ! included in TOTAL
+      ! include 'TSTEP'           ! ISTEP, lastep, time
+      ! include 'INPUT'           ! IF3D, PARAM
 
 
       integer e,i
@@ -269,6 +273,25 @@ c      calculate eddy viscosiy and total viscosity
       !Output new statistics
       if (mod(istep,iostep).eq.0)
      $ call outpost(dg2,vgrad,ediff,pr,t,'vgr')
+
+      ! KTH toolbox related
+      ! -------------------
+      ! start framework
+      if (ISTEP.eq.0) call frame_start
+
+      ! monitor simulation
+      call frame_monitor
+
+      ! save/load files for full-restart
+      call chkpt_main
+
+      ! for tripping
+      call stat_avg
+
+      ! finalise framework
+      if (ISTEP.eq.NSTEPS.or.LASTEP.eq.1) then
+         call frame_end
+      endif
 
       return
       end
