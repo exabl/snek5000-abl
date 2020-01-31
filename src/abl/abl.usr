@@ -165,7 +165,7 @@ c      rand1 = sin(big)
 c      rand2 = sin(rand1*big)
 c      rand3 = sin(rand2*big)
 
-      ux = ux*rand1
+      ux = ux+0.01*rand1
       uy = 1e-2*rand2
       uz = 1e-2*rand3
 
@@ -177,8 +177,8 @@ c      rand3 = sin(rand2*big)
       beta  = kz * 2*PI
 
       ux  = ux  + eps*beta  * sin(alpha*x)*cos(beta*z)
-      uy  = uy      eps       * sin(alpha*x)*sin(beta*z)
-      uz  = uz     -eps*alpha * cos(alpha*x)*sin(beta*z)
+      uy  = uy  +   eps       * sin(alpha*x)*sin(beta*z)
+      uz  = uz  -   eps*alpha * cos(alpha*x)*sin(beta*z)
 
       return
       end
@@ -381,7 +381,7 @@ c------now do for every GLL point
             Csa=1/(C0**NPOW)
             Csb=(sqrt(dg2(i,1,1,1))/(KAPPA*(ym1(i,1,1,1)+y0)))**NPOW
             Cs(i,1)=(Csa+Csb)**(-1/NPOW)
-            ediff(i,1,1,1) = param(2)+Cs(i,1)*dg2(i,1,1,1)*snrm(i,1)
+          ediff(i,1,1,1) = param(2)+(Cs(i,1)**2)*dg2(i,1,1,1)*snrm(i,1)
         enddo
       endif
 c----------
