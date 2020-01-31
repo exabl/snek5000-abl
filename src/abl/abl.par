@@ -4,7 +4,7 @@
 [GENERAL]
 # startFrom = abl0.f00000
 stopAt = numSteps
-numSteps  = 10
+numSteps  = 30
 # endTime = 10
 
 variableDT=yes
