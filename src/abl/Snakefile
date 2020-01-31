@@ -134,6 +134,7 @@ rule archive:
     input:
         [glob(f'{case}0.f*') for case in CASES],
         [glob(f'vgr{case}0.f*') for case in CASES],
+        [glob(f'rs6{case}0.f*') for case in CASES],
         expand('{case}.usr', case=CASES),
         expand('{case}.par', case=CASES),
         expand('{case}.re2', case=CASES),
