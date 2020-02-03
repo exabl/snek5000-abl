@@ -7,8 +7,22 @@ from eturb.solvers.abl import Simul
 
 
 @click.command()
-@click.option("-n", "--name-run", help="short description of the run")
-def launch(name_run):
+@click.option(
+    "-n",
+    "--name-run",
+    default="demo",
+    type=str,
+    help="short description of the run",
+)
+@click.option(
+    "-w",
+    "--weak-scaling",
+    default=1,
+    type=int,
+    help="weak scaling factor to scale up the problem",
+)
+@click.argument("rules", nargs=-1, type=click.UNPROCESSED)
+def launch(name_run, weak_scaling, rules):
     """\b
     Notes
     -----
@@ -23,7 +37,7 @@ def launch(name_run):
 
     # Nek5000: abl.box
     # ================
-    N = 1
+    N = weak_scaling
     oper.nx = 15 * N
     oper.ny = 24 * N
     oper.nz = 10 * N
@@ -62,10 +76,7 @@ def launch(name_run):
         "num_steps"
         #  "end_time"
     )
-    general.num_steps = max(
-        1,  # 18_000
-        save_freq
-    )
+    general.num_steps = max(18_000, save_freq)
     general.end_time = 25.0
     # Original value:
     # general.target_cfl = 0.8
@@ -108,7 +119,7 @@ def launch(name_run):
 
     print(params)
     sim = Simul(params)
-    sim.make.exec()
+    sim.make.exec(rules)
 
 
 if __name__ == "__main__":
