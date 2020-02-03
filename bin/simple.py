@@ -36,20 +36,20 @@ def launch(name_run):
 
     # Nek5000: SIZE
     # ===============
-    #  oper.elem.order = oper.elem.order_out = 8
-    #  oper.elem.coef_dealiasing = 2 / 3
+    oper.elem.order = oper.elem.order_out = 8
+    oper.elem.coef_dealiasing = 2 / 3
     # TODO: try Pn-Pn grid
-    #  oper.elem.staggered = True
+    oper.elem.staggered = True
     # TODO: Try to see if it works without strange values in SIZE file
-    # oper.nproc_min = 4
-    # oper.nproc_max = 32
+    oper.nproc_min = 4
+    oper.nproc_max = 64
     # TODO: why not 0? since temperature is not active
-    #  oper.scalars = 1
+    oper.scalars = 1
 
     # oper.max.hist = 1000
     # oper.max.obj = 4
-    # oper.max.scalars_cons = 5
-    # oper.max.sessions = 2
+    # oper.max.scalars_cons = 1
+    # oper.max.sessions = 1
     # oper.max.dim_proj = 20
     # oper.max.dim_krylow = 30
     # oper.max.order_time = 3

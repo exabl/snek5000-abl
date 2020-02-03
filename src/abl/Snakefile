@@ -58,6 +58,7 @@ rule mesh:
 # compile
 rule compile:
     input:
+        'makefile_usr.inc',
         'makefile'
     output:
         expand('{case}.f', case=CASES),
