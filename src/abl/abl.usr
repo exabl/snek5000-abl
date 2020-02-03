@@ -549,7 +549,7 @@ c> @callgraph
 c> @}
 c end of group abl
 !======================================================================
-c> @defgroup toolbox KTH toolbox
+c> @defgroup toolbox KTH Toolbox: user-file subroutines
 c> @{
 !> @brief Register user specified modules
       subroutine frame_usr_register
@@ -814,3 +814,10 @@ c> @{
       end subroutine
 !======================================================================
 c> @}
+c> @defgroup chkpoint KTH Toolbox: chkpoint
+c> @defgroup chkpoint_mstep KTH Toolbox: chkpoint_mstep
+c> @defgroup io_tools KTH Toolbox: io_tools
+c> @defgroup math KTH Toolbox: math
+c> @defgroup monitor KTH Toolbox: monitor
+c> @defgroup runparam KTH Toolbox: runparam
+c> @defgroup stat KTH Toolbox: stat

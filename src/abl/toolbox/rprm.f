@@ -455,6 +455,7 @@
 !! @param[in]  rpval    real default value
 !! @param[in]  lpval    logical default value
 !! @param[in]  cpval    string default value
+!! @callergraph
       subroutine rprm_rp_reg(rpid,mid,pname,pdscr,ptype ,
      $ ipval, rpval, lpval, cpval)
       implicit none
