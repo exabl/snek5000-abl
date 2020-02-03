@@ -69,6 +69,7 @@ rule compile:
 # run
 rule run:
     input:
+        'SESSION.NAME',
         'nek5000'
     log:
         "logs/run_" + now() + ".log"
@@ -77,10 +78,7 @@ rule run:
         case = expand("{case}", case=CASES)
     shell:
         """
-        touch SESSION.NAME
-        echo {params.case} > SESSION.NAME
-        echo `pwd`'/' >>  SESSION.NAME
-        {config[MPIEXEC]} -np {params.nproc} ./nek5000 > {log} &
+        {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
         ln -sf {log} {params.case}.log
         echo "Log file: $PWD"/{params.case}.log
         """
@@ -219,6 +217,19 @@ rule generate_makefile:
             USR="{params.usr}" \
             makenek {params.case} -nocompile
         echo "include {input.makefile_usr}" >> makefile
+        """
+
+# generate sessionfile
+rule generate_session:
+    output:
+        "SESSION.NAME"
+    params:
+        case = expand("{case}", case=CASES)
+    shell:
+        """
+        touch SESSION.NAME
+        echo {params.case} > SESSION.NAME
+        echo `pwd`'/' >>  SESSION.NAME
         """
 
 # record git revision
