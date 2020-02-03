@@ -23,26 +23,28 @@ def launch(name_run):
 
     # Nek5000: abl.box
     # ================
-    N = 2
-    oper.nx = 6 * N
-    oper.ny = N
-    oper.nz = 3 * N
-    oper.Lx = 2 * pi
+    N = 1
+    oper.nx = 15 * N
+    oper.ny = 24 * N
+    oper.nz = 10 * N
+    oper.Lx = pi
     oper.Ly = 1
-    oper.Lz = pi
+    oper.Lz = pi / 2
     oper.boundary = "P P sh SYM P P".split()
+
+    save_freq = 100
 
     # Nek5000: SIZE
     # ===============
-    oper.elem.order = oper.elem.order_out = 8
-    oper.elem.coef_dealiasing = 2 / 3
+    #  oper.elem.order = oper.elem.order_out = 8
+    #  oper.elem.coef_dealiasing = 2 / 3
     # TODO: try Pn-Pn grid
-    oper.elem.staggered = True
+    #  oper.elem.staggered = True
     # TODO: Try to see if it works without strange values in SIZE file
     # oper.nproc_min = 4
     # oper.nproc_max = 32
     # TODO: why not 0? since temperature is not active
-    oper.scalars = 1
+    #  oper.scalars = 1
 
     # oper.max.hist = 1000
     # oper.max.obj = 4
@@ -57,37 +59,47 @@ def launch(name_run):
     # ================
     general = params.nek.general
     general.stop_at = (
-        # "num_steps"
-        "end_time"
+        "num_steps"
+        #  "end_time"
     )
-    general.num_steps = 1
+    general.num_steps = max(
+        1,  # 18_000
+        save_freq
+    )
     general.end_time = 25.0
     # Original value:
     # general.target_cfl = 0.8
-    general.target_cfl = 0.3
-    general.time_stepper = "BDF2"
+    #  general.target_cfl = 0.3
+    #  general.time_stepper = "BDF2"
     general.write_control = (
-        "time_step"
-        # "run_time"
+        "timeStep"
+        # "runTime"
     )
-    general.write_interval = 25
-    general.filtering = "explicit"
-    general.filter_weight = 12.0
-    general.user_param03 = 1
+    general.write_interval = save_freq * 5
+    #  general.filtering = "hpfrt"
+    #  general.filter_weight = 12.0
+    #  general.user_param03 = 1
 
-    pressure = params.nek.pressure
-    velocity = params.nek.velocity
+    #  pressure = params.nek.pressure
+    #  velocity = params.nek.velocity
 
     # TODO: Why so?
-    pressure.residual_proj = True
-    velocity.residual_proj = False
+    #  pressure.residual_proj = True
+    #  velocity.residual_proj = False
 
     # FIXME: try reducing tolerance
-    pressure.residual_tol = 1e-5
-    velocity.residual_tol = 1e-8
+    #  pressure.residual_tol = 1e-5
+    #  velocity.residual_tol = 1e-8
+    #
+    #  reynolds_number = 1e10
+    #  velocity.viscosity = -reynolds_number
 
-    reynolds_number = 1e10
-    velocity.viscosity = -reynolds_number
+    # KTH Toolbox
+    # ===========
+    # TODO!
+    params.nek.chkpoint.chkp_interval = save_freq
+    params.nek.stat.av_step = max(1, save_freq // 5)
+    params.nek.stat.io_step = save_freq
 
     # Fluidsim parameters
     # ===================

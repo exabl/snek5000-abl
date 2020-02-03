@@ -4,17 +4,17 @@
 [GENERAL]
 # startFrom = abl0.f00000
 stopAt = numSteps
-numSteps  = 30
+numSteps  = 18000
 # endTime = 10
 
-variableDT=yes
+variableDt=yes
 
-targetCFL=0.8
+targetCfl=0.3
 
 writeControl = timeStep
-writeInterval = 10
+writeInterval = 2000
 
-filtering=explicit
+filtering=HPFRT
 filterCutoffRatio=0.5
 filterWeight=12.0
 
@@ -50,5 +50,5 @@ chkpFnumber          = 1                      # Restart file number
 chkpInterval         = 250                    # Checkpiont saving frequency (number of time steps)
 #
 [_STAT]             # Runtime paramere section for statistics module
-avStep               = 10
-ioStep               = 50
+avStep               = 5
+ioStep               = 10
