@@ -1,8 +1,8 @@
 CC: icc
 FC: ifort
 MPICC: mpiicc
-MPIFC: mpifort
+MPIFC: mpiifort
 MPIEXEC: "mpiexec"
 CFLAGS: "-march=native"
-FFLAGS: "-march=native -std=legacy"
+FFLAGS: "-march=native -mcmodel=medium"
 

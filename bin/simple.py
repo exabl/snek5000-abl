@@ -37,7 +37,7 @@ def launch(name_run, weak_scaling, rules):
 
     # Nek5000: abl.box
     # ================
-    N = weak_scaling
+    N = weak_scaling  # or number of nodes
     oper.nx = 15 * N
     oper.ny = 24 * N
     oper.nz = 10 * N
@@ -56,7 +56,7 @@ def launch(name_run, weak_scaling, rules):
     oper.elem.staggered = True
     # TODO: Try to see if it works without strange values in SIZE file
     oper.nproc_min = 4
-    oper.nproc_max = 64
+    oper.nproc_max = 32 * N
     # TODO: why not 0? since temperature is not active
     oper.scalars = 1
 
