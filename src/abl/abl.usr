@@ -572,9 +572,11 @@ c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
       iel = gllel(ieg)
       f_corio = uparam(4)
 
-      !
-      ffx = ffx - f_corio * VZ(ix, iy, iz, iel)
-      ffz = ffz + f_corio * VX(ix, iy, iz, iel)
+      ! Add to forcing terms
+      if (f_corio .gt. 0.) then
+          ffx = ffx - f_corio * VZ(ix, iy, iz, iel)
+          ffz = ffz + f_corio * VX(ix, iy, iz, iel)
+      endif
       return
       end
 c> @}
