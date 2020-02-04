@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
 from math import pi
+import sys
+print(sys.executable)
 
 import click
 from eturb.solvers.abl import Simul
