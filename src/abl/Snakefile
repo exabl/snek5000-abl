@@ -83,6 +83,16 @@ rule run:
         echo "Log file: $PWD"/{params.case}.log
         """
 
+# on cluster
+rule srun:
+    input:
+        'SESSION.NAME',
+        'nek5000'
+    params:
+        nproc = str(os.cpu_count()),
+    shell:
+        '{config[MPIEXEC]} -n {params.nproc} ./nek5000'
+
 # clean compiler output
 rule clean:
     params:
