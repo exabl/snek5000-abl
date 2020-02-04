@@ -75,6 +75,7 @@ c     e = gllel(eg)
       ffy = 0.0
       ffz = 0.0
 
+      call coriolis(ffx, ffy, ffz, ix, iy, iz, eg)
       return
       end
 c-----------------------------------------------------------------------
@@ -546,6 +547,36 @@ c> @callgraph
       return
       end
 
+c ----------------------------------------------------------------------
+c> Compute Coriolis acceleration
+c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
+!! @param[inout] ffx,ffy,ffz     forcing; x,y,z component
+!! @param[in]    ix,iy,iz        GLL point index
+!! @param[in]    ieg             global element number
+      subroutine coriolis(ffx,ffy,ffz,ix,iy,iz,ieg)
+      implicit none
+      include 'SIZE'            !
+      include 'INPUT'           ! uparam
+      include 'PARALLEL'        ! GLLEL
+      include 'SOLN'            ! VX, VZ
+
+      ! argument list
+      real ffx, ffy, ffz
+      integer ix,iy,iz,ieg
+
+      ! local variables
+      integer iel
+      real f_corio
+!-----------------------------------------------------------------------
+      ! Local representation
+      iel = gllel(ieg)
+      f_corio = uparam(4)
+
+      !
+      ffx = ffx - f_corio * VZ(ix, iy, iz, iel)
+      ffz = ffz + f_corio * VX(ix, iy, iz, iel)
+      return
+      end
 c> @}
 c end of group abl
 !======================================================================

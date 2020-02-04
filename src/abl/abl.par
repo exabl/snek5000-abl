@@ -19,6 +19,7 @@ filterCutoffRatio=0.5
 filterWeight=12.0
 
 userParam03 = 1
+userParam04 = 1e-4  # Coriolis frequency
 
 [PROBLEMTYPE]
 equation = incompNS
