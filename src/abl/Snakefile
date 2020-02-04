@@ -38,7 +38,7 @@ def tar_name():
 
 subworkflow Nek5000:
     workdir:
-        os.getenv("SOURCE_ROOT", ROOT / "../../lib/Nek5000")
+        os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000"))
     snakefile:
         os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000")) + "/Snakefile"
     configfile:
