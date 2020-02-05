@@ -4,7 +4,7 @@ from eturb.clusters import Cluster
 
 
 cluster = Cluster()
-name_run = "rot"
+name_run = "irrot_no_filter"
 snakemake_rules = "srun"
 
 

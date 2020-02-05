@@ -90,8 +90,11 @@ def launch(name_run, weak_scaling, rules):
     )
     general.write_interval = save_freq * 5
     #  general.filtering = "hpfrt"
+    general.filtering = None
     #  general.filter_weight = 12.0
     #  general.user_param03 = 1
+    # Coriolis frequency
+    general.user_param04 = 0
 
     #  pressure = params.nek.pressure
     #  velocity = params.nek.velocity
