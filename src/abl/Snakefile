@@ -1,6 +1,6 @@
 import itertools
 import os
-from glob import glob
+from glob import iglob
 from pathlib import Path
 from socket import gethostname
 
@@ -35,10 +35,16 @@ CASES = glob_wildcards('{case}.usr').case
 
 
 def tar_name():
-    modified_dates = [modification_date(f) for f in glob("*.f?????")]
+    modified_dates = [modification_date(f) for f in iglob("*.f?????")]
+    cwd = Path.cwd().name
     if modified_dates:
-        timestamp = max(modified_dates)
-        return f'data/archive-{timestamp}.tar.{COMPRESS_FORMAT}'
+        if cwd != ROOT:
+            timestamp = max(modified_dates)
+            basename = 'test-' + timestamp
+        else:
+            basename = cwd
+
+        return f'data/{basename}.tar.{COMPRESS_FORMAT}'
     else:
         return ""
 
@@ -144,14 +150,11 @@ rule cleanall:
         """
 
 # create an archive with all of our results
-# requires pigz - parallelized gzip
-#  ["{dataset}/a.txt".format(dataset=dataset) for dataset in DATASETS]
-# TODO: git restore / reset after archiving
 rule archive:
     input:
         sorted(
             itertools.chain.from_iterable(
-                (glob(f'{prefix}{case}0.f*') for prefix in ("", "vgr", "rs6", "c2D", "sts") for case in CASES),
+                (iglob(f'{prefix}{case}0.f*') for prefix in ("", "vgr", "rs6", "c2D", "sts") for case in CASES),
             )
         ),
         expand('{case}.re2', case=CASES),
