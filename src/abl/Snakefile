@@ -145,22 +145,23 @@ rule archive:
     input:
         sorted(
             itertools.chain.from_iterable(
-                (glob(f'{prefix}{case}0.f*') for prefix in ("", "vgr", "rs6", "c2D") for case in CASES),
+                (glob(f'{prefix}{case}0.f*') for prefix in ("", "vgr", "rs6", "c2D", "sts") for case in CASES),
             )
         ),
         expand('{case}.re2', case=CASES),
         expand('{case}.ma2', case=CASES),
         'SESSION.NAME',
         'GIT_REVISION.txt',
-        expand('{case}.par', case=CASES),
-        expand('{case}.usr', case=CASES),
-        'SIZE'
+        case_par=expand('{case}.par', case=CASES),
+        case_usr=expand('{case}.usr', case=CASES),
+        case_size='SIZE'
     output:
         tarball=tar_name()
     shell:
         """
         mkdir -p data
-        tar --use-compress-program=pigz --remove-files -cvf {output.tarball} {input.fields}
+        tar --use-compress-program=pigz --remove-files -cvf {output.tarball} {input}
+        git restore {input.case_par} {input.case_usr} {input.case_size}
         """
 
 
