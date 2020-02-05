@@ -150,6 +150,7 @@ rule cleanall:
         """
 
 # create an archive with all of our results
+# TODO: archive params.xml
 rule archive:
     input:
         sorted(
