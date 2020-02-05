@@ -5,7 +5,7 @@ from eturb.clusters import Cluster
 
 cluster = Cluster()
 name_run = "irrot"
-snakemake_rules = "run"
+snakemake_rules = "srun"
 
 
 for nb_nodes in [1, 2]:
