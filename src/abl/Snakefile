@@ -19,7 +19,7 @@ ROOT = get_root()
 # COMPRESS_FORMAT = "gz"; TAR = "tar -I pigz"
 # COMPRESS_FORMAT = "xz"; TAR = "tar"
 # COMPRESS_FORMAT = "lz4"; TAR = "tar -I lz4"
-COMPRESS_FORMAT = "zstd"; TAR = "tar -I zstdmt"
+COMPRESS_FORMAT = "zst"; TAR = "tar -I zstdmt"
 TAR += " --remove-files -cvf"
 # TAR = "time "+ TAR + " -cf"
 
@@ -157,19 +157,18 @@ rule archive:
         expand('{case}.re2', case=CASES),
         expand('{case}.ma2', case=CASES),
         'SESSION.NAME',
-        'GIT_REVISION.txt',
+        # 'GIT_REVISION.txt',
         case_par=expand('{case}.par', case=CASES),
         case_usr=expand('{case}.usr', case=CASES),
         case_size='SIZE'
     params:
         tar_cmd=TAR
     output:
-        tarball=tar_name()
+        tarball=protected(tar_name())
     shell:
         """
         mkdir -p data
         {params.tar_cmd} {output.tarball} {input}
-        git restore {input.case_par} {input.case_usr} {input.case_size}
         """
 
 
