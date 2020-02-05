@@ -16,6 +16,12 @@ from eturb.util import modification_date, now, activate_paths
 
 CONFIG = get_configfile()
 ROOT = get_root()
+# COMPRESS_FORMAT = "gz"; TAR = "tar -I pigz"
+# COMPRESS_FORMAT = "xz"; TAR = "tar"
+# COMPRESS_FORMAT = "lz4"; TAR = "tar -I lz4"
+COMPRESS_FORMAT = "zstd"; TAR = "tar -I zstdmt"
+TAR += " --remove-files -cvf"
+# TAR = "time "+ TAR + " -cf"
 
 # TODO: define configuration files for SNIC clusters
 configfile: CONFIG
@@ -32,7 +38,7 @@ def tar_name():
     modified_dates = [modification_date(f) for f in glob("*.f?????")]
     if modified_dates:
         timestamp = max(modified_dates)
-        return f'data/archive-{timestamp}.tar.gz'
+        return f'data/archive-{timestamp}.tar.{COMPRESS_FORMAT}'
     else:
         return ""
 
@@ -155,12 +161,14 @@ rule archive:
         case_par=expand('{case}.par', case=CASES),
         case_usr=expand('{case}.usr', case=CASES),
         case_size='SIZE'
+    params:
+        tar_cmd=TAR
     output:
         tarball=tar_name()
     shell:
         """
         mkdir -p data
-        tar --use-compress-program=pigz --remove-files -cvf {output.tarball} {input}
+        {params.tar_cmd} {output.tarball} {input}
         git restore {input.case_par} {input.case_usr} {input.case_size}
         """
 
