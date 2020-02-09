@@ -57,3 +57,4 @@ chkpInterval         = 250                    # Checkpiont saving frequency (num
 [_STAT]             # Runtime paramere section for statistics module
 avStep               = 5
 ioStep               = 10
+# vim: set ft=cfg
