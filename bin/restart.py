@@ -31,7 +31,7 @@ for path in subdir.iterdir():
 
     cmd = f"""
 cd {path}
-mpirun {nb_nodes*cluster.nb_cores_per_node} ./nek5000 > {Path.cwd() / ("SLURM." + name_run)}.${{SLURM_JOBID}}.stdout 2>&1
+mpiexec -n {nb_nodes*cluster.nb_cores_per_node} ./nek5000 > {Path.cwd() / ("SLURM." + name_run)}.${{SLURM_JOBID}}.stdout 2>&1
 
 """
     if dryrun:
@@ -44,7 +44,7 @@ mpirun {nb_nodes*cluster.nb_cores_per_node} ./nek5000 > {Path.cwd() / ("SLURM." 
             # walltime='7-00:00:00',
             # walltime="06:00:00",
             walltime=walltime,
-            ask=True,
+            ask=False,
             bash=False,
             email="avmo@misu.su.se",
             interactive=False,
