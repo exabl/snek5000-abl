@@ -254,7 +254,7 @@ c      calculate eddy viscosiy and total viscosity
       endif
 
       ! driving force for Ubar = 1
-      call set_forcing(ffx_new,vx,1)
+      call set_forcing(ffx_new,ux,1)
 
       ! Calculate forces:
       call torque_calc(1.0,x0,.false.,.false.) ! wall shear
@@ -556,7 +556,6 @@ c ----------------------------------------------------------------------
 c> Compute Coriolis acceleration
 c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
 c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
-!! @param[inout] ffx,ffy,ffz     forcing; x,y,z component
 !! @param[in]    ix,iy,iz        GLL point index
 !! @param[in]    ieg             global element number
       subroutine coriolis(ix,iy,iz,ieg)
