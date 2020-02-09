@@ -21,6 +21,7 @@ c define constant parameters
 #define y0 0.0001
 #define NPOW 0.5
 #define C0 0.19
+#define U_GEO 1.0
 
 c> Set variable properties, does not call any subroutines / functions.
 c> @param ix x-index
@@ -56,23 +57,24 @@ c
 c     Note: this is an acceleration term, NOT a force!
 c     Thus, ffx will subsequently be multiplied by rho(x,t).
 c
-c      implicit none
+      implicit none
 
       integer ix,iy,iz,eg
 
       include 'SIZE'
-      include 'TOTAL'
       include 'NEKUSE'
-      common /cforce/ ffx_new,ffy_new,ffz_new
+      include 'PARALLEL'
+      ! common /cforce/ ffx_new,ffy_new,ffz_new
 
       integer e
 c     e = gllel(eg)
 
-      ffx = ffx_new ! This value determined from fixed U_b=1 case.
+      ! ffx = ffx_new ! This value determined from fixed U_b=1 case.
+      ffx = 0.0
       ffy = 0.0
       ffz = 0.0
 
-      call coriolis(ffx, ffy, ffz, ix, iy, iz, eg)
+      call coriolis(ix, iy, iz, eg)
       return
       end
 c-----------------------------------------------------------------------
@@ -516,11 +518,12 @@ c> @callgraph
       if (istep.eq.0) then
          f_new = 0.
          if (DPDX.eq.1) then
-            param(54) = -1 ! flow direction (x:1, y:2, z:3)
-            param(55) = 1  ! flowrate (p54>) or Ubar (p54<0)
+            param(54) = -1     ! flow direction (x:1, y:2, z:3)
+            param(55) = U_GEO  ! flowrate (p54>) or Ubar (p54<0)
          endif
       endif
 
+      ! Dead code below when DPDX=1
       if (DPDX.eq.1) return
 
       u_targ  = 1.
@@ -552,32 +555,34 @@ c> @callgraph
 c ----------------------------------------------------------------------
 c> Compute Coriolis acceleration
 c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
+c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
 !! @param[inout] ffx,ffy,ffz     forcing; x,y,z component
 !! @param[in]    ix,iy,iz        GLL point index
 !! @param[in]    ieg             global element number
-      subroutine coriolis(ffx,ffy,ffz,ix,iy,iz,ieg)
+      subroutine coriolis(ix,iy,iz,ieg)
       implicit none
       include 'SIZE'            !
       include 'INPUT'           ! uparam
       include 'PARALLEL'        ! GLLEL
-      include 'SOLN'            ! VX, VZ
+      ! include 'SOLN'            ! VX, VZ
+      include 'NEKUSE'            ! ffx, ffy, ffz, ux, uz
 
       ! argument list
-      real ffx, ffy, ffz
       integer ix,iy,iz,ieg
 
       ! local variables
-      integer iel
+      ! integer iel
       real f_corio
 !-----------------------------------------------------------------------
       ! Local representation
-      iel = gllel(ieg)
+      ! iel = gllel(ieg)
+
       f_corio = uparam(4)
 
       ! Add to forcing terms
       if (f_corio .gt. 0.) then
-          ffx = ffx - f_corio * VZ(ix, iy, iz, iel)
-          ffz = ffz + f_corio * VX(ix, iy, iz, iel)
+          ffx = ffx - f_corio * uz
+          ffz = ffz + f_corio * (ux - U_GEO)
       endif
       return
       end
@@ -856,3 +861,4 @@ c> @defgroup math KTH Toolbox: math
 c> @defgroup monitor KTH Toolbox: monitor
 c> @defgroup runparam KTH Toolbox: runparam
 c> @defgroup stat KTH Toolbox: stat
+c vim: set ft=fortran
