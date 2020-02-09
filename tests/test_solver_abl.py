@@ -6,10 +6,10 @@ def test_init(sim):
 
 
 def test_make(sim):
-    sim.make.exec(["mesh", "compile"])
-    sim.make.exec(["run"], dryrun=True)
+    assert sim.make.exec(["mesh", "compile"])
+    assert sim.make.exec(["run"], dryrun=True)
 
 
 @pytest.mark.slow
 def test_make_run(sim):
-    sim.make.exec()
+    assert sim.make.exec()

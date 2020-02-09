@@ -21,9 +21,6 @@ c define constant parameters
 #define y0 0.0001
 #define NPOW 0.5
 #define C0 0.19
-#define XLEN (2.*PI)
-#define YLEN (1)
-#define ZLEN PI
 
 c> Set variable properties, does not call any subroutines / functions.
 c> @param ix x-index
@@ -208,7 +205,7 @@ c      implicit none
       real utauv(lx1,ly1,lz1,lelv)
       save x0
 
-
+      real XLEN, YLEN, ZLEN
 c     call common blocks
       common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
      $              , dg2 (lx1,ly1,lz1,lelv)
@@ -228,6 +225,11 @@ c
      $             , dgtq(3,4)
 
       common /cforce/ ffx_new,ffy_new,ffz_new
+
+c     Get mesh lengths from userParam0{5,6,7}
+      XLEN = uparam(5)
+      YLEN = uparam(6)
+      ZLEN = uparam(7)
 
 c     Define Delta for Smagorinsky method
       call set_grid_spacing(dg2)
