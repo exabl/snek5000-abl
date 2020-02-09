@@ -94,7 +94,12 @@ def launch(name_run, weak_scaling, rules):
     #  general.filter_weight = 12.0
     #  general.user_param03 = 1
     # Coriolis frequency
-    general.user_param04 = 0
+    general.user_params = {
+        4: 0,  # Coriolis frequency
+        5: oper.Lx,
+        6: oper.Ly,
+        7: oper.Lz
+    }
 
     #  pressure = params.nek.pressure
     #  velocity = params.nek.velocity
@@ -124,6 +129,7 @@ def launch(name_run, weak_scaling, rules):
 
     print(params)
     sim = Simul(params)
+    sim.sanity_check()
     sim.make.exec(rules)
 
 
