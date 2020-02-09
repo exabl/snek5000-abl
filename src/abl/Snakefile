@@ -38,7 +38,7 @@ def tar_name():
     modified_dates = [modification_date(f) for f in iglob("*.f?????")]
     cwd = Path.cwd().name
     if modified_dates:
-        if cwd != ROOT:
+        if cwd == ROOT.name:
             timestamp = max(modified_dates)
             basename = 'test-' + timestamp
         else:
