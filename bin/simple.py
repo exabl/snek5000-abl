@@ -89,13 +89,13 @@ def launch(name_run, weak_scaling, rules):
         # "runTime"
     )
     general.write_interval = save_freq * 5
-    #  general.filtering = "hpfrt"
-    general.filtering = None
+    general.filtering = "hpfrt"
+    #  general.filtering = None
     #  general.filter_weight = 12.0
     #  general.user_param03 = 1
     # Coriolis frequency
     general.user_params = {
-        4: 0,  # Coriolis frequency
+        4: 1e-4,  # Coriolis frequency
         5: oper.Lx,
         6: oper.Ly,
         7: oper.Lz
@@ -119,7 +119,7 @@ def launch(name_run, weak_scaling, rules):
     # ===========
     # TODO!
     params.nek.chkpoint.chkp_interval = save_freq
-    params.nek.stat.av_step = max(1, save_freq // 5)
+    params.nek.stat.av_step = 1
     params.nek.stat.io_step = save_freq
 
     # Fluidsim parameters

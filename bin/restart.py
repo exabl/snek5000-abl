@@ -43,6 +43,7 @@ mpiexec -n {nb_nodes*cluster.nb_cores_per_node} ./nek5000 > {Path.cwd() / ("SLUR
             name_run=name_run,
             # walltime='7-00:00:00',
             # walltime="06:00:00",
+            signal_num=False,
             walltime=walltime,
             ask=False,
             bash=False,

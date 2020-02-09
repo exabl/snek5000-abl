@@ -4,7 +4,7 @@ from eturb.clusters import Cluster
 
 
 cluster = Cluster()
-name_run = "irrot_no_filter"
+name_run = "rot"
 snakemake_rules = "srun"
 
 
@@ -17,6 +17,7 @@ for nb_nodes, walltime in zip([1, 2], ["03:00:00", "15:00:00"]):
         name_run=name_run,
         # walltime='7-00:00:00',
         # walltime="06:00:00",
+        signal_num=False,
         walltime=walltime,
         ask=True,
         bash=False,
