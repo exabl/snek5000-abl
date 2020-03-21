@@ -16,6 +16,7 @@ from eturb.util import modification_date, now, activate_paths
 
 CONFIG = get_configfile()
 ROOT = get_root()
+SOURCE_ROOT = os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000"))
 # COMPRESS_FORMAT = "gz"; TAR = "tar -I pigz"
 # COMPRESS_FORMAT = "xz"; TAR = "tar"
 # COMPRESS_FORMAT = "lz4"; TAR = "tar -I lz4"
@@ -50,12 +51,9 @@ def tar_name():
 
 
 subworkflow Nek5000:
-    workdir:
-        os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000"))
-    snakefile:
-        os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000")) + "/Snakefile"
-    configfile:
-        CONFIG
+    workdir: SOURCE_ROOT
+    snakefile: SOURCE_ROOT + "/Snakefile"
+    configfile: CONFIG
 
 # default rule
 rule all:
@@ -229,19 +227,28 @@ rule generate_makefile:
         expand('{case}.usr', case=CASES),
         makefile_usr = "makefile_usr.inc"
     output:
-        # temp('makefile'),
         'makefile',
+        temp(SOURCE_ROOT + "/3rd_party/gslib/gslib-1.0.1/src/libgs.a"),
+        libgs = SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
     params:
         case = expand('{case}', case=CASES),
         inc = " ".join((f"-I{inc_dir}" for inc_dir in makefile_usr_sources)),
         usr = " ".join(makefile_usr_obj)
     shell:
         """
-        CC="{config[MPICC]}" FC="{config[MPIFC]}" \
+        function at_exit {{
+            export NOCOMPILE=0
+            rmdir $(dirname {output.libgs})
+            make_3rd_party
+            echo "include {input.makefile_usr}" >> makefile
+        }}
+        trap at_exit EXIT
+
+        set +u  # Do not error on undefined bash variables
+        export CC="{config[MPICC]}" FC="{config[MPIFC]}" \
             CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]} {params.inc}" \
-            USR="{params.usr}" \
-            makenek {params.case} -nocompile
-        echo "include {input.makefile_usr}" >> makefile
+            USR="{params.usr}"
+        source $(which makenek) {params.case} -nocompile
         """
 
 # generate sessionfile
@@ -261,3 +268,8 @@ rule generate_session:
 rule git_rev:
     output: 'GIT_REVISION.txt'
     shell: 'git rev-parse --short HEAD > GIT_REVISION.txt'
+
+
+rule psst:
+    run:
+        print(type(Nek5000('bin/makenek')))
