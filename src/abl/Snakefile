@@ -1,14 +1,28 @@
+import itertools
 import os
-from glob import glob
+from glob import iglob
 from pathlib import Path
 from socket import gethostname
 
-from abl import get_configfile, get_root
+from abl import (
+    get_configfile,
+    get_root,
+    makefile_usr_sources,
+    makefile_usr_obj,
+    Output
+)
 from eturb.util import modification_date, now, activate_paths
 
 
 CONFIG = get_configfile()
 ROOT = get_root()
+SOURCE_ROOT = os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000"))
+# COMPRESS_FORMAT = "gz"; TAR = "tar -I pigz"
+# COMPRESS_FORMAT = "xz"; TAR = "tar"
+# COMPRESS_FORMAT = "lz4"; TAR = "tar -I lz4"
+COMPRESS_FORMAT = "zst"; TAR = "tar -I zstdmt"
+TAR += " --remove-files -cvf"
+# TAR = "time "+ TAR + " -cf"
 
 # TODO: define configuration files for SNIC clusters
 configfile: CONFIG
@@ -22,21 +36,24 @@ CASES = glob_wildcards('{case}.usr').case
 
 
 def tar_name():
-    modified_dates = [modification_date(f) for f in glob("*.f?????")]
+    modified_dates = [modification_date(f) for f in iglob("*.f?????")]
+    cwd = Path.cwd().name
     if modified_dates:
-        timestamp = max(modified_dates)
-        return f'data/archive-{timestamp}.tar.gz'
+        if cwd == ROOT.name:
+            timestamp = max(modified_dates)
+            basename = 'test-' + timestamp
+        else:
+            basename = cwd
+
+        return f'data/{basename}.tar.{COMPRESS_FORMAT}'
     else:
         return ""
 
 
 subworkflow Nek5000:
-    workdir:
-        os.getenv("SOURCE_ROOT", ROOT / "../../lib/Nek5000")
-    snakefile:
-        os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000")) + "/Snakefile"
-    configfile:
-        CONFIG
+    workdir: SOURCE_ROOT
+    snakefile: SOURCE_ROOT + "/Snakefile"
+    configfile: CONFIG
 
 # default rule
 rule all:
@@ -52,21 +69,18 @@ rule mesh:
 # compile
 rule compile:
     input:
-        expand('{case}.re2', case=CASES),
-        expand('{case}.ma2', case=CASES)
+        'makefile_usr.inc',
+        'makefile'
     output:
-        # temp('makefile'),
-        'makefile',
         expand('{case}.f', case=CASES),
-        'compiler.out',
-        'nek5000'
+        exe='nek5000'
     shell:
-        'CC="{config[MPICC]}" FC="{config[MPIFC]}" CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]}" '
-        'makenek'
+        'make {output.exe}'
 
 # run
 rule run:
     input:
+        'SESSION.NAME',
         'nek5000'
     log:
         "logs/run_" + now() + ".log"
@@ -75,13 +89,20 @@ rule run:
         case = expand("{case}", case=CASES)
     shell:
         """
-        touch SESSION.NAME
-        echo {params.case} > SESSION.NAME
-        echo `pwd`'/' >>  SESSION.NAME
-        {config[MPIEXEC]} -np {params.nproc} ./nek5000 > {log} &
+        {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
         ln -sf {log} {params.case}.log
         echo "Log file: $PWD"/{params.case}.log
         """
+
+# on cluster
+rule srun:
+    input:
+        'SESSION.NAME',
+        'nek5000'
+    params:
+        nproc = str(os.cpu_count()),
+    shell:
+        '{config[MPIEXEC]} -n {params.nproc} ./nek5000'
 
 # clean compiler output
 rule clean:
@@ -91,7 +112,7 @@ rule clean:
         """
         echo "cleaning Nek5000 ..."
         rm -fv {params.case}.f nek5000
-        rm -rf obj
+        rm -rf obj makefile_usr.inc
         rm -fv $SOURCE_ROOT/core/mpif.h
         """
 
@@ -127,27 +148,29 @@ rule cleanall:
         """
 
 # create an archive with all of our results
-# requires pigz - parallelized gzip
-#  ["{dataset}/a.txt".format(dataset=dataset) for dataset in DATASETS]
+# TODO: archive params.xml
 rule archive:
     input:
-        [glob(f'{case}0.f*') for case in CASES],
-        [glob(f'vgr{case}0.f*') for case in CASES],
-        expand('{case}.usr', case=CASES),
-        expand('{case}.par', case=CASES),
+        sorted(
+            itertools.chain.from_iterable(
+                (iglob(f'{prefix}{case}0.f*') for prefix in ("", "vgr", "rs6", "c2D", "sts") for case in CASES),
+            )
+        ),
         expand('{case}.re2', case=CASES),
         expand('{case}.ma2', case=CASES),
-        'SIZE',
-        'compiler.out',
         'SESSION.NAME',
-        'GIT_REVISION.txt'
+        # 'GIT_REVISION.txt',
+        case_par=expand('{case}.par', case=CASES),
+        case_usr=expand('{case}.usr', case=CASES),
+        case_size='SIZE'
+    params:
+        tar_cmd=TAR
     output:
-        tarball=tar_name()
+        tarball=protected(tar_name())
     shell:
         """
         mkdir -p data
-        tar --use-compress-program=pigz -cvf {output.tarball} {input}
-        rm -f GIT_REVISION.txt
+        {params.tar_cmd} {output.tarball} {input}
         """
 
 
@@ -184,6 +207,62 @@ rule generate_map:
     shell:
         'echo "{params.prefix}\n{params.tolerance}" | '
         'genmap'
+
+# generate makefile_usr.inc
+rule generate_makefile_usr:
+    input:
+        "templates/makefile_usr.inc.j2"
+    output:
+        "makefile_usr.inc"
+    run:
+        o = Output()
+        with open(str(output), "w") as fp:
+            o.write_makefile_usr(fp=fp)
+
+# generate makefile
+rule generate_makefile:
+    input:
+        expand('{case}.re2', case=CASES),
+        expand('{case}.ma2', case=CASES),
+        expand('{case}.usr', case=CASES),
+        makefile_usr = "makefile_usr.inc"
+    output:
+        'makefile',
+        temp(SOURCE_ROOT + "/3rd_party/gslib/gslib-1.0.1/src/libgs.a"),
+        libgs = SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
+    params:
+        case = expand('{case}', case=CASES),
+        inc = " ".join((f"-I{inc_dir}" for inc_dir in makefile_usr_sources)),
+        usr = " ".join(makefile_usr_obj)
+    shell:
+        """
+        function at_exit {{
+            export NOCOMPILE=0
+            rmdir $(dirname {output.libgs})
+            make_3rd_party
+            echo "include {input.makefile_usr}" >> makefile
+        }}
+        trap at_exit EXIT
+
+        set +u  # Do not error on undefined bash variables
+        export CC="{config[MPICC]}" FC="{config[MPIFC]}" \
+            CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]} {params.inc}" \
+            USR="{params.usr}"
+        source $(which makenek) {params.case} -nocompile
+        """
+
+# generate sessionfile
+rule generate_session:
+    output:
+        "SESSION.NAME"
+    params:
+        case = expand("{case}", case=CASES)
+    shell:
+        """
+        touch SESSION.NAME
+        echo {params.case} > SESSION.NAME
+        echo `pwd`'/' >>  SESSION.NAME
+        """
 
 # record git revision
 rule git_rev:

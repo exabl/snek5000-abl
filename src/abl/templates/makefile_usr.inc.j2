@@ -1,0 +1,18 @@
+# vim: set ft=make
+{% for comment in comments.splitlines() -%}
+# {{ comment }}
+{% endfor -%}
+{% macro make(sources) -%}
+{# A cosmetic macro to indent comments nicely #}
+{%- set target = sources[0].replace(".f", ".o").split("/")[-1] -%}
+{%- set rule_string = "$(OBJDIR)/{}:{}\n\t$(F77) -c $(FL2) -I./ $< -o $@".format(
+		target.ljust(20),
+		" ".join(sources),
+	)
+-%}
+{{ rule_string }}
+{% endmacro -%}
+
+{% for sources in list_of_sources -%}
+{{ make(sources) }}
+{% endfor -%}
