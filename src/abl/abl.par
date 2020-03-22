@@ -4,21 +4,26 @@
 [GENERAL]
 # startFrom = abl0.f00000
 stopAt = numSteps
-numSteps  = 1
+numSteps  = 10
 # endTime = 10
 
-variableDT=yes
+variableDt=yes
 
-targetCFL=0.8
+targetCfl=0.3
 
 writeControl = timeStep
-writeInterval = 10
+writeInterval = 2000
 
-filtering=explicit
+filtering=HPFRT
 filterCutoffRatio=0.5
 filterWeight=12.0
 
 userParam03 = 1
+userParam04 = 1e-4  # Coriolis frequency
+
+userParam05 = 3.1416
+userParam06 = 1.0
+userParam07 = 1.5708
 
 [PROBLEMTYPE]
 equation = incompNS
@@ -33,3 +38,23 @@ residualProj = yes
 residualTol = 1e-8
 density = 1
 viscosity = -1e10
+
+# KTH toolbox
+#
+[_RUNPAR]               # Runtime parameter section for rprm module
+parfWrite            = no                     # Do we write runtime parameter file
+parfName             = outparfile             # Runtime parameter file name for output (without .par)
+#
+[_MONITOR]              # Runtime parameter section for monitor module
+logLevel             = 4                      # Logging threshold for toolboxes
+wallTime             = 23:45                  # Simulation wall time
+#
+[_CHKPOINT]             # Runtime paramere section for checkpoint module
+readChkpt            = no                     # Restat from checkpoint
+chkpFnumber          = 1                      # Restart file number
+chkpInterval         = 250                    # Checkpiont saving frequency (number of time steps)
+#
+[_STAT]             # Runtime paramere section for statistics module
+avStep               = 5
+ioStep               = 10
+# vim: set ft=cfg
