@@ -268,8 +268,3 @@ rule generate_session:
 rule git_rev:
     output: 'GIT_REVISION.txt'
     shell: 'git rev-parse --short HEAD > GIT_REVISION.txt'
-
-
-rule psst:
-    run:
-        print(type(Nek5000('bin/makenek')))
