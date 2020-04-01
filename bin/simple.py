@@ -108,8 +108,9 @@ def launch(name_run, weak_scaling, rules):
     #  pressure.residual_proj = True
     #  velocity.residual_proj = False
 
-    # FIXME: try reducing tolerance
-    #  pressure.residual_tol = 1e-5
+    # NOTE: reducing pressure residual tolerance affects velocity divergence
+    # TODO: check if w -> O(pressure.residual_tol)
+    pressure.residual_tol = 1e-10
     #  velocity.residual_tol = 1e-8
     #
     #  reynolds_number = 1e10
