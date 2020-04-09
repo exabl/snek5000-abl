@@ -101,7 +101,7 @@ def launch(name_run, weak_scaling, rules):
         7: oper.Lz
     }
 
-    #  pressure = params.nek.pressure
+    pressure = params.nek.pressure
     #  velocity = params.nek.velocity
 
     # TODO: Why so?

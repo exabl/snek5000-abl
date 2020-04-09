@@ -12,7 +12,8 @@ snakemake_rules = "srun"
 dryrun = False
 
 subdir = Path(FLUIDDYN_PATH_SCRATCH) / "simple"
-for path in subdir.iterdir():
+#  for path in subdir.iterdir():
+for path in [Path("/proj/kthmech/users/x_ashmo/tmp/simple/abl_rot_30x48x20_V1pix1.x1.571_2020-02-09_17-40-03")]:
     try:
         params = prepare_for_restart(path)
     except IOError as e:
@@ -20,8 +21,9 @@ for path in subdir.iterdir():
         logger.warning("Skipping...")
         continue
 
-    params.nek.stat.av_step = 1
-    params.nek.stat.io_step = 1
+    params.nek.stat.av_step = 1000
+    params.nek.stat.io_step = 1000
+    params.nek.pressure.residual_tol = 1e-10
     params.nek.general.num_steps = 1000
     params.nek._write_par(path / "abl.par")
 
