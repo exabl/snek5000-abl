@@ -48,7 +48,7 @@ def launch(name_run, weak_scaling, rules):
     oper.Lz = pi / 2
     oper.boundary = "P P sh SYM P P".split()
 
-    save_freq = 100
+    save_freq = 1000
 
     # Nek5000: SIZE
     # ===============
@@ -126,7 +126,7 @@ def launch(name_run, weak_scaling, rules):
     # Fluidsim parameters
     # ===================
     params.short_name_type_run = name_run
-    params.output.sub_directory = "simple"
+    params.output.sub_directory = "divergence_check"
 
     print(params)
     sim = Simul(params)
