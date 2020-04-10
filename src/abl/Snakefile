@@ -80,6 +80,9 @@ rule compile:
 # run
 rule run:
     input:
+        expand('{case}.re2', case=CASES),
+        expand('{case}.ma2', case=CASES)
+        expand('{case}.par', case=CASES)
         'SESSION.NAME',
         'nek5000'
     log:
@@ -97,6 +100,9 @@ rule run:
 # on cluster
 rule srun:
     input:
+        expand('{case}.re2', case=CASES),
+        expand('{case}.ma2', case=CASES)
+        expand('{case}.par', case=CASES)
         'SESSION.NAME',
         'nek5000'
     params:
