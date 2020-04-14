@@ -81,8 +81,8 @@ rule compile:
 rule run:
     input:
         expand('{case}.re2', case=CASES),
-        expand('{case}.ma2', case=CASES)
-        expand('{case}.par', case=CASES)
+        expand('{case}.ma2', case=CASES),
+        expand('{case}.par', case=CASES),
         'SESSION.NAME',
         'nek5000'
     log:
@@ -101,8 +101,8 @@ rule run:
 rule srun:
     input:
         expand('{case}.re2', case=CASES),
-        expand('{case}.ma2', case=CASES)
-        expand('{case}.par', case=CASES)
+        expand('{case}.ma2', case=CASES),
+        expand('{case}.par', case=CASES),
         'SESSION.NAME',
         'nek5000'
     params:
