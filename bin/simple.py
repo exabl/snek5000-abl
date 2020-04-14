@@ -23,8 +23,15 @@ from eturb.solvers.abl import Simul
     type=int,
     help="weak scaling factor to scale up the problem",
 )
+@click.option(
+    "-f",
+    "--filter-weight",
+    default=12,
+    type=int,
+    help="weak scaling factor to scale up the problem",
+)
 @click.argument("rules", nargs=-1, type=click.UNPROCESSED)
-def launch(name_run, weak_scaling, rules):
+def launch(name_run, weak_scaling, filter_weight, rules):
     """\b
     Notes
     -----
@@ -40,15 +47,21 @@ def launch(name_run, weak_scaling, rules):
     # Nek5000: abl.box
     # ================
     N = weak_scaling  # or number of nodes
-    oper.nx = 15 * N
-    oper.ny = 24 * N
-    oper.nz = 10 * N
-    oper.Lx = pi
-    oper.Ly = 1
-    oper.Lz = pi / 2
+    if N == 1:
+        oper.nx = 6
+        oper.ny = 20
+        oper.nz = 6
+    elif N == 2:
+        oper.nx = 12
+        oper.ny = 24
+        oper.nz = 12
+
+    oper.Lx = 1280
+    oper.Ly = 1500
+    oper.Lz = 1280
     oper.boundary = "P P sh SYM P P".split()
 
-    save_freq = 1000
+    save_freq = 10_000
 
     # Nek5000: SIZE
     # ===============
@@ -78,7 +91,7 @@ def launch(name_run, weak_scaling, rules):
         "num_steps"
         #  "end_time"
     )
-    general.num_steps = max(18_000, save_freq)
+    general.num_steps = max(10_000_000, save_freq)
     general.end_time = 25.0
     # Original value:
     # general.target_cfl = 0.8
@@ -91,12 +104,11 @@ def launch(name_run, weak_scaling, rules):
     general.write_interval = save_freq * 5
     general.filtering = "hpfrt"
     #  general.filtering = None
-    #  general.filter_weight = 12.0
-    #  general.user_param03 = 1
-    # Coriolis frequency
+    general.filter_weight = filter_weight
     general.user_params = {
-        3: 1,     # dp/dx pressure gradient
-        4: 1e-4,  # Coriolis frequency
+        3: 1,        # dp/dx pressure gradient7.2921150
+
+        4: 1.39e-4,  # Coriolis frequency at 73 N
         5: oper.Lx,
         6: oper.Ly,
         7: oper.Lz

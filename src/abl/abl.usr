@@ -18,10 +18,10 @@ c drive flow with pressure gradient
 #define DPDX uparam(3)
 c define constant parameters
 #define KAPPA 0.41
-#define y0 0.0001
+#define y0 0.1
 #define NPOW 0.5
 #define C0 0.19
-#define U_GEO 1.0
+#define U_GEO 5.0
 
 c> Set variable properties, does not call any subroutines / functions.
 c> @param ix x-index
@@ -140,7 +140,7 @@ c> @callgraph
 c      implicit none
 
       integer ix,iy,iz,eg
-      real big,rand1,rand2,rand3
+      real big,rand1,rand2,rand3,Ly
 
       include 'SIZE'
       include 'TOTAL'
@@ -152,7 +152,10 @@ c      uz   = 0.0
       temp = 0.0
 
       ie=gllel(eg)
-      ux   = (0.0445/KAPPA)*log((ym1(ix,iy,iz,ie)+y0)/y0)
+      ! NOTE: smoother function for ux and wavenumbers alpha and beta changed after
+      ! version 0.2.1
+      Ly = uparam(6)
+      ux   = U_GEO * ((ym1(ix,iy,iz,ie) / Ly)**(1. / 7.))
 
 c     perturbation tries!! (not working)
 c> Use standard subroutine RANDOM_NUMBER.
@@ -165,16 +168,16 @@ c      rand1 = sin(big)
 c      rand2 = sin(rand1*big)
 c      rand3 = sin(rand2*big)
 
-      ux = ux+0.01*rand1
-      uy = 1e-2*rand2
-      uz = 1e-2*rand3
+      ux = ux+0.001*rand1
+      uy = 1e-3*rand2
+      uz = 1e-3*rand3
 
       eps = 1e-3
-      kx  = 101
-      kz  = 31
+      kx  = 11
+      kz  = 11
 
-      alpha = kx * 2*PI
-      beta  = kz * 2*PI
+      alpha = kx * 2*PI*40
+      beta  = kz * 2*PI*40
 
       ux  = ux  + eps*beta  * sin(alpha*x)*cos(beta*z)
       uy  = uy  +   eps       * sin(alpha*x)*sin(beta*z)
