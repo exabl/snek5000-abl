@@ -95,6 +95,7 @@ def launch(name_run, weak_scaling, rules):
     #  general.user_param03 = 1
     # Coriolis frequency
     general.user_params = {
+        3: 1,     # dp/dx pressure gradient
         4: 1e-4,  # Coriolis frequency
         5: oper.Lx,
         6: oper.Ly,
