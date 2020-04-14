@@ -27,6 +27,7 @@ for mesh, walltime, filter_wt in itertools.product(
             # walltime="06:00:00",
             signal_num=False,
             walltime=walltime,
+            requeue=True,
             ask=True,
             bash=False,
             email="avmo@misu.su.se",

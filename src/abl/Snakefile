@@ -71,6 +71,7 @@ rule compile:
     input:
         'makefile_usr.inc',
         'makefile'
+        #  SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
     output:
         expand('{case}.f', case=CASES),
         exe='nek5000'
@@ -233,9 +234,7 @@ rule generate_makefile:
         expand('{case}.usr', case=CASES),
         makefile_usr = "makefile_usr.inc"
     output:
-        'makefile',
-        temp(SOURCE_ROOT + "/3rd_party/gslib/gslib-1.0.1/src/libgs.a"),
-        libgs = SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
+        'makefile'
     params:
         case = expand('{case}', case=CASES),
         inc = " ".join((f"-I{inc_dir}" for inc_dir in makefile_usr_sources)),
@@ -243,9 +242,6 @@ rule generate_makefile:
     shell:
         """
         function at_exit {{
-            export NOCOMPILE=0
-            rmdir $(dirname {output.libgs})
-            make_3rd_party
             echo "include {input.makefile_usr}" >> makefile
         }}
         trap at_exit EXIT
@@ -255,6 +251,24 @@ rule generate_makefile:
             CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]} {params.inc}" \
             USR="{params.usr}"
         source $(which makenek) {params.case} -nocompile
+        """
+
+# FIXME!
+rule generate_libgs:
+    input:
+        'makefile'
+    output:
+        temp(SOURCE_ROOT + "/3rd_party/gslib/gslib-1.0.1/src/libgs.a"),
+        libgs = SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
+    params:
+        case = expand('{case}', case=CASES),
+    shell:
+        """
+        set +u
+        source $(which makenek) {params.case} -nocompile
+        export NOCOMPILE=0
+        rmdir $(dirname {output.libgs})
+        make_3rd_party
         """
 
 # generate sessionfile
