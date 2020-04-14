@@ -5,9 +5,9 @@ from eturb.clusters import Cluster
 
 
 cluster = Cluster()
-name_run = "rot"
+name_run = "neutral"
 snakemake_rules = "srun"
-dry_run = True
+dry_run = False
 
 for mesh, walltime, filter_wt in itertools.product(
     [1, 2], ["15:00:00", "15:00:00"], [12, 120],
@@ -20,7 +20,7 @@ for mesh, walltime, filter_wt in itertools.product(
         print(cmd)
     else:
         cluster.submit_command(
-            nb_nodes=nb_nodes,
+            nb_nodes=1,
             command=cmd,
             name_run=name_run,
             # walltime='7-00:00:00',

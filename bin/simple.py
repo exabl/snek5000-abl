@@ -139,7 +139,7 @@ def launch(name_run, weak_scaling, filter_weight, rules):
     # Fluidsim parameters
     # ===================
     params.short_name_type_run = name_run
-    params.output.sub_directory = "divergence_check"
+    params.output.sub_directory = "maronga"
 
     print(params)
     sim = Simul(params)
