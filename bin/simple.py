@@ -24,11 +24,18 @@ from eturb.solvers.abl import Simul
     help="weak scaling factor to scale up the problem",
 )
 @click.option(
-    "-f",
+    "-fw",
     "--filter-weight",
     default=12,
     type=int,
-    help="weak scaling factor to scale up the problem",
+    help="filter weight parameter",
+)
+@click.option(
+    "-fc",
+    "--filter-cutoff",
+    default=0.5,
+    type=float,
+    help="filter cutoff ratio",
 )
 @click.argument("rules", nargs=-1, type=click.UNPROCESSED)
 def launch(name_run, weak_scaling, filter_weight, rules):
@@ -109,6 +116,7 @@ def launch(name_run, weak_scaling, filter_weight, rules):
     general.filtering = "hpfrt"
     #  general.filtering = None
     general.filter_weight = filter_weight
+    general.filter_cutoff_ratio = filter_cutoff
     general.user_params = {
         3: 1,        # dp/dx pressure gradient7.2921150
 
