@@ -55,6 +55,10 @@ def launch(name_run, weak_scaling, filter_weight, rules):
         oper.nx = 12
         oper.ny = 24
         oper.nz = 12
+    elif N == 3:
+        oper.nx = 24
+        oper.ny = 48
+        oper.nz = 24
 
     oper.Lx = 1280
     oper.Ly = 1500

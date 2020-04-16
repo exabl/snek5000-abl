@@ -10,7 +10,7 @@ snakemake_rules = "srun"
 dry_run = False
 
 for mesh, walltime, filter_wt in itertools.product(
-    [1, 2], ["15:00:00", "15:00:00"], [12, 120],
+    [3], ["23:00:00"], [12, 48],
 ):
     cmd = (
         f"\n{sys.executable} ./simple.py -n {name_run} -w {mesh} -f {filter_wt} "
@@ -20,7 +20,7 @@ for mesh, walltime, filter_wt in itertools.product(
         print(cmd)
     else:
         cluster.submit_command(
-            nb_nodes=1,
+            nb_nodes=2,
             command=cmd,
             name_run=name_run,
             # walltime='7-00:00:00',
