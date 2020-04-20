@@ -11,18 +11,13 @@ from abl import (
     makefile_usr_obj,
     Output
 )
-from eturb.util import modification_date, now, activate_paths
+from eturb.util import now
+from eturb.make import tar_name, tar_cmd, archive, clean_simul
 
 
 CONFIG = get_configfile()
 ROOT = get_root()
 SOURCE_ROOT = os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000"))
-# COMPRESS_FORMAT = "gz"; TAR = "tar -I pigz"
-# COMPRESS_FORMAT = "xz"; TAR = "tar"
-# COMPRESS_FORMAT = "lz4"; TAR = "tar -I lz4"
-COMPRESS_FORMAT = "zst"; TAR = "tar -I zstdmt"
-TAR += " --remove-files -cvf"
-# TAR = "time "+ TAR + " -cf"
 
 # TODO: define configuration files for SNIC clusters
 configfile: CONFIG
@@ -33,21 +28,6 @@ if os.getenv("ETURB_DEBUG"):
 
 # Wildcard
 CASES = glob_wildcards('{case}.usr').case
-
-
-def tar_name():
-    modified_dates = [modification_date(f) for f in iglob("*.f?????")]
-    cwd = Path.cwd().name
-    if modified_dates:
-        if cwd == ROOT.name:
-            timestamp = max(modified_dates)
-            basename = 'test-' + timestamp
-        else:
-            basename = cwd
-
-        return f'data/{basename}.tar.{COMPRESS_FORMAT}'
-    else:
-        return ""
 
 
 subworkflow Nek5000:
@@ -126,26 +106,10 @@ rule clean:
 # clean simulation files
 rule cleansimul:
     params:
-        field_files = expand('*{case}?.f?????', case=CASES),
         case = expand('{case}', case=CASES),
         tarball = tar_name()
-    shell:
-        """
-        if [ "{params.tarball}" ] && [  ! -f "{params.tarball}" ]; then
-            echo "ERROR: Archive {params.tarball} not found. Refusing to clean simulation files! Run 'snakemake archive'"
-            exit 1
-        fi
-        set +e
-        _remove() {{
-            echo -e "Removing $@ ..."
-            rm -Ifv $@
-        }}
-        _remove {params.case}.{{re2,ma2,log,f,nek5000}}
-        _remove makefile box.tmp compiler.out SESSION.NAME GIT_REVISION.txt nek5000
-        _remove -r obj
-        _remove {params.field_files}
-        exit 0
-        """
+    run:
+        make.clean_simul(params.case, params.tarball)
 
 # clean everything
 rule cleanall:
@@ -158,27 +122,29 @@ rule cleanall:
 # TODO: archive params.xml
 rule archive:
     input:
-        sorted(
+        solution = sorted(
             itertools.chain.from_iterable(
-                (iglob(f'{prefix}{case}0.f*') for prefix in ("", "vgr", "rs6", "c2D", "sts") for case in CASES),
+                (
+                    iglob(f'{prefix}{case}0.f*')
+                    for prefix in ("", "vgr", "rs6", "c2D", "sts")
+                    for case in CASES
+                )
             )
         ),
-        expand('{case}.re2', case=CASES),
-        expand('{case}.ma2', case=CASES),
-        'SESSION.NAME',
-        # 'GIT_REVISION.txt',
-        case_par=expand('{case}.par', case=CASES),
-        case_usr=expand('{case}.usr', case=CASES),
-        case_size='SIZE'
-    params:
-        tar_cmd=TAR
+        rest = [
+            expand('{case}.re2', case=CASES),
+            expand('{case}.ma2', case=CASES),
+            expand('{case}.par', case=CASES),
+            expand('{case}.usr', case=CASES),
+            'SESSION.NAME',
+            'params.xml'
+            'SIZE'
+        ]
     output:
         tarball=protected(tar_name())
-    shell:
-        """
-        mkdir -p data
-        {params.tar_cmd} {output.tarball} {input}
-        """
+    run:
+        archive(tarball, input.solution, remove=True)
+        archive(tarball, input.rest)
 
 
 # internal rules
@@ -283,8 +249,3 @@ rule generate_session:
         echo {params.case} > SESSION.NAME
         echo `pwd`'/' >>  SESSION.NAME
         """
-
-# record git revision
-rule git_rev:
-    output: 'GIT_REVISION.txt'
-    shell: 'git rev-parse --short HEAD > GIT_REVISION.txt'

@@ -10,7 +10,7 @@ snakemake_rules = "srun"
 dry_run = False
 
 for mesh_nb_nodes, walltime, filter_weight, filter_cutoff in itertools.product(
-    zip([1,2,3], [1,1,2]), ["23:00:00"], [4], [0.6]
+    zip([1, 2, 3], [1, 1, 2]), ["23:00:00"], [4], [0.6]
 ):
     mesh, nb_nodes = mesh_nb_nodes
     cmd = (

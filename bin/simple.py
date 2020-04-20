@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
-from math import pi
 import sys
-print(sys.executable)
 
 import click
 from eturb.solvers.abl import Simul
@@ -38,7 +36,7 @@ from eturb.solvers.abl import Simul
     help="filter cutoff ratio",
 )
 @click.argument("rules", nargs=-1, type=click.UNPROCESSED)
-def launch(name_run, weak_scaling, filter_weight, rules):
+def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
     """\b
     Notes
     -----
@@ -160,4 +158,6 @@ def launch(name_run, weak_scaling, filter_weight, rules):
 
 
 if __name__ == "__main__":
+    print(sys.executable)
+
     launch()
