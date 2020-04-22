@@ -15,6 +15,8 @@ from eturb.util import now
 from eturb.make import tar_name, tar_cmd, archive, clean_simul
 
 
+# Case name
+CASE = "abl"
 CONFIG = get_configfile()
 ROOT = get_root()
 SOURCE_ROOT = os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000"))
@@ -25,9 +27,6 @@ configfile: CONFIG
 if os.getenv("ETURB_DEBUG"):
     config["CFLAGS"] += " -O0 -g"
     config["FFLAGS"] += " -O0 -g -ffpe-trap=invalid,zero,overflow,underflow"
-
-# Wildcard
-CASES = glob_wildcards('{case}.usr').case
 
 
 subworkflow Nek5000:
@@ -42,9 +41,7 @@ rule all:
 
 # shorthand for mesh
 rule mesh:
-    input:
-        expand('{case}.re2', case=CASES),
-        expand('{case}.ma2', case=CASES)
+    input: f"{CASE}.re2", f"{CASE}.ma2"
 
 # compile
 rule compile:
@@ -53,7 +50,7 @@ rule compile:
         'makefile'
         #  SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
     output:
-        expand('{case}.f', case=CASES),
+        f'{CASE}.f',
         exe='nek5000'
     shell:
         'make {output.exe}'
@@ -61,16 +58,16 @@ rule compile:
 # run
 rule run:
     input:
-        expand('{case}.re2', case=CASES),
-        expand('{case}.ma2', case=CASES),
-        expand('{case}.par', case=CASES),
+        f'{CASE}.re2',
+        f'{CASE}.ma2',
+        f'{CASE}.par',
         'SESSION.NAME',
         'nek5000'
     log:
         "logs/run_" + now() + ".log"
     params:
         nproc = str(os.cpu_count()),
-        case = expand("{case}", case=CASES)
+        case = f"{CASE}"
     shell:
         """
         {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
@@ -81,9 +78,9 @@ rule run:
 # on cluster
 rule srun:
     input:
-        expand('{case}.re2', case=CASES),
-        expand('{case}.ma2', case=CASES),
-        expand('{case}.par', case=CASES),
+        f'{CASE}.re2',
+        f'{CASE}.ma2',
+        f'{CASE}.par',
         'SESSION.NAME',
         'nek5000'
     params:
@@ -94,7 +91,7 @@ rule srun:
 # clean compiler output
 rule clean:
     params:
-        case = expand('{case}', case=CASES),
+        case = f'{CASE}',
     shell:
         """
         echo "cleaning Nek5000 ..."
@@ -106,8 +103,8 @@ rule clean:
 # clean simulation files
 rule cleansimul:
     params:
-        case = expand('{case}', case=CASES),
-        tarball = tar_name()
+        case = f'{CASE}',
+        tarball = tar_name(compress_format=".zst")
     run:
         make.clean_simul(params.case, params.tarball)
 
@@ -119,32 +116,33 @@ rule cleanall:
         """
 
 # create an archive with all of our results
-# TODO: archive params.xml
 rule archive:
-    input:
+    params:
         solution = sorted(
             itertools.chain.from_iterable(
                 (
-                    iglob(f'{prefix}{case}0.f*')
-                    for prefix in ("", "vgr", "rs6", "c2D", "sts")
-                    for case in CASES
+                    iglob(f'{prefix}{CASE}0.f*')
+                    for prefix in ("", "vgr", "c2D", "sts")
                 )
             )
         ),
         rest = [
-            expand('{case}.re2', case=CASES),
-            expand('{case}.ma2', case=CASES),
-            expand('{case}.par', case=CASES),
-            expand('{case}.usr', case=CASES),
             'SESSION.NAME',
-            'params.xml'
-            'SIZE'
-        ]
-    output:
-        tarball=protected(tar_name())
+            'params.xml',
+            'SIZE',
+            *iglob(f'rs6{CASE}0.f*'),
+            f'{CASE}.re2',
+            f'{CASE}.ma2',
+            f'{CASE}.par',
+            f'{CASE}.usr',
+        ],
+        tarball = tar_name()
+    # FIXME
+    # output: protected(tar_name())
     run:
-        archive(tarball, input.solution, remove=True)
-        archive(tarball, input.rest)
+        archive(params.tarball, params.solution, remove=True)
+        archive(params.tarball, params.rest)
+        archive(params.tarball + ".zst", readonly=True)
 
 
 # internal rules
@@ -153,7 +151,7 @@ rule archive:
 rule generate_box:
     input:
         Nek5000('bin/genbox'),
-        box=expand('{case}.box', case=CASES)
+        box=f'{CASE}.box'
     output:
         'box.re2'
     shell:
@@ -163,7 +161,7 @@ rule generate_box:
 # rename mesh file re2
 rule move_box:
     input: 'box.re2'
-    output: expand('{case}.re2', case=CASES)
+    output: f'{CASE}.re2'
     shell:
         'mv -f {input} {output}'
 
@@ -171,11 +169,11 @@ rule move_box:
 rule generate_map:
     input:
         Nek5000('bin/genmap'),
-        expand('{case}.re2', case=CASES)
+        f'{CASE}.re2'
     output:
-        expand('{case}.ma2', case=CASES)
+        f'{CASE}.ma2'
     params:
-        prefix = expand('{case}', case=CASES),
+        prefix = f'{CASE}',
         tolerance = 0.01
     shell:
         'echo "{params.prefix}\n{params.tolerance}" | '
@@ -195,14 +193,14 @@ rule generate_makefile_usr:
 # generate makefile
 rule generate_makefile:
     input:
-        expand('{case}.re2', case=CASES),
-        expand('{case}.ma2', case=CASES),
-        expand('{case}.usr', case=CASES),
+        f'{CASE}.re2',
+        f'{CASE}.ma2',
+        f'{CASE}.usr',
         makefile_usr = "makefile_usr.inc"
     output:
         'makefile'
     params:
-        case = expand('{case}', case=CASES),
+        case = f'{CASE}',
         inc = " ".join((f"-I{inc_dir}" for inc_dir in makefile_usr_sources)),
         usr = " ".join(makefile_usr_obj)
     shell:
@@ -227,7 +225,7 @@ rule generate_libgs:
         temp(SOURCE_ROOT + "/3rd_party/gslib/gslib-1.0.1/src/libgs.a"),
         libgs = SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
     params:
-        case = expand('{case}', case=CASES),
+        case = f'{CASE}',
     shell:
         """
         set +u
@@ -242,7 +240,7 @@ rule generate_session:
     output:
         "SESSION.NAME"
     params:
-        case = expand("{case}", case=CASES)
+        case = f"{CASE}"
     shell:
         """
         touch SESSION.NAME

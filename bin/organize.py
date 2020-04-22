@@ -38,7 +38,7 @@ def prompt_once(run):
             "force update Snakefile*",
             "unlock*",
             "archive+",
-            "remove☠️",
+            "remove",
             "continue",
             "quit",
         ],
@@ -58,14 +58,14 @@ def prompt_once(run):
         recurse = True
     elif action == "unlock*":
         with change_dir(run):
-            os.system("snakemake --unlock")
+            snakemake("Snakefile", unlock=True)
         recurse = True
     elif action == "archive+":
         with change_dir(run):
             if not snakemake("Snakefile", targets=["archive"], dryrun=False):
                 cli = YesNo("Snakemake failure to archive. Try again?")
                 recurse = cli.launch()
-    elif action == "remove☠️":
+    elif action == "remove":
         cli = YesNo("Are you 100% sure?")
         if cli.launch():
             shutil.rmtree(run)
