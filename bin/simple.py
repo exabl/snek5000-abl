@@ -143,7 +143,7 @@ def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
     # ===========
     # TODO!
     params.nek.chkpoint.chkp_interval = save_freq
-    params.nek.stat.av_step = 1
+    params.nek.stat.av_step = save_freq
     params.nek.stat.io_step = save_freq
 
     # Fluidsim parameters
