@@ -4,53 +4,60 @@ import shutil
 from pathlib import Path
 
 import click
-from bullet import Bullet, YesNo, colors
+from bullet import Bullet, YesNo, colors, styles
 from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
+from fluiddyn.util.terminal_colors import cstring
 from snakemake import snakemake
 from snakemake.executors import change_working_directory as change_dir
 
 import abl
 from eturb.util import get_status
+from eturb import logger
 
-STYLE = dict(
-    indent=0,
-    align=5,
-    margin=2,
-    bullet="★",
-    bullet_color=colors.bright(colors.foreground["cyan"]),
-    word_color=colors.bright(colors.foreground["yellow"]),
-    word_on_switch=colors.bright(colors.foreground["yellow"]),
-    background_color=colors.background["black"],
-    background_on_switch=colors.background["black"],
-    pad_right=5,
+
+STYLE = styles.Greece
+STYLE.update(
+    dict(
+        indent=2,
+        shift=1,
+        align=0,
+        margin=1,
+        background_on_switch=colors.background["black"],
+        background_color=colors.background["black"],
+    )
 )
 
 
 def prompt_once(run):
-    print("Directory:", run.name)
+    logger.info(f"Directory: {run.name}")
     status, msg = get_status(run)
-    print(f"{status}: {msg}")
+    if status >= 400:
+        logger.warning(f"{status}: {msg}")
+    else:
+        logger.info(f"{status}: {msg}")
 
     cli = Bullet(
         prompt="\nWhat do you want to do?",
         choices=[
             "list contents*",
+            "continue",
             "force update Snakefile*",
             "unlock*",
             "archive+",
             "remove",
-            "continue",
             "quit",
         ],
         **STYLE,
     )
     action = cli.launch()
+    print()
 
     recurse = False
     if action in ("quit", "continue"):
         return action
     elif action == "list contents*":
         os.system(f"ls -F --color {run}")
+        os.system(f"ls -F --color {run}/data")
         recurse = True
     elif action == "force update Snakefile*":
         (run / "Snakefile").unlink()
@@ -62,7 +69,9 @@ def prompt_once(run):
         recurse = True
     elif action == "archive+":
         with change_dir(run):
-            if not snakemake("Snakefile", targets=["archive"], dryrun=False):
+            if not snakemake(
+                "Snakefile", targets=["archive"], debug=True, dryrun=False
+            ):
                 cli = YesNo("Snakemake failure to archive. Try again?")
                 recurse = cli.launch()
     elif action == "remove":
@@ -81,11 +90,13 @@ def prompt_once(run):
 def prompt_all(runs):
     print(f"Organize runs in {runs[0].parent}")
     cli = Bullet(
-        prompt="\nWhich run to inspect?",
+        prompt=cstring("\nWhich run to inspect?", bold=True, color="LIGHTBLUE"),
         choices=["all", "quit", *(run.name for run in runs if run.exists())],
         **STYLE,
     )
     action = cli.launch()
+    print()
+
     if action == "all":
         for run in runs:
             if prompt_once(run) == "quit":
@@ -109,7 +120,7 @@ def prompt_all(runs):
 def organize(name_run):
     subdir = Path(FLUIDDYN_PATH_SCRATCH) / name_run
 
-    runs = [d for d in subdir.iterdir() if d.is_dir()]
+    runs = sorted(d for d in subdir.iterdir() if d.is_dir())
     prompt_all(runs)
 
 

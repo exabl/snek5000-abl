@@ -7,7 +7,7 @@ from eturb.clusters import Cluster
 cluster = Cluster()
 name_run = "neutral"
 snakemake_rules = "srun"
-dry_run = False
+dry_run = True
 
 for mesh_nb_nodes, walltime, filter_weight, filter_cutoff in itertools.product(
     zip([1, 2, 3], [1, 1, 2]), ["23:00:00"], [4], [0.6]

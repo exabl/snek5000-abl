@@ -12,7 +12,7 @@ from abl import (
     Output
 )
 from eturb.util import now
-from eturb.make import tar_name, tar_cmd, archive, clean_simul
+from eturb.util.archive import tar_name, archive, clean_simul
 
 
 # Case name
@@ -106,7 +106,7 @@ rule cleansimul:
         case = f'{CASE}',
         tarball = tar_name(compress_format=".zst")
     run:
-        make.clean_simul(params.case, params.tarball)
+        clean_simul(params.case, params.tarball)
 
 # clean everything
 rule cleanall:
