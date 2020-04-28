@@ -70,9 +70,9 @@ rule run:
         case = f"{CASE}"
     shell:
         """
-        {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
         ln -sf {log} {params.case}.log
         echo "Log file: $PWD"/{params.case}.log
+        {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
         """
 
 # on cluster
@@ -83,10 +83,17 @@ rule srun:
         f'{CASE}.par',
         'SESSION.NAME',
         'nek5000'
+    log:
+        "logs/run_" + now() + ".log"
     params:
         nproc = str(os.cpu_count()),
+        case = f"{CASE}"
     shell:
-        '{config[MPIEXEC]} -n {params.nproc} ./nek5000'
+        """
+        ln -sf {log} {params.case}.log
+        echo "Log file: $PWD"/{params.case}.log
+        {config[MPIEXEC]} -n {params.nproc} ./nek5000 | tee {log}
+        """
 
 # clean compiler output
 rule clean:
