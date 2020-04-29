@@ -17,6 +17,7 @@ for mesh_nb_nodes, walltime, filter_weight, filter_cutoff in itertools.product(
         f"\n{sys.executable} ./simple.py "
         f"-n {name_run} -w {mesh} -fw {filter_weight} -fc {filter_cutoff} "
         f"{snakemake_rules}"
+        f" > ../docs/journal/maronga/run_w{mesh}_fw{float(filter_weight)}_fc{filter_cutoff}.log"
     )
     if dry_run:
         print(cmd)
