@@ -102,7 +102,7 @@ def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
     )
     
     # FIXME: temporarily short simulations for testing filters
-    general.num_steps = 750 # max(10_000_000, save_freq)
+    general.num_steps = max(10_000_000, save_freq)
     general.end_time = 25.0
     # Original value:
     # general.target_cfl = 0.8
@@ -161,5 +161,4 @@ def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
 
 if __name__ == "__main__":
     print(sys.executable)
-
     launch()
