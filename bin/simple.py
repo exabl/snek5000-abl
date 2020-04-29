@@ -72,7 +72,7 @@ def launch(
 
     # Nek5000: SIZE
     # ===============
-    oper.elem.order = oper.elem.order_out = 8
+    oper.elem.order = oper.elem.order_out = 12
     oper.elem.coef_dealiasing = 2 / 3
     # TODO: try Pn-Pn grid
     oper.elem.staggered = True
