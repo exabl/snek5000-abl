@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 import itertools
 
@@ -5,29 +6,30 @@ from eturb.clusters import Cluster
 
 
 cluster = Cluster()
+sub_dir = "maronga"
 name_run = "neutral"
 snakemake_rules = "srun"
 dry_run = False
 
-for mesh_nb_nodes, walltime, filter_weight, filter_cutoff in itertools.product(
-    zip([1, 2, 3], [1, 1, 2]), [f"{days}-00:00:00" for days in (2, 4, 7)], [0.25, 0.1, 0.03], [0.75]
+for mesh_nb_nodes_walltime, filter_weight, filter_cutoff in itertools.product(
+    zip([1, 2, 3], [1, 1, 2], [f"{days}-00:00:00" for days in (2, 4, 7)]),
+    [0.25, 0.1, 0.03],
+    [0.75]
 ):
-    mesh, nb_nodes = mesh_nb_nodes
+    mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
     cmd = (
         f"\n{sys.executable} ./simple.py "
-        f"-n {name_run} -w {mesh} -fw {filter_weight} -fc {filter_cutoff} "
+        f"-d {sub_dir} -m {mesh} -n {name_run} -o {nb_nodes} -w {walltime} "
+        f"-fw {filter_weight} -fc {filter_cutoff} "
         f"{snakemake_rules}"
     )
     if dry_run:
         print(cmd)
-        print(f"nb_nodes = {nb_nodes}")
     else:
         cluster.submit_command(
             nb_nodes=nb_nodes,
             command=cmd,
             name_run=name_run,
-            # walltime='7-00:00:00',
-            # walltime="06:00:00",
             signal_num=False,
             walltime=walltime,
             requeue=True,

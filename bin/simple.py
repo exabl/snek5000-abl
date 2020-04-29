@@ -7,20 +7,17 @@ from eturb.solvers.abl import Simul
 
 
 @click.command()
+@click.option("-d", "--sub-dir", default="test")
 @click.option(
-    "-n",
-    "--name-run",
-    default="demo",
-    type=str,
-    help="short description of the run",
+    "-m", "--mesh", default=1, type=int, help="mesh configuration",
 )
 @click.option(
-    "-w",
-    "--weak-scaling",
-    default=1,
-    type=int,
-    help="weak scaling factor to scale up the problem",
+    "-n", "--name-run", default="demo", help="short description of the run",
 )
+@click.option(
+    "-o", "--nodes", default=1, type=int, help="number of nodes",
+)
+@click.option("-w", "--walltime", default="30:00")
 @click.option(
     "-fw",
     "--filter-weight",
@@ -29,14 +26,12 @@ from eturb.solvers.abl import Simul
     help="filter weight parameter",
 )
 @click.option(
-    "-fc",
-    "--filter-cutoff",
-    default=0.5,
-    type=float,
-    help="filter cutoff ratio",
+    "-fc", "--filter-cutoff", default=0.5, type=float, help="filter cutoff ratio",
 )
 @click.argument("rules", nargs=-1, type=click.UNPROCESSED)
-def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
+def launch(
+    sub_dir, mesh, name_run, nodes, walltime, filter_weight, filter_cutoff, rules
+):
     """\b
     Notes
     -----
@@ -45,22 +40,25 @@ def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
     - no rotation
 
     """
+    if "print" in rules:
+        print(locals())
+
     params = Simul.create_default_params()
 
     oper = params.oper
 
     # Nek5000: abl.box
     # ================
-    N = weak_scaling  # or number of nodes
-    if N == 1:
+    M = mesh
+    if M == 1:
         oper.nx = 6
         oper.ny = 20
         oper.nz = 6
-    elif N == 2:
+    elif M == 2:
         oper.nx = 12
         oper.ny = 24
         oper.nz = 12
-    elif N == 3:
+    elif M == 3:
         oper.nx = 24
         oper.ny = 48
         oper.nz = 24
@@ -80,7 +78,7 @@ def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
     oper.elem.staggered = True
     # TODO: Try to see if it works without strange values in SIZE file
     oper.nproc_min = 4
-    oper.nproc_max = 32 * N
+    oper.nproc_max = 32 * nodes
     # TODO: why not 0? since temperature is not active
     oper.scalars = 1
 
@@ -100,7 +98,7 @@ def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
         "num_steps"
         #  "end_time"
     )
-    
+
     # FIXME: temporarily short simulations for testing filters
     general.num_steps = max(10_000_000, save_freq)
     general.end_time = 25.0
@@ -118,12 +116,11 @@ def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
     general.filter_weight = filter_weight
     general.filter_cutoff_ratio = filter_cutoff
     general.user_params = {
-        3: 1,        # dp/dx pressure gradient7.2921150
-
+        3: 1,  # dp/dx pressure gradient
         4: 1.39e-4,  # Coriolis frequency at 73 N
         5: oper.Lx,
         6: oper.Ly,
-        7: oper.Lz
+        7: oper.Lz,
     }
 
     pressure = params.nek.pressure
@@ -147,13 +144,17 @@ def launch(name_run, weak_scaling, filter_weight, filter_cutoff, rules):
     params.nek.chkpoint.chkp_interval = save_freq
     params.nek.stat.av_step = save_freq
     params.nek.stat.io_step = save_freq
+    params.nek.monitor.wall_time = walltime
 
     # Fluidsim parameters
     # ===================
     params.short_name_type_run = name_run
-    params.output.sub_directory = "maronga"
+    params.output.sub_directory = sub_dir
 
-    print(params)
+    if "print" in rules:
+        print(params)
+        return
+
     sim = Simul(params)
     sim.sanity_check()
     sim.make.exec(rules)
