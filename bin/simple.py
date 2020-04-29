@@ -25,7 +25,7 @@ from eturb.solvers.abl import Simul
     "-fw",
     "--filter-weight",
     default=12,
-    type=int,
+    type=float,
     help="filter weight parameter",
 )
 @click.option(
