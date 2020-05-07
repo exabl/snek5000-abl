@@ -5,15 +5,14 @@ from pathlib import Path
 
 import click
 from bullet import Bullet, YesNo, colors, styles
-from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
-from fluiddyn.util.terminal_colors import cstring
 from snakemake import snakemake
 from snakemake.executors import change_working_directory as change_dir
 
 import abl
-from eturb.util import get_status
 from eturb import logger
-
+from eturb.util import get_status
+from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
+from fluiddyn.util.terminal_colors import cstring
 
 STYLE = styles.Greece
 STYLE.update(

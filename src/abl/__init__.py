@@ -15,14 +15,12 @@ import os
 import pkgutil
 import shutil
 import sys
-from socket import gethostname
 from pathlib import Path
+from socket import gethostname
 
-from fluidsim.base.output.base import OutputBase
-
-from eturb import logger, mpi
 from abl.templates import makefile_usr
-
+from eturb import logger, mpi
+from fluidsim.base.output.base import OutputBase
 
 # Sources for inclusion to makefile_usr.inc
 # Dict[directory]  -> list of source files

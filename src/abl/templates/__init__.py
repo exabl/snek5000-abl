@@ -10,7 +10,6 @@ Provides the following Template_ instances:
 """
 import jinja2
 
-
 env = jinja2.Environment(
     loader=jinja2.PackageLoader("abl", "templates"), undefined=jinja2.StrictUndefined,
 )

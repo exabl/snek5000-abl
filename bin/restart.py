@@ -1,10 +1,9 @@
 from pathlib import Path
-from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
 
 from eturb.clusters import Cluster
-from eturb.util import prepare_for_restart
 from eturb.log import logger
-
+from eturb.util import prepare_for_restart
+from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
 
 cluster = Cluster()
 name_run = "restart"

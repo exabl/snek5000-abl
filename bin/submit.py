@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-import sys
 import itertools
+import sys
 
 from eturb.clusters import Cluster
-
 
 cluster = Cluster()
 sub_dir = "maronga"
