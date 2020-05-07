@@ -14,7 +14,7 @@ dry_run = False
 for mesh_nb_nodes_walltime, filter_weight, filter_cutoff in itertools.product(
     zip([1, 2, 3], [1, 1, 2], [f"{days}-00:00:00" for days in (2, 4, 7)]),
     [0.1],
-    [0.75]
+    [0.75],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
     cmd = (

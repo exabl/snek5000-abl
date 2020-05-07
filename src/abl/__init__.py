@@ -221,12 +221,10 @@ class Output(OutputBase):
         try:
             logger.info("Copying with shutil.copytree ...")
             copytree_kwargs = dict(
-                src=root, dst=new_root, symlinks=True, ignore=conditional_ignore,
+                src=root, dst=new_root, symlinks=True, ignore=conditional_ignore
             )
             # Python 3.8+
-            shutil.copytree(
-                **copytree_kwargs, dirs_exist_ok=True,
-            )
+            shutil.copytree(**copytree_kwargs, dirs_exist_ok=True)
         except TypeError:
             try:
                 logger.warning(
@@ -275,5 +273,7 @@ class Output(OutputBase):
                     [f"{path_dir}/{file}" for file in sources]
                 )
 
-        output = makefile_usr.render(list_of_sources=list_of_relative_sources, comments=comments)
+        output = makefile_usr.render(
+            list_of_sources=list_of_relative_sources, comments=comments
+        )
         fp.write(output)

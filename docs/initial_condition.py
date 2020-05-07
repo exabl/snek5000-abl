@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-ym1 = np.linspace(0, 1500, 24*10)
+ym1 = np.linspace(0, 1500, 24 * 10)
 
 
 def random_number():

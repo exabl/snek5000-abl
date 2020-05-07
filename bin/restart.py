@@ -13,7 +13,11 @@ dryrun = False
 
 subdir = Path(FLUIDDYN_PATH_SCRATCH) / "simple"
 #  for path in subdir.iterdir():
-for path in [Path("/proj/kthmech/users/x_ashmo/tmp/simple/abl_rot_30x48x20_V1pix1.x1.571_2020-02-09_17-40-03")]:
+for path in [
+    Path(
+        "/proj/kthmech/users/x_ashmo/tmp/simple/abl_rot_30x48x20_V1pix1.x1.571_2020-02-09_17-40-03"
+    )
+]:
     try:
         params = prepare_for_restart(path)
     except IOError as e:

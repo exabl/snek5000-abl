@@ -26,4 +26,3 @@ def test_make_run(sim):
 
     # check if simulation can be restarted
     restart_params = prepare_for_restart(sim.path_run)
-

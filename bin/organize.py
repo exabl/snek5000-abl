@@ -114,9 +114,7 @@ def prompt_all(runs):
 
 
 @click.command()
-@click.argument(
-    "name_run", type=str,
-)
+@click.argument("name_run", type=str)
 def organize(name_run):
     subdir = Path(FLUIDDYN_PATH_SCRATCH) / name_run
 
