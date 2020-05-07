@@ -152,12 +152,8 @@ class Output(OutputBase):
         path_pkg = self.root
         name_pkg = self.name_pkg
         return {
-            subpkg.name.lstrip(f"{self.root.name}."): self._get_resources(
-                subpkg.name
-            )
-            for subpkg in pkgutil.walk_packages(
-                [str(path_pkg)], prefix=f"{name_pkg}."
-            )
+            subpkg.name.lstrip(f"{self.root.name}."): self._get_resources(subpkg.name)
+            for subpkg in pkgutil.walk_packages([str(path_pkg)], prefix=f"{name_pkg}.")
         }
 
     def get_paths(self):

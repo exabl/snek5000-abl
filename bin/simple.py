@@ -9,17 +9,11 @@ from eturb.solvers.abl import Simul
 @click.command()
 @click.option("-d", "--sub-dir", default="test")
 @click.option("-m", "--mesh", default=1, type=int, help="mesh configuration")
-@click.option(
-    "-n", "--name-run", default="demo", help="short description of the run"
-)
+@click.option("-n", "--name-run", default="demo", help="short description of the run")
 @click.option("-o", "--nodes", default=1, type=int, help="number of nodes")
 @click.option("-w", "--walltime", default="30:00")
 @click.option(
-    "-fw",
-    "--filter-weight",
-    default=12,
-    type=float,
-    help="filter weight parameter",
+    "-fw", "--filter-weight", default=12, type=float, help="filter weight parameter",
 )
 @click.option(
     "-fc", "--filter-cutoff", default=0.5, type=float, help="filter cutoff ratio"

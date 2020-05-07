@@ -25,4 +25,5 @@ def test_make_run(sim):
     assert dt.size == 9
 
     # check if simulation can be restarted
-    restart_params = prepare_for_restart(sim.path_run)
+    # TODO: try restart with modified params
+    _ = prepare_for_restart(sim.path_run)
