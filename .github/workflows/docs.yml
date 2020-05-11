@@ -21,17 +21,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
-    - name: Fetch all history for all tags and branches
-      run: git fetch --prune --unshallow
-
-    - name: Clone private submodules
-      run: |
-        git config --file .gitmodules --get-regexp url | while read url; do
-         git config --file .gitmodules $(echo "$url" | sed -E "s|git@github.com:\|https://github.com/|https://${{ secrets.GITHUB_ACTIONS_PAT }}:${{ secrets.GITHUB_ACTIONS_PAT }}@github.com/|")
-        done
-        git submodule sync
-        git submodule update --init --recursive
+      with:
+        token: ${{ secrets.SNEK_ABL_PAT }}
+        submodules: recursive
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
@@ -46,15 +38,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.*') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-
-    - name: Cache python
-      id: python-cache
-      uses: actions/cache@v1
-      with:
-        path: ${{ env.pythonLocation }}
-        key: ${{ runner.os }}-python-${{ hashFiles('**/requirements.*') }}
-        restore-keys: |
-          ${{ runner.os }}-python-
 
     - name: Install dependencies
       run: |
@@ -72,8 +55,8 @@ jobs:
 
     - name: Deploy to GitHub Pages
       if: success()
-      uses: peaceiris/actions-gh-pages@v2.8.0
-      env:
-        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: ./docs/_build/html
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        publish_branch: gh-pages
+        publish_dir: ./docs/_build/html

@@ -24,7 +24,7 @@ from subprocess import PIPE
 import breathe
 
 import abl
-import eturb
+from snek5000 import util
 
 
 def root(module):
@@ -37,22 +37,21 @@ sys.path.insert(0, root(breathe))
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, root(abl))
-sys.path.insert(0, root(eturb))
 
 print("sys.path =\n   ", "\n    ".join(sys.path))
 
 # -- Project information -----------------------------------------------------
 
-project = "eturb"
+project = "snek5000-abl"
 _today = date.today()
 copyright = (
     f"2019 - {_today.year}, Ashwin Vishnu Mohanan. Published: {_today.isoformat()}"
 )
 author = "Ashwin Vishnu Mohanan"
 
-version = ".".join(eturb.__version__.split(".")[:3])
+version = ".".join(abl.__version__.split(".")[:3])
 # The full version, including alpha/beta/rc tags
-release = eturb.__version__
+release = abl.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -75,8 +74,8 @@ os.makedirs("_build/html/doxygen", exist_ok=True)
 
 # Inspect whether to run doxygen or not
 last_modified = max(
-    eturb.util.last_modified("../lib").stat().st_mtime,
-    eturb.util.last_modified("../src/abl").stat().st_mtime,
+    util.last_modified("../lib").stat().st_mtime,
+    util.last_modified("../src/abl").stat().st_mtime,
 )
 timestamp = Path("_build/.doxygen_timestamp")
 if timestamp.exists() and Path("_build/xml").exists():
@@ -132,11 +131,11 @@ else:
     breathe_domain_by_file_pattern = {"SIZE": "f"}
 
     # Input sources
-    breathe_projects = {"eturb": "_build/xml/"}
+    breathe_projects = {"abl": "_build/xml/"}
     #  breathe_projects_source = {
     #      "abl": ("../src/abl", ["SIZE", "abl.usr"]),
     #  }
-    breathe_default_project = "eturb"
+    breathe_default_project = "abl"
 
 # ----------------------------------------------------------------------------
 

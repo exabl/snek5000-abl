@@ -38,7 +38,6 @@ Welcome to project *eTurb*'s documentation!
 .. autosummary::
    :toctree: _generated/
 
-   eturb
    abl
 
 .. toctree::
@@ -50,7 +49,6 @@ Welcome to project *eTurb*'s documentation!
    filtering
    CONTRIBUTING
    CHANGELOG
-   AUTHORS
    license
 
 Links
