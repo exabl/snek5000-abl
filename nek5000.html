@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Nek5000 core library &mdash; snek5000-abl 0.1.dev1+g1f314f2 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="abl" href="_generated/abl.html" />
+    <link rel="prev" title="ABL case files" href="abl.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> snek5000-abl
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.dev1+g1f314f2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">snek5000-abl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#authors">Authors</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="abl.html">ABL case files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Nek5000 core library</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_generated/abl.html">abl</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_cond.html">Boundary condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_cond.html#faq">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filtering.html">Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">snek5000-abl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Nek5000 core library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/nek5000.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nek5000-core-library">
+<h1>Nek5000 core library<a class="headerlink" href="#nek5000-core-library" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The following is auto-generated using Doxygen and represents a <a class="reference external" href="https://github.com/exabl/Nek5000">fork</a> of
+Nek5000 v17. Only subroutines relevant to eturb project are listed here.
+The <a class="reference external" href="https://nek5000.github.io/NekDoc/appendix.html">official documentation</a> is hand-written and is more general.</p>
+</div>
+<dl class="group">
+<dt>
+<span class="target" id="group__core"></span><em>group</em> <code class="sig-name descname">core</code></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Functions</p>
+<dl class="c function">
+<dt>
+<span class="target" id="group__core_1ga13048bf28dd0734640412d69349e3857"></span><code class="sig-name descname">program nekton</code></dt>
+<dd><p><em>Drives</em> the solver calling 3 subroutines: </p>
+<p><ul class="simple">
+<li><p><a class="reference internal" href="#group__core_1ga87bd37ae2c18426f28f35cc3f24e4355"><span class="std std-ref">nek_init()</span></a></p></li>
+<li><p><a class="reference internal" href="#group__core_1ga6ad57e0cf728f343e371ef8c9a02cd8a"><span class="std std-ref">nek_solve()</span></a></p></li>
+<li><p><a class="reference internal" href="#group__core_1ga10055f031c0ac540cc534ab2b0363206"><span class="std std-ref">nek_end()</span></a></p></li>
+<li><p>exitt0() </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.nek_init">
+<span class="target" id="group__core_1ga87bd37ae2c18426f28f35cc3f24e4355"></span>subroutine <code class="sig-name descname">nek_init</code><span class="sig-paren">(</span>intracomm<span class="sig-paren">)</span><a class="headerlink" href="#c.nek_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initializes the solver and variables. </p>
+<p>Calls the following subroutines in order:<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iniparser</span></code>: ?</p></li>
+<li><p>Session get_session_info(), dnekclock(), opcount() &lt;- 1</p></li>
+<li><p>Grid: initdim(), initdat(), files(), dnekclock(), readat()</p></li>
+<li><p>Sync: dnekclock_sync(): mpi_barrier() and mpi_wtime()</p></li>
+<li><p>Initialize variables: setvar()</p></li>
+<li><p>Mesh: setup_topo(), genwz(), usrdat()</p></li>
+<li><p>Geometry: gengeom()</p></li>
+<li><p>Setup Direct Stiffness Summation (DSS): setup_mesh_dssum(), usrdat2(), geom_reset()</p></li>
+<li><p>Verify: vrdsmsh()</p></li>
+<li><p>Optionals run if the flags are set<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dg</span></code>: dg_setup()</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifflow</span></code>: estrat(). <code class="docutils literal notranslate"><span class="pre">iftran</span></code> set_overlap()</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifcvode</span></code>: <code class="docutils literal notranslate"><span class="pre">False</span></code>?</p></li>
+</ul>
+</p></li>
+<li><p>usrdat3()</p></li>
+<li><p>Initial conditions: setics(), setprop()</p></li>
+<li><p>User check: <code class="docutils literal notranslate"><span class="pre">ifneknek</span></code>: <code class="docutils literal notranslate"><span class="pre">False</span></code>. userchk(): calculates eddy viscosity</p></li>
+<li><p>Misc functions: comment(), sstest(), dofcnt(), in_situ_init(), time00(), opcount() &lt;- 2 </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt>
+<span class="target" id="group__core_1ga6ad57e0cf728f343e371ef8c9a02cd8a"></span><code class="sig-name descname">subroutine nek_solve</code></dt>
+<dd><p>Runs post processing or time advancment based on value of <code class="docutils literal notranslate"><span class="pre">instep</span></code>. Parent subroutine to <a class="reference internal" href="#group__core_1ga18d3e839786263fc4cf91f7eeb714371"><span class="std std-ref">nek__multi_advance()</span></a> which calls <a class="reference internal" href="#group__core_1gae177ea7efac97f35241521b782a671c0"><span class="std std-ref">nek_advance()</span></a> once. Also handles: </p>
+<p><ul class="simple">
+<li><p>Set flag ::ifoutfld via set_outfld()</p></li>
+<li><p>Runs userchk() (for example, eddy viscosity)</p></li>
+<li><p>Calls prepost() </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt>
+<span class="target" id="group__core_1gae177ea7efac97f35241521b782a671c0"></span><code class="sig-name descname">subroutine nek_advance</code></dt>
+<dd><p>Time advancement. What it does differs based on solver flags and formulation. Summary of calls: </p>
+<p><ul class="simple">
+<li><p>userchk_set_xfer()</p></li>
+<li><p><a class="reference internal" href="#group__core_1gab0aeca9ad3db8be87a01ba29d069d71e"><span class="std std-ref">fluid()</span></a>, heat()</p></li>
+<li><p>q_filter() with <code class="docutils literal notranslate"><span class="pre">param(103)</span></code> </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt>
+<span class="target" id="group__core_1ga10055f031c0ac540cc534ab2b0363206"></span><code class="sig-name descname">subroutine nek_end</code></dt>
+<dd><p>Complete simulation. </p>
+<p><ul class="simple">
+<li><p>If zero steps, call runstat() which profiles different components</p></li>
+<li><p>Gather scatter library stats: fgslib_crs_stats(xxth(1))</p></li>
+<li><p>Finally, in_situ_end() shuts down VisIt with visit_end() </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.nek__multi_advance">
+<span class="target" id="group__core_1ga18d3e839786263fc4cf91f7eeb714371"></span>subroutine <code class="sig-name descname">nek__multi_advance</code><span class="sig-paren">(</span>kstep, msteps<span class="sig-paren">)</span><a class="headerlink" href="#c.nek__multi_advance" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Multi-level time advancement. Calls <a class="reference internal" href="#group__core_1gae177ea7efac97f35241521b782a671c0"><span class="std std-ref">nek_advance()</span></a> <code class="docutils literal notranslate"><span class="pre">msteps</span></code> times. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.fluid">
+<span class="target" id="group__core_1gab0aeca9ad3db8be87a01ba29d069d71e"></span>subroutine <code class="sig-name descname">fluid</code><span class="sig-paren">(</span>igeom<span class="sig-paren">)</span><a class="headerlink" href="#c.fluid" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Driver for solving the incompressible Navier-Stokes equations. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.incomprn">
+<span class="target" id="group__core_1gaeb2c6d4ae2c98143118acce2419c034d"></span>subroutine <code class="sig-name descname">incomprn</code><span class="sig-paren">(</span>ux, uy, uz, up<span class="sig-paren">)</span><a class="headerlink" href="#c.incomprn" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Project U onto the closest incompressible field. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt>
+<span class="target" id="group__core_1ga83189b3d1938d87f00ace2e7e05d9e4c"></span><code class="sig-name descname">subroutine makef</code></dt>
+<dd><p>Compute and add. </p>
+<p><ol class="loweralpha simple">
+<li><p>user specified forcing function (FX,FY,FZ)</p></li>
+<li><p>driving force due to natural convection</p></li>
+<li><p>convection term </p></li>
+</ol>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.plan3">
+<span class="target" id="group__core_1ga142f9186a662d3de60f09bb0ee26782d"></span>subroutine <code class="sig-name descname">plan3</code><span class="sig-paren">(</span>IGEOM<span class="sig-paren">)</span><a class="headerlink" href="#c.plan3" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute pressure and velocity using consistent approximation spaces. Operator splitting technique. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="_generated/abl.html" class="btn btn-neutral float-right" title="abl" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="abl.html" class="btn btn-neutral float-left" title="ABL case files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-05-11
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

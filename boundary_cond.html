@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Boundary condition &mdash; snek5000-abl 0.1.dev1+g1f314f2 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Filtering" href="filtering.html" />
+    <link rel="prev" title="Roadmap" href="roadmap.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> snek5000-abl
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.dev1+g1f314f2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">snek5000-abl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#authors">Authors</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="abl.html">ABL case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nek5000.html">Nek5000 core library</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_generated/abl.html">abl</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Boundary condition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#algorithm">Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boundary-conditions">Boundary conditions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bcdirvc"><code class="docutils literal notranslate"><span class="pre">bcdirvc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bcneutr-neumann-transient"><code class="docutils literal notranslate"><span class="pre">bcneutr</span></code>: Neumann transient?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-do">To Do</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#faq">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#time-stepping-algebra">Time-stepping algebra</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#comparison-with-adams-bashforth">Comparison with Adams-Bashforth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-not-runge-kutta">Why not: Runge-Kutta?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cfl-number">CFL number</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="filtering.html">Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">snek5000-abl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Boundary condition</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/boundary_cond.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="boundary-condition">
+<h1>Boundary condition<a class="headerlink" href="#boundary-condition" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="algorithm">
+<h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
+<p>The following describes the flow of logic in setting the boundary
+conditions.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">drive1.f</span></code>:</p>
+<ul class="simple">
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">nek_advance()</span></code>: single timestep if Pn/Pn-2</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">igeom=1</span></code>: RHS terms</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">igeom=2</span></code>: Actual</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">heat</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">fluid</span></code> -&gt; drive2.f</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="nek5000.html#c.fluid" title="fluid"><code class="xref c c-func docutils literal notranslate"><span class="pre">fluid()</span></code></a>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">iftran=1,ifrich=0</span></code> -&gt; <a class="reference internal" href="nek5000.html#c.plan3" title="plan3"><code class="xref c c-func docutils literal notranslate"><span class="pre">plan3()</span></code></a> in <code class="docutils literal notranslate"><span class="pre">planx.f</span></code></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="nek5000.html#c.plan3" title="plan3"><code class="xref c c-func docutils literal notranslate"><span class="pre">plan3()</span></code></a>: Helmholtz operator split into two steps <code class="docutils literal notranslate"><span class="pre">igeom=1,2</span></code></p>
+<ul>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">makef()</span></code> : extrapolate pressure, solve for intermadiate velocity</p></li>
+<li><p>solve for update of pressure, velocity divergence free. Only
+approximate operator is used here, because the exact one requires
+Helmholtz operator.</p></li>
+<li><p>Block LU decomposition -&gt; Consistent Helmholtz operator</p></li>
+<li><p>Boundary condition is not required for the second step.
+Preconditioner.</p></li>
+<li><p>See Blair Perot (1993)</p></li>
+</ul>
+</li>
+</ul>
+<p>Also if <code class="docutils literal notranslate"><span class="pre">igeom=2</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sethlm</span></code>: <code class="docutils literal notranslate"><span class="pre">h1=diffusion</span></code> <code class="docutils literal notranslate"><span class="pre">h2=helmholtz</span> <span class="pre">operator</span></code></p></li>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">cresvif()</span></code> compute residual:</p>
+<ul>
+<li><p>lagvel, save velocity field</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bcdirvc</span></code>: boundary dirichlet velocity, <code class="docutils literal notranslate"><span class="pre">bcneutr</span></code>: boundary
+neutral -&gt; <code class="docutils literal notranslate"><span class="pre">bdry.f</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opgradt</span></code>: extrapolate pressire in time</p></li>
+<li><p>add residual</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ophinv</span></code>, <code class="docutils literal notranslate"><span class="pre">opadd2</span></code>: inverse helmholtz</p></li>
+<li><p><a class="reference internal" href="nek5000.html#c.incomprn" title="incomprn"><code class="xref c c-func docutils literal notranslate"><span class="pre">incomprn()</span></code></a>:</p>
+<ul>
+<li><p>Project velocity</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opgradt</span></code>: pressure</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opbinv</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">navier1</span></code>:</p>
+<ul>
+<li><p>bdry?</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opmask</span></code>: set 0 to dirichlet BC, masked from the update</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="boundary-conditions">
+<h2>Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Permalink to this headline">¶</a></h2>
+<p>Periodicity: node numbering</p>
+<div class="section" id="bcdirvc">
+<h3><code class="docutils literal notranslate"><span class="pre">bcdirvc</span></code><a class="headerlink" href="#bcdirvc" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CB</span> <span class="pre">=</span> <span class="pre">V</span> <span class="pre">(Constant</span> <span class="pre">Dirichlet</span> <span class="pre">in</span> <span class="pre">rea</span> <span class="pre">file)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CB</span> <span class="pre">=</span> <span class="pre">v</span> <span class="pre">(user</span> <span class="pre">provided</span> <span class="pre">Dirichlet</span> <span class="pre">in</span> <span class="pre">userbc)</span></code>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">FACEIV</span></code>: works on temporary arrays <code class="docutils literal notranslate"><span class="pre">tmp1,</span> <span class="pre">tmpr3</span></code></p>
+<ul>
+<li><p>facind: face index</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">facev</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">userbc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opdsop</span></code>: max min, to get consistent bc shared nodes</p></li>
+<li><p>if not stress forulation <code class="docutils literal notranslate"><span class="pre">ifstrs</span></code>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">add2</span></code> -&gt; Velocity + Tmp</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="bcneutr-neumann-transient">
+<h3><code class="docutils literal notranslate"><span class="pre">bcneutr</span></code>: Neumann transient?<a class="headerlink" href="#bcneutr-neumann-transient" title="Permalink to this headline">¶</a></h3>
+<p>No mask</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chkcbc</span></code>: alignment check</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SYM</span></code> &lt;- called <code class="docutils literal notranslate"><span class="pre">bcmask</span></code> &lt;-&gt;= <code class="docutils literal notranslate"><span class="pre">nek_init</span></code> modifies the masking
+for one component</p></li>
+<li><p>Also by <code class="docutils literal notranslate"><span class="pre">sethmsk</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b1mask</span></code>, <code class="docutils literal notranslate"><span class="pre">b2mask</span></code>, <code class="docutils literal notranslate"><span class="pre">b3mask</span></code> arrays:</p></li>
+<li><p>FEM trick, if you don’t anything: <strong>Natural BC</strong>. Normal stresses are
+0, BC is the fluxes on the last element.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">subs2.f</span></code></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sh</span></code>: <code class="docutils literal notranslate"><span class="pre">faceiv</span></code> -&gt; sets traction array TRX, TRY, TRZ -&gt; as
+acceleration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">faccvs</span></code> -&gt; multiplies by the surface area -&gt; force</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">globrot</span></code>, does rotation with respect to global coordinates</p></li>
+<li><p>added to RHS: <code class="docutils literal notranslate"><span class="pre">bfx</span></code>, <code class="docutils literal notranslate"><span class="pre">bfy</span></code> -&gt; acceleration</p></li>
+</ul>
+<p>Velocity should be <code class="docutils literal notranslate"><span class="pre">v=0</span></code></p>
+<p>Caution: Pressure preconditioner BC are related</p>
+</div>
+<div class="section" id="to-do">
+<h3>To Do<a class="headerlink" href="#to-do" title="Permalink to this headline">¶</a></h3>
+<p>Set velocity v=0, normal component of velocity is zero, opposite of
+<code class="docutils literal notranslate"><span class="pre">on</span></code> boundary condition.</p>
+</div>
+</div>
+</div>
+<div class="section" id="faq">
+<h1>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="time-stepping-algebra">
+<h2>Time-stepping algebra<a class="headerlink" href="#time-stepping-algebra" title="Permalink to this headline">¶</a></h2>
+<p>Mass matrix requires time levels (n, n-1, n-2): extrapolated Conv /
+Stiffness requires time levels (n-1, n-2): explicit</p>
+<div class="section" id="comparison-with-adams-bashforth">
+<h3>Comparison with Adams-Bashforth<a class="headerlink" href="#comparison-with-adams-bashforth" title="Permalink to this headline">¶</a></h3>
+<p>AB2: needs previous RHS BDF: needs previous LHS</p>
+</div>
+<div class="section" id="why-not-runge-kutta">
+<h3>Why not: Runge-Kutta?<a class="headerlink" href="#why-not-runge-kutta" title="Permalink to this headline">¶</a></h3>
+<p>According to mathematicians, it is not clear because you have a pressure
+correction in each sub-step.</p>
+</div>
+<div class="section" id="cfl-number">
+<h3>CFL number<a class="headerlink" href="#cfl-number" title="Permalink to this headline">¶</a></h3>
+<p>BDF3/EXT3: CFL=0.6. Characteristic emthod</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="filtering.html" class="btn btn-neutral float-right" title="Filtering" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="roadmap.html" class="btn btn-neutral float-left" title="Roadmap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-05-11
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

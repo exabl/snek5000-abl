@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Changelog &mdash; snek5000-abl 0.1.dev1+g1f314f2 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="Developer guide" href="CONTRIBUTING.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> snek5000-abl
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.dev1+g1f314f2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">snek5000-abl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#authors">Authors</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="abl.html">ABL case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nek5000.html">Nek5000 core library</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_generated/abl.html">abl</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_cond.html">Boundary condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_cond.html#faq">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filtering.html">Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Developer guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#unreleased">[Unreleased]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">[0.2.2] - 2020-05-08</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#added">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changed">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fixed">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#removed">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">[0.2.1] - 2020-04-14</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">[0.2.0] - 2020-03-22</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">[0.1.1] - 2020-01-27</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">[0.1.0] - 2020-01-23</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">[0.0.1] - 2020-01-17</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id17">Added</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">snek5000-abl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Changelog</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/CHANGELOG.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a class="reference external" href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
+and this project adheres to <a class="reference external" href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<!--
+
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+Type of changes
+---------------
+
+Added for new features.
+Changed for changes in existing functionality.
+Deprecated for soon-to-be removed features.
+Removed for now removed features.
+Fixed for any bug fixes.
+Security in case of vulnerabilities.
+
+--><div class="section" id="unreleased">
+<h2>[Unreleased]<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Paraview I/O for loading and plotting functions</p></li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2>[0.2.2] - 2020-05-08<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="added">
+<h3>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Pre-commit: black, flake8, isort fixing and linting support</p></li>
+<li><p>Jupyterlab and ipykernel configuration snakemake rules</p></li>
+<li><p>Job management script - organize.py</p></li>
+<li><p>New module: const</p></li>
+</ul>
+</div>
+<div class="section" id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Parameters for Maronga case</p></li>
+<li><p>Compilation is now parallel</p></li>
+<li><p>Two-step archival, tar and compress</p></li>
+</ul>
+</div>
+<div class="section" id="fixed">
+<h3>Fixed<a class="headerlink" href="#fixed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Snakemake: gslib dependency before compiling</p></li>
+<li><p>Snakemake: Tee output to log file</p></li>
+</ul>
+</div>
+<div class="section" id="removed">
+<h3>Removed<a class="headerlink" href="#removed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Requirements files produced using pip-tools</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>[0.2.1] - 2020-04-14<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>Added<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Tar shell functions in activate script</p></li>
+<li><p>Module <code class="docutils literal notranslate"><span class="pre">eturb.clusters</span></code> for job submission</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>Changed<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Conda environment packages</p></li>
+<li><p>Reduced pressure residual tolerance for divergence check</p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>Fixed<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Bugfixes for simulation parameter loading, restart</p></li>
+<li><p>Snakefile dependencies for running a simulation</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>[0.2.0] - 2020-03-22<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h3>Added<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>KTH toolbox</p></li>
+<li><p>Coriolis force</p></li>
+<li><p>Job submission in cluster</p></li>
+<li><p>More user_params</p></li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h3>Changed<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Archives use zstd compression</p></li>
+<li><p>user_params is a dictionary</p></li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h3>Fixed<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Initial condition bug in setting velocities in <code class="docutils literal notranslate"><span class="pre">useric</span></code></p></li>
+<li><p>Cs - Cs**2 in <code class="docutils literal notranslate"><span class="pre">eddy_visc</span></code></p></li>
+<li><p>Assert exit code of snakemake results in tests</p></li>
+<li><p>Subroutine <code class="docutils literal notranslate"><span class="pre">set_forcing</span></code> uses ux..  instead of vx</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>[0.1.1] - 2020-01-27<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h3>Added<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Templates in <code class="docutils literal notranslate"><span class="pre">abl.templates</span></code> subpackage</p></li>
+<li><p>Expand parameters and write methods in class <code class="docutils literal notranslate"><span class="pre">Operators</span></code></p></li>
+<li><p>Improved tests and documentation</p></li>
+<li><p>Solver <code class="docutils literal notranslate"><span class="pre">abl</span></code> respects parameters and writes box and SIZE files.</p></li>
+</ul>
+</div>
+<div class="section" id="id12">
+<h3>Changed<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Snakecase for <code class="docutils literal notranslate"><span class="pre">nek</span></code> parameters</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id13">
+<h2>[0.1.0] - 2020-01-23<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id14">
+<h3>Added<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Uses <code class="docutils literal notranslate"><span class="pre">fluidsim</span></code> framework for creating a scripting layer</p></li>
+<li><p>Package <code class="docutils literal notranslate"><span class="pre">abl</span></code> with a single module and an <code class="docutils literal notranslate"><span class="pre">abl.Output</span></code> class</p></li>
+<li><p>New sub-packages and modules under <code class="docutils literal notranslate"><span class="pre">eturb</span></code>: <code class="docutils literal notranslate"><span class="pre">solvers,</span> <span class="pre">output,</span> <span class="pre">info,</span> <span class="pre">log,</span> <span class="pre">make,</span> <span class="pre">magic,</span> <span class="pre">operators</span></code></p></li>
+<li><p>Testing with <code class="docutils literal notranslate"><span class="pre">pytest</span></code>, and CI on GitHub actions</p></li>
+<li><p>Detailed documentation</p></li>
+<li><p>Versioning with <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id15">
+<h3>Changed<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Extra requirements <code class="docutils literal notranslate"><span class="pre">[test]</span></code> renamed to <code class="docutils literal notranslate"><span class="pre">[tests]</span></code></p></li>
+<li><p>Rename case files <code class="docutils literal notranslate"><span class="pre">3D_ABL</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">abl</span></code> and directory <code class="docutils literal notranslate"><span class="pre">abl_nek5000</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">abl</span></code></p></li>
+<li><p>Overall reorganization of modules and Snakemake + configuration files.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id16">
+<h2>[0.0.1] - 2020-01-17<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id17">
+<h3>Added<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Scripting for managing run parameters <code class="docutils literal notranslate"><span class="pre">eturb.params</span></code></p></li>
+<li><p>Python packaging</p></li>
+<li><p>Sphinx + Doxygen + Breathe documentation</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="CONTRIBUTING.html" class="btn btn-neutral float-left" title="Developer guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-05-11
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

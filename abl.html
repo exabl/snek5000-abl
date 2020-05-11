@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ABL case files &mdash; snek5000-abl 0.1.dev1+g1f314f2 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Nek5000 core library" href="nek5000.html" />
+    <link rel="prev" title="snek5000-abl" href="README.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> snek5000-abl
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.dev1+g1f314f2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">snek5000-abl</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#authors">Authors</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ABL case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nek5000.html">Nek5000 core library</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_generated/abl.html">abl</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_cond.html">Boundary condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_cond.html#faq">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filtering.html">Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">snek5000-abl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ABL case files</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/abl.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="abl-case-files">
+<h1>ABL case files<a class="headerlink" href="#abl-case-files" title="Permalink to this headline">¶</a></h1>
+<dl class="group">
+<dt>
+<span class="target" id="group__abl"></span><em>group</em> <code class="sig-name descname">abl</code></dt>
+<dd><p>Contains: user specified routines for the ABL case. </p>
+<p><ul class="simple">
+<li><p>uservp : variable properties</p></li>
+<li><p>userf : local acceleration term for fluid</p></li>
+<li><p>userq : local source term for scalars</p></li>
+<li><p>userbc : boundary conditions</p></li>
+<li><p>useric : initial conditions</p></li>
+<li><p>userchk : general purpose routine for checking errors etc.</p></li>
+<li><p>userqtl : thermal divergence for lowMach number flows</p></li>
+<li><p>usrdat : modify element vertices</p></li>
+<li><p>usrdat2 : modify mesh coordinates</p></li>
+<li><p>usrdat3 : general purpose routine for initialization </p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Functions</p>
+<dl class="c function">
+<dt id="c.uservp">
+<span class="target" id="group__abl_1ga32657b69f54f96dc5aea199db3658bc3"></span>subroutine <code class="sig-name descname">uservp</code><span class="sig-paren">(</span>ix, iy, iz, ieg<span class="sig-paren">)</span><a class="headerlink" href="#c.uservp" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set variable properties, does not call any subroutines / functions. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ix</span></code>: x-index </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iy</span></code>: y-index </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iz</span></code>: z-index </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ieg</span></code>: element index </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.userf">
+<span class="target" id="group__abl_1ga1172abb68180ad165a8080d73ee2a378"></span>subroutine <code class="sig-name descname">userf</code><span class="sig-paren">(</span>ix, iy, iz, eg<span class="sig-paren">)</span><a class="headerlink" href="#c.userf" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.userq">
+<span class="target" id="group__abl_1ga79dd81f06a46a7f8a1637ec998781930"></span>subroutine <code class="sig-name descname">userq</code><span class="sig-paren">(</span>ix, iy, iz, eg<span class="sig-paren">)</span><a class="headerlink" href="#c.userq" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.userbc">
+<span class="target" id="group__abl_1ga5bc9a35082ab7f7115cd6ba8685682fd"></span>subroutine <code class="sig-name descname">userbc</code><span class="sig-paren">(</span>ix, iy, iz, iside, eg<span class="sig-paren">)</span><a class="headerlink" href="#c.userbc" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.useric">
+<span class="target" id="group__abl_1ga9fca046e76d53cec863a2ef596ded5d8"></span>subroutine <code class="sig-name descname">useric</code><span class="sig-paren">(</span>ix, iy, iz, eg<span class="sig-paren">)</span><a class="headerlink" href="#c.useric" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set up initial conditions. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.userchk">
+<span class="target" id="group__abl_1gaab7e65383186bbbe5e8ee746f763b233"></span>subroutine <code class="sig-name descname">userchk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.userchk" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute the turbulent stress tensors and write statistics. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt>
+<span class="target" id="group__abl_1gac0c73a81b4be0f60b83a1f188bd8be50"></span><code class="sig-name descname">subroutine userqtl</code></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.usrdat">
+<span class="target" id="group__abl_1ga684b0320d82a6ae155bf7e0b53826cd3"></span>subroutine <code class="sig-name descname">usrdat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.usrdat" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.usrdat2">
+<span class="target" id="group__abl_1gad0bac908131bab7fa82d65be4229e976"></span>subroutine <code class="sig-name descname">usrdat2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.usrdat2" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.usrdat3">
+<span class="target" id="group__abl_1gae8e951758ca4752cd88bc9c5330c9ebe"></span>subroutine <code class="sig-name descname">usrdat3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.usrdat3" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.eddy_visc">
+<span class="target" id="group__abl_1gaaf0f4048a4e81a838bf903f040cf2db1"></span>subroutine <code class="sig-name descname">eddy_visc</code><span class="sig-paren">(</span>e<span class="sig-paren">)</span><a class="headerlink" href="#c.eddy_visc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute eddy viscosity using dynamic smagorinsky model. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.set_grid_spacing">
+<span class="target" id="group__abl_1gabc6963764dd0ea847bc7e70242d55163"></span>subroutine <code class="sig-name descname">set_grid_spacing</code><span class="sig-paren">(</span>dg2<span class="sig-paren">)</span><a class="headerlink" href="#c.set_grid_spacing" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute D^2, the grid spacing used in the DS sgs model. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt>
+<span class="target" id="group__abl_1gade410b3017ce291e93fe88acc769c9d6"></span><code class="sig-name descname">subroutine set_obj</code></dt>
+<dd><p>Define objects for surface integrals. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.set_forcing">
+<span class="target" id="group__abl_1ga32480237866193258937d1e06bbd0e01"></span>subroutine <code class="sig-name descname">set_forcing</code><span class="sig-paren">(</span>f_new, u, idir<span class="sig-paren">)</span><a class="headerlink" href="#c.set_forcing" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute inflow / outflow conditions a.k.a. driving force. Ubar=1. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.coriolis">
+<span class="target" id="group__abl_1gad74b1b8563b1bee051b6c315a328a069"></span>subroutine <code class="sig-name descname">coriolis</code><span class="sig-paren">(</span>ix, iy, iz, ieg<span class="sig-paren">)</span><a class="headerlink" href="#c.coriolis" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute Coriolis acceleration <div class="math notranslate nohighlight">
+\[ F_x, F_z = - f\hat{e}_y \times \vec{u} \]</div>
+ See <a class="reference external" href="https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html">https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html</a>. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ix</span><span class="pre">[in]</span> <span class="pre">iy</span><span class="pre">[in]</span> <span class="pre">iz</span></code>: GLL point index </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ieg</span></code>: global element number </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="nek5000.html" class="btn btn-neutral float-right" title="Nek5000 core library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="README.html" class="btn btn-neutral float-left" title="snek5000-abl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-05-11
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
