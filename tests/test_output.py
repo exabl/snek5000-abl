@@ -1,6 +1,6 @@
 import tempfile
 
-from abl import Output
+from abl.output import OutputABL as Output
 
 
 def test_copy():

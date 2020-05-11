@@ -11,7 +11,8 @@ pip install -e '.[dev]'
 * **Editor**: Use an editor which supports [EditorConfig](http://editorconfig.org/)
 * **Style guide**: Follow [Fortran best
   practices](https://www.fortran90.org/src/best-practices.html). For the Python
-  code, the tool `black` is recommended. Also install `pipx` and `pre-commit`:
+  code, the tool `black`, `isort` and `flake8` are used. Install `pre-commit`
+  to automate this via git hooks.
 
   ```sh
   pre-commit install
@@ -21,7 +22,7 @@ pip install -e '.[dev]'
   also rely on [git submodules](https://www.git-scm.com/docs/git-submodule) to
   track other libraries. The following branches are important:
 
-  * `eturb`:
+  * `snek5000-abl`:
     * `master`: main branch
     * `develop`: development branch
   * `lib/Nek5000`:
@@ -40,7 +41,7 @@ pip install -e '.[dev]'
   top-level directory. The test-cases can be found under `tests/` directory.
 * **Debugging**: Set the environment variable:
   ```bash
-  export ETURB_DEBUG=true
+  export SNEK_DEBUG=true
   ```
   to activate debugging logs and longer tests.
 

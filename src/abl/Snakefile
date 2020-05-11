@@ -1,37 +1,40 @@
+import importlib.resources
 import itertools
 import os
 from glob import iglob
 from pathlib import Path
 from socket import gethostname
 
-from abl import (
-    get_configfile,
-    get_root,
-    makefile_usr_sources,
-    makefile_usr_obj,
-    Output
-)
-from eturb.util import now
-from eturb.util.archive import tar_name, archive, clean_simul
+import snek5000
+from abl.output import OutputABL as Output
+from snek5000.util import now
+from snek5000.util.archive import tar_name, archive, clean_simul
 
 
 # Case name
 CASE = "abl"
-CONFIG = get_configfile()
-ROOT = get_root()
-SOURCE_ROOT = os.getenv("SOURCE_ROOT", str(ROOT / "../../lib/Nek5000"))
+CONFIG = Output.get_configfile()
+ROOT = Output.get_root()
+SOURCE_ROOT = snek5000.source_root()
+
 
 # TODO: define configuration files for SNIC clusters
 configfile: CONFIG
 
-if os.getenv("ETURB_DEBUG"):
+if os.getenv("SNEK_DEBUG"):
     config["CFLAGS"] += " -O0 -g"
     config["FFLAGS"] += " -O0 -g -ffpe-trap=invalid,zero,overflow,underflow"
+
+if not os.getenv("SOURCE_ROOT"):
+    os.environ["SOURCE_ROOT"] = SOURCE_ROOT
+
+if SOURCE_ROOT not in os.getenv("PATH"):
+    os.environ["PATH"] = ":".join([SOURCE_ROOT, os.getenv("PATH")])
 
 
 subworkflow Nek5000:
     workdir: SOURCE_ROOT
-    snakefile: SOURCE_ROOT + "/Snakefile"
+    snakefile: snek5000.get_asset('nek5000.smk')
     configfile: CONFIG
 
 # default rule
@@ -144,8 +147,6 @@ rule archive:
             f'{CASE}.usr',
         ],
         tarball = tar_name()
-    # FIXME
-    # output: protected(tar_name())
     run:
         archive(params.tarball, params.solution, remove=True)
         archive(params.tarball, params.rest)
@@ -157,13 +158,13 @@ rule archive:
 # generate a box mesh
 rule generate_box:
     input:
-        Nek5000('bin/genbox'),
-        box=f'{CASE}.box'
+        box = f'{CASE}.box',
+        genbox = Nek5000('bin/genbox')
     output:
         'box.re2'
     shell:
         'echo {input.box} | '
-        'genbox'
+        '{input.genbox}'
 
 # rename mesh file re2
 rule move_box:
@@ -175,8 +176,8 @@ rule move_box:
 # generate map / connectivity matrix
 rule generate_map:
     input:
-        Nek5000('bin/genmap'),
-        f'{CASE}.re2'
+        f'{CASE}.re2',
+        genmap = Nek5000('bin/genmap')
     output:
         f'{CASE}.ma2'
     params:
@@ -184,18 +185,7 @@ rule generate_map:
         tolerance = 0.01
     shell:
         'echo "{params.prefix}\n{params.tolerance}" | '
-        'genmap'
-
-# generate makefile_usr.inc
-rule generate_makefile_usr:
-    input:
-        "templates/makefile_usr.inc.j2"
-    output:
-        "makefile_usr.inc"
-    run:
-        o = Output()
-        with open(str(output), "w") as fp:
-            o.write_makefile_usr(fp=fp)
+        '{input.genmap}'
 
 # generate makefile
 rule generate_makefile:
@@ -203,20 +193,20 @@ rule generate_makefile:
         f'{CASE}.re2',
         f'{CASE}.ma2',
         f'{CASE}.usr',
-        makefile_usr = "makefile_usr.inc"
+        makenek = SOURCE_ROOT + "/bin/makenek"
     output:
         'makefile',
         SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
     params:
         case = f'{CASE}',
-        inc = " ".join((f"-I{inc_dir}" for inc_dir in makefile_usr_sources)),
-        usr = " ".join(makefile_usr_obj)
+        inc = " ".join((f"-I{inc_dir}" for inc_dir in Output().makefile_usr_sources)),
+        usr = " ".join(Output().makefile_usr_obj)
     shell:
         """
         function at_exit {{
-            # echo "include {input.makefile_usr}" >> makefile
             ls -l makefile
             export NOCOMPILE=0
+            clean_3rd_party
             make_3rd_party
             echo "Done"
         }}
@@ -226,7 +216,7 @@ rule generate_makefile:
         export CC="{config[MPICC]}" FC="{config[MPIFC]}" \
             CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]} {params.inc}" \
             USR="{params.usr}"
-        source $(which makenek) {params.case} -nocompile
+        source {input.makenek} {params.case} -nocompile
         """
 
 # generate sessionfile

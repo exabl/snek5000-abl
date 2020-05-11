@@ -62,6 +62,7 @@ venv/
 __pycache__
 src/*/_version.py
 pip-wheel-metadata
+build/
 
 # Jupyter
 .ipynb_checkpoints
