@@ -22,6 +22,7 @@ c define constant parameters
 #define NPOW 0.5
 #define C0 0.19
 #define U_GEO 5.0
+#define PI (4.*atan(1.))
 
 c> Set variable properties, does not call any subroutines / functions.
 c> @param ix x-index
@@ -81,17 +82,16 @@ c     e = gllel(eg)
 c-----------------------------------------------------------------------
       subroutine userq(ix,iy,iz,eg) ! set source term
 
-c      implicit none
+      implicit none
 
       integer ix,iy,iz,eg
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      include 'NEKUSE'  ! qvol
 
 c      integer e
 c     e = gllel(eg)
-      source = 0.0
+      ! source = 0.0
       qvol   = 0.0
 
       return
@@ -101,15 +101,17 @@ c-----------------------------------------------------------------------
 c
 c     NOTE ::: This subroutine MAY NOT be called by every process
 c
-c      implicit none
+      implicit none
 
 
-      integer ix,iy,iz,iside,eg,ie
-      real u1_2,absu,y1_2
+      integer ix, iy, iz, iside, eg, ie
+      real u1_2, w1_2, absu, y1_2
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      include 'NEKUSE'  ! trx, try, trz, temp
+      include 'PARALLEL'  ! gllel
+      include 'SOLN'  ! vx, vz
+      include 'GEOM'  ! ym1
 
 
 c      if (cbc(iside,gllel(eg),ifield).eq.'v01')
@@ -138,14 +140,18 @@ c> Set up initial conditions
 c> @callgraph
       subroutine useric(ix,iy,iz,eg)
 
-c      implicit none
+      implicit none
 
-      integer ix,iy,iz,eg
-      real big,rand1,rand2,rand3,Ly
+      integer ix,iy,iz,eg,ie
+      real Ly
+      real rand1, rand2, rand3
+      real eps, kx, kz, alpha, beta
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      include 'NEKUSE'  ! temp
+      include 'PARALLEL'  ! gllel
+      include 'GEOM'  ! ym1
+      include 'INPUT'  ! uparam
 
 c      ux   = 1.0
 c      uy   = 0.0
