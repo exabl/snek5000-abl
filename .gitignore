@@ -51,7 +51,6 @@ src/*/*.f?????
 src/*/SESSION.NAME
 src/*/*.nek5000
 src/**/*.log
-makefile_usr.inc
 
 # Python
 venv/

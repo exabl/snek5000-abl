@@ -30,13 +30,14 @@ c> @param iz z-index
 c> @param ieg element index
       subroutine uservp(ix,iy,iz,ieg) ! set variable properties
 
-c      implicit none
-
+      implicit none
 
       include 'SIZE'
-      include 'TOTAL'
       include 'NEKUSE'
+      include 'PARALLEL'  ! gllel
+
       integer ix,iy,iz,ieg,ie
+      real ediff, dg2
       common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
      $              , dg2 (lx1,ly1,lz1,lelv)
 
@@ -212,6 +213,7 @@ c      implicit none
 
       real XLEN, YLEN, ZLEN
 c     call common blocks
+      real ediff, dg2
       common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
      $              , dg2 (lx1,ly1,lz1,lelv)
 
@@ -315,11 +317,13 @@ c-----------------------------------------------------------------------
 c> @callgraph
       subroutine usrdat()   ! This routine to modify element vertices
 
-c      implicit none
+      implicit none
 
       include 'SIZE'
       include 'TOTAL'
 
+      integer n
+      real ediff, dg2
       common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
      $              , dg2 (lx1,ly1,lz1,lelv)
 
@@ -363,6 +367,7 @@ c> @callgraph
       include 'TOTAL'
       include 'ZPER'
 
+      real ediff, dg2
       common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
      $              , dg2 (lx1,ly1,lz1,lelv)
       integer e
