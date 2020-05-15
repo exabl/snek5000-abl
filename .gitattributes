@@ -1,0 +1,2 @@
+*.usr linguist-language=fortran
+*.j2 linguist-language=django
