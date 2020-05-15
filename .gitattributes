@@ -1,2 +1,6 @@
+SIZE linguist-language=fortran
 *.usr linguist-language=fortran
+*.par linguist-language=properties
 *.j2 linguist-language=django
+src/abl/toolbox/* linguist-language=fortran
+src/abl/sgs/* linguist-language=fortran
