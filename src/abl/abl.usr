@@ -29,24 +29,21 @@ c> @param ix x-index
 c> @param iy y-index
 c> @param iz z-index
 c> @param ieg element index
+c> @todo find out what utran is and why it is set as 1
       subroutine uservp(ix,iy,iz,ieg) ! set variable properties
 
       implicit none
 
       include 'SIZE'
-      include 'NEKUSE'
+      include 'NEKUSE'  ! udiff, utrans
       include 'PARALLEL'  ! gllel
+      include 'SGS'  ! ediff
 
       integer ix,iy,iz,ieg,ie
-      real ediff, dg2
-      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
-     $              , dg2 (lx1,ly1,lz1,lelv)
-
 
       ie     = gllel(ieg)
-c     save total viscoity
+c     save total viscosity
       udiff  = ediff(ix,iy,iz,ie)
-
 
       utrans = 1.
 
@@ -204,7 +201,7 @@ c> @callgraph
       include 'INPUT'  ! IF3D, PARAM
       include 'SOLN'  ! t, pr, vx
       include 'TSTEP'  ! ISTEP, lastep, time
-
+      include 'SGS'  ! dg2, ediff
 
       integer e,i
       real gradux(lx1,ly1,lz1,lelv)
@@ -217,10 +214,6 @@ c> @callgraph
 
       real XLEN, YLEN, ZLEN
 c     call common blocks
-      real ediff, dg2
-      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
-     $              , dg2 (lx1,ly1,lz1,lelv)
-
 !       common /scrsf/ trx(lx1,ly1,lz1)
 !      $             , trz(lx1,ly1,lz1)
 
@@ -254,7 +247,7 @@ c     Get mesh lengths from userParam0{5,6,7}
       ZLEN = uparam(7)
 
 c     Define Delta for Smagorinsky method
-      call set_grid_spacing(dg2)
+      call set_grid_spacing  ! set dg2
 
       n=nx1*ny1*nz1*nelv
       ngll=nx1*ny1*nz1
@@ -263,7 +256,7 @@ c      calculate eddy viscosiy and total viscosity
       if(ifuservp) then
         if(nid.eq.0) write(6,*) 'Calculating eddy viscosity'
         do e=1,nelv
-           call eddy_visc(e)
+           call eddy_visc(e, KAPPA, NPOW, y0)
         enddo
         call copy(t,ediff,n)
       endif
@@ -332,17 +325,15 @@ c> @callgraph
       implicit none
 
       include 'SIZE'
-      include 'TOTAL'
+      include 'INPUT'  ! param
+      include 'SGS'  ! ediff, dg2
 
       integer n
-      real ediff, dg2
-      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
-     $              , dg2 (lx1,ly1,lz1,lelv)
 
       ! initialize variables
       n = nx1*ny1*nz1*nelt
       call cfill(ediff,param(2),n)
-      call cfill(dg2,1,n)
+      call cfill(dg2,1.0,n)
 
       return
       end
@@ -371,107 +362,6 @@ c> @callgrpah
       param(54) = -1  ! use >0 for const flowrate or <0 bulk vel
                       ! flow direction is given by (1=x, 2=y, 3=z)
       param(55) = U_GEO  ! flowrate/bulk-velocity
-
-      return
-      end
-c-----------------------------------------------------------------------
-c> Compute eddy viscosity using dynamic smagorinsky model
-c> @callgraph
-      subroutine eddy_visc(e)
-      include 'SIZE'
-      include 'TOTAL'
-      include 'ZPER'
-
-      real ediff, dg2
-      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
-     $              , dg2 (lx1,ly1,lz1,lelv)
-      integer e
-      common /dynsmg/ sij (lx1*ly1*lz1,ldim,ldim)
-     $              , snrm(lx1*ly1*lz1,lelv)
-     $              , Cs(lx1*ly1*lz1,lelv)
-      real sij,snrm,Cs,Csa,Csb
-
-
-      ntot = nx1*ny1*nz1
-c------need to be by element ->
-      call comp_gije(sij,vx(1,1,1,e),vy(1,1,1,e),vz(1,1,1,e),e)
-
-      call comp_sije(sij)
-
-      call mag_tensor_e(snrm(1,e),sij)
-      call cmult(snrm(1,e),2.0,ntot)
-c---------------------------
-
-c------now do for every GLL point
-      ntot = nx1*ny1*nz1*nelt
-      if (e.eq.nelv) then
-        do i=1,ntot
-            Csa=1/(C0**NPOW)
-            Csb=(sqrt(dg2(i,1,1,1))/(KAPPA*(ym1(i,1,1,1)+y0)))**NPOW
-            Cs(i,1)=(Csa+Csb)**(-1/NPOW)
-          ediff(i,1,1,1) = param(2)+(Cs(i,1)**2)*dg2(i,1,1,1)*snrm(i,1)
-        enddo
-      endif
-c----------
-
-      return
-      end
-c-----------------------------------------------------------------------
-c> Compute D^2, the grid spacing used in the DS sgs model.
-c> @callgraph
-      subroutine set_grid_spacing(dg2)
-      include 'SIZE'
-      include 'TOTAL'
-
-
-      real dg2(nx1,ny1,nz1,nelv)
-
-      integer e,eg,ex,ey,ez
-
-      gamma = 1.
-      gamma = gamma/ndim
-
-      n = nx1*ny1*nz1*nelv
-      call rone(dg2,n)
- !     return               ! Comment this line for a non-trivial Delta defn
-
-      do e=1,nelv
-
-         do k=1,nz1
-           km = max(1  ,k-1)
-           kp = min(nz1,k+1)
-
-           do j=1,ny1
-             jm = max(1  ,j-1)
-             jp = min(ny1,j+1)
-
-             do i=1,nx1
-               im = max(1  ,i-1)
-               ip = min(nx1,i+1)
-
-               di = (xm1(ip,j,k,e)-xm1(im,j,k,e))**2
-     $            + (ym1(ip,j,k,e)-ym1(im,j,k,e))**2
-     $            + (zm1(ip,j,k,e)-zm1(im,j,k,e))**2
-
-               dj = (xm1(i,jp,k,e)-xm1(i,jm,k,e))**2
-     $            + (ym1(i,jp,k,e)-ym1(i,jm,k,e))**2
-     $            + (zm1(i,jp,k,e)-zm1(i,jm,k,e))**2
-
-               dk = (xm1(i,j,kp,e)-xm1(i,j,km,e))**2
-     $            + (ym1(i,j,kp,e)-ym1(i,j,km,e))**2
-     $            + (zm1(i,j,kp,e)-zm1(i,j,km,e))**2
-c               write(6,*) ip,im,jp,jm
-               di = di/(ip-im)
-               dj = dj/(jp-jm)
-               dk = dk/(kp-km)
-               dg2(i,j,k,e) = (di*dj*dk)**gamma
-
-             enddo
-           enddo
-         enddo
-      enddo
-
-      call dsavg(dg2)  ! average neighboring elements
 
       return
       end

@@ -49,8 +49,11 @@ rule mesh:
 # compile
 rule compile:
     input:
+        f"{CASE}.usr",
         'makefile_usr.inc',
         'makefile',
+        *iglob('toolbox/*'),
+        *iglob('sgs/*'),
         SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
     output:
         f'{CASE}.f',
