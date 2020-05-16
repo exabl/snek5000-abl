@@ -270,7 +270,7 @@ c      calculate eddy viscosiy and total viscosity
       call torque_calc(1.0,x0,.false.,.false.) ! wall shear
 
       rho    = 1.
-      A_w    = XLEN * ZLEN
+      A_w    = XLEN * ZLEN  ! spanwise area
 
       ! Calculate friction velocity
       utau= sqrt(dragx(1)**2+dragz(1)**2)/A_w
@@ -281,8 +281,8 @@ c      calculate eddy viscosiy and total viscosity
 
       !generate PHI statistic
       do i=1,n
-	vgrad(i,1,1,1)=KAPPA*ym1(i,1,1,1)/utau*graduy(i,1,1,1)
-	utauv(i,1,1,1)=utau
+        vgrad(i,1,1,1)=KAPPA * ym1(i,1,1,1) / utau*graduy(i,1,1,1)
+        utauv(i,1,1,1)=utau
       enddo
 
       !Output new statistics
@@ -314,6 +314,8 @@ c-----------------------------------------------------------------------
 c> @callgraph
       subroutine userqtl ! Set thermal divergence
 
+      implicit none
+
       call userqtl_scig
 
       return
@@ -343,7 +345,6 @@ c-----------------------------------------------------------------------
       implicit none
 
       include 'SIZE'
-      include 'TOTAL'
 
       return
       end
@@ -356,7 +357,7 @@ c> @callgrpah
       implicit none
 
       include 'SIZE'
-      include 'TOTAL'
+      include 'INPUT'  ! param
 
 
       param(54) = -1  ! use >0 for const flowrate or <0 bulk vel
@@ -369,11 +370,14 @@ c-----------------------------------------------------------------------
 c> Define objects for surface integrals
 c> @callgraph
       subroutine set_obj
+
+      implicit none
 c
       include 'SIZE'
-      include 'TOTAL'
+      include 'INPUT'  ! nhis, lochis, hcode
+      include 'PARALLEL'  ! lglel
 c
-      integer e,f
+      integer e, f, ieg, ii, iobj, mem, nxyz
 c
 c     Define new objects
 c
@@ -396,7 +400,7 @@ c
 c
       nxyz = nx1*ny1*nz1
       do e=1,nelv
-      do f=1,2*ndim
+        do f=1,2*ndim
          if (cbc(f,e,1).eq.'sh ') then
             iobj = 0
             if (f.eq.1) iobj=1  ! lower wall
@@ -410,7 +414,7 @@ c
             endif
 c
          endif
-      enddo
+        enddo
       enddo
 c     write(6,*) 'number',(nmember(k),k=1,4)
 c
