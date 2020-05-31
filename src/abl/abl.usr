@@ -447,9 +447,10 @@ c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
       f_corio = uparam(4)
 
       ! Add to forcing terms
+      !
       if (f_corio .gt. 0.) then
-          ffx = ffx - f_corio * uz
-          ffz = ffz + f_corio * (ux - U_GEO)
+          ffx = ffx + f_corio * uz
+          ffz = ffz - f_corio * (ux - U_GEO)
       endif
       return
       end
