@@ -3,11 +3,12 @@
 import sys
 
 import click
+from abl.solver import Simul
 
-from eturb.solvers.abl import Simul
 
-
-@click.command()
+# @click.group(chain=True, invoke_without_command=True)
+#  @click.group(chain=True)
+@click.group()
 @click.option("-d", "--sub-dir", default="test")
 @click.option("-m", "--mesh", default=1, type=int, help="mesh configuration")
 @click.option("-n", "--name-run", default="demo", help="short description of the run")
@@ -19,21 +20,15 @@ from eturb.solvers.abl import Simul
 @click.option(
     "-fc", "--filter-cutoff", default=0.5, type=float, help="filter cutoff ratio"
 )
-@click.argument("rules", nargs=-1, type=click.UNPROCESSED)
-def launch(
-    sub_dir, mesh, name_run, nodes, walltime, filter_weight, filter_cutoff, rules
-):
+@click.pass_context
+def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, filter_weight, filter_cutoff):
     """\b
     Notes
     -----
     - only LES model activated
     - no stratification / temperature field
-    - no rotation
 
     """
-    if "print" in rules:
-        print(locals())
-
     params = Simul.create_default_params()
 
     oper = params.oper
@@ -142,15 +137,61 @@ def launch(
     params.short_name_type_run = name_run
     params.output.sub_directory = sub_dir
 
-    if "print" in rules:
-        print(params)
-        return
+    ctx.ensure_object(dict)
 
-    sim = Simul(params)
+    if ctx.invoked_subcommand is None:
+        print(params)
+    else:
+        ctx.obj["params"] = params
+
+
+@cli.command()
+@click.argument("rules", default=["srun"])
+@click.pass_context
+def launch(ctx, rules):
+    from snek5000.log import logger
+
+    logger.info("Initializing simulation launch...")
+
+    sim = Simul(ctx["params"])
     sim.sanity_check()
     sim.make.exec(rules)
 
 
+@cli.command()
+@click.argument("rules", default=["srun"])
+@click.pass_context
+def debug(ctx, rules):
+    import matplotlib.pyplot as plt
+    from pymech.dataset import open_dataset
+    from snek5000.log import logger
+
+    params = ctx.obj["params"]
+    general = params.nek.general
+    general.stop_at = "num_steps"
+    general.num_steps = 10
+
+    logger.info("Initializing simulation debug...")
+
+    rules = ["srun"]
+
+    sim = Simul(params)
+    # TODO: add sanity check
+    #  sim.sanity_check()
+    logger.info("Executing simulation...")
+    sim.make.exec(rules)
+    logger.info("Finished simulation...")
+
+    ds = open_dataset(sorted(sim.path_run.glob("abl0.f*"))[0])
+    dsx = ds.isel(x=ds.x.size // 2)
+    dsy = ds.isel(x=ds.y.size // 2)
+    dsz = ds.isel(z=ds.z.size // 2)
+    for ds_slice in dsx, dsy, dsz:
+        ds_slice.ux.plot()
+        plt.show()
+    breakpoint()
+
+
 if __name__ == "__main__":
     print(sys.executable)
-    launch()
+    cli(obj={})

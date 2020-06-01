@@ -3,16 +3,15 @@ import os
 import shutil
 from pathlib import Path
 
+import abl
 import click
 from bullet import Bullet, YesNo, colors, styles
-from snakemake import snakemake
-from snakemake.executors import change_working_directory as change_dir
-
-import abl
-from eturb import logger
-from eturb.util import get_status
 from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
 from fluiddyn.util.terminal_colors import cstring
+from snakemake import snakemake
+from snakemake.executors import change_working_directory as change_dir
+from snek5000 import logger
+from snek5000.util import get_status
 
 STYLE = styles.Greece
 STYLE.update(
