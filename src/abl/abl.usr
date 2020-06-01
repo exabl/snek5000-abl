@@ -38,6 +38,7 @@ c> @todo implement ifield = 2 case for temperature
       include 'NEKUSE'  ! udiff, utrans
       include 'PARALLEL'  ! gllel
       include 'SGS'  ! ediff
+      include 'TSTEP'  ! ifield
 
       integer ix,iy,iz,ieg,iel
 
