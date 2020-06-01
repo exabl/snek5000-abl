@@ -216,6 +216,7 @@ c> @callgraph
       include 'SOLN'  ! t, pr, vx
       include 'TSTEP'  ! ISTEP, lastep, time
       include 'SGS'  ! dg2, ediff
+      include 'CHKPOINTD'  ! chpt_ifrst
 
       integer e,i
       real gradux(lx1,ly1,lz1,lelv)
@@ -275,7 +276,6 @@ c      calculate eddy viscosiy and total viscosity
       if (istep.eq.0) then
          call set_obj                   ! objects for surface integrals
          call rzero(x0,3)               ! torque w.r.t. x0
-         call outpost(vx, vy, vz, pr, t, '   ')  ! write initial condition
       endif
 
       ! Calculate forces:
@@ -318,6 +318,9 @@ c      calculate eddy viscosiy and total viscosity
       ! finalise framework
       if (ISTEP.eq.NSTEPS.or.LASTEP.eq.1) then
          call frame_end
+      else if (istep .eq. 0 .and. (.not. chpt_ifrst)) then
+         ! first timestep which is not restarted
+         call outpost(vx, vy, vz, pr, t, '   ')  ! write initial condition
       endif
 
       return
