@@ -275,6 +275,7 @@ c      calculate eddy viscosiy and total viscosity
       if (istep.eq.0) then
          call set_obj                   ! objects for surface integrals
          call rzero(x0,3)               ! torque w.r.t. x0
+         call outpost(vx, vy, vz, pr, t, '   ')  ! write initial condition
       endif
 
       ! Calculate forces:
