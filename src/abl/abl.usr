@@ -29,7 +29,7 @@ c> @param ix x-index
 c> @param iy y-index
 c> @param iz z-index
 c> @param ieg element index
-c> @todo find out what utran is and why it is set as 1
+c> @todo implement ifield = 2 case for temperature
       subroutine uservp(ix,iy,iz,ieg) ! set variable properties
 
       implicit none
@@ -39,18 +39,28 @@ c> @todo find out what utran is and why it is set as 1
       include 'PARALLEL'  ! gllel
       include 'SGS'  ! ediff
 
-      integer ix,iy,iz,ieg,ie
+      integer ix,iy,iz,ieg,iel
 
-      ie     = gllel(ieg)
-c     save total viscosity
-      udiff  = ediff(ix,iy,iz,ie)
+      ! local element index
+      iel = gllel(ieg)
 
-      utrans = 1.
+      if (ifield.eq.1) then  ! velocity
+        udiff = ediff(ix,iy,iz,iel)  ! dynamic viscosity
+        utrans = 1.0  ! density
+      else if (ifield.eq.2) then  ! temperature when IFHEAT = .true.
+        udiff = 1.0  ! conductivity
+        utrans = 1.0  ! rho*cp
+      endif
 
       return
       end
 c-----------------------------------------------------------------------
 c
+c> Compute Coriolis acceleration
+c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
+c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
+c> @param[in]    ix,iy,iz        GLL point index
+c> @param[in]    ieg             global element number
       subroutine userf(ix,iy,iz,eg) ! set acceleration term
 c
 c     Note: this is an acceleration term, NOT a force!
@@ -58,22 +68,25 @@ c     Thus, ffx will subsequently be multiplied by rho(x,t).
 c
       implicit none
 
+      include 'SIZE'
+      include 'INPUT'           ! uparam
+      include 'PARALLEL'        ! GLLEL
+      include 'NEKUSE'            ! ffx, ffy, ffz, ux, uz
+
+      ! argument list
       integer ix,iy,iz,eg
 
-      include 'SIZE'
-      include 'NEKUSE'
-      include 'PARALLEL'
-      ! common /cforce/ ffx_new,ffy_new,ffz_new
+      ! local variables
+      real f_corio
 
-      integer e
 c     e = gllel(eg)
 
-      ! ffx = ffx_new ! This value determined from fixed U_b=1 case.
-      ffx = 0.0
-      ffy = 0.0
-      ffz = 0.0
+      f_corio = uparam(4)
 
-      call coriolis(ix, iy, iz, eg)
+      ffx = f_corio * uz
+      ffy = 0.0
+      ffz = -f_corio * (ux - U_GEO)
+
       return
       end
 c-----------------------------------------------------------------------
@@ -237,9 +250,6 @@ c
 c
      $             , dpdx_mean,dpdy_mean,dpdz_mean
      $             , dgtq(3,4)
-
-      real ffx_new, ffy_new, ffz_new
-      common /cforce/ ffx_new,ffy_new,ffz_new
 
 c     Get mesh lengths from userParam0{5,6,7}
       XLEN = uparam(5)
@@ -421,39 +431,6 @@ c
       return
       end
 c ----------------------------------------------------------------------
-c> Compute Coriolis acceleration
-c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
-c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
-!! @param[in]    ix,iy,iz        GLL point index
-!! @param[in]    ieg             global element number
-      subroutine coriolis(ix,iy,iz,ieg)
-      implicit none
-      include 'SIZE'            !
-      include 'INPUT'           ! uparam
-      include 'PARALLEL'        ! GLLEL
-      ! include 'SOLN'            ! VX, VZ
-      include 'NEKUSE'            ! ffx, ffy, ffz, ux, uz
-
-      ! argument list
-      integer ix,iy,iz,ieg
-
-      ! local variables
-      ! integer iel
-      real f_corio
-!-----------------------------------------------------------------------
-      ! Local representation
-      ! iel = gllel(ieg)
-
-      f_corio = uparam(4)
-
-      ! Add to forcing terms
-      !
-      if (f_corio .gt. 0.) then
-          ffx = ffx + f_corio * uz
-          ffz = ffz - f_corio * (ux - U_GEO)
-      endif
-      return
-      end
 c> @}
 c end of group abl
 !======================================================================

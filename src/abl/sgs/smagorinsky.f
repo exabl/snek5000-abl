@@ -18,7 +18,7 @@ c> @callgraph
 
       n = nx1*ny1*nz1*nelv
       call rone(dg2,n)
- !     return               ! Comment this line for a non-trivial Delta defn
+c     return               ! Comment this line for a non-trivial Delta defn
       do e=1,nelv
 
          do k=1,nz1
