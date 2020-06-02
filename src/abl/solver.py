@@ -65,5 +65,12 @@ class SimulABL(SimulKTH):
         self.output.write_size(size)
         self.output.write_makefile_usr(makefile_usr)
 
+    def sanity_check(self):
+        """Check params for errors"""
+        params = self.params
+        assert params.oper.Lx == params.nek.general.user_params[5]
+        assert params.oper.Ly == params.nek.general.user_params[6]
+        assert params.oper.Lz == params.nek.general.user_params[7]
+
 
 Simul = SimulABL
