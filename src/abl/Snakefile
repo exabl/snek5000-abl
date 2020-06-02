@@ -23,7 +23,7 @@ configfile: CONFIG
 
 if os.getenv("SNEK_DEBUG"):
     config["CFLAGS"] += " -O0 -g"
-    config["FFLAGS"] += " -O0 -g -ffpe-trap=invalid,zero,overflow,underflow"
+    config["FFLAGS"] += " -O0 -g -ffpe-trap=invalid,zero,overflow,underflow -Wall"
 
 if not os.getenv("SOURCE_ROOT"):
     os.environ["SOURCE_ROOT"] = SOURCE_ROOT
@@ -49,8 +49,11 @@ rule mesh:
 # compile
 rule compile:
     input:
+        f"{CASE}.usr",
         'makefile_usr.inc',
         'makefile',
+        *iglob('toolbox/*'),
+        *iglob('sgs/*'),
         SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
     output:
         f'{CASE}.f',
@@ -106,7 +109,6 @@ rule clean:
         """
         echo "cleaning Nek5000 ..."
         rm -fv {params.case}.f nek5000
-        rm -rf obj makefile_usr.inc
         rm -fv $SOURCE_ROOT/core/mpif.h
         """
 
@@ -122,7 +124,8 @@ rule cleansimul:
 rule cleanall:
     shell:
         """
-        snakemake clean cleansimul
+        rm -rf obj makefile_usr.inc
+        snakemake clean cleansimul -j
         """
 
 # create an archive with all of our results

@@ -1,5 +1,5 @@
 from glob import iglob
-from eturb.util.archive import tar_name, archive
+from snek5000.util.archive import tar_name, archive
 
 PYTHON_DIRECTORIES = ["docs", "src", "tests"]
 
@@ -42,7 +42,6 @@ rule ctags:
     input:
         nek5000='lib/Nek5000/core',
         abl='src/abl',
-        eturb='src/eturb'
     output:
         '.tags'
     params:
@@ -64,7 +63,6 @@ rule ctags:
         """
         ctags -f {output} --language-force=Fortran -R {input.nek5000}
         ctags -f {output} {params.excludes} --append --language-force=Fortran -R {input.abl}
-        ctags -f {output} {params.excludes} --append -R {input.eturb}
         """
 
 rule watch:

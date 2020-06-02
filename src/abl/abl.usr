@@ -22,36 +22,46 @@ c define constant parameters
 #define NPOW 0.5
 #define C0 0.19
 #define U_GEO 5.0
+#define PI (4.*atan(1.))
 
 c> Set variable properties, does not call any subroutines / functions.
 c> @param ix x-index
 c> @param iy y-index
 c> @param iz z-index
 c> @param ieg element index
+c> @todo implement ifield = 2 case for temperature
       subroutine uservp(ix,iy,iz,ieg) ! set variable properties
 
-c      implicit none
-
+      implicit none
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
-      integer ix,iy,iz,ieg,ie
-      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
-     $              , dg2 (lx1,ly1,lz1,lelv)
+      include 'NEKUSE'  ! udiff, utrans
+      include 'PARALLEL'  ! gllel
+      include 'SGS'  ! ediff
+      include 'TSTEP'  ! ifield
 
+      integer ix,iy,iz,ieg,iel
 
-      ie     = gllel(ieg)
-c     save total viscoity
-      udiff  = ediff(ix,iy,iz,ie)
+      ! local element index
+      iel = gllel(ieg)
 
-
-      utrans = 1.
+      if (ifield.eq.1) then  ! velocity
+        udiff = ediff(ix,iy,iz,iel)  ! dynamic viscosity
+        utrans = 1.0  ! density
+      else if (ifield.eq.2) then  ! temperature when IFHEAT = .true.
+        udiff = 1.0  ! conductivity
+        utrans = 1.0  ! rho*cp
+      endif
 
       return
       end
 c-----------------------------------------------------------------------
 c
+c> Compute Coriolis acceleration
+c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
+c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
+c> @param[in]    ix,iy,iz        GLL point index
+c> @param[in]    ieg             global element number
       subroutine userf(ix,iy,iz,eg) ! set acceleration term
 c
 c     Note: this is an acceleration term, NOT a force!
@@ -59,38 +69,40 @@ c     Thus, ffx will subsequently be multiplied by rho(x,t).
 c
       implicit none
 
+      include 'SIZE'
+      include 'INPUT'           ! uparam
+      include 'PARALLEL'        ! GLLEL
+      include 'NEKUSE'            ! ffx, ffy, ffz, ux, uz
+
+      ! argument list
       integer ix,iy,iz,eg
 
-      include 'SIZE'
-      include 'NEKUSE'
-      include 'PARALLEL'
-      ! common /cforce/ ffx_new,ffy_new,ffz_new
+      ! local variables
+      real f_corio
 
-      integer e
 c     e = gllel(eg)
 
-      ! ffx = ffx_new ! This value determined from fixed U_b=1 case.
-      ffx = 0.0
-      ffy = 0.0
-      ffz = 0.0
+      f_corio = uparam(4)
 
-      call coriolis(ix, iy, iz, eg)
+      ffx = f_corio * uz
+      ffy = 0.0
+      ffz = -f_corio * (ux - U_GEO)
+
       return
       end
 c-----------------------------------------------------------------------
       subroutine userq(ix,iy,iz,eg) ! set source term
 
-c      implicit none
+      implicit none
 
       integer ix,iy,iz,eg
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      include 'NEKUSE'  ! qvol
 
 c      integer e
 c     e = gllel(eg)
-      source = 0.0
+      ! source = 0.0
       qvol   = 0.0
 
       return
@@ -100,15 +112,17 @@ c-----------------------------------------------------------------------
 c
 c     NOTE ::: This subroutine MAY NOT be called by every process
 c
-c      implicit none
+      implicit none
 
 
-      integer ix,iy,iz,iside,eg,ie
-      real u1_2,absu,y1_2
+      integer ix, iy, iz, iside, eg, ie
+      real u1_2, w1_2, absu, y1_2
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      include 'NEKUSE'  ! trx, try, trz, temp
+      include 'PARALLEL'  ! gllel
+      include 'SOLN'  ! vx, vz
+      include 'GEOM'  ! ym1
 
 
 c      if (cbc(iside,gllel(eg),ifield).eq.'v01')
@@ -137,51 +151,67 @@ c> Set up initial conditions
 c> @callgraph
       subroutine useric(ix,iy,iz,eg)
 
-c      implicit none
-
-      integer ix,iy,iz,eg
-      real big,rand1,rand2,rand3,Ly
+      implicit none
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      include 'NEKUSE'  ! x, y, z, ux, uy, uz, temp
+      include 'PARALLEL'  ! gllel
+      include 'GEOM'  ! ym1
+      include 'INPUT'  ! uparam
+
+      integer ix,iy,iz,eg
+      real Ly
+      real rand1, rand2, rand3
+      real eps, kx, kz, alpha, beta, perturb_thick
+      real XLEN, YLEN, ZLEN
 
 c      ux   = 1.0
 c      uy   = 0.0
 c      uz   = 0.0
       temp = 0.0
 
-      ie=gllel(eg)
+c     Get mesh lengths from userParam0{5,6,7}
+      XLEN = uparam(5)
+      YLEN = uparam(6)
+      ZLEN = uparam(7)
+
+      ! ie=gllel(eg)
       ! NOTE: smoother function for ux and wavenumbers alpha and beta changed after
       ! version 0.2.1
-      Ly = uparam(6)
-      ux   = U_GEO * ((ym1(ix,iy,iz,ie) / Ly)**(1. / 7.))
+      ux   = U_GEO * ((y / YLEN)**(1. / 7.))
 
 c     perturbation tries!! (not working)
 c> Use standard subroutine RANDOM_NUMBER.
 c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
-      CALL RANDOM_NUMBER(rand1)
-      CALL RANDOM_NUMBER(rand2)
-      CALL RANDOM_NUMBER(rand3)
-c      big = 1.e7*eg + 1.e8*ix + 1.e9*iy + 1.e10*iz
-c      rand1 = sin(big)
-c      rand2 = sin(rand1*big)
-c      rand3 = sin(rand2*big)
 
-      ux = ux+0.001*rand1
-      uy = 1e-3*rand2
-      uz = 1e-3*rand3
-
-      eps = 1e-3
       kx  = 11
       kz  = 11
 
-      alpha = kx * 2*PI*40
-      beta  = kz * 2*PI*40
+      alpha = kx * 2 * PI / XLEN
+      beta  = kz * 2 * PI / ZLEN
 
-      ux  = ux  + eps*beta  * sin(alpha*x)*cos(beta*z)
-      uy  = uy  +   eps       * sin(alpha*x)*sin(beta*z)
-      uz  = uz  -   eps*alpha * cos(alpha*x)*sin(beta*z)
+      ! estimated boundary layer thickness, which might vary
+      perturb_thick = 0.4 * YLEN
+      ! See: Beare et al., “An Intercomparison of Large-Eddy Simulations of the
+      ! Stable Boundary Layer.” pp. 4
+      if (y < perturb_thick) then
+        ! fills ~2 / 3 of perturb_thick and smoothly decays
+        eps = (1. - tanh(3 * y / perturb_thick)) * 1e-3
+        call random_number(rand1)
+        call random_number(rand2)
+        call random_number(rand3)
+      else
+        eps = 0.
+        rand1 = 0.
+        rand2 = 0.
+        rand3 = 0.
+      endif
+
+      !- a boundary-layer-like profile
+      !- eps * (large scale sinusoidal field + random noise)
+      ux  = ux  + eps*(beta * sin(alpha*x)*cos(beta*z) + rand1 * 1e-1)
+      uy  = 0.  + eps*(       sin(alpha*x)*sin(beta*z) + rand2 * 1e-1)
+      uz  = 0.  - eps*(alpha * cos(alpha*x)*sin(beta*z) + rand3 * 1e-1)
 
       return
       end
@@ -190,16 +220,15 @@ c> Compute the turbulent stress tensors and write statistics
 c> @callgraph
       subroutine userchk()
 
-c      implicit none
+      implicit none
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'ZPER'
-      ! The following are required by KTH toolbox, but it is already
-      ! included in TOTAL
-      ! include 'TSTEP'           ! ISTEP, lastep, time
-      ! include 'INPUT'           ! IF3D, PARAM
-
+      include 'GEOM'  ! ym1
+      include 'INPUT'  ! IF3D, PARAM
+      include 'SOLN'  ! t, pr, vx
+      include 'TSTEP'  ! ISTEP, lastep, time
+      include 'SGS'  ! dg2, ediff
+      include 'CHKPOINTD'  ! chpt_ifrst
 
       integer e,i
       real gradux(lx1,ly1,lz1,lelv)
@@ -212,11 +241,18 @@ c      implicit none
 
       real XLEN, YLEN, ZLEN
 c     call common blocks
-      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
-     $              , dg2 (lx1,ly1,lz1,lelv)
+!       common /scrsf/ trx(lx1,ly1,lz1)
+!      $             , trz(lx1,ly1,lz1)
 
-      common /scrsf/ trx(lx1,ly1,lz1)
-     $             , trz(lx1,ly1,lz1)
+      integer n, ngll
+      real A_w, rho
+      real dpdx_mean, dpdy_mean, dpdz_mean, dgtq,
+     $      dragx, dragpx, dragvx,
+     $      dragy, dragpy, dragvy,
+     $      dragz, dragpz, dragvz,
+     $      torqx, torqpx, torqvx,
+     $      torqy, torqpy, torqvy,
+     $      torqz, torqpz, torqvz
 
       common /ctorq/ dragx(0:maxobj),dragpx(0:maxobj),dragvx(0:maxobj)
      $             , dragy(0:maxobj),dragpy(0:maxobj),dragvy(0:maxobj)
@@ -229,15 +265,13 @@ c
      $             , dpdx_mean,dpdy_mean,dpdz_mean
      $             , dgtq(3,4)
 
-      common /cforce/ ffx_new,ffy_new,ffz_new
-
 c     Get mesh lengths from userParam0{5,6,7}
       XLEN = uparam(5)
       YLEN = uparam(6)
       ZLEN = uparam(7)
 
 c     Define Delta for Smagorinsky method
-      call set_grid_spacing(dg2)
+      call set_grid_spacing  ! set dg2
 
       n=nx1*ny1*nz1*nelv
       ngll=nx1*ny1*nz1
@@ -246,7 +280,7 @@ c      calculate eddy viscosiy and total viscosity
       if(ifuservp) then
         if(nid.eq.0) write(6,*) 'Calculating eddy viscosity'
         do e=1,nelv
-           call eddy_visc(e)
+           call eddy_visc(e, KAPPA, NPOW, y0)
         enddo
         call copy(t,ediff,n)
       endif
@@ -256,14 +290,11 @@ c      calculate eddy viscosiy and total viscosity
          call rzero(x0,3)               ! torque w.r.t. x0
       endif
 
-      ! driving force for Ubar = 1
-      call set_forcing(ffx_new,ux,1)
-
       ! Calculate forces:
       call torque_calc(1.0,x0,.false.,.false.) ! wall shear
 
       rho    = 1.
-      A_w    = XLEN * ZLEN
+      A_w    = XLEN * ZLEN  ! spanwise area
 
       ! Calculate friction velocity
       utau= sqrt(dragx(1)**2+dragz(1)**2)/A_w
@@ -274,8 +305,8 @@ c      calculate eddy viscosiy and total viscosity
 
       !generate PHI statistic
       do i=1,n
-	vgrad(i,1,1,1)=KAPPA*ym1(i,1,1,1)/utau*graduy(i,1,1,1)
-	utauv(i,1,1,1)=utau
+        vgrad(i,1,1,1)=KAPPA * ym1(i,1,1,1) / utau*graduy(i,1,1,1)
+        utauv(i,1,1,1)=utau
       enddo
 
       !Output new statistics
@@ -299,6 +330,9 @@ c      calculate eddy viscosiy and total viscosity
       ! finalise framework
       if (ISTEP.eq.NSTEPS.or.LASTEP.eq.1) then
          call frame_end
+      else if (istep .eq. 0 .and. (.not. chpt_ifrst)) then
+         ! first timestep which is not restarted
+         call outpost(vx, vy, vz, pr, t, '   ')  ! write initial condition
       endif
 
       return
@@ -306,6 +340,8 @@ c      calculate eddy viscosiy and total viscosity
 c-----------------------------------------------------------------------
 c> @callgraph
       subroutine userqtl ! Set thermal divergence
+
+      implicit none
 
       call userqtl_scig
 
@@ -315,143 +351,45 @@ c-----------------------------------------------------------------------
 c> @callgraph
       subroutine usrdat()   ! This routine to modify element vertices
 
-c      implicit none
+      implicit none
 
       include 'SIZE'
-      include 'TOTAL'
+      include 'INPUT'  ! param
+      include 'SGS'  ! ediff, dg2
 
-      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
-     $              , dg2 (lx1,ly1,lz1,lelv)
+      integer n
 
       ! initialize variables
       n = nx1*ny1*nz1*nelt
       call cfill(ediff,param(2),n)
-      call cfill(dg2,1,n)
-
+      call cfill(dg2,1.0,n)
 
       return
       end
 c-----------------------------------------------------------------------
       subroutine usrdat2()  ! This routine to modify mesh coordinates
 
-c      implicit none
+      implicit none
 
       include 'SIZE'
-      include 'TOTAL'
-
-      ! apply mass flux to drive the flow such that Ubar = 1
-c       param(54) = -1   ! x-direction
-c       param(55) = 1    ! Ubar
 
       return
       end
 c-----------------------------------------------------------------------
+c> Compute inflow / outflow conditions a.k.a. driving force. Ubar=1
+c> https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386
+c> @callgrpah
       subroutine usrdat3()
 
-c      implicit none
+      implicit none
 
       include 'SIZE'
-      include 'TOTAL'
-
-      return
-      end
-c-----------------------------------------------------------------------
-c> Compute eddy viscosity using dynamic smagorinsky model
-c> @callgraph
-      subroutine eddy_visc(e)
-      include 'SIZE'
-      include 'TOTAL'
-      include 'ZPER'
-
-      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
-     $              , dg2 (lx1,ly1,lz1,lelv)
-      integer e
-      common /dynsmg/ sij (lx1*ly1*lz1,ldim,ldim)
-     $              , snrm(lx1*ly1*lz1,lelv)
-     $              , Cs(lx1*ly1*lz1,lelv)
-      real sij,snrm,Cs,Csa,Csb
+      include 'INPUT'  ! param
 
 
-      ntot = nx1*ny1*nz1
-c------need to be by element ->
-      call comp_gije(sij,vx(1,1,1,e),vy(1,1,1,e),vz(1,1,1,e),e)
-
-      call comp_sije(sij)
-
-      call mag_tensor_e(snrm(1,e),sij)
-      call cmult(snrm(1,e),2.0,ntot)
-c---------------------------
-
-c------now do for every GLL point
-      ntot = nx1*ny1*nz1*nelt
-      if (e.eq.nelv) then
-        do i=1,ntot
-            Csa=1/(C0**NPOW)
-            Csb=(sqrt(dg2(i,1,1,1))/(KAPPA*(ym1(i,1,1,1)+y0)))**NPOW
-            Cs(i,1)=(Csa+Csb)**(-1/NPOW)
-          ediff(i,1,1,1) = param(2)+(Cs(i,1)**2)*dg2(i,1,1,1)*snrm(i,1)
-        enddo
-      endif
-c----------
-
-      return
-      end
-c-----------------------------------------------------------------------
-c> Compute D^2, the grid spacing used in the DS sgs model.
-c> @callgraph
-      subroutine set_grid_spacing(dg2)
-      include 'SIZE'
-      include 'TOTAL'
-
-
-      real dg2(nx1,ny1,nz1,nelv)
-
-      integer e,eg,ex,ey,ez
-
-      gamma = 1.
-      gamma = gamma/ndim
-
-      n = nx1*ny1*nz1*nelv
-      call rone(dg2,n)
- !     return               ! Comment this line for a non-trivial Delta defn
-
-      do e=1,nelv
-
-         do k=1,nz1
-           km = max(1  ,k-1)
-           kp = min(nz1,k+1)
-
-           do j=1,ny1
-             jm = max(1  ,j-1)
-             jp = min(ny1,j+1)
-
-             do i=1,nx1
-               im = max(1  ,i-1)
-               ip = min(nx1,i+1)
-
-               di = (xm1(ip,j,k,e)-xm1(im,j,k,e))**2
-     $            + (ym1(ip,j,k,e)-ym1(im,j,k,e))**2
-     $            + (zm1(ip,j,k,e)-zm1(im,j,k,e))**2
-
-               dj = (xm1(i,jp,k,e)-xm1(i,jm,k,e))**2
-     $            + (ym1(i,jp,k,e)-ym1(i,jm,k,e))**2
-     $            + (zm1(i,jp,k,e)-zm1(i,jm,k,e))**2
-
-               dk = (xm1(i,j,kp,e)-xm1(i,j,km,e))**2
-     $            + (ym1(i,j,kp,e)-ym1(i,j,km,e))**2
-     $            + (zm1(i,j,kp,e)-zm1(i,j,km,e))**2
-c               write(6,*) ip,im,jp,jm
-               di = di/(ip-im)
-               dj = dj/(jp-jm)
-               dk = dk/(kp-km)
-               dg2(i,j,k,e) = (di*dj*dk)**gamma
-
-             enddo
-           enddo
-         enddo
-      enddo
-
-      call dsavg(dg2)  ! average neighboring elements
+      param(54) = -1  ! use >0 for const flowrate or <0 bulk vel
+                      ! flow direction is given by (1=x, 2=y, 3=z)
+      param(55) = U_GEO  ! flowrate/bulk-velocity
 
       return
       end
@@ -459,15 +397,18 @@ c-----------------------------------------------------------------------
 c> Define objects for surface integrals
 c> @callgraph
       subroutine set_obj
+
+      implicit none
 c
       include 'SIZE'
-      include 'TOTAL'
+      include 'INPUT'  ! nhis, lochis, hcode
+      include 'PARALLEL'  ! lglel
 c
-      integer e,f
+      integer e, f, ieg, ii, iobj, mem, nxyz
 c
 c     Define new objects
 c
-      nobj = 1			! for Periodic
+      nobj = 1  ! for Periodic
       iobj = 0
 
       do ii=nhis+1,nhis+nobj
@@ -486,7 +427,7 @@ c
 c
       nxyz = nx1*ny1*nz1
       do e=1,nelv
-      do f=1,2*ndim
+        do f=1,2*ndim
          if (cbc(f,e,1).eq.'sh ') then
             iobj = 0
             if (f.eq.1) iobj=1  ! lower wall
@@ -500,94 +441,13 @@ c
             endif
 c
          endif
-      enddo
+        enddo
       enddo
 c     write(6,*) 'number',(nmember(k),k=1,4)
 c
       return
       end
-c-----------------------------------
-c> Compute inflow / outflow conditions a.k.a. driving force. Ubar=1
-c> @callgraph
-      subroutine set_forcing(f_new,u,idir)
-
-      include 'SIZE'
-      include 'TOTAL'
-
-      common /uforce/ utldo(ldim)
-
-      n=nx1*ny1*nz1*nelv
-
-      if (istep.eq.0) then
-         f_new = 0.
-         if (DPDX.eq.1) then
-            param(54) = -1     ! flow direction (x:1, y:2, z:3)
-            param(55) = U_GEO  ! flowrate (p54>) or Ubar (p54<0)
-         endif
-      endif
-
-      ! Dead code below when DPDX=1
-      if (DPDX.eq.1) return
-
-      u_targ  = 1.
-      ubar    = glsc2(u,bm1,n)/volvm1
-      utilde  = ubar/u_targ
-
-      if (istep.gt.0) f_new = 0.5 * (f_new + f_new/utilde)
-
-      if (istep.gt.5) then
-         alpha = abs(utilde-utldo(idir))/dt
-         alpha = min(alpha,0.05)
-         if     (utilde.gt.1.and.utilde.gt.utldo(idir)) then
-            f_new = (1-alpha)*f_new
-         elseif (utilde.lt.1.and.utilde.lt.utldo(idir)) then
-            f_new = (1+alpha)*f_new
-         endif
-      endif
-      utldo(idir)   = utilde
-
-      f_min = 0.00001                 ! ad hoc limits
-      f_new = max(f_new,f_min)
-
-      f_max = 0.10000                 ! ad hoc limits
-      f_new = min(f_new,f_max)
-
-      return
-      end
-
 c ----------------------------------------------------------------------
-c> Compute Coriolis acceleration
-c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
-c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
-!! @param[in]    ix,iy,iz        GLL point index
-!! @param[in]    ieg             global element number
-      subroutine coriolis(ix,iy,iz,ieg)
-      implicit none
-      include 'SIZE'            !
-      include 'INPUT'           ! uparam
-      include 'PARALLEL'        ! GLLEL
-      ! include 'SOLN'            ! VX, VZ
-      include 'NEKUSE'            ! ffx, ffy, ffz, ux, uz
-
-      ! argument list
-      integer ix,iy,iz,ieg
-
-      ! local variables
-      ! integer iel
-      real f_corio
-!-----------------------------------------------------------------------
-      ! Local representation
-      ! iel = gllel(ieg)
-
-      f_corio = uparam(4)
-
-      ! Add to forcing terms
-      if (f_corio .gt. 0.) then
-          ffx = ffx - f_corio * uz
-          ffz = ffz + f_corio * (ux - U_GEO)
-      endif
-      return
-      end
 c> @}
 c end of group abl
 !======================================================================

@@ -2,12 +2,12 @@
 import itertools
 import sys
 
-from eturb.clusters import Cluster
+from snek5000.clusters import Cluster
 
 cluster = Cluster()
 sub_dir = "maronga"
 name_run = "neutral-high-order"
-snakemake_rules = "srun"
+sub_command = "debug"
 dry_run = False
 
 for mesh_nb_nodes_walltime, filter_weight, filter_cutoff in itertools.product(
@@ -20,7 +20,7 @@ for mesh_nb_nodes_walltime, filter_weight, filter_cutoff in itertools.product(
         f"\n{sys.executable} ./simple.py "
         f"-d {sub_dir} -m {mesh} -n {name_run} -o {nb_nodes} -w {walltime} "
         f"-fw {filter_weight} -fc {filter_cutoff} "
-        f"{snakemake_rules}"
+        f"{sub_command}"
     )
     if dry_run:
         print(cmd)
