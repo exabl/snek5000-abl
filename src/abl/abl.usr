@@ -153,53 +153,65 @@ c> @callgraph
 
       implicit none
 
-      integer ix,iy,iz,eg,ie
-      real Ly
-      real rand1, rand2, rand3
-      real eps, kx, kz, alpha, beta
-
       include 'SIZE'
-      include 'NEKUSE'  ! temp
+      include 'NEKUSE'  ! x, y, z, ux, uy, uz, temp
       include 'PARALLEL'  ! gllel
       include 'GEOM'  ! ym1
       include 'INPUT'  ! uparam
+
+      integer ix,iy,iz,eg
+      real Ly
+      real rand1, rand2, rand3
+      real eps, kx, kz, alpha, beta, perturb_thick
+      real XLEN, YLEN, ZLEN
 
 c      ux   = 1.0
 c      uy   = 0.0
 c      uz   = 0.0
       temp = 0.0
 
-      ie=gllel(eg)
+c     Get mesh lengths from userParam0{5,6,7}
+      XLEN = uparam(5)
+      YLEN = uparam(6)
+      ZLEN = uparam(7)
+
+      ! ie=gllel(eg)
       ! NOTE: smoother function for ux and wavenumbers alpha and beta changed after
       ! version 0.2.1
-      Ly = uparam(6)
-      ux   = U_GEO * ((ym1(ix,iy,iz,ie) / Ly)**(1. / 7.))
+      ux   = U_GEO * ((y / YLEN)**(1. / 7.))
 
 c     perturbation tries!! (not working)
 c> Use standard subroutine RANDOM_NUMBER.
 c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
-      CALL RANDOM_NUMBER(rand1)
-      CALL RANDOM_NUMBER(rand2)
-      CALL RANDOM_NUMBER(rand3)
-c      big = 1.e7*eg + 1.e8*ix + 1.e9*iy + 1.e10*iz
-c      rand1 = sin(big)
-c      rand2 = sin(rand1*big)
-c      rand3 = sin(rand2*big)
 
-      ux = ux+0.001*rand1
-      uy = 1e-3*rand2
-      uz = 1e-3*rand3
-
-      eps = 1e-3
       kx  = 11
       kz  = 11
 
-      alpha = kx * 2*PI*40
-      beta  = kz * 2*PI*40
+      alpha = kx * 2 * PI / XLEN
+      beta  = kz * 2 * PI / ZLEN
 
-      ux  = ux  + eps*beta  * sin(alpha*x)*cos(beta*z)
-      uy  = uy  +   eps       * sin(alpha*x)*sin(beta*z)
-      uz  = uz  -   eps*alpha * cos(alpha*x)*sin(beta*z)
+      ! estimated boundary layer thickness, which might vary
+      perturb_thick = 0.4 * YLEN
+      ! See: Beare et al., “An Intercomparison of Large-Eddy Simulations of the
+      ! Stable Boundary Layer.” pp. 4
+      if (y < perturb_thick) then
+        ! fills ~2 / 3 of perturb_thick and smoothly decays
+        eps = (1. - tanh(3 * y / perturb_thick)) * 1e-3
+        call random_number(rand1)
+        call random_number(rand2)
+        call random_number(rand3)
+      else
+        eps = 0.
+        rand1 = 0.
+        rand2 = 0.
+        rand3 = 0.
+      endif
+
+      !- a boundary-layer-like profile
+      !- eps * (large scale sinusoidal field + random noise)
+      ux  = ux  + eps*(beta * sin(alpha*x)*cos(beta*z) + rand1 * 1e-1)
+      uy  = 0.  + eps*(       sin(alpha*x)*sin(beta*z) + rand2 * 1e-1)
+      uz  = 0.  - eps*(alpha * cos(alpha*x)*sin(beta*z) + rand3 * 1e-1)
 
       return
       end

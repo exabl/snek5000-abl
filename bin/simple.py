@@ -184,7 +184,7 @@ def debug(ctx, rules):
 
     ds = open_dataset(sorted(sim.path_run.glob("abl0.f*"))[0])
     dsx = ds.isel(x=ds.x.size // 2)
-    dsy = ds.isel(x=ds.y.size // 2)
+    dsy = ds.isel(y=20)
     dsz = ds.isel(z=ds.z.size // 2)
     for ds_slice in dsx, dsy, dsz:
         ds_slice.ux.plot()
