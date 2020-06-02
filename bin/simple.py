@@ -6,14 +6,13 @@ import click
 from abl.solver import Simul
 
 
-# @click.group(chain=True, invoke_without_command=True)
-#  @click.group(chain=True)
 @click.group()
 @click.option("-d", "--sub-dir", default="test")
 @click.option("-m", "--mesh", default=1, type=int, help="mesh configuration")
 @click.option("-n", "--name-run", default="demo", help="short description of the run")
 @click.option("-o", "--nodes", default=1, type=int, help="number of nodes")
 @click.option("-w", "--walltime", default="30:00")
+@click.option("-zw", "--z-wall", default=0., type=float, help="wall position")
 @click.option(
     "-fw", "--filter-weight", default=12, type=float, help="filter weight parameter",
 )
@@ -21,7 +20,7 @@ from abl.solver import Simul
     "-fc", "--filter-cutoff", default=0.5, type=float, help="filter cutoff ratio"
 )
 @click.pass_context
-def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, filter_weight, filter_cutoff):
+def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, filter_cutoff):
     """\b
     Notes
     -----
@@ -49,6 +48,7 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, filter_weight, filter_cut
         oper.ny = 48
         oper.nz = 24
 
+    oper.origin_y = z_wall
     oper.Lx = 1280
     oper.Ly = 1500
     oper.Lz = 1280
@@ -96,7 +96,7 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, filter_weight, filter_cut
         "timeStep"
         # "runTime"
     )
-    general.write_interval = save_freq * 5
+    general.write_interval = save_freq * 2
     general.filtering = "hpfrt"
     #  general.filtering = None
     general.filter_weight = filter_weight
@@ -128,7 +128,7 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, filter_weight, filter_cut
     # ===========
     # TODO!
     params.nek.chkpoint.chkp_interval = save_freq
-    params.nek.stat.av_step = save_freq
+    params.nek.stat.av_step = save_freq // 5
     params.nek.stat.io_step = save_freq
     params.nek.monitor.wall_time = walltime
 
@@ -153,7 +153,7 @@ def launch(ctx, rules):
 
     logger.info("Initializing simulation launch...")
 
-    sim = Simul(ctx["params"])
+    sim = Simul(ctx.obj["params"])
     sim.sanity_check()
     sim.make.exec(rules)
 
@@ -176,8 +176,7 @@ def debug(ctx, rules):
     rules = ["srun"]
 
     sim = Simul(params)
-    # TODO: add sanity check
-    #  sim.sanity_check()
+    sim.sanity_check()
     logger.info("Executing simulation...")
     sim.make.exec(rules)
     logger.info("Finished simulation...")
