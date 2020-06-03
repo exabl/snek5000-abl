@@ -8,10 +8,10 @@ cluster = Cluster()
 sub_dir = "maronga-june"
 name_run = "neutral"
 sub_command = "launch"
-dry_run = True
+dry_run = False
 
 for mesh_nb_nodes_walltime, filter_weight, filter_cutoff, z_wall in itertools.product(
-    zip([1], [1], [f"{days}-00:00:00" for days in (1,)]),
+    zip([2, 3], [1, 2], [f"{days}-00:00:00" for days in (7,) * 2]),
     [0.1, 0.25],
     [0.75],
     [0.1, 2.],
