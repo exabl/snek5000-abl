@@ -1,55 +1,62 @@
 from pathlib import Path
 
-from eturb.clusters import Cluster
-from eturb.log import logger
-from eturb.util import prepare_for_restart
+from snek5000.clusters import Cluster
+from snek5000.log import logger
+from snek5000.util import prepare_for_restart
 from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
 
 cluster = Cluster()
 name_run = "restart"
 snakemake_rules = "srun"
+modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "simple"
-#  for path in subdir.iterdir():
-for path in [
-    Path(
-        "/proj/kthmech/users/x_ashmo/tmp/simple/abl_rot_30x48x20_V1pix1.x1.571_2020-02-09_17-40-03"
-    )
-]:
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-june"
+for path in filter(
+    lambda path: path.name not in [
+        "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-04_11-16-25"
+    ],
+    subdir.iterdir()
+):
     try:
         params = prepare_for_restart(path)
-    except IOError as e:
-        logger.error(e)
-        logger.warning("Skipping...")
-        continue
+    except IOError as err:
+        logger.error(f"{err} : Skipping...")
+        # continue
+    else:
+        logger.info(f"OK {path}")
 
-    params.nek.stat.av_step = 1000
-    params.nek.stat.io_step = 1000
-    params.nek.pressure.residual_tol = 1e-10
-    params.nek.general.num_steps = 1000
-    params.nek._write_par(path / "abl.par")
+    if modify_params:
+        logger.info("Modifying I/O parameters ...")
+        params.nek.stat.av_step = 1000
+        params.nek.stat.io_step = 1000
+        params.nek.pressure.residual_tol = 1e-10
+        params.nek.general.num_steps = 1000
 
     #  nb_nodes = 1 if params.oper.nx <= 15 else 2
-    nb_nodes = 1 if "15x" in path.name else 2
-    walltime = "01:00:00"
+    nb_nodes = 2 if "24x48" in path.name else 1
 
     cmd = f"""
 cd {path}
-mpiexec -n {nb_nodes*cluster.nb_cores_per_node} ./nek5000 > {Path.cwd() / ("SLURM." + name_run)}.${{SLURM_JOBID}}.stdout 2>&1
-
+snakemake {snakemake_rules} -j
 """
     if dryrun:
+        if list(path.glob("rs6*")):
+            logger.info("Has restart files... modified parameters will be written to abl.par")
+
         print(cmd)
     else:
+        if list(path.glob("rs6*")):
+            logger.info("Has restart files... writing modified parameters to abl.par")
+            params.nek._write_par(path / "abl.par")
+
         cluster.submit_command(
             nb_nodes=nb_nodes,
             command=cmd,
             name_run=name_run,
-            # walltime='7-00:00:00',
+            walltime='7-00:00:00',
             # walltime="06:00:00",
             signal_num=False,
-            walltime=walltime,
             ask=False,
             bash=False,
             email="avmo@misu.su.se",
