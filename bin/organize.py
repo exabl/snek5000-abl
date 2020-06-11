@@ -38,9 +38,11 @@ def prompt_once(run):
         prompt="\nWhat do you want to do?",
         choices=[
             "list contents*",
+            "tail log",
             "continue",
             "force update Snakefile*",
             "unlock*",
+            "compile*",
             "archive+",
             "remove",
             "quit",
@@ -50,12 +52,26 @@ def prompt_once(run):
     action = cli.launch()
     print()
 
+    def snakemake_target(target):
+        with change_dir(run):
+            if not snakemake(
+                "Snakefile", targets=[target], debug=True, dryrun=False
+            ):
+                cli = YesNo(f"Snakemake failure to {target}. Try again?")
+                return cli.launch()
+            else:
+                return False  # do not recurse
+
     recurse = False
     if action in ("quit", "continue"):
         return action
     elif action == "list contents*":
         os.system(f"ls -F --color {run}")
         os.system(f"ls -F --color {run}/data")
+        recurse = True
+    elif action == "tail log":
+        os.system(f"ls -F --color {run}/abl.log")
+        os.system(f"less +F {run}/abl.log")
         recurse = True
     elif action == "force update Snakefile*":
         (run / "Snakefile").unlink()
@@ -65,13 +81,10 @@ def prompt_once(run):
         with change_dir(run):
             snakemake("Snakefile", unlock=True)
         recurse = True
+    elif action == "compile*":
+        recurse = snakemake_target("compile")
     elif action == "archive+":
-        with change_dir(run):
-            if not snakemake(
-                "Snakefile", targets=["archive"], debug=True, dryrun=False
-            ):
-                cli = YesNo("Snakemake failure to archive. Try again?")
-                recurse = cli.launch()
+        recurse = snakemake_target("archive")
     elif action == "remove":
         cli = YesNo("Are you 100% sure?")
         if cli.launch():
@@ -81,8 +94,9 @@ def prompt_once(run):
 
     if recurse:
         return prompt_once(run)
-
-    return "OK"
+    else:
+        logger.info("Proceeding to next directory ...")
+        return "OK"
 
 
 def prompt_all(runs):

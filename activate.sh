@@ -23,6 +23,10 @@ function tar-diff() {
   diff --color=auto <(tar-ls $1) <(tar-ls $2)
 }
 
+function pwd-nek() {
+  pwdx $(pgrep -af nek5000 | awk '(NR==1){print $1}')
+}
+
 if [ -d venv ]; then
   source venv/bin/activate
 elif [[ -z "$CONDA_PREFIX" ]] && [[ -z "$VIRTUAL_ENV" ]]; then
@@ -35,3 +39,4 @@ if [ "$BASH_VERSION" ]; then
     eval $(snakemake --bash-completion)
   fi
 fi
+
