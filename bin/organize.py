@@ -126,10 +126,18 @@ def prompt_all(runs):
 
 
 @click.command()
+@click.option("-l", "--light-bg/--no-light-bg", type=bool, default=False)
 @click.argument("name_run", type=str)
-def organize(name_run):
+def organize(light_bg, name_run):
     subdir = Path(FLUIDDYN_PATH_SCRATCH) / name_run
 
+    if light_bg:
+        STYLE.update(
+            dict(
+                background_on_switch=colors.background["blue"],
+                background_color=colors.background["white"],
+            )
+        )
     runs = sorted(d for d in subdir.iterdir() if d.is_dir())
     prompt_all(runs)
 

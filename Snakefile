@@ -100,7 +100,7 @@ rule jlab:
         printf '        '
         hostname
         echo '-----------------------------------------'
-        jupyter-lab --no-browser --port=5656
+        jupyter-lab --no-browser --port=5656 --notebook-dir=$HOME
         """
 
 rule lint:
