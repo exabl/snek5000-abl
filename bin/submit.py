@@ -5,16 +5,16 @@ import sys
 from snek5000.clusters import Cluster
 
 cluster = Cluster()
-sub_dir = "maronga-june"
-name_run = "neutral"
+sub_dir = "maronga-geert"
+name_run = "geert"
 sub_command = "launch"
 dry_run = False
 
 for mesh_nb_nodes_walltime, filter_weight, filter_cutoff, z_wall in itertools.product(
-    zip([2, 3], [1, 2], [f"{days}-00:00:00" for days in (7,) * 2]),
-    [0.1, 0.25],
+    zip([2], [1], [f"{days}-00:00:00" for days in (7,) * 1]),
+    [0.05],
     [0.75],
-    [0.1, 2.],
+    [0.],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
     cmd = (
@@ -40,3 +40,5 @@ for mesh_nb_nodes_walltime, filter_weight, filter_cutoff, z_wall in itertools.pr
             interactive=True,
             omp_num_threads=None,  # do not set
         )
+
+# ./simple.py -m 2 -n geert -o 1 -w 7-00:00:00 -zw 0 -fw 0.05 -fc 0.75 show size
