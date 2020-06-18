@@ -58,14 +58,14 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, fi
 
     # Nek5000: SIZE
     # ===============
-    oper.elem.order = oper.elem.order_out = 12
+    oper.elem.order = oper.elem.order_out = 8
     oper.elem.coef_dealiasing = 2 / 3
     # TODO: try Pn-Pn grid
     oper.elem.staggered = True
     # TODO: Try to see if it works without strange values in SIZE file
     oper.nproc_min = 4
     oper.nproc_max = 32 * nodes
-    # TODO: why not 0? since temperature is not active
+    # NOTE: ldimt has to be at least 1
     oper.scalars = 1
 
     # oper.max.hist = 1000
@@ -97,13 +97,15 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, fi
         # "runTime"
     )
     general.write_interval = save_freq * 2
+    # general.write_double_precision = False
+
     general.filtering = "hpfrt"
     #  general.filtering = None
     general.filter_weight = filter_weight
     general.filter_cutoff_ratio = filter_cutoff
     general.user_params = {
         3: 1,  # dp/dx pressure gradient
-        4: 1.39e-4,  # Coriolis frequency at 73 N
+        4: -1.39e-4,  # Coriolis frequency at 73 S
         5: oper.Lx,
         6: oper.Ly,
         7: oper.Lz,
@@ -118,7 +120,7 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, fi
 
     # NOTE: reducing pressure residual tolerance affects velocity divergence
     # TODO: check if w -> O(pressure.residual_tol)
-    pressure.residual_tol = 1e-10
+    pressure.residual_tol = 1e-5
     #  velocity.residual_tol = 1e-8
     #
     #  reynolds_number = 1e10
@@ -189,6 +191,29 @@ def debug(ctx, rules):
         ds_slice.ux.plot()
         plt.show()
     breakpoint()
+
+
+@cli.command()
+@click.argument("file", default="par")
+@click.pass_context
+def show(ctx, file):
+    params = ctx.obj["params"]
+    file = file.lower()
+
+    if file == "par":
+        params.nek._write_par()
+    elif file == "xml":
+        print(params)
+    elif file in ("size", "box"):
+        from snek5000.operators import Operators
+        from abl import templates
+
+        oper = Operators(params=params)
+        template = getattr(templates, file)
+        write_to_stdout = getattr(oper, f"write_{file}")
+        write_to_stdout(template)
+    else:
+        raise ValueError("The CLI argument file should be one of {'xml', 'par', 'size', 'box'}")
 
 
 if __name__ == "__main__":
