@@ -19,7 +19,7 @@ c drive flow with pressure gradient
 c define constant parameters
 #define KAPPA 0.41
 #define y0 0.1
-#define NPOW 0.5
+#define NPOW 3.0
 #define C0 0.19
 #define U_GEO 5.0
 #define PI (4.*atan(1.))
