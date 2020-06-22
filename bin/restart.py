@@ -11,12 +11,12 @@ snakemake_rules = "srun"
 modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-june"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-june-geo"
 for path in filter(
     lambda path: path.name not in [
         # "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-04_11-16-25"
-        "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-11_05-19-35"
-    ],
+        # "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-11_05-19-35"
+    ] and path.is_dir(),
     subdir.iterdir()
 ):
     try:
