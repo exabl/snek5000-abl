@@ -93,7 +93,7 @@ c------now do for every GLL point
         do i=1,ntot
           Csa = 1.0 / (C0 ** npow)
           Csb = (
-     $      sqrt(dg2(i,1,1,1)) / (kappa * (ym1(i,1,1,1) + y0))
+     $      sqrt(dg2(i,1,1,1)) / (kappa * (ym1(i,1,1,1)))  ! removed y0 dependency
      $    ) ** npow
           Cs(i,1) = (Csa + Csb) ** (-1/npow)
 
