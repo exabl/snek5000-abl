@@ -148,16 +148,16 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, fi
 
 
 @cli.command()
-@click.argument("rules", default=["srun"])
+@click.argument("rule", default="srun")
 @click.pass_context
-def launch(ctx, rules):
+def launch(ctx, rule):
     from snek5000.log import logger
 
     logger.info("Initializing simulation launch...")
 
     sim = Simul(ctx.obj["params"])
     sim.sanity_check()
-    sim.make.exec(rules)
+    sim.make.exec([rule])
 
 
 @cli.command()
