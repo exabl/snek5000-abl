@@ -6,18 +6,19 @@ from snek5000.util import prepare_for_restart
 from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
 
 cluster = Cluster()
-name_run = "restart"
+base_name_run = "setup"
 snakemake_rules = "srun"
 modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-june-geo"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-geert"
 for path in filter(
     lambda path: path.name not in [
         # "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-04_11-16-25"
         # "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-11_05-19-35"
     ] and path.is_dir(),
-    subdir.iterdir()
+    # subdir.iterdir()
+    subdir.glob("LES_setup*")
 ):
     try:
         params = prepare_for_restart(path)
@@ -27,6 +28,8 @@ for path in filter(
     else:
         logger.info(f"OK {path}")
 
+    name_run = base_name_run + path.name[-10:]
+        
     if modify_params:
         logger.info("Modifying I/O parameters ...")
         params.nek.stat.av_step = 1000
