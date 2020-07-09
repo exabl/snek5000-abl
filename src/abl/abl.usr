@@ -53,7 +53,7 @@ c> Compute Coriolis acceleration
 c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
 c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
 c> @param[in]    ix,iy,iz        GLL point index
-c> @param[in]    ieg             global element number
+c> @param[in]    eg              global element number
       subroutine userf(ix,iy,iz,eg) ! set acceleration term
 c
 c     Note: this is an acceleration term, NOT a force!
@@ -440,7 +440,7 @@ c ----------------------------------------------------------------------
 c> @}
 c end of group abl
 !======================================================================
-c> @defgroup toolbox KTH Toolbox: user-file subroutines
+c> @defgroup framework KTH Framework: user-file subroutines
 c> @{
 !> @brief Register user specified modules
       subroutine frame_usr_register
