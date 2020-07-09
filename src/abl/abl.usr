@@ -674,32 +674,43 @@ c> @{
 !     local variables
       integer itmp              ! dummy variable
 !-----------------------------------------------------------------------
-!     Velocity transformation; simple copy
+!     Velocity transformation; simple copy (1, 2, 3) -> (1, 3, 2)
+c
+c>    NOTE: Coordinates swapped done for statistics!
+c>    VY (numerical) -> w (physical, wall-normal direction)
+c>    VZ (numerical) -> v (physical, spanwise direction)
+c
       itmp = NX1*NY1*NZ1*NELV
       call copy(lvel(1,1,1,1,1),VX,itmp)
-      call copy(lvel(1,1,1,1,2),VY,itmp)
-      call copy(lvel(1,1,1,1,3),VZ,itmp)
+      call copy(lvel(1,1,1,1,3),VY,itmp)
+      call copy(lvel(1,1,1,1,2),VZ,itmp)
 
 !     Derivative transformation
-!     No transformation
-      call gradm1(dudx(1,1,1,1,1),dudx(1,1,1,1,2),dudx(1,1,1,1,3),
-     $      lvel(1,1,1,1,1))
-      call gradm1(dvdx(1,1,1,1,1),dvdx(1,1,1,1,2),dvdx(1,1,1,1,3),
-     $      lvel(1,1,1,1,2))
-      call gradm1(dwdx(1,1,1,1,1),dwdx(1,1,1,1,2),dwdx(1,1,1,1,3),
-     $      lvel(1,1,1,1,3))
+c>    NOTE:
+c>    d/dy (numerical, gradm1) -> d/dz (wall-normal direction)
+c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
+      call gradm1(
+     $  dudx(1,1,1,1,1), dudx(1,1,1,1,3), dudx(1,1,1,1,2),
+     $  lvel(1,1,1,1,1))
+      call gradm1(
+     $  dvdx(1,1,1,1,1), dvdx(1,1,1,1,3), dvdx(1,1,1,1,2),
+     $  lvel(1,1,1,1,2))
+      call gradm1(
+     $  dwdx(1,1,1,1,1), dwdx(1,1,1,1,3), dwdx(1,1,1,1,2),
+     $  lvel(1,1,1,1,3))
 
 !     get vorticity
       if (IF3D) then
 !     curlx
-         call sub3(vort(1,1,1,1,1),dwdx(1,1,1,1,2),
-     $        dvdx(1,1,1,1,3),itmp)
-!     curly
-         call sub3(vort(1,1,1,1,2),dudx(1,1,1,1,3),
-     $        dwdx(1,1,1,1,1),itmp)
-      endif
+        call sub3(
+     $    vort(1,1,1,1,1), dwdx(1,1,1,1,2), dvdx(1,1,1,1,3), itmp)
 !     curlz
-      call sub3(vort(1,1,1,1,3),dvdx(1,1,1,1,1),dudx(1,1,1,1,2),itmp)
+        call sub3(
+     $    vort(1,1,1,1,3), dvdx(1,1,1,1,1), dudx(1,1,1,1,2), itmp)
+      endif
+!     curly
+        call sub3(
+     $    vort(1,1,1,1,2), dudx(1,1,1,1,3), dwdx(1,1,1,1,1), itmp)
 
       return
       end subroutine
