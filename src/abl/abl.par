@@ -16,8 +16,8 @@ writeControl = timeStep
 writeInterval = 200000
 
 filtering=HPFRT
-filterCutoffRatio=0.05
-filterWeight=0.75
+filterCutoffRatio=0.75
+filterWeight=0.05
 
 userParam03 = 5.0  # Geostrophic velocity
 userParam04 = -0.00014  # Coriolis frequency

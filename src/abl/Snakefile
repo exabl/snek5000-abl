@@ -124,7 +124,7 @@ rule cleansimul:
 rule cleanall:
     shell:
         """
-        rm -rf obj makefile_usr.inc
+        rm -rf obj
         snakemake clean cleansimul -j
         """
 
