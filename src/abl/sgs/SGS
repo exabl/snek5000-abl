@@ -10,3 +10,5 @@ c
      $     snrm(lx1*ly1*lz1,lelv),
      $     Cs(lx1*ly1*lz1,lelv)
       common /dynsmg/ sij,snrm,Cs
+
+c vim: set ft=fortran
