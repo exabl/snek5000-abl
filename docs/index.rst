@@ -33,7 +33,7 @@ Welcome to snek5000-*abl*'s documentation!
    :caption: User Guide
 
    abl
-   framwork
+   framework
    nek5000
 
 .. autosummary::
