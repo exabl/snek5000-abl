@@ -19,9 +19,7 @@ filtering=HPFRT
 filterCutoffRatio=0.05
 filterWeight=0.75
 
-userParam01 = 0
-userParam02 = 2000
-userParam03 = 1
+userParam03 = 5.0  # Geostrophic velocity
 userParam04 = -0.00014  # Coriolis frequency
 userParam05 = 1280
 userParam06 = 1500

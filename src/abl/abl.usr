@@ -15,8 +15,6 @@ c>
 c> @{
 c----------------------------------------------------------------------
 c drive flow with pressure gradient
-#define DPDX uparam(3)
-#define U_GEO 5.0
 
 c> Set variable properties, does not call any subroutines / functions.
 c> @param ix x-index
@@ -72,10 +70,11 @@ c
       integer ix,iy,iz,eg
 
       ! local variables
-      real f_corio
+      real U_GEO, f_corio
 
 c     e = gllel(eg)
 
+      U_GEO = uparam(3)
       f_corio = uparam(4)
 
       ffx = f_corio * uz
@@ -157,13 +156,15 @@ c> @callgraph
       real Ly
       real rand1, rand2, rand3
       real eps, kx, kz, alpha, beta, perturb_thick
-      real XLEN, YLEN, ZLEN
+      real U_GEO, XLEN, YLEN, ZLEN
 
 c      ux   = 1.0
 c      uy   = 0.0
 c      uz   = 0.0
       temp = 0.0
 
+c     Geostrophic velocity
+      U_GEO = uparam(3)
 c     Get mesh lengths from userParam0{5,6,7}
       XLEN = uparam(5)
       YLEN = uparam(6)
@@ -303,7 +304,7 @@ c      calculate eddy viscosiy and total viscosity
         utauv(i,1,1,1)=utau
       enddo
 
-      !Output new statistics
+      !Output old statistics
       if (mod(istep,iostep).eq.0)
      $ call outpost(dg2,vgrad,ediff,pr,t,'vgr')
 
