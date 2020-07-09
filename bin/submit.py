@@ -6,15 +6,15 @@ from snek5000.clusters import Cluster
 
 cluster = Cluster()
 sub_dir = "maronga-geert"
-name_run = "geert"
+name_run = "geert-case2-old-ic"
 sub_command = "launch"
-dry_run = False
+dry_run = True
 
 for mesh_nb_nodes_walltime, filter_weight, filter_cutoff, z_wall in itertools.product(
     zip([2], [1], [f"{days}-00:00:00" for days in (7,) * 1]),
     [0.05],
     [0.75],
-    [0.],
+    [0.1],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
     cmd = (

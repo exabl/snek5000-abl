@@ -1,9 +1,9 @@
 from pathlib import Path
 
+from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
 from snek5000.clusters import Cluster
 from snek5000.log import logger
 from snek5000.util import prepare_for_restart
-from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
 
 cluster = Cluster()
 base_name_run = "setup"
@@ -13,12 +13,15 @@ dryrun = False
 
 subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-geert"
 for path in filter(
-    lambda path: path.name not in [
+    lambda path: path.name
+    not in [
         # "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-04_11-16-25"
         # "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-11_05-19-35"
-    ] and path.is_dir(),
+    ]
+    and path.is_dir()
+    and "old-ic" in path.name,
     # subdir.iterdir()
-    subdir.glob("LES_setup*")
+    subdir.glob("LES_setup*"),
 ):
     try:
         params = prepare_for_restart(path)
@@ -29,7 +32,7 @@ for path in filter(
         logger.info(f"OK {path}")
 
     name_run = base_name_run + path.name[-10:]
-        
+
     if modify_params:
         logger.info("Modifying I/O parameters ...")
         params.nek.stat.av_step = 1000
@@ -47,7 +50,9 @@ mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
 """
     if dryrun:
         if list(path.glob("rs6*")):
-            logger.info("Has restart files... modified parameters will be written to abl.par")
+            logger.info(
+                "Has restart files... modified parameters will be written to abl.par"
+            )
 
         print(cmd)
     else:
@@ -63,7 +68,7 @@ mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
             nb_nodes=nb_nodes,
             command=cmd,
             name_run=name_run,
-            walltime='7-00:00:00',
+            walltime="7-00:00:00",
             # walltime="06:00:00",
             signal_num=False,
             ask=False,

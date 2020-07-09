@@ -1,13 +1,13 @@
 -3                     spatial dimension (will create box.re2)
 1                      number of fields
 #
-#    comments:
+#    comments: 
 #
 #========================================================
 #
 Box                                       hillp
--15 -24 -10                                    Nelx  Nely
-0.0 3.1416 1                                x0 x1 ratio
-0.0 1.0 1
-0.0 1.5708 1
+-12 -24 -12                                    Nelx  Nely
+0.0 1280 1                                x0 x1 ratio
+0.0 1500 1
+0.0 1280 1
 P  ,P  ,sh ,SYM,P  ,P                    BC's:  (cbx0, cbx1, cby0, cby1)

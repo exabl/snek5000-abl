@@ -15,14 +15,6 @@ c>
 c> @{
 c----------------------------------------------------------------------
 c drive flow with pressure gradient
-#define DPDX uparam(3)
-c define constant parameters
-#define KAPPA 0.41
-#define y0 0.1
-#define NPOW 0.5
-#define C0 0.19
-#define U_GEO 5.0
-#define PI (4.*atan(1.))
 
 c> Set variable properties, does not call any subroutines / functions.
 c> @param ix x-index
@@ -78,10 +70,11 @@ c
       integer ix,iy,iz,eg
 
       ! local variables
-      real f_corio
+      real U_GEO, f_corio
 
 c     e = gllel(eg)
 
+      U_GEO = uparam(3)
       f_corio = uparam(4)
 
       ffx = f_corio * uz
@@ -123,6 +116,7 @@ c
       include 'PARALLEL'  ! gllel
       include 'SOLN'  ! vx, vz
       include 'GEOM'  ! ym1
+      include 'WMLES'  ! y0, KAPPA
 
 
 c      if (cbc(iside,gllel(eg),ifield).eq.'v01')
@@ -142,8 +136,6 @@ c--------Calculate Stresses
        trz= -KAPPA**2*(w1_2*absu)/(log(y1_2/y0)**2)
        temp = 0.0
 
-
-
       return
       end
 c-----------------------------------------------------------------------
@@ -158,18 +150,21 @@ c> @callgraph
       include 'PARALLEL'  ! gllel
       include 'GEOM'  ! ym1
       include 'INPUT'  ! uparam
+      include 'WMLES'  ! KAPPA, PI_, y0
 
       integer ix,iy,iz,eg
       real Ly
       real rand1, rand2, rand3
       real eps, kx, kz, alpha, beta, perturb_thick
-      real XLEN, YLEN, ZLEN
+      real U_GEO, XLEN, YLEN, ZLEN
 
 c      ux   = 1.0
 c      uy   = 0.0
 c      uz   = 0.0
       temp = 0.0
 
+c     Geostrophic velocity
+      U_GEO = uparam(3)
 c     Get mesh lengths from userParam0{5,6,7}
       XLEN = uparam(5)
       YLEN = uparam(6)
@@ -187,8 +182,8 @@ c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
       kx  = 11
       kz  = 11
 
-      alpha = kx * 2 * PI / XLEN
-      beta  = kz * 2 * PI / ZLEN
+      alpha = kx * 2 * PI_* 40 / XLEN
+      beta  = kz * 2 * PI_* 40 / ZLEN
 
       ! estimated boundary layer thickness, which might vary
       perturb_thick = 0.4 * YLEN
@@ -229,6 +224,7 @@ c> @callgraph
       include 'TSTEP'  ! ISTEP, lastep, time
       include 'SGS'  ! dg2, ediff
       include 'CHKPOINTD'  ! chpt_ifrst
+      include 'WMLES'  ! KAPPA
 
       integer e,i
       real gradux(lx1,ly1,lz1,lelv)
@@ -245,7 +241,7 @@ c     call common blocks
 !      $             , trz(lx1,ly1,lz1)
 
       integer n, ngll
-      real A_w, rho
+      real A_w
       real dpdx_mean, dpdy_mean, dpdz_mean, dgtq,
      $      dragx, dragpx, dragvx,
      $      dragy, dragpy, dragvy,
@@ -280,7 +276,7 @@ c      calculate eddy viscosiy and total viscosity
       if(ifuservp) then
         if(nid.eq.0) write(6,*) 'Calculating eddy viscosity'
         do e=1,nelv
-           call eddy_visc(e, KAPPA, NPOW, y0)
+           call eddy_visc(e)
         enddo
         call copy(t,ediff,n)
       endif
@@ -293,7 +289,6 @@ c      calculate eddy viscosiy and total viscosity
       ! Calculate forces:
       call torque_calc(1.0,x0,.false.,.false.) ! wall shear
 
-      rho    = 1.
       A_w    = XLEN * ZLEN  ! spanwise area
 
       ! Calculate friction velocity
@@ -309,7 +304,7 @@ c      calculate eddy viscosiy and total viscosity
         utauv(i,1,1,1)=utau
       enddo
 
-      !Output new statistics
+      !Output old statistics
       if (mod(istep,iostep).eq.0)
      $ call outpost(dg2,vgrad,ediff,pr,t,'vgr')
 
@@ -377,8 +372,9 @@ c-----------------------------------------------------------------------
       end
 c-----------------------------------------------------------------------
 c> Compute inflow / outflow conditions a.k.a. driving force. Ubar=1
+c> Not required when coriolis force is specified in userf
 c> https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386
-c> @callgrpah
+c> @callgraph
       subroutine usrdat3()
 
       implicit none
@@ -393,7 +389,6 @@ c> @callgraph
       subroutine set_obj
 
       implicit none
-c
       include 'SIZE'
       include 'INPUT'  ! nhis, lochis, hcode
       include 'PARALLEL'  ! lglel
