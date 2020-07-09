@@ -22,11 +22,10 @@ filterWeight=0.75
 userParam01 = 0
 userParam02 = 2000
 userParam03 = 1
-userParam04 = 1e-4  # Coriolis frequency
-
-userParam05 = 3.1416
-userParam06 = 1.0
-userParam07 = 1.5708
+userParam04 = -0.00014  # Coriolis frequency
+userParam05 = 1280
+userParam06 = 1500
+userParam07 = 1280
 
 [PROBLEMTYPE]
 equation = incompNS
