@@ -60,7 +60,7 @@ c               write(6,*) ip,im,jp,jm
 c-----------------------------------------------------------------------
 c> Compute eddy viscosity using constant smagorinsky model
 c> @callgraph
-      subroutine eddy_visc(e, kappa, npow, y0)
+      subroutine eddy_visc(e)
 
       implicit none
 
@@ -68,11 +68,11 @@ c> @callgraph
       include 'GEOM'  ! ym1
       include 'INPUT'  ! param
       include 'SOLN'  ! vx
-      include 'SGS' ! ediff, sij, snrm, Cs
+      include 'SGS'  ! ediff, sij, snrm, Cs
+      include 'WMLES'  ! C0, kappa, npow, y0
 
       integer e
-      real kappa, npow, y0
-      real Csa, Csb, C0
+      real Csa, Csb
       integer i, ntot
 
       ntot = nx1*ny1*nz1

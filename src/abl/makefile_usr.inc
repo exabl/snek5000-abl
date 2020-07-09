@@ -46,6 +46,6 @@ $(OBJDIR)/stat_IO.o           :toolbox/stat_IO.f toolbox/STATD toolbox/MAP2D too
 $(OBJDIR)/math_tools.o        :toolbox/math_tools.f
 	$(F77) -c $(FL2) -I./ $< -o $@
 
-$(OBJDIR)/smagorinsky.o       :sgs/smagorinsky.f sgs/SGS
+$(OBJDIR)/smagorinsky.o       :sgs/smagorinsky.f sgs/SGS sgs/WMLES
 	$(F77) -c $(FL2) -I./ $< -o $@
 
