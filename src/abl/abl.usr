@@ -142,8 +142,6 @@ c--------Calculate Stresses
        trz= -KAPPA**2*(w1_2*absu)/(log(y1_2/y0)**2)
        temp = 0.0
 
-
-
       return
       end
 c-----------------------------------------------------------------------
@@ -365,8 +363,9 @@ c-----------------------------------------------------------------------
       end
 c-----------------------------------------------------------------------
 c> Compute inflow / outflow conditions a.k.a. driving force. Ubar=1
+c> Not required when coriolis force is specified in userf
 c> https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386
-c> @callgrpah
+c> @callgraph
       subroutine usrdat3()
 
       implicit none
@@ -381,7 +380,6 @@ c> @callgraph
       subroutine set_obj
 
       implicit none
-c
       include 'SIZE'
       include 'INPUT'  ! nhis, lochis, hcode
       include 'PARALLEL'  ! lglel

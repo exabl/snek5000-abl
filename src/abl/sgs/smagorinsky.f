@@ -4,17 +4,15 @@ c> @callgraph
       subroutine set_grid_spacing
 
       implicit none
-
-      include 'SIZE'  ! nx1, ny1, nz1, nelev, 
+      include 'SIZE'  ! nx1, ny1, nz1, nelev,
       include 'GEOM'  ! xm1, ym1, zm1
       include 'SGS'  ! dg2
 
       integer e, eg,ex,ey,ez
       integer n, i, j, k, im, ip, jm, jp, km, kp
-      real di, dj, dk, gamma
+      real di, dj, dk, ndim_inv
 
-      gamma = 1.
-      gamma = gamma / ndim
+      ndim_inv = 1./ndim
 
       n = nx1*ny1*nz1*nelv
       call rone(dg2,n)
@@ -48,7 +46,7 @@ c               write(6,*) ip,im,jp,jm
                di = di/(ip-im)
                dj = dj/(jp-jm)
                dk = dk/(kp-km)
-               dg2(i,j,k,e) = (di*dj*dk)**gamma
+               dg2(i,j,k,e) = (di*dj*dk)**ndim_inv
 
              enddo
            enddo
