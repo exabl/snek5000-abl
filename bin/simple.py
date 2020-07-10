@@ -132,7 +132,7 @@ def cli(
     # ===========
     # TODO!
     params.nek.chkpoint.chkp_interval = save_freq
-    params.nek.stat.av_step = save_freq // 5
+    params.nek.stat.av_step = 15
     params.nek.stat.io_step = save_freq
     params.nek.monitor.wall_time = walltime
 
