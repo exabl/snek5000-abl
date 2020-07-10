@@ -11,17 +11,15 @@ snakemake_rules = "srun"
 modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-geert"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-stats-new-ic"
 for path in filter(
     lambda path: path.name
     not in [
-        # "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-04_11-16-25"
-        # "abl_neutral_12x24x12_V1280.x1500.x1280._2020-06-11_05-19-35"
+        # exceptions
     ]
     and path.is_dir()
-    and "old-ic" in path.name,
-    # subdir.iterdir()
-    subdir.glob("LES_setup*"),
+    and "test" not in path.name,
+    subdir.iterdir()
 ):
     try:
         params = prepare_for_restart(path)
