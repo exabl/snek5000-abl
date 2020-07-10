@@ -29,13 +29,16 @@ rule bin_archive:
     input:
         iglob('bin/SLURM*'),
         iglob('bin/launcher_20*')
-    output:
-        tar_name(
-            Path.cwd(), "bin/SLURM*", subdir="bin",
+    params:
+        tarball = tar_name(
+            Path.cwd().name,
+            pattern="bin/SLURM*",
+            subdir="bin",
             default_prefix="archive"
         )
     run:
-        archive(output, input, remove=True)
+        archive(params.tarball, input, remove=True)
+        archive(params.tarball + ".zst", readonly=True)
 
 
 rule ctags:
