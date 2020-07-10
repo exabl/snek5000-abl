@@ -209,7 +209,6 @@ rule generate_makefile:
         function at_exit {{
             ls -l makefile
             export NOCOMPILE=0
-            clean_3rd_party
             make_3rd_party
             echo "Done"
         }}
