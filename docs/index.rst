@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to project *eTurb*'s documentation!
+Welcome to snek5000-*abl*'s documentation!
 ===========================================
 
 .. raw:: html
@@ -16,11 +16,11 @@ Welcome to project *eTurb*'s documentation!
    -->
    <img style="float: right;" src="_static/icon.svg" width="100rem"/>
 
-+------------+--------------------------------+
-| Repository | https://github.com/exabl/eturb |
-+------------+--------------------------------+
-| Version    | |release|                      |
-+------------+--------------------------------+
++------------+----------------------------------------------------+
+| Repository | https://github.com/exabl/snek5000-abl              |
++------------+----------------------------------------------------+
+| Version    |                                       |release|    |
++------------+----------------------------------------------------+
 
 .. toctree::
    :maxdepth: 2
@@ -33,6 +33,7 @@ Welcome to project *eTurb*'s documentation!
    :caption: User Guide
 
    abl
+   framework
    nek5000
 
 .. autosummary::
@@ -59,6 +60,8 @@ Links
 
 * `Nek5000 documentation <https://nek5000.github.io/NekDoc/appendix.html>`_
 * `KTH framework documentation <https://kth-nek5000.github.io/KTH_Framework>`_
+* `snek5000 documentation <https://exabl.github.io/snek5000>`_
+* `pymech documentation <https://pymech.readthedocs.io>`_
 
 Indices and tables
 ==================

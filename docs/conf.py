@@ -21,9 +21,8 @@ from datetime import date
 from pathlib import Path
 from subprocess import PIPE
 
-import breathe
-
 import abl
+import breathe
 from snek5000 import util
 
 
@@ -127,7 +126,7 @@ else:
 
     # File types
     breathe_implementation_filename_extensions = [".md"]
-    breathe_domain_by_extension = {"usr": "c", "inc": "c", "f": "c"}
+    breathe_domain_by_extension = {"usr": "fortran", "f": "fortran"}
     breathe_domain_by_file_pattern = {"SIZE": "f"}
 
     # Input sources

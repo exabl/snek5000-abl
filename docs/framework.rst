@@ -1,0 +1,4 @@
+KTH Framework
+=============
+
+.. doxygengroup:: framework
