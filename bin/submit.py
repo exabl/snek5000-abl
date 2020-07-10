@@ -5,18 +5,18 @@ import sys
 from snek5000.clusters import Cluster
 
 cluster = Cluster()
-sub_dir = "maronga-stats-new-ic"
-name_run = "test-south"
-# sub_command = "launch""
-sub_command = "debug"
+sub_dir = "maronga-stats-old-ic"
+name_run = "south"
+sub_command = "launch"
+# sub_command = "debug"
 # sub_command = "show box"
-dry_run = True
+dry_run = False
 
 for mesh_nb_nodes_walltime, filter_weight, filter_cutoff, z_wall in itertools.product(
     zip([2], [1], [f"{days}-00:00:00" for days in (7,) * 1]),
     [0.05],
     [0.75],
-    [0.],
+    [0., 0.1],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
     cmd = (
