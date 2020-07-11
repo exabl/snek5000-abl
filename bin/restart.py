@@ -6,20 +6,21 @@ from snek5000.log import logger
 from snek5000.util import prepare_for_restart
 
 cluster = Cluster()
-base_name_run = "setup"
+base_name_run = "r"
 snakemake_rules = "srun"
 modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-stats-new-ic"
+subdir = Path(FLUIDDYN_PATH_SCRATCH)
 for path in filter(
     lambda path: path.name
     not in [
         # exceptions
     ]
     and path.is_dir()
+    and path.name.startswith('abl')
     and "test" not in path.name,
-    subdir.iterdir()
+    subdir.glob("maronga-stats-*-ic/*")  # iterdir()
 ):
     try:
         params = prepare_for_restart(path)
@@ -29,7 +30,8 @@ for path in filter(
     else:
         logger.info(f"OK {path}")
 
-    name_run = base_name_run + path.name[-10:]
+    name_run = base_name_run + path.name[-8:]
+    logger.info(f"Name run: {name_run}")
 
     if modify_params:
         logger.info("Modifying I/O parameters ...")
