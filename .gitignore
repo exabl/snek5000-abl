@@ -48,7 +48,7 @@
 # Nek5000 run output
 src/*/data
 src/*/*.f?????
-src/*/SESSION.NAME
+# src/*/SESSION.NAME
 src/*/*.nek5000
 src/**/*.log
 
