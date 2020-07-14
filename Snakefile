@@ -103,13 +103,9 @@ rule jlab:
         printf '        '
         hostname
         echo '-----------------------------------------'
+        set +e
+        echo "Killing jupyter-lab sessions if any ..."
+        killall jupyter-lab
+        set -e
         jupyter-lab --no-browser --port=5656 --notebook-dir=$HOME
         """
-
-rule lint:
-    input: PYTHON_DIRECTORIES
-    shell: "black --check {input}"
-
-rule fix:
-    input: PYTHON_DIRECTORIES
-    shell: 'black {input}'
