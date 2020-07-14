@@ -4,8 +4,7 @@
 [GENERAL]
 # startFrom = abl0.f00000
 stopAt = numSteps
-numSteps  = 40
-# numSteps  = 10
+numSteps  = 10
 # endTime = 10
 
 variableDt=yes
@@ -49,12 +48,12 @@ parfName             = outparfile             # Runtime parameter file name for 
 logLevel             = 4                      # Logging threshold for toolboxes
 wallTime             = 23:45                  # Simulation wall time
 #
-[_CHKPOINT]             # Runtime paramere section for checkpoint module
-readChkpt            = no                     # Restat from checkpoint
+[_CHKPOINT]             # Runtime parameter section for checkpoint module
+readChkpt            = no                     # Restart from checkpoint
 chkpFnumber          = 1                      # Restart file number
 chkpInterval         = 250                    # Checkpiont saving frequency (number of time steps)
 #
-[_STAT]             # Runtime paramere section for statistics module
+[_STAT]                # Runtime parameter section for statistics module
 avStep               = 5
 ioStep               = 10
 # vim: set ft=cfg
