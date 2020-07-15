@@ -28,6 +28,12 @@ Security in case of vulnerabilities.
 ## [Unreleased]
 - Paraview I/O for loading and plotting functions
 
+## [0.3.1b0] - 2020-07-15
+
+### Added
+
+- 
+
 ## [0.3.0a0] - 2020-06-02
 
 ### Added
