@@ -163,9 +163,9 @@ def launch(ctx, rule):
 
 
 @cli.command()
-@click.argument("rules", default=["srun"])
+@click.argument("rule", default="srun")
 @click.pass_context
-def debug(ctx, rules):
+def debug(ctx, rule):
     import matplotlib.pyplot as plt
     from pymech.dataset import open_dataset
     from snek5000.log import logger
@@ -177,12 +177,10 @@ def debug(ctx, rules):
 
     logger.info("Initializing simulation debug...")
 
-    rules = ["srun"]
-
     sim = Simul(params)
     sim.sanity_check()
     logger.info("Executing simulation...")
-    sim.make.exec(rules)
+    sim.make.exec([rule])
     logger.info("Finished simulation...")
 
     ds = open_dataset(sorted(sim.path_run.glob("abl0.f*"))[0])

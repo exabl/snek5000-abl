@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from pathlib import Path
 
 from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
@@ -19,7 +20,7 @@ for path in filter(
     ]
     and path.is_dir()
     and "test" not in path.name,
-    subdir.iterdir()
+    subdir.iterdir(),
 ):
     try:
         params = prepare_for_restart(path)
