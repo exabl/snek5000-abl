@@ -46,25 +46,35 @@ rule all:
 rule mesh:
     input: f"{CASE}.re2", f"{CASE}.ma2"
 
+
+# gslib, lapack ...
+rule build_third_party:
+    input:
+        nekconfig = NEK_SOURCE_ROOT + "/bin/nekconfig"
+    output:
+        NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a",
+        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a"
+    shell:
+        "{input.nekconfig} -build-dep"
+
 # compile
 rule compile:
     input:
+        'SIZE',
         f"{CASE}.usr",
         'makefile_usr.inc',
         'makefile',
         *iglob('toolbox/*'),
         *iglob('sgs/*'),
-        nekconfig = NEK_SOURCE_ROOT + "/bin/nekconfig"
-    output:
         NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a",
+        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a"
+    output:
         f'{CASE}.f',
         exe='nek5000'
     shell:
         """
         make -j {output.exe}
-        {input.nekconfig} -build-dep
         """
-
 # run
 rule run:
     input:
