@@ -125,13 +125,22 @@ rule cleansimul:
     run:
         clean_simul(params.case, params.tarball)
 
+# clean third party
+rule clean3rd:
+    params:
+        gslib_dir = NEK_SOURCE_ROOT + "/3rd_party/gslib"
+    shell:
+        """
+        nekconfig clean < <(yes)
+        rm -rf {params.gslib_dir}/{{gslib-*,*.tar.gz}}
+        """
+
 # clean everything
 rule cleanall:
     shell:
         """
         rm -rf obj
-        snakemake clean cleansimul -j
-        yes | nekconfig clean
+        snakemake clean clean3rd cleansimul -j
         """
 
 # create an archive with all of our results
