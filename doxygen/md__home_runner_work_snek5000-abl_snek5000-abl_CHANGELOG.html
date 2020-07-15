@@ -101,16 +101,33 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <div class="contents">
 <div class="textblock"><p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2>[Unreleased]</h2>
-<ul>
-<li>Paraview I/O for loading and plotting functions</li>
-</ul>
-<h2>[0.3.1b0] - 2020-07-15</h2>
+<h2><a href="https://github.com/exabl/snek5000-abl/compare/0.4.0b0...HEAD">Unreleased</a></h2>
+<h2><a href="https://github.com/exabl/snek5000-abl/compare/0.3.0a0...0.4.0b0">0.4.0b0</a> - 2020-07-15</h2>
 <h3>Added</h3>
 <ul>
-<li></li>
+<li>Total shear stresses are saved in statistics files</li>
+<li>Helper bash functions pwd-nek</li>
+<li>Parameter to set wall location != 0</li>
+<li>WIP: simulation loader</li>
 </ul>
-<h2>[0.3.0a0] - 2020-06-02</h2>
+<h3>Changed</h3>
+<ul>
+<li>All #define macros were translated to fortran parameters</li>
+<li>Use gcc-8 in local machine archmage</li>
+<li>Coordinates for stats module: z is vertical direction</li>
+<li>Snakemake, simul.py (renamed from simple.py), organize.py improvements</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Critical bug in SGS: unintialized parameter C0</li>
+<li>Statistics sampling rate</li>
+<li>Documentation build</li>
+</ul>
+<h3>Removed</h3>
+<ul>
+<li>Bulk velocity forcing</li>
+</ul>
+<h2><a href="https://github.com/exabl/snek5000-abl/compare/0.2.2...0.3.0a0">0.3.0a0</a> - 2020-06-02</h2>
 <h3>Added</h3>
 <ul>
 <li>Writes initial condition</li>
@@ -130,7 +147,7 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <li>Coriolis term sign</li>
 <li>Userf only has a coriolis term and equivalent of geostrophic pressure gradient term</li>
 </ul>
-<h2>[0.2.2] - 2020-05-08</h2>
+<h2><a href="https://github.com/exabl/snek5000-abl/compare/0.2.1...0.2.2">0.2.2</a> - 2020-05-08</h2>
 <h3>Added</h3>
 <ul>
 <li>Pre-commit: black, flake8, isort fixing and linting support</li>
@@ -153,7 +170,7 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <ul>
 <li>Requirements files produced using pip-tools</li>
 </ul>
-<h2>[0.2.1] - 2020-04-14</h2>
+<h2><a href="https://github.com/exabl/snek5000-abl/compare/0.2.0...0.2.1">0.2.1</a> - 2020-04-14</h2>
 <h3>Added</h3>
 <ul>
 <li>Tar shell functions in activate script</li>
@@ -169,7 +186,7 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <li>Bugfixes for simulation parameter loading, restart</li>
 <li>Snakefile dependencies for running a simulation</li>
 </ul>
-<h2>[0.2.0] - 2020-03-22</h2>
+<h2><a href="https://github.com/exabl/snek5000-abl/compare/0.1.1...0.2.0">0.2.0</a> - 2020-03-22</h2>
 <h3>Added</h3>
 <ul>
 <li>KTH toolbox</li>
@@ -189,7 +206,7 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <li>Assert exit code of snakemake results in tests</li>
 <li>Subroutine <code>set_forcing</code> uses ux.. instead of vx</li>
 </ul>
-<h2>[0.1.1] - 2020-01-27</h2>
+<h2><a href="https://github.com/exabl/snek5000-abl/compare/0.1.0...0.1.1">0.1.1</a> - 2020-01-27</h2>
 <h3>Added</h3>
 <ul>
 <li>Templates in <code>abl.templates</code> subpackage</li>
@@ -201,7 +218,7 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <ul>
 <li>Snakecase for <code>nek</code> parameters</li>
 </ul>
-<h2>[0.1.0] - 2020-01-23</h2>
+<h2><a href="https://github.com/exabl/snek5000-abl/compare/0.0.1...0.1.0">0.1.0</a> - 2020-01-23</h2>
 <h3>Added</h3>
 <ul>
 <li>Uses <code>fluidsim</code> framework for creating a scripting layer</li>
@@ -217,7 +234,7 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <li>Rename case files <code>3D_ABL</code> -&gt; <code>abl</code> and directory <code>abl_nek5000</code> -&gt; <code>abl</code></li>
 <li>Overall reorganization of modules and Snakemake + configuration files.</li>
 </ul>
-<h2>[0.0.1] - 2020-01-17</h2>
+<h2><a href="https://github.com/exabl/snek5000-abl/releases/tag/0.0.1">0.0.1</a> - 2020-01-17</h2>
 <h3>Added</h3>
 <ul>
 <li>Scripting for managing run parameters <code>eturb.params</code></li>
@@ -229,7 +246,7 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 15 2020 10:17:57 for eTurb by
+    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
