@@ -54,12 +54,16 @@ rule compile:
         'makefile',
         *iglob('toolbox/*'),
         *iglob('sgs/*'),
-        NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
+        nekconfig = NEK_SOURCE_ROOT + "/bin/nekconfig"
     output:
+        NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a",
         f'{CASE}.f',
         exe='nek5000'
     shell:
-        'make -j {output.exe}'
+        """
+        make -j {output.exe}
+        {input.nekconfig} -build-dep
+        """
 
 # run
 rule run:
@@ -109,7 +113,7 @@ rule clean:
         """
         echo "cleaning Nek5000 ..."
         rm -fv {params.case}.f nek5000
-	rm -rf obj
+        rm -rf obj
         rm -fv $NEK_SOURCE_ROOT/core/mpif.h
         """
 
@@ -199,10 +203,8 @@ rule generate_makefile:
         f'{CASE}.ma2',
         f'{CASE}.usr',
         makenek = NEK_SOURCE_ROOT + "/bin/makenek",
-        nekconfig = NEK_SOURCE_ROOT + "/bin/nekconfig"
     output:
-        'makefile',
-        NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
+        'makefile'
     params:
         case = f'{CASE}',
         inc = " ".join((f"-I{inc_dir}" for inc_dir in Output().makefile_usr_sources)),
@@ -214,7 +216,6 @@ rule generate_makefile:
             CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]} {params.inc}" \
             USR="{params.usr}"
         {input.makenek} {params.case} -nocompile
-        {input.nekconfig} -build-dep
         """
 
 # generate sessionfile
