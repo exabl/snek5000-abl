@@ -702,6 +702,7 @@
       include 'TSTEP'
       include 'STATD'           ! Variables from the statistics
       include 'INPUT'           ! if3d
+      include 'SGS'             ! ediff: eddy + molecular diffusivity
 
       ! global variables
       ! work arrays
@@ -1116,6 +1117,63 @@
       npos = lnvar
       call stat_compute_1Dav1(tmpvel(1,1,1,1,1),npos,alpha,beta)
       
+!-----------------------------------------------------------------------
+      ! <(nu+nu_t)dudx>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav2(ediff(1,1,1,1),dudx(1,1,1,1,1),
+     $     npos,alpha,beta)
+
+      ! <(nu+nu_t)dudy>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav2(ediff(1,1,1,1),dudx(1,1,1,1,2),
+     $     npos,alpha,beta)
+
+      ! <(nu+nu_t)dudz>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav2(ediff(1,1,1,1),dudx(1,1,1,1,3),
+     $     npos,alpha,beta)
+
+!-----------------------------------------------------------------------
+      ! <(nu+nu_t)dvdx>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav2(ediff(1,1,1,1),dvdx(1,1,1,1,1),
+     $     npos,alpha,beta)
+
+      ! <(nu+nu_t)dvdy>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav2(ediff(1,1,1,1),dvdx(1,1,1,1,2),
+     $     npos,alpha,beta)
+
+      ! <(nu+nu_t)dvdz>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav2(ediff(1,1,1,1),dvdx(1,1,1,1,3),
+     $     npos,alpha,beta)
+
+!-----------------------------------------------------------------------
+      ! <(nu+nu_t)dwdx>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav2(ediff(1,1,1,1),dwdx(1,1,1,1,1),
+     $     npos,alpha,beta)
+
+      ! <(nu+nu_t)dwdy>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav2(ediff(1,1,1,1),dwdx(1,1,1,1,2),
+     $     npos,alpha,beta)
+
+      ! <(nu+nu_t)dwdz>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav2(ediff(1,1,1,1),dwdx(1,1,1,1,3),
+     $     npos,alpha,beta)
+
 !=======================================================================
       !End of local compute
 

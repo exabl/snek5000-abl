@@ -1,0 +1,13 @@
+c
+c     Storage for wall-model and LES parameters
+c
+      real y0
+      parameter (y0=0.1)
+
+      real C0, kappa, npow
+      parameter (C0=0.19, kappa=0.41, npow=0.5)
+
+      real pi_  ! to avoid conflict with pi defined in TSTEP
+      parameter (pi_=4.*atan(1.))
+
+c vim: set ft=fortran

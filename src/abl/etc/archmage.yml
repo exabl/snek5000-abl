@@ -1,5 +1,5 @@
-CC: gcc
-FC: gfortran
+CC: gcc-8
+FC: gfortran-8
 MPICC: mpicc
 MPIFC: mpif77
 MPIEXEC: "mpiexec --oversubscribe"

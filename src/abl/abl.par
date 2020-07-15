@@ -9,21 +9,20 @@ numSteps  = 10
 
 variableDt=yes
 
-targetCfl=0.3
+targetCfl=0.4
 
 writeControl = timeStep
-writeInterval = 2000
+writeInterval = 200000
 
 filtering=HPFRT
-filterCutoffRatio=0.5
-filterWeight=12.0
+filterCutoffRatio=0.75
+filterWeight=0.05
 
-userParam03 = 1
-userParam04 = 1e-4  # Coriolis frequency
-
-userParam05 = 3.1416
-userParam06 = 1.0
-userParam07 = 1.5708
+userParam03 = 5.0  # Geostrophic velocity
+userParam04 = -0.00014  # Coriolis frequency
+userParam05 = 1280
+userParam06 = 1500
+userParam07 = 1280
 
 [PROBLEMTYPE]
 equation = incompNS
@@ -49,12 +48,12 @@ parfName             = outparfile             # Runtime parameter file name for 
 logLevel             = 4                      # Logging threshold for toolboxes
 wallTime             = 23:45                  # Simulation wall time
 #
-[_CHKPOINT]             # Runtime paramere section for checkpoint module
-readChkpt            = no                     # Restat from checkpoint
+[_CHKPOINT]             # Runtime parameter section for checkpoint module
+readChkpt            = no                     # Restart from checkpoint
 chkpFnumber          = 1                      # Restart file number
 chkpInterval         = 250                    # Checkpiont saving frequency (number of time steps)
 #
-[_STAT]             # Runtime paramere section for statistics module
+[_STAT]                # Runtime parameter section for statistics module
 avStep               = 5
 ioStep               = 10
 # vim: set ft=cfg

@@ -125,7 +125,8 @@ rule cleansimul:
 rule cleanall:
     shell:
         """
-        snakemake clean cleansimul
+        rm -rf obj
+        snakemake clean cleansimul -j
         yes | nekconfig clean
         """
 

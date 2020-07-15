@@ -8,6 +8,7 @@
 !! @date Aug 15, 2018
 !=======================================================================
 !> @brief Main interface for saving statistics
+!> @todo Implement stat_mfo_outfld1D and 1D coords like `map2d_{xm1,ym1}`
 !! @ingroup stat
       subroutine stat_mfo()
       implicit none
@@ -83,6 +84,19 @@
       ! Fields to outpost: <e33>t, <e12>t, <e13>t, <e23>t
       call outpost(stat_ruavg(1,1,41),stat_ruavg(1,1,42),
      $     stat_ruavg(1,1,43),pr,stat_ruavg(1,1,44),'s11')
+
+      ! Fields to outpost:
+      ! <(nu + nu_t)dudx>t, <(nu + nu_t)dudy>t,
+      ! <(nu + nu_t)dudz>t, <(nu + nu_t)dvdx>t
+      call outpost(stat_ruavg(1,1,45),stat_ruavg(1,1,46),
+     $     stat_ruavg(1,1,47),pr,stat_ruavg(1,1,48),'s12')
+
+      !Fields to outpost:
+      ! <(nu + nu_t)dvdy>t, <(nu + nu_t)dvdz>t,
+      ! Note: skipping <(nu + nu_t)dwdx>t
+      ! <(nu + nu_t)dwdy>t, <(nu + nu_t)dwdz>t
+      call outpost(stat_ruavg(1,1,49),stat_ruavg(1,1,50),
+     $     stat_ruavg(1,1,52),pr,stat_ruavg(1,1,53),'s13')
 
       ifpo=ifpo_tmp
 

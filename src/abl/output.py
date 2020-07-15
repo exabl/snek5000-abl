@@ -24,9 +24,9 @@ class OutputABL(OutputBase):
                 ("chkpoint.f", "CHKPOINTD"),
                 ("chkpt_mstp.f", "CHKPTMSTPD", "CHKPOINTD"),
                 ("map2D.f", "MAP2D", "FRAMELP"),
-                ("stat.f", "STATD", "MAP2D", "FRAMELP"),
+                ("stat.f", "STATD", "MAP2D", "FRAMELP", "../sgs/SGS"),
                 ("stat_IO.f", "STATD", "MAP2D", "FRAMELP"),
                 ("math_tools.f",),
             ],
-            "sgs": [("smagorinsky.f", "SGS")],
+            "sgs": [("smagorinsky.f", "SGS", "WMLES")],
         }

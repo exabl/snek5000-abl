@@ -29,13 +29,16 @@ rule bin_archive:
     input:
         iglob('bin/SLURM*'),
         iglob('bin/launcher_20*')
-    output:
-        tar_name(
-            Path.cwd(), "bin/SLURM*", subdir="bin",
+    params:
+        tarball = tar_name(
+            Path.cwd().name,
+            pattern="bin/SLURM*",
+            subdir="bin",
             default_prefix="archive"
         )
     run:
-        archive(output, input, remove=True)
+        archive(params.tarball, input, remove=True)
+        archive(params.tarball + ".zst", readonly=True)
 
 
 rule ctags:
@@ -100,13 +103,9 @@ rule jlab:
         printf '        '
         hostname
         echo '-----------------------------------------'
+        set +e
+        echo "Killing jupyter-lab sessions if any ..."
+        killall jupyter-lab
+        set -e
         jupyter-lab --no-browser --port=5656 --notebook-dir=$HOME
         """
-
-rule lint:
-    input: PYTHON_DIRECTORIES
-    shell: "black --check {input}"
-
-rule fix:
-    input: PYTHON_DIRECTORIES
-    shell: 'black {input}'

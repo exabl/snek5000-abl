@@ -37,7 +37,7 @@ $(OBJDIR)/chkpt_mstp.o        :toolbox/chkpt_mstp.f toolbox/CHKPTMSTPD toolbox/C
 $(OBJDIR)/map2D.o             :toolbox/map2D.f toolbox/MAP2D toolbox/FRAMELP
 	$(F77) -c $(FL2) -I./ $< -o $@
 
-$(OBJDIR)/stat.o              :toolbox/stat.f toolbox/STATD toolbox/MAP2D toolbox/FRAMELP
+$(OBJDIR)/stat.o              :toolbox/stat.f toolbox/STATD toolbox/MAP2D toolbox/FRAMELP sgs/SGS
 	$(F77) -c $(FL2) -I./ $< -o $@
 
 $(OBJDIR)/stat_IO.o           :toolbox/stat_IO.f toolbox/STATD toolbox/MAP2D toolbox/FRAMELP
@@ -46,6 +46,6 @@ $(OBJDIR)/stat_IO.o           :toolbox/stat_IO.f toolbox/STATD toolbox/MAP2D too
 $(OBJDIR)/math_tools.o        :toolbox/math_tools.f
 	$(F77) -c $(FL2) -I./ $< -o $@
 
-$(OBJDIR)/smagorinsky.o       :sgs/smagorinsky.f sgs/SGS
+$(OBJDIR)/smagorinsky.o       :sgs/smagorinsky.f sgs/SGS sgs/WMLES
 	$(F77) -c $(FL2) -I./ $< -o $@
 

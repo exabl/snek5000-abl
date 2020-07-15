@@ -12,7 +12,7 @@ from abl.solver import Simul
 @click.option("-n", "--name-run", default="demo", help="short description of the run")
 @click.option("-o", "--nodes", default=1, type=int, help="number of nodes")
 @click.option("-w", "--walltime", default="30:00")
-@click.option("-zw", "--z-wall", default=0., type=float, help="wall position")
+@click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
 @click.option(
     "-fw", "--filter-weight", default=12, type=float, help="filter weight parameter",
 )
@@ -20,7 +20,9 @@ from abl.solver import Simul
     "-fc", "--filter-cutoff", default=0.5, type=float, help="filter cutoff ratio"
 )
 @click.pass_context
-def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, filter_cutoff):
+def cli(
+    ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, filter_cutoff
+):
     """\b
     Notes
     -----
@@ -104,8 +106,8 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, fi
     general.filter_weight = filter_weight
     general.filter_cutoff_ratio = filter_cutoff
     general.user_params = {
-        3: 1,  # dp/dx pressure gradient
-        4: -1.39e-4,  # Coriolis frequency at 73 S
+        3: 5.0,  # Geostrophic velocity
+        4: -1.4e-4,  # Coriolis frequency at 73 S
         5: oper.Lx,
         6: oper.Ly,
         7: oper.Lz,
@@ -130,7 +132,7 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, fi
     # ===========
     # TODO!
     params.nek.chkpoint.chkp_interval = save_freq
-    params.nek.stat.av_step = save_freq // 5
+    params.nek.stat.av_step = 15
     params.nek.stat.io_step = save_freq
     params.nek.monitor.wall_time = walltime
 
@@ -148,22 +150,22 @@ def cli(ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, fi
 
 
 @cli.command()
-@click.argument("rules", default=["srun"])
+@click.argument("rule", default="srun")
 @click.pass_context
-def launch(ctx, rules):
+def launch(ctx, rule):
     from snek5000.log import logger
 
     logger.info("Initializing simulation launch...")
 
     sim = Simul(ctx.obj["params"])
     sim.sanity_check()
-    sim.make.exec(rules)
+    sim.make.exec([rule])
 
 
 @cli.command()
-@click.argument("rules", default=["srun"])
+@click.argument("rule", default="srun")
 @click.pass_context
-def debug(ctx, rules):
+def debug(ctx, rule):
     import matplotlib.pyplot as plt
     from pymech.dataset import open_dataset
     from snek5000.log import logger
@@ -175,12 +177,10 @@ def debug(ctx, rules):
 
     logger.info("Initializing simulation debug...")
 
-    rules = ["srun"]
-
     sim = Simul(params)
     sim.sanity_check()
     logger.info("Executing simulation...")
-    sim.make.exec(rules)
+    sim.make.exec([rule])
     logger.info("Finished simulation...")
 
     ds = open_dataset(sorted(sim.path_run.glob("abl0.f*"))[0])
@@ -213,7 +213,9 @@ def show(ctx, file):
         write_to_stdout = getattr(oper, f"write_{file}")
         write_to_stdout(template)
     else:
-        raise ValueError("The CLI argument file should be one of {'xml', 'par', 'size', 'box'}")
+        raise ValueError(
+            "The CLI argument file should be one of {'xml', 'par', 'size', 'box'}"
+        )
 
 
 if __name__ == "__main__":
