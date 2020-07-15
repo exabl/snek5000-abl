@@ -105,6 +105,31 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <ul>
 <li>Paraview I/O for loading and plotting functions</li>
 </ul>
+<h2>[0.3.1b0] - 2020-07-15</h2>
+<h3>Added</h3>
+<ul>
+<li></li>
+</ul>
+<h2>[0.3.0a0] - 2020-06-02</h2>
+<h3>Added</h3>
+<ul>
+<li>Writes initial condition</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>Implicit none in user subroutines (#6)</li>
+<li>Initial condition only adds perturbation near wall (637727aa)</li>
+<li>Uses snek5000</li>
+</ul>
+<h3>Removed</h3>
+<ul>
+<li>set_forcing</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Coriolis term sign</li>
+<li>Userf only has a coriolis term and equivalent of geostrophic pressure gradient term</li>
+</ul>
 <h2>[0.2.2] - 2020-05-08</h2>
 <h3>Added</h3>
 <ul>
@@ -204,7 +229,7 @@ $(document).ready(function(){initNavTree('md__home_runner_work_snek5000-abl_snek
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon May 11 2020 20:25:53 for eTurb by
+    <li class="footer">Generated on Wed Jul 15 2020 10:17:57 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

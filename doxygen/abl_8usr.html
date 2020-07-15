@@ -108,6 +108,10 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga32657b69f54f96dc5aea199db3658bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set variable properties, does not call any subroutines / functions.  <a href="group__abl.html#ga32657b69f54f96dc5aea199db3658bc3">More...</a><br /></td></tr>
 <tr class="separator:ga32657b69f54f96dc5aea199db3658bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1172abb68180ad165a8080d73ee2a378"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#ga1172abb68180ad165a8080d73ee2a378">userf</a> (ix, iy, iz, eg)</td></tr>
+<tr class="memdesc:ga1172abb68180ad165a8080d73ee2a378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute Coriolis acceleration </p><p class="formulaDsp">
+\[ F_x, F_z = - f\hat{e}_y \times \vec{u} \]
+</p>
+<p> See <a href="https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html">https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html</a>.  <a href="group__abl.html#ga1172abb68180ad165a8080d73ee2a378">More...</a><br /></td></tr>
 <tr class="separator:ga1172abb68180ad165a8080d73ee2a378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga79dd81f06a46a7f8a1637ec998781930"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#ga79dd81f06a46a7f8a1637ec998781930">userq</a> (ix, iy, iz, eg)</td></tr>
 <tr class="separator:ga79dd81f06a46a7f8a1637ec998781930"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,38 +130,24 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:gad0bac908131bab7fa82d65be4229e976"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gad0bac908131bab7fa82d65be4229e976">usrdat2</a> ()</td></tr>
 <tr class="separator:gad0bac908131bab7fa82d65be4229e976"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae8e951758ca4752cd88bc9c5330c9ebe"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gae8e951758ca4752cd88bc9c5330c9ebe">usrdat3</a> ()</td></tr>
+<tr class="memdesc:gae8e951758ca4752cd88bc9c5330c9ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute inflow / outflow conditions a.k.a. driving force. Ubar=1 Not required when coriolis force is specified in userf <a href="https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386">https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386</a>.  <a href="group__abl.html#gae8e951758ca4752cd88bc9c5330c9ebe">More...</a><br /></td></tr>
 <tr class="separator:gae8e951758ca4752cd88bc9c5330c9ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf0f4048a4e81a838bf903f040cf2db1"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gaaf0f4048a4e81a838bf903f040cf2db1">eddy_visc</a> (e)</td></tr>
-<tr class="memdesc:gaaf0f4048a4e81a838bf903f040cf2db1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute eddy viscosity using dynamic smagorinsky model.  <a href="group__abl.html#gaaf0f4048a4e81a838bf903f040cf2db1">More...</a><br /></td></tr>
-<tr class="separator:gaaf0f4048a4e81a838bf903f040cf2db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabc6963764dd0ea847bc7e70242d55163"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gabc6963764dd0ea847bc7e70242d55163">set_grid_spacing</a> (dg2)</td></tr>
-<tr class="memdesc:gabc6963764dd0ea847bc7e70242d55163"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute D^2, the grid spacing used in the DS sgs model.  <a href="group__abl.html#gabc6963764dd0ea847bc7e70242d55163">More...</a><br /></td></tr>
-<tr class="separator:gabc6963764dd0ea847bc7e70242d55163"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gade410b3017ce291e93fe88acc769c9d6"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gade410b3017ce291e93fe88acc769c9d6">set_obj</a></td></tr>
 <tr class="memdesc:gade410b3017ce291e93fe88acc769c9d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define objects for surface integrals.  <a href="group__abl.html#gade410b3017ce291e93fe88acc769c9d6">More...</a><br /></td></tr>
 <tr class="separator:gade410b3017ce291e93fe88acc769c9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga32480237866193258937d1e06bbd0e01"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#ga32480237866193258937d1e06bbd0e01">set_forcing</a> (f_new, u, idir)</td></tr>
-<tr class="memdesc:ga32480237866193258937d1e06bbd0e01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute inflow / outflow conditions a.k.a. driving force. Ubar=1.  <a href="group__abl.html#ga32480237866193258937d1e06bbd0e01">More...</a><br /></td></tr>
-<tr class="separator:ga32480237866193258937d1e06bbd0e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad74b1b8563b1bee051b6c315a328a069"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gad74b1b8563b1bee051b6c315a328a069">coriolis</a> (ix, iy, iz, ieg)</td></tr>
-<tr class="memdesc:gad74b1b8563b1bee051b6c315a328a069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute Coriolis acceleration </p><p class="formulaDsp">
-\[ F_x, F_z = - f\hat{e}_y \times \vec{u} \]
-</p>
-<p> See <a href="https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html">https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html</a>.  <a href="group__abl.html#gad74b1b8563b1bee051b6c315a328a069">More...</a><br /></td></tr>
-<tr class="separator:gad74b1b8563b1bee051b6c315a328a069"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga084c317b04027a4a8a57b86c3af462e0"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__toolbox.html#ga084c317b04027a4a8a57b86c3af462e0">frame_usr_register</a></td></tr>
+<tr class="memitem:ga084c317b04027a4a8a57b86c3af462e0"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__framework.html#ga084c317b04027a4a8a57b86c3af462e0">frame_usr_register</a></td></tr>
 <tr class="separator:ga084c317b04027a4a8a57b86c3af462e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8ea91c47053fcebbd35a007e093dab3b"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__toolbox.html#ga8ea91c47053fcebbd35a007e093dab3b">frame_usr_init</a></td></tr>
-<tr class="memdesc:ga8ea91c47053fcebbd35a007e093dab3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise user specified modules.  <a href="group__toolbox.html#ga8ea91c47053fcebbd35a007e093dab3b">More...</a><br /></td></tr>
+<tr class="memitem:ga8ea91c47053fcebbd35a007e093dab3b"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__framework.html#ga8ea91c47053fcebbd35a007e093dab3b">frame_usr_init</a></td></tr>
+<tr class="memdesc:ga8ea91c47053fcebbd35a007e093dab3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise user specified modules.  <a href="group__framework.html#ga8ea91c47053fcebbd35a007e093dab3b">More...</a><br /></td></tr>
 <tr class="separator:ga8ea91c47053fcebbd35a007e093dab3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaea07736cd03d1acb47a32b0ec6228e2c"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__toolbox.html#gaea07736cd03d1acb47a32b0ec6228e2c">frame_usr_end</a></td></tr>
-<tr class="memdesc:gaea07736cd03d1acb47a32b0ec6228e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finalise user specified modules.  <a href="group__toolbox.html#gaea07736cd03d1acb47a32b0ec6228e2c">More...</a><br /></td></tr>
+<tr class="memitem:gaea07736cd03d1acb47a32b0ec6228e2c"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__framework.html#gaea07736cd03d1acb47a32b0ec6228e2c">frame_usr_end</a></td></tr>
+<tr class="memdesc:gaea07736cd03d1acb47a32b0ec6228e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finalise user specified modules.  <a href="group__framework.html#gaea07736cd03d1acb47a32b0ec6228e2c">More...</a><br /></td></tr>
 <tr class="separator:gaea07736cd03d1acb47a32b0ec6228e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5bd4099730fcb29e0cb614aa371c5d22"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__toolbox.html#ga5bd4099730fcb29e0cb614aa371c5d22">user_map2d_get</a> (idir, ctrs, cell, lctrs1, lctrs2, nelsort, map_xm1, map_ym1, ierr)</td></tr>
-<tr class="memdesc:ga5bd4099730fcb29e0cb614aa371c5d22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide element coordinates and local numbers (user interface)  <a href="group__toolbox.html#ga5bd4099730fcb29e0cb614aa371c5d22">More...</a><br /></td></tr>
+<tr class="memitem:ga5bd4099730fcb29e0cb614aa371c5d22"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__framework.html#ga5bd4099730fcb29e0cb614aa371c5d22">user_map2d_get</a> (idir, ctrs, cell, lctrs1, lctrs2, nelsort, map_xm1, map_ym1, ierr)</td></tr>
+<tr class="memdesc:ga5bd4099730fcb29e0cb614aa371c5d22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide element coordinates and local numbers (user interface)  <a href="group__framework.html#ga5bd4099730fcb29e0cb614aa371c5d22">More...</a><br /></td></tr>
 <tr class="separator:ga5bd4099730fcb29e0cb614aa371c5d22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3737d0f38b1a9847edf53beaabc8c5f4"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__toolbox.html#ga3737d0f38b1a9847edf53beaabc8c5f4">user_stat_trnsv</a> (lvel, dudx, dvdx, dwdx, vort)</td></tr>
-<tr class="memdesc:ga3737d0f38b1a9847edf53beaabc8c5f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide velocity, deriv. and vort. in required coordinates.  <a href="group__toolbox.html#ga3737d0f38b1a9847edf53beaabc8c5f4">More...</a><br /></td></tr>
+<tr class="memitem:ga3737d0f38b1a9847edf53beaabc8c5f4"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__framework.html#ga3737d0f38b1a9847edf53beaabc8c5f4">user_stat_trnsv</a> (lvel, dudx, dvdx, dwdx, vort)</td></tr>
+<tr class="memdesc:ga3737d0f38b1a9847edf53beaabc8c5f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide velocity, deriv. and vort. in required coordinates.  <a href="group__framework.html#ga3737d0f38b1a9847edf53beaabc8c5f4">More...</a><br /></td></tr>
 <tr class="separator:ga3737d0f38b1a9847edf53beaabc8c5f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -166,7 +156,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_78506c70a28dc990f8a83885f8720112.html">abl</a></li><li class="navelem"><a class="el" href="abl_8usr.html">abl.usr</a></li>
-    <li class="footer">Generated on Mon May 11 2020 20:25:53 for eTurb by
+    <li class="footer">Generated on Wed Jul 15 2020 10:17:57 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

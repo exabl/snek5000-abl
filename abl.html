@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ABL case files &mdash; snek5000-abl 0.1.dev1+g3b0623d documentation</title>
+  <title>ABL case files &mdash; snek5000-abl 0.1.dev1+g21997a2 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
@@ -19,7 +22,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -27,18 +32,14 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Nek5000 core library" href="nek5000.html" />
+    <link rel="next" title="KTH Framework" href="framework.html" />
     <link rel="prev" title="snek5000-abl" href="README.html" /> 
 </head>
 
@@ -53,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> snek5000-abl
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> snek5000-abl
           
 
           
@@ -63,7 +64,7 @@
             
             
               <div class="version">
-                0.1.dev1+g3b0623d
+                0.1.dev1+g21997a2
               </div>
             
           
@@ -80,6 +81,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +97,7 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ABL case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">KTH Framework</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nek5000.html">Nek5000 core library</a></li>
 </ul>
 <ul>
@@ -114,6 +117,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -152,7 +156,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>ABL case files</li>
     
@@ -194,9 +198,9 @@
 </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Functions</p>
-<dl class="c function">
-<dt id="c.uservp">
-<span class="target" id="group__abl_1ga32657b69f54f96dc5aea199db3658bc3"></span>subroutine <code class="sig-name descname">uservp</code><span class="sig-paren">(</span>ix, iy, iz, ieg<span class="sig-paren">)</span><a class="headerlink" href="#c.uservp" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp function">
+<dt id="_CPPv46uservp2ix2iy2iz3ieg">
+<span id="_CPPv36uservp2ix2iy2iz3ieg"></span><span id="_CPPv26uservp2ix2iy2iz3ieg"></span><span id="uservp__ix.iy.iz.ieg"></span><span class="target" id="group__abl_1ga32657b69f54f96dc5aea199db3658bc3"></span>subroutine <code class="sig-name descname">uservp</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::ix">ix</a> <em>ix</em>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::iy">iy</a> <em>iy</em>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::iz">iz</a> <em>iz</em>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::ieg">ieg</a> <em>ieg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46uservp2ix2iy2iz3ieg" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set variable properties, does not call any subroutines / functions. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
@@ -210,91 +214,69 @@
 </p>
 </dd></dl>
 
-<dl class="c function">
-<dt id="c.userf">
-<span class="target" id="group__abl_1ga1172abb68180ad165a8080d73ee2a378"></span>subroutine <code class="sig-name descname">userf</code><span class="sig-paren">(</span>ix, iy, iz, eg<span class="sig-paren">)</span><a class="headerlink" href="#c.userf" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c function">
-<dt id="c.userq">
-<span class="target" id="group__abl_1ga79dd81f06a46a7f8a1637ec998781930"></span>subroutine <code class="sig-name descname">userq</code><span class="sig-paren">(</span>ix, iy, iz, eg<span class="sig-paren">)</span><a class="headerlink" href="#c.userq" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c function">
-<dt id="c.userbc">
-<span class="target" id="group__abl_1ga5bc9a35082ab7f7115cd6ba8685682fd"></span>subroutine <code class="sig-name descname">userbc</code><span class="sig-paren">(</span>ix, iy, iz, iside, eg<span class="sig-paren">)</span><a class="headerlink" href="#c.userbc" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c function">
-<dt id="c.useric">
-<span class="target" id="group__abl_1ga9fca046e76d53cec863a2ef596ded5d8"></span>subroutine <code class="sig-name descname">useric</code><span class="sig-paren">(</span>ix, iy, iz, eg<span class="sig-paren">)</span><a class="headerlink" href="#c.useric" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Set up initial conditions. </p>
-</dd></dl>
-
-<dl class="c function">
-<dt id="c.userchk">
-<span class="target" id="group__abl_1gaab7e65383186bbbe5e8ee746f763b233"></span>subroutine <code class="sig-name descname">userchk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.userchk" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Compute the turbulent stress tensors and write statistics. </p>
-</dd></dl>
-
-<dl class="c function">
-<dt>
-<span class="target" id="group__abl_1gac0c73a81b4be0f60b83a1f188bd8be50"></span><code class="sig-name descname">subroutine userqtl</code></dt>
-<dd></dd></dl>
-
-<dl class="c function">
-<dt id="c.usrdat">
-<span class="target" id="group__abl_1ga684b0320d82a6ae155bf7e0b53826cd3"></span>subroutine <code class="sig-name descname">usrdat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.usrdat" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c function">
-<dt id="c.usrdat2">
-<span class="target" id="group__abl_1gad0bac908131bab7fa82d65be4229e976"></span>subroutine <code class="sig-name descname">usrdat2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.usrdat2" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c function">
-<dt id="c.usrdat3">
-<span class="target" id="group__abl_1gae8e951758ca4752cd88bc9c5330c9ebe"></span>subroutine <code class="sig-name descname">usrdat3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.usrdat3" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c function">
-<dt id="c.eddy_visc">
-<span class="target" id="group__abl_1gaaf0f4048a4e81a838bf903f040cf2db1"></span>subroutine <code class="sig-name descname">eddy_visc</code><span class="sig-paren">(</span>e<span class="sig-paren">)</span><a class="headerlink" href="#c.eddy_visc" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Compute eddy viscosity using dynamic smagorinsky model. </p>
-</dd></dl>
-
-<dl class="c function">
-<dt id="c.set_grid_spacing">
-<span class="target" id="group__abl_1gabc6963764dd0ea847bc7e70242d55163"></span>subroutine <code class="sig-name descname">set_grid_spacing</code><span class="sig-paren">(</span>dg2<span class="sig-paren">)</span><a class="headerlink" href="#c.set_grid_spacing" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Compute D^2, the grid spacing used in the DS sgs model. </p>
-</dd></dl>
-
-<dl class="c function">
-<dt>
-<span class="target" id="group__abl_1gade410b3017ce291e93fe88acc769c9d6"></span><code class="sig-name descname">subroutine set_obj</code></dt>
-<dd><p>Define objects for surface integrals. </p>
-</dd></dl>
-
-<dl class="c function">
-<dt id="c.set_forcing">
-<span class="target" id="group__abl_1ga32480237866193258937d1e06bbd0e01"></span>subroutine <code class="sig-name descname">set_forcing</code><span class="sig-paren">(</span>f_new, u, idir<span class="sig-paren">)</span><a class="headerlink" href="#c.set_forcing" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Compute inflow / outflow conditions a.k.a. driving force. Ubar=1. </p>
-</dd></dl>
-
-<dl class="c function">
-<dt id="c.coriolis">
-<span class="target" id="group__abl_1gad74b1b8563b1bee051b6c315a328a069"></span>subroutine <code class="sig-name descname">coriolis</code><span class="sig-paren">(</span>ix, iy, iz, ieg<span class="sig-paren">)</span><a class="headerlink" href="#c.coriolis" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp function">
+<dt id="_CPPv45userf2ix2iy2iz2eg">
+<span id="_CPPv35userf2ix2iy2iz2eg"></span><span id="_CPPv25userf2ix2iy2iz2eg"></span><span id="userf__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga1172abb68180ad165a8080d73ee2a378"></span>subroutine <code class="sig-name descname">userf</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::ix">ix</a> <em>ix</em>, <a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::iy">iy</a> <em>iy</em>, <a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::iz">iz</a> <em>iz</em>, <a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::eg">eg</a> <em>eg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv45userf2ix2iy2iz2eg" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Compute Coriolis acceleration <div class="math notranslate nohighlight">
 \[ F_x, F_z = - f\hat{e}_y \times \vec{u} \]</div>
  See <a class="reference external" href="https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html">https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html</a>. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ix</span><span class="pre">[in]</span> <span class="pre">iy</span><span class="pre">[in]</span> <span class="pre">iz</span></code>: GLL point index </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ieg</span></code>: global element number </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">eg</span></code>: global element number </p></li>
 </ul>
 </dd>
 </dl>
 </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv45userq2ix2iy2iz2eg">
+<span id="_CPPv35userq2ix2iy2iz2eg"></span><span id="_CPPv25userq2ix2iy2iz2eg"></span><span id="userq__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga79dd81f06a46a7f8a1637ec998781930"></span>subroutine <code class="sig-name descname">userq</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::ix">ix</a> <em>ix</em>, <a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::iy">iy</a> <em>iy</em>, <a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::iz">iz</a> <em>iz</em>, <a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::eg">eg</a> <em>eg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv45userq2ix2iy2iz2eg" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv46userbc2ix2iy2iz5iside2eg">
+<span id="_CPPv36userbc2ix2iy2iz5iside2eg"></span><span id="_CPPv26userbc2ix2iy2iz5iside2eg"></span><span id="userbc__ix.iy.iz.iside.eg"></span><span class="target" id="group__abl_1ga5bc9a35082ab7f7115cd6ba8685682fd"></span>subroutine <code class="sig-name descname">userbc</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::ix">ix</a> <em>ix</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iy">iy</a> <em>iy</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iz">iz</a> <em>iz</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iside">iside</a> <em>iside</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::eg">eg</a> <em>eg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv46useric2ix2iy2iz2eg">
+<span id="_CPPv36useric2ix2iy2iz2eg"></span><span id="_CPPv26useric2ix2iy2iz2eg"></span><span id="useric__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga9fca046e76d53cec863a2ef596ded5d8"></span>subroutine <code class="sig-name descname">useric</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::ix">ix</a> <em>ix</em>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::iy">iy</a> <em>iy</em>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::iz">iz</a> <em>iz</em>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::eg">eg</a> <em>eg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46useric2ix2iy2iz2eg" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set up initial conditions. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv47userchkv">
+<span id="_CPPv37userchkv"></span><span id="_CPPv27userchkv"></span><span id="userchk"></span><span class="target" id="group__abl_1gaab7e65383186bbbe5e8ee746f763b233"></span>subroutine <code class="sig-name descname">userchk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47userchkv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute the turbulent stress tensors and write statistics. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv47userqtlv">
+<span id="_CPPv37userqtlv"></span><span id="_CPPv27userqtlv"></span><span id="userqtl"></span><span class="target" id="group__abl_1gac0c73a81b4be0f60b83a1f188bd8be50"></span>subroutine <code class="sig-name descname">userqtl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47userqtlv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv46usrdatv">
+<span id="_CPPv36usrdatv"></span><span id="_CPPv26usrdatv"></span><span id="usrdat"></span><span class="target" id="group__abl_1ga684b0320d82a6ae155bf7e0b53826cd3"></span>subroutine <code class="sig-name descname">usrdat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46usrdatv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv47usrdat2v">
+<span id="_CPPv37usrdat2v"></span><span id="_CPPv27usrdat2v"></span><span id="usrdat2"></span><span class="target" id="group__abl_1gad0bac908131bab7fa82d65be4229e976"></span>subroutine <code class="sig-name descname">usrdat2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47usrdat2v" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv47usrdat3v">
+<span id="_CPPv37usrdat3v"></span><span id="_CPPv27usrdat3v"></span><span id="usrdat3"></span><span class="target" id="group__abl_1gae8e951758ca4752cd88bc9c5330c9ebe"></span>subroutine <code class="sig-name descname">usrdat3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47usrdat3v" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute inflow / outflow conditions a.k.a. driving force. Ubar=1 Not required when coriolis force is specified in userf <a class="reference external" href="https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386">https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386</a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv47set_objv">
+<span id="_CPPv37set_objv"></span><span id="_CPPv27set_objv"></span><span id="set_obj"></span><span class="target" id="group__abl_1gade410b3017ce291e93fe88acc769c9d6"></span>subroutine <code class="sig-name descname">set_obj</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47set_objv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define objects for surface integrals. </p>
 </dd></dl>
 
 </div>
@@ -310,7 +292,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="nek5000.html" class="btn btn-neutral float-right" title="Nek5000 core library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="framework.html" class="btn btn-neutral float-right" title="KTH Framework" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="README.html" class="btn btn-neutral float-left" title="snek5000-abl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -322,11 +304,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-05-11
+        
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-07-15
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -337,7 +327,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

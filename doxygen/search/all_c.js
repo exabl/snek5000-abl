@@ -14,6 +14,7 @@ var searchData=
   ['makebox',['makebox',['../genbox_8f.html#ad64cc0e5838502c61925406ef9959b05',1,'genbox.f']]],
   ['makebsource_5fmhd',['makebsource_mhd',['../induct_8f.html#a0f0eb9c29e64571293f094020bee8033',1,'induct.f']]],
   ['makef',['makef',['../group__core.html#ga83189b3d1938d87f00ace2e7e05d9e4c',1,'navier1.f']]],
+  ['makefile_5fusr_2einc',['makefile_usr.inc',['../makefile__usr_8inc.html',1,'']]],
   ['makefp',['makefp',['../perturb_8f.html#a807bd5cbc891f8c0a4a0bfa3e02375fa',1,'perturb.f']]],
   ['makeg',['makeg',['../navier1_8f.html#aad7333d62628c651dc3056ad2806cb69',1,'navier1.f']]],
   ['makeq',['makeq',['../makeq_8f.html#aad7ee07cd8b6df77d80fd1f50bfb5322',1,'makeq.f']]],

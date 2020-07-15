@@ -1,9 +1,5 @@
 var group__abl =
 [
-    [ "coriolis", "group__abl.html#gad74b1b8563b1bee051b6c315a328a069", null ],
-    [ "eddy_visc", "group__abl.html#gaaf0f4048a4e81a838bf903f040cf2db1", null ],
-    [ "set_forcing", "group__abl.html#ga32480237866193258937d1e06bbd0e01", null ],
-    [ "set_grid_spacing", "group__abl.html#gabc6963764dd0ea847bc7e70242d55163", null ],
     [ "set_obj", "group__abl.html#gade410b3017ce291e93fe88acc769c9d6", null ],
     [ "userbc", "group__abl.html#ga5bc9a35082ab7f7115cd6ba8685682fd", null ],
     [ "userchk", "group__abl.html#gaab7e65383186bbbe5e8ee746f763b233", null ],

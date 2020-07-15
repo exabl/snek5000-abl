@@ -138,7 +138,6 @@ var searchData=
   ['copy4r',['copy4r',['../prepost_8f.html#a5802584ce57124068d1ee183348e3275',1,'prepost.f']]],
   ['copyi4',['copyi4',['../math_8f.html#a26622755cad7162eab6e767526a9445d',1,'math.f']]],
   ['copyx4',['copyx4',['../prepost_8f.html#a91be720c5e5090ee2c5641ca594c2a92',1,'prepost.f']]],
-  ['coriolis',['coriolis',['../group__abl.html#gad74b1b8563b1bee051b6c315a328a069',1,'abl.usr']]],
   ['cqnet',['cqnet',['../mvmesh_8f.html#a2948cce47cf83395e74e6a3aa2e96217',1,'mvmesh.f']]],
   ['create_5fcomm',['create_comm',['../comm__mpi_8f.html#a0d0f535bedd0124e7a09b4f15db6de8e',1,'comm_mpi.f']]],
   ['crecv',['crecv',['../comm__mpi_8f.html#a243c9bed2592e7cd159fb36be4fda037',1,'comm_mpi.f']]],

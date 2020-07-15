@@ -33,8 +33,6 @@ var searchData=
   ['set_5ffdm_5fprec_5fh1a_5fgen',['set_fdm_prec_h1a_gen',['../hmholtz_8f.html#abd6f3614f9436265a22e0d5354f18926',1,'hmholtz.f']]],
   ['set_5ffdm_5fprec_5fh1b',['set_fdm_prec_h1b',['../hmholtz_8f.html#ab43c015e9a2bba2725cf41e19c9d8adb',1,'hmholtz.f']]],
   ['set_5ffem_5fdata_5fl2',['set_fem_data_l2',['../navier6_8f.html#a601fb0d002c670e311b781b709fa42f2',1,'navier6.f']]],
-  ['set_5fforcing',['set_forcing',['../group__abl.html#ga32480237866193258937d1e06bbd0e01',1,'abl.usr']]],
-  ['set_5fgrid_5fspacing',['set_grid_spacing',['../group__abl.html#gabc6963764dd0ea847bc7e70242d55163',1,'abl.usr']]],
   ['set_5fh1_5fbasis_5fbilin',['set_h1_basis_bilin',['../navier8_8f.html#ace4e528a4176730e9d25ad1e44c47d9a',1,'navier8.f']]],
   ['set_5fident',['set_ident',['../gfdm__op_8f.html#a0dc491f472f1917a696f61f6a9f8eb8c',1,'gfdm_op.f']]],
   ['set_5fifbcor',['set_ifbcor',['../induct_8f.html#a8ab9011a7d77fe8fe5f3d6acc6835aaa',1,'induct.f']]],

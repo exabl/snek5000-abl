@@ -3,7 +3,6 @@ var searchData=
   ['echopar',['echopar',['../drive2_8f.html#ad6a42dd98e540bc5a0563ef620239e1e',1,'drive2.f']]],
   ['econj',['econj',['../navier4_8f.html#a06054dac336f2f8055223e0e77ae4c96',1,'navier4.f']]],
   ['econjp',['econjp',['../induct_8f.html#a96c838aa6e55891919a329dc50e1ae0e',1,'induct.f']]],
-  ['eddy_5fvisc',['eddy_visc',['../group__abl.html#gaaf0f4048a4e81a838bf903f040cf2db1',1,'abl.usr']]],
   ['edg3d',['edg3d',['../genxyz_8f.html#a7453c73378380473c945da08e946a0a1',1,'genxyz.f']]],
   ['edgec_2ef',['edgec.f',['../edgec_8f.html',1,'']]],
   ['edgindf',['edgindf',['../subs2_8f.html#a035bf65bef427747dc6bc8532db391e2',1,'subs2.f']]],

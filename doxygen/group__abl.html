@@ -111,6 +111,10 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga32657b69f54f96dc5aea199db3658bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set variable properties, does not call any subroutines / functions.  <a href="#ga32657b69f54f96dc5aea199db3658bc3">More...</a><br /></td></tr>
 <tr class="separator:ga32657b69f54f96dc5aea199db3658bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1172abb68180ad165a8080d73ee2a378"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#ga1172abb68180ad165a8080d73ee2a378">userf</a> (ix, iy, iz, eg)</td></tr>
+<tr class="memdesc:ga1172abb68180ad165a8080d73ee2a378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute Coriolis acceleration </p><p class="formulaDsp">
+\[ F_x, F_z = - f\hat{e}_y \times \vec{u} \]
+</p>
+<p> See <a href="https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html">https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html</a>.  <a href="#ga1172abb68180ad165a8080d73ee2a378">More...</a><br /></td></tr>
 <tr class="separator:ga1172abb68180ad165a8080d73ee2a378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga79dd81f06a46a7f8a1637ec998781930"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#ga79dd81f06a46a7f8a1637ec998781930">userq</a> (ix, iy, iz, eg)</td></tr>
 <tr class="separator:ga79dd81f06a46a7f8a1637ec998781930"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,25 +133,11 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:gad0bac908131bab7fa82d65be4229e976"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gad0bac908131bab7fa82d65be4229e976">usrdat2</a> ()</td></tr>
 <tr class="separator:gad0bac908131bab7fa82d65be4229e976"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae8e951758ca4752cd88bc9c5330c9ebe"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gae8e951758ca4752cd88bc9c5330c9ebe">usrdat3</a> ()</td></tr>
+<tr class="memdesc:gae8e951758ca4752cd88bc9c5330c9ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute inflow / outflow conditions a.k.a. driving force. Ubar=1 Not required when coriolis force is specified in userf <a href="https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386">https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386</a>.  <a href="#gae8e951758ca4752cd88bc9c5330c9ebe">More...</a><br /></td></tr>
 <tr class="separator:gae8e951758ca4752cd88bc9c5330c9ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf0f4048a4e81a838bf903f040cf2db1"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gaaf0f4048a4e81a838bf903f040cf2db1">eddy_visc</a> (e)</td></tr>
-<tr class="memdesc:gaaf0f4048a4e81a838bf903f040cf2db1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute eddy viscosity using dynamic smagorinsky model.  <a href="#gaaf0f4048a4e81a838bf903f040cf2db1">More...</a><br /></td></tr>
-<tr class="separator:gaaf0f4048a4e81a838bf903f040cf2db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabc6963764dd0ea847bc7e70242d55163"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gabc6963764dd0ea847bc7e70242d55163">set_grid_spacing</a> (dg2)</td></tr>
-<tr class="memdesc:gabc6963764dd0ea847bc7e70242d55163"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute D^2, the grid spacing used in the DS sgs model.  <a href="#gabc6963764dd0ea847bc7e70242d55163">More...</a><br /></td></tr>
-<tr class="separator:gabc6963764dd0ea847bc7e70242d55163"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gade410b3017ce291e93fe88acc769c9d6"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gade410b3017ce291e93fe88acc769c9d6">set_obj</a></td></tr>
 <tr class="memdesc:gade410b3017ce291e93fe88acc769c9d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define objects for surface integrals.  <a href="#gade410b3017ce291e93fe88acc769c9d6">More...</a><br /></td></tr>
 <tr class="separator:gade410b3017ce291e93fe88acc769c9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga32480237866193258937d1e06bbd0e01"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#ga32480237866193258937d1e06bbd0e01">set_forcing</a> (f_new, u, idir)</td></tr>
-<tr class="memdesc:ga32480237866193258937d1e06bbd0e01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute inflow / outflow conditions a.k.a. driving force. Ubar=1.  <a href="#ga32480237866193258937d1e06bbd0e01">More...</a><br /></td></tr>
-<tr class="separator:ga32480237866193258937d1e06bbd0e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad74b1b8563b1bee051b6c315a328a069"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__abl.html#gad74b1b8563b1bee051b6c315a328a069">coriolis</a> (ix, iy, iz, ieg)</td></tr>
-<tr class="memdesc:gad74b1b8563b1bee051b6c315a328a069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute Coriolis acceleration </p><p class="formulaDsp">
-\[ F_x, F_z = - f\hat{e}_y \times \vec{u} \]
-</p>
-<p> See <a href="https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html">https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html</a>.  <a href="#gad74b1b8563b1bee051b6c315a328a069">More...</a><br /></td></tr>
-<tr class="separator:gad74b1b8563b1bee051b6c315a328a069"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Contains: user specified routines for the ABL case. </p>
@@ -164,158 +154,6 @@ Functions/Subroutines</h2></td></tr>
 <li>usrdat3 : general purpose routine for initialization </li>
 </ul>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
-<a id="gad74b1b8563b1bee051b6c315a328a069"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad74b1b8563b1bee051b6c315a328a069">&#9670;&nbsp;</a></span>coriolis()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine coriolis </td>
-          <td>(</td>
-          <td class="paramtype">integer&#160;</td>
-          <td class="paramname"><em>ix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer&#160;</td>
-          <td class="paramname"><em>iy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer&#160;</td>
-          <td class="paramname"><em>iz</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer&#160;</td>
-          <td class="paramname"><em>ieg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute Coriolis acceleration </p><p class="formulaDsp">
-\[ F_x, F_z = - f\hat{e}_y \times \vec{u} \]
-</p>
-<p> See <a href="https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html">https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">ix,iy,iz</td><td>GLL point index </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ieg</td><td>global element number </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="gaaf0f4048a4e81a838bf903f040cf2db1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaaf0f4048a4e81a838bf903f040cf2db1">&#9670;&nbsp;</a></span>eddy_visc()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine eddy_visc </td>
-          <td>(</td>
-          <td class="paramtype">integer&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute eddy viscosity using dynamic smagorinsky model. </p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__abl_gaaf0f4048a4e81a838bf903f040cf2db1_cgraph.svg" width="627" height="316"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
-
-</div>
-</div>
-<a id="ga32480237866193258937d1e06bbd0e01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga32480237866193258937d1e06bbd0e01">&#9670;&nbsp;</a></span>set_forcing()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine set_forcing </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>f_new</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>u</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>idir</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute inflow / outflow conditions a.k.a. driving force. Ubar=1. </p>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__abl_ga32480237866193258937d1e06bbd0e01_cgraph.svg" width="199" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
-
-</div>
-</div>
-<a id="gabc6963764dd0ea847bc7e70242d55163"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabc6963764dd0ea847bc7e70242d55163">&#9670;&nbsp;</a></span>set_grid_spacing()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine set_grid_spacing </td>
-          <td>(</td>
-          <td class="paramtype">real, dimension(nx1,ny1,nz1,nelv)&#160;</td>
-          <td class="paramname"><em>dg2</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute D^2, the grid spacing used in the DS sgs model. </p>
-<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__abl_gabc6963764dd0ea847bc7e70242d55163_cgraph.svg" width="236" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
-
-</div>
-</div>
 <a id="gade410b3017ce291e93fe88acc769c9d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gade410b3017ce291e93fe88acc769c9d6">&#9670;&nbsp;</a></span>set_obj()</h2>
 
@@ -332,11 +170,11 @@ Functions/Subroutines</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Define objects for surface integrals. </p>
-<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" frameborder="0" src="group__abl_gade410b3017ce291e93fe88acc769c9d6_cgraph.svg" width="170" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
@@ -405,12 +243,12 @@ Functions/Subroutines</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Compute the turbulent stress tensors and write statistics. </p>
-<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__abl_gaab7e65383186bbbe5e8ee746f763b233_cgraph.svg" width="782" height="848"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__abl_gaab7e65383186bbbe5e8ee746f763b233_cgraph.svg" width="327" height="544"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -453,6 +291,18 @@ Functions/Subroutines</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Compute Coriolis acceleration </p><p class="formulaDsp">
+\[ F_x, F_z = - f\hat{e}_y \times \vec{u} \]
+</p>
+<p> See <a href="https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html">https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ix,iy,iz</td><td>GLL point index </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eg</td><td>global element number </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -553,11 +403,11 @@ Functions/Subroutines</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" frameborder="0" src="group__abl_gac0c73a81b4be0f60b83a1f188bd8be50_cgraph.svg" width="212" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
@@ -612,6 +462,7 @@ Functions/Subroutines</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>implement ifield = 2 case for temperature </dd></dl>
 
 </div>
 </div>
@@ -629,11 +480,11 @@ Functions/Subroutines</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" frameborder="0" src="group__abl_ga684b0320d82a6ae155bf7e0b53826cd3_cgraph.svg" width="160" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
@@ -672,6 +523,8 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Compute inflow / outflow conditions a.k.a. driving force. Ubar=1 Not required when coriolis force is specified in userf <a href="https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386">https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386</a>. </p>
+
 </div>
 </div>
 </div><!-- contents -->
@@ -679,7 +532,7 @@ Functions/Subroutines</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon May 11 2020 20:25:53 for eTurb by
+    <li class="footer">Generated on Wed Jul 15 2020 10:17:57 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

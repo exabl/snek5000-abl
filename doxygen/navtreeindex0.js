@@ -40,7 +40,7 @@ var NAVTREEINDEX0 =
 "RPRMD.html":[6,0,1,0,0,20],
 "SCRCT.html":[6,0,0,0,0,101],
 "SEMHAT.html":[6,0,0,0,0,102],
-"SIZE.html":[6,0,1,0,2],
+"SIZE.html":[6,0,1,0,3],
 "SIZE_8inc.html":[6,0,0,0,0,104],
 "SOLN.html":[6,0,0,0,0,105],
 "STATD.html":[6,0,1,0,0,23],

@@ -28,6 +28,34 @@ Security in case of vulnerabilities.
 ## [Unreleased]
 - Paraview I/O for loading and plotting functions
 
+## [0.3.1b0] - 2020-07-15
+
+### Added
+
+- 
+
+## [0.3.0a0] - 2020-06-02
+
+### Added
+
+- Writes initial condition
+
+### Changed
+
+- Implicit none in user subroutines (#6)
+- Initial condition only adds perturbation near wall (637727aa)
+- Uses snek5000
+
+### Removed
+
+- set_forcing
+
+### Fixed
+
+- Coriolis term sign
+- Userf only has a coriolis term and equivalent of geostrophic pressure
+  gradient term
+
 ## [0.2.2] - 2020-05-08
 
 ### Added

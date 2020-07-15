@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Boundary condition &mdash; snek5000-abl 0.1.dev1+g3b0623d documentation</title>
+  <title>Boundary condition &mdash; snek5000-abl 0.1.dev1+g21997a2 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
@@ -19,7 +22,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -27,15 +32,11 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Filtering" href="filtering.html" />
@@ -53,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> snek5000-abl
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> snek5000-abl
           
 
           
@@ -63,7 +64,7 @@
             
             
               <div class="version">
-                0.1.dev1+g3b0623d
+                0.1.dev1+g21997a2
               </div>
             
           
@@ -80,6 +81,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -95,6 +97,7 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="abl.html">ABL case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">KTH Framework</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nek5000.html">Nek5000 core library</a></li>
 </ul>
 <ul>
@@ -131,6 +134,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -169,7 +173,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Boundary condition</li>
     
@@ -206,12 +210,12 @@ conditions.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">fluid</span></code> -&gt; drive2.f</p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="nek5000.html#c.fluid" title="fluid"><code class="xref c c-func docutils literal notranslate"><span class="pre">fluid()</span></code></a>:</p>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">fluid()</span></code>:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">iftran=1,ifrich=0</span></code> -&gt; <a class="reference internal" href="nek5000.html#c.plan3" title="plan3"><code class="xref c c-func docutils literal notranslate"><span class="pre">plan3()</span></code></a> in <code class="docutils literal notranslate"><span class="pre">planx.f</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iftran=1,ifrich=0</span></code> -&gt; <code class="xref c c-func docutils literal notranslate"><span class="pre">plan3()</span></code> in <code class="docutils literal notranslate"><span class="pre">planx.f</span></code></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="nek5000.html#c.plan3" title="plan3"><code class="xref c c-func docutils literal notranslate"><span class="pre">plan3()</span></code></a>: Helmholtz operator split into two steps <code class="docutils literal notranslate"><span class="pre">igeom=1,2</span></code></p>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">plan3()</span></code>: Helmholtz operator split into two steps <code class="docutils literal notranslate"><span class="pre">igeom=1,2</span></code></p>
 <ul>
 <li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">makef()</span></code> : extrapolate pressure, solve for intermadiate velocity</p></li>
 <li><p>solve for update of pressure, velocity divergence free. Only
@@ -237,7 +241,7 @@ neutral -&gt; <code class="docutils literal notranslate"><span class="pre">bdry.
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ophinv</span></code>, <code class="docutils literal notranslate"><span class="pre">opadd2</span></code>: inverse helmholtz</p></li>
-<li><p><a class="reference internal" href="nek5000.html#c.incomprn" title="incomprn"><code class="xref c c-func docutils literal notranslate"><span class="pre">incomprn()</span></code></a>:</p>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">incomprn()</span></code>:</p>
 <ul>
 <li><p>Project velocity</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">opgradt</span></code>: pressure</p></li>
@@ -348,11 +352,19 @@ correction in each sub-step.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-05-11
+        
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-07-15
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -363,7 +375,6 @@ correction in each sub-step.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
