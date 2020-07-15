@@ -26,13 +26,33 @@ Security in case of vulnerabilities.
 -->
 
 ## [Unreleased]
-- Paraview I/O for loading and plotting functions
 
-## [0.3.1b0] - 2020-07-15
+## [0.4.0b0] - 2020-07-15
 
 ### Added
 
-- 
+- Total shear stresses are saved in statistics files
+- Helper bash functions pwd-nek
+- Parameter to set wall location != 0
+- WIP: simulation loader
+
+### Changed
+
+- All #define macros were translated to fortran parameters
+- Use gcc-8 in local machine archmage
+- Coordinates for stats module: z is vertical direction
+- Snakemake, simul.py (renamed from simple.py), organize.py improvements
+
+### Fixed
+
+- Critical bug in SGS: unintialized parameter C0
+- Statistics sampling rate
+- Documentation build
+
+### Removed
+
+- Bulk velocity forcing
+
 
 ## [0.3.0a0] - 2020-06-02
 
@@ -145,3 +165,14 @@ Security in case of vulnerabilities.
 - Scripting for managing run parameters `eturb.params`
 - Python packaging
 - Sphinx + Doxygen + Breathe documentation
+
+
+[Unreleased]: https://github.com/exabl/snek5000-abl/compare/0.4.0b0...HEAD
+[0.4.0b0]: https://github.com/exabl/snek5000-abl/compare/0.3.0a0...0.4.0b0
+[0.3.0a0]: https://github.com/exabl/snek5000-abl/compare/0.2.2...0.3.0a0
+[0.2.2]: https://github.com/exabl/snek5000-abl/compare/0.2.1...0.2.2
+[0.2.1]: https://github.com/exabl/snek5000-abl/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/exabl/snek5000-abl/compare/0.1.1...0.2.0
+[0.1.1]: https://github.com/exabl/snek5000-abl/compare/0.1.0...0.1.1
+[0.1.0]: https://github.com/exabl/snek5000-abl/compare/0.0.1...0.1.0
+[0.0.1]: https://github.com/exabl/snek5000-abl/releases/tag/0.0.1
