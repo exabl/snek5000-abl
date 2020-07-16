@@ -15,7 +15,7 @@ from snek5000.util.archive import tar_name, archive, clean_simul
 CASE = "abl"
 CONFIG = Output.get_configfile()
 ROOT = Output.get_root()
-SOURCE_ROOT = snek5000.source_root()
+NEK_SOURCE_ROOT = snek5000.source_root()
 
 
 # TODO: define configuration files for SNIC clusters
@@ -25,15 +25,15 @@ if os.getenv("SNEK_DEBUG"):
     config["CFLAGS"] += " -O0 -g"
     config["FFLAGS"] += " -O0 -g -ffpe-trap=invalid,zero,overflow,underflow -Wall"
 
-if not os.getenv("SOURCE_ROOT"):
-    os.environ["SOURCE_ROOT"] = SOURCE_ROOT
+if not os.getenv("NEK_SOURCE_ROOT"):
+    os.environ["NEK_SOURCE_ROOT"] = NEK_SOURCE_ROOT
 
-if SOURCE_ROOT not in os.getenv("PATH"):
-    os.environ["PATH"] = ":".join([SOURCE_ROOT, os.getenv("PATH")])
+if NEK_SOURCE_ROOT not in os.getenv("PATH"):
+    os.environ["PATH"] = ":".join([NEK_SOURCE_ROOT, os.getenv("PATH")])
 
 
 subworkflow Nek5000:
-    workdir: SOURCE_ROOT
+    workdir: NEK_SOURCE_ROOT
     snakefile: snek5000.get_asset('nek5000.smk')
     configfile: CONFIG
 
@@ -46,21 +46,35 @@ rule all:
 rule mesh:
     input: f"{CASE}.re2", f"{CASE}.ma2"
 
+
+# gslib, lapack ...
+rule build_third_party:
+    input:
+        nekconfig = NEK_SOURCE_ROOT + "/bin/nekconfig"
+    output:
+        NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a",
+        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a"
+    shell:
+        "{input.nekconfig} -build-dep"
+
 # compile
 rule compile:
     input:
+        'SIZE',
         f"{CASE}.usr",
         'makefile_usr.inc',
         'makefile',
         *iglob('toolbox/*'),
         *iglob('sgs/*'),
-        SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
+        NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a",
+        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a"
     output:
         f'{CASE}.f',
         exe='nek5000'
     shell:
-        'make -j {output.exe}'
-
+        """
+        make -j {output.exe}
+        """
 # run
 rule run:
     input:
@@ -109,7 +123,8 @@ rule clean:
         """
         echo "cleaning Nek5000 ..."
         rm -fv {params.case}.f nek5000
-        rm -fv $SOURCE_ROOT/core/mpif.h
+        rm -rf obj
+        rm -fv $NEK_SOURCE_ROOT/core/mpif.h
         """
 
 # clean simulation files
@@ -120,12 +135,22 @@ rule cleansimul:
     run:
         clean_simul(params.case, params.tarball)
 
+# clean third party
+rule clean3rd:
+    params:
+        gslib_dir = NEK_SOURCE_ROOT + "/3rd_party/gslib"
+    shell:
+        """
+        nekconfig clean < <(yes)
+        rm -rf {params.gslib_dir}/{{gslib-*,*.tar.gz}}
+        """
+
 # clean everything
 rule cleanall:
     shell:
         """
         rm -rf obj
-        snakemake clean cleansimul -j
+        snakemake clean clean3rd cleansimul -j
         """
 
 # create an archive with all of our results
@@ -196,30 +221,20 @@ rule generate_makefile:
         f'{CASE}.re2',
         f'{CASE}.ma2',
         f'{CASE}.usr',
-        makenek = SOURCE_ROOT + "/bin/makenek"
+        makenek = NEK_SOURCE_ROOT + "/bin/makenek",
     output:
-        'makefile',
-        SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a"
+        'makefile'
     params:
         case = f'{CASE}',
         inc = " ".join((f"-I{inc_dir}" for inc_dir in Output().makefile_usr_sources)),
         usr = " ".join(Output().makefile_usr_obj)
     shell:
         """
-        function at_exit {{
-            ls -l makefile
-            export NOCOMPILE=0
-            clean_3rd_party
-            make_3rd_party
-            echo "Done"
-        }}
-        trap at_exit EXIT
-
         set +u  # Do not error on undefined bash variables
         export CC="{config[MPICC]}" FC="{config[MPIFC]}" \
             CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]} {params.inc}" \
             USR="{params.usr}"
-        source {input.makenek} {params.case} -nocompile
+        {input.makenek} {params.case} -nocompile
         """
 
 # generate sessionfile
