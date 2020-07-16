@@ -27,6 +27,14 @@ Security in case of vulnerabilities.
 
 ## [Unreleased]
 
+### Changed
+
+- Migrate to Nek5000 v19
+
+### Fixed
+
+- Requirements: pymech and zstandard
+
 ## [0.4.0b0] - 2020-07-15
 
 ### Added
