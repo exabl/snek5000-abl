@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['ncounter',['NCOUNTER',['../nek__comm_8c.html#a1a6f368ac1a7f1490f588d3352edc266',1,'nek_comm.c']]],
-  ['nek_5fcomm_5fgetstat',['nek_comm_getstat',['../nek__comm_8c.html#a3dfc59a9f266a56108f849d783074816',1,'nek_comm.c']]],
-  ['nek_5fcomm_5fsettings',['nek_comm_settings',['../nek__comm_8c.html#a8eef6edde31174e8ebcf13aeddef1e18',1,'nek_comm.c']]],
-  ['nek_5fcomm_5fstartstat',['nek_comm_startstat',['../nek__comm_8c.html#aa77c34c11519d275caed180e4d3745a1',1,'nek_comm.c']]],
-  ['ntimer',['NTIMER',['../nek__comm_8c.html#ab14495ae1f9667df5d198613bcc8d092',1,'nek_comm.c']]]
+  ['get_5fbytesw_5fwrite',['get_bytesw_write',['../byte_8c.html#a6fa5d6a26b4bfd65df77fa4b8050e745',1,'byte.c']]],
+  ['getmaxrss',['getmaxrss',['../chelpers_8c.html#a3af052d2c637d232a64a2d8c22ec4ac7',1,'chelpers.c']]]
 ];

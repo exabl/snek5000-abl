@@ -1,12 +1,11 @@
 var searchData=
 [
   ['utilities_20for_20postprocessing_20and_20computing_20derived_20variables',['Utilities for postprocessing and computing derived variables',['../group__postpro.html',1,'']]],
-  ['uglamax',['uglamax',['../multimesh_8f.html#a7ffcf4434dd88c91e24c1728b43f3d41',1,'multimesh.f']]],
-  ['uglmax',['uglmax',['../multimesh_8f.html#a298931921d7f37bb9699ddf4d71671f1',1,'multimesh.f']]],
-  ['uglmin',['uglmin',['../multimesh_8f.html#a1143e0a0a4c25125e54dd911681d8d64',1,'uglmin(a, n):&#160;multimesh.f'],['../singlmesh_8f.html#a02892a3699a3d8b50e7090a0be321acc',1,'uglmin(a, n):&#160;singlmesh.f']]],
+  ['uint_5fbits',['UINT_BITS',['../crs__xxt_8c.html#aa0d2dafa9298f48b4d34009270d23d1e',1,'crs_xxt.c']]],
+  ['umap',['umap',['../structcrs__data.html#a8ae10c938f8aee6bd32efc9b6c8f3e9f',1,'crs_data']]],
+  ['un',['un',['../structcrs__data.html#a92e3cab8204f20e98d28df3310d47702',1,'crs_data::un()'],['../structxxt.html#ae0cf9afabd973ef0cc77d752c55ec650',1,'xxt::un()']]],
   ['unitvec',['unitvec',['../bdry_8f.html#a08a4a461c2a4ae5f28db958154068379',1,'bdry.f']]],
   ['unorm',['unorm',['../subs1_8f.html#a8f2e17fa9df4e1df865aa17b294f867c',1,'subs1.f']]],
-  ['unsetintercomm',['unsetintercomm',['../multimesh_8f.html#aaa5058fc7117a99c050d7d6467e82309',1,'unsetintercomm(nekcommtrue, nptrue):&#160;multimesh.f'],['../singlmesh_8f.html#aaa5058fc7117a99c050d7d6467e82309',1,'unsetintercomm(nekcommtrue, nptrue):&#160;singlmesh.f']]],
   ['updcoor',['updcoor',['../mvmesh_8f.html#ab11769475a223b4006d1c1730ad86804',1,'mvmesh.f']]],
   ['updmsys',['updmsys',['../subs2_8f.html#aa57451cc7f331b193194eadc074dbbba',1,'subs2.f']]],
   ['updrhse',['updrhse',['../navier4_8f.html#ac7850f94786af7a09038a0ccaccadd07',1,'navier4.f']]],
@@ -17,7 +16,6 @@ var searchData=
   ['user_5fstat_5ftrnsv',['user_stat_trnsv',['../group__framework.html#ga3737d0f38b1a9847edf53beaabc8c5f4',1,'abl.usr']]],
   ['userbc',['userbc',['../group__zero.html#ga5bc9a35082ab7f7115cd6ba8685682fd',1,'userbc(ix, iy, iz, iside, eg):&#160;zero.usr'],['../group__abl.html#ga5bc9a35082ab7f7115cd6ba8685682fd',1,'userbc(ix, iy, iz, iside, eg):&#160;abl.usr']]],
   ['userchk',['userchk',['../group__zero.html#gaab7e65383186bbbe5e8ee746f763b233',1,'userchk():&#160;zero.usr'],['../group__abl.html#gaab7e65383186bbbe5e8ee746f763b233',1,'userchk():&#160;abl.usr']]],
-  ['userchk_5fset_5fxfer',['userchk_set_xfer',['../multimesh_8f.html#a0960e928ef8c9884daa9faa261b9ebb8',1,'userchk_set_xfer:&#160;multimesh.f'],['../singlmesh_8f.html#a0960e928ef8c9884daa9faa261b9ebb8',1,'userchk_set_xfer:&#160;singlmesh.f']]],
   ['userf',['userf',['../group__zero.html#ga1172abb68180ad165a8080d73ee2a378',1,'userf(ix, iy, iz, eg):&#160;zero.usr'],['../group__abl.html#ga1172abb68180ad165a8080d73ee2a378',1,'userf(ix, iy, iz, eg):&#160;abl.usr']]],
   ['useric',['useric',['../group__zero.html#ga9fca046e76d53cec863a2ef596ded5d8',1,'useric(ix, iy, iz, eg):&#160;zero.usr'],['../group__abl.html#ga9fca046e76d53cec863a2ef596ded5d8',1,'useric(ix, iy, iz, eg):&#160;abl.usr']]],
   ['userq',['userq',['../group__zero.html#ga79dd81f06a46a7f8a1637ec998781930',1,'userq(ix, iy, iz, eg):&#160;zero.usr'],['../group__abl.html#ga79dd81f06a46a7f8a1637ec998781930',1,'userq(ix, iy, iz, eg):&#160;abl.usr']]],

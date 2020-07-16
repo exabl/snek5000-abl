@@ -114,7 +114,7 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:a06054dac336f2f8055223e0e77ae4c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43f20a275a318725bfdf9e8eaa0839fa"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="navier4_8f.html#a43f20a275a318725bfdf9e8eaa0839fa">chkptol</a></td></tr>
 <tr class="separator:a43f20a275a318725bfdf9e8eaa0839fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6adc3e5d428cdceba2217edd727ab4ae"><td class="memItemLeft" align="right" valign="top">function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="navier4_8f.html#a6adc3e5d428cdceba2217edd727ab4ae">vlsc3</a> (X, Y, B, N)</td></tr>
+<tr class="memitem:a6adc3e5d428cdceba2217edd727ab4ae"><td class="memItemLeft" align="right" valign="top">function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="navier4_8f.html#a6adc3e5d428cdceba2217edd727ab4ae">vlsc3</a> (X, Y, B, <a class="el" href="crs__amg__io_8h.html#a0240ac851181b84ac374872dc5434ee4">N</a>)</td></tr>
 <tr class="separator:a6adc3e5d428cdceba2217edd727ab4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7850f94786af7a09038a0ccaccadd07"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="navier4_8f.html#ac7850f94786af7a09038a0ccaccadd07">updrhse</a> (p, h1, h2, h2inv, ierr)</td></tr>
 <tr class="separator:ac7850f94786af7a09038a0ccaccadd07"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,6 +136,10 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:a699a84f6ca5347a86adf5f41889d1d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba985c129d004858fb54cb2f76b52803"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="navier4_8f.html#aba985c129d004858fb54cb2f76b52803">proj_ortho_full</a> (xx, bb, n, m, w, ifwt, ifvec, name6)</td></tr>
 <tr class="separator:aba985c129d004858fb54cb2f76b52803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92a0c25e8af2ea445b4cb047a603c1cc"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="navier4_8f.html#a92a0c25e8af2ea445b4cb047a603c1cc">proj_ortho_full_mgs</a> (xx, bb, n, m, w, ifwt, ifvec, name6)</td></tr>
+<tr class="separator:a92a0c25e8af2ea445b4cb047a603c1cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a774a1ef15fb09f53e238de124aa82402"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="navier4_8f.html#a774a1ef15fb09f53e238de124aa82402">proj_ortho_full_cgs2</a> (xx, bb, n, m, w, ifwt, ifvec, name6)</td></tr>
+<tr class="separator:a774a1ef15fb09f53e238de124aa82402"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1700cca28238294c52879cb29424911"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="navier4_8f.html#ac1700cca28238294c52879cb29424911">project2</a> (x, n, rvar, ivar, h1, h2, msk, w, ifwt, ifvec, name6)</td></tr>
 <tr class="separator:ac1700cca28238294c52879cb29424911"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab39fd511a29c7e9726338ba7d82d72d8"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="navier4_8f.html#ab39fd511a29c7e9726338ba7d82d72d8">project2_a</a> (x, xbar, xx, bb, n, m, mmx, h1, h2, msk, w, ifwt, ifvec, name6)</td></tr>
@@ -975,6 +979,134 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
+<a id="a774a1ef15fb09f53e238de124aa82402"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a774a1ef15fb09f53e238de124aa82402">&#9670;&nbsp;</a></span>proj_ortho_full_cgs2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine proj_ortho_full_cgs2 </td>
+          <td>(</td>
+          <td class="paramtype">real, dimension(n,1)&#160;</td>
+          <td class="paramname"><em>xx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension(n,1)&#160;</td>
+          <td class="paramname"><em>bb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension(n)&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical&#160;</td>
+          <td class="paramname"><em>ifwt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical&#160;</td>
+          <td class="paramname"><em>ifvec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">character*6&#160;</td>
+          <td class="paramname"><em>name6</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a92a0c25e8af2ea445b4cb047a603c1cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92a0c25e8af2ea445b4cb047a603c1cc">&#9670;&nbsp;</a></span>proj_ortho_full_mgs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine proj_ortho_full_mgs </td>
+          <td>(</td>
+          <td class="paramtype">real, dimension(n,1)&#160;</td>
+          <td class="paramname"><em>xx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension(n,1)&#160;</td>
+          <td class="paramname"><em>bb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension(n)&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical&#160;</td>
+          <td class="paramname"><em>ifwt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical&#160;</td>
+          <td class="paramname"><em>ifvec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">character*6&#160;</td>
+          <td class="paramname"><em>name6</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a142a136172575274b25ce7f923c429fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a142a136172575274b25ce7f923c429fc">&#9670;&nbsp;</a></span>project1()</h2>
 
@@ -1493,7 +1625,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_0f4b9a16323f5675af19c4065a199753.html">Nek5000</a></li><li class="navelem"><a class="el" href="dir_b31c345e84fd6c5c979ede0e38a56d25.html">core</a></li><li class="navelem"><a class="el" href="navier4_8f.html">navier4.f</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
+    <li class="footer">Generated on Thu Jul 16 2020 15:26:42 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

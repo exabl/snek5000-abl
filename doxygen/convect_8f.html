@@ -104,8 +104,6 @@ $(document).ready(function(){initNavTree('convect_8f.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
-<tr class="memitem:a9b58d62988f53102b490531b844a1891"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="convect_8f.html#a9b58d62988f53102b490531b844a1891">setup_convect</a> (igeom)</td></tr>
-<tr class="separator:a9b58d62988f53102b490531b844a1891"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4ae44dd6c99361a823026cc794c68a0"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="convect_8f.html#ae4ae44dd6c99361a823026cc794c68a0">char_conv</a> (p0, u, ulag, bm, bmlag, msk, c, cs, gsl)</td></tr>
 <tr class="separator:ae4ae44dd6c99361a823026cc794c68a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a462db3d75569eb808bc6e5d8cda2c542"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="convect_8f.html#a462db3d75569eb808bc6e5d8cda2c542">char_conv1</a> (p0, u, bmnv, n, ulag, ln, gsl, c, m, cs, nc, ct, u1, r1, r2, r3, r4, bmsk, bdivw, bdwt, bmass, bmst, bm, bmlag)</td></tr>
@@ -146,8 +144,6 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:ab9dc1c74179f5d10465e63bb065f65eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a768d72f963bbcaf77ab9725ad7847c72"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="convect_8f.html#a768d72f963bbcaf77ab9725ad7847c72">set_convect_new</a> (cr, cs, ct, ux, uy, uz)</td></tr>
 <tr class="separator:a768d72f963bbcaf77ab9725ad7847c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01a29f5210c957bacaaa03e41d3d7db9"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="convect_8f.html#a01a29f5210c957bacaaa03e41d3d7db9">set_char_mask</a> (mask, u, v, w)</td></tr>
-<tr class="separator:a01a29f5210c957bacaaa03e41d3d7db9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc0b2ce765c4ad0f0ec6f2a62536bf57"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="convect_8f.html#afc0b2ce765c4ad0f0ec6f2a62536bf57">advchar</a></td></tr>
 <tr class="separator:afc0b2ce765c4ad0f0ec6f2a62536bf57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b2c8621bcdfb80fd4be220ddd337aa1"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="convect_8f.html#a3b2c8621bcdfb80fd4be220ddd337aa1">convch</a></td></tr>
@@ -1909,46 +1905,6 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="a01a29f5210c957bacaaa03e41d3d7db9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01a29f5210c957bacaaa03e41d3d7db9">&#9670;&nbsp;</a></span>set_char_mask()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine set_char_mask </td>
-          <td>(</td>
-          <td class="paramtype">real, dimension(lxyz1,1)&#160;</td>
-          <td class="paramname"><em>mask</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">real, dimension(lxyz1,1)&#160;</td>
-          <td class="paramname"><em>u</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">real, dimension(lxyz1,1)&#160;</td>
-          <td class="paramname"><em>v</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">real, dimension(lxyz1,1)&#160;</td>
-          <td class="paramname"><em>w</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a41db151aa7950a8af4ccb8ce17f2bbf2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41db151aa7950a8af4ccb8ce17f2bbf2">&#9670;&nbsp;</a></span>set_conv_char()</h2>
 
@@ -2216,24 +2172,6 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="a9b58d62988f53102b490531b844a1891"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b58d62988f53102b490531b844a1891">&#9670;&nbsp;</a></span>setup_convect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine setup_convect </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>igeom</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="ae036baf441f94f93768933971b22ca5e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae036baf441f94f93768933971b22ca5e">&#9670;&nbsp;</a></span>setup_dg_gs()</h2>
 
@@ -2298,7 +2236,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_0f4b9a16323f5675af19c4065a199753.html">Nek5000</a></li><li class="navelem"><a class="el" href="dir_b31c345e84fd6c5c979ede0e38a56d25.html">core</a></li><li class="navelem"><a class="el" href="convect_8f.html">convect.f</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
+    <li class="footer">Generated on Thu Jul 16 2020 15:26:42 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

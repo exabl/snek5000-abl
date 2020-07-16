@@ -170,8 +170,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:a421efcec6bd92517573af80f75b58877"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5784c4f0036a7484628c467ffd0c7d26"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ic_8f.html#a5784c4f0036a7484628c467ffd0c7d26">parse_std_hdr_2006</a> (hdr, rlcode)</td></tr>
 <tr class="separator:a5784c4f0036a7484628c467ffd0c7d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b32036a6e65b4909fa355349b9afe1a"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ic_8f.html#a0b32036a6e65b4909fa355349b9afe1a">mfi</a> (fname, ifile)</td></tr>
-<tr class="separator:a0b32036a6e65b4909fa355349b9afe1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05e0886b196049bac2d39b9d500a70d1"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ic_8f.html#a05e0886b196049bac2d39b9d500a70d1">mfi</a> (fname_in, ifile)</td></tr>
+<tr class="separator:a05e0886b196049bac2d39b9d500a70d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c038aadb593728de8050e552ea4acc6"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ic_8f.html#a6c038aadb593728de8050e552ea4acc6">addfid</a> (fname, fid)</td></tr>
 <tr class="separator:a6c038aadb593728de8050e552ea4acc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe51926a02c40e95936541ed859b1790"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ic_8f.html#afe51926a02c40e95936541ed859b1790">mfi_prepare</a> (hname)</td></tr>
@@ -180,8 +180,10 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:abfc96747c4f79836b70a09ac160175c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af499850e0bb56314ceea0c8db0c56784"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ic_8f.html#af499850e0bb56314ceea0c8db0c56784">map_pm1_to_pr</a> (pm1, ifile)</td></tr>
 <tr class="separator:af499850e0bb56314ceea0c8db0c56784"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa396cce2dda2db300d986bbbce515d6a"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ic_8f.html#aa396cce2dda2db300d986bbbce515d6a">full_restart</a> (s80, n_restart)</td></tr>
-<tr class="separator:aa396cce2dda2db300d986bbbce515d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a193e553524144116aae8bae3b93a7c11"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ic_8f.html#a193e553524144116aae8bae3b93a7c11">full_restart</a> (fnames, n_restart)</td></tr>
+<tr class="separator:a193e553524144116aae8bae3b93a7c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affd572d261c0e88c1b85da597eced204"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ic_8f.html#affd572d261c0e88c1b85da597eced204">projfld_c0</a> ()</td></tr>
+<tr class="separator:affd572d261c0e88c1b85da597eced204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
 <a id="a6c038aadb593728de8050e552ea4acc6"></a>
@@ -334,8 +336,8 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="aa396cce2dda2db300d986bbbce515d6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa396cce2dda2db300d986bbbce515d6a">&#9670;&nbsp;</a></span>full_restart()</h2>
+<a id="a193e553524144116aae8bae3b93a7c11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a193e553524144116aae8bae3b93a7c11">&#9670;&nbsp;</a></span>full_restart()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -343,8 +345,8 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="memname">subroutine full_restart </td>
           <td>(</td>
-          <td class="paramtype">character*80, dimension(n_restart)&#160;</td>
-          <td class="paramname"><em>s80</em>, </td>
+          <td class="paramtype">character *(*), dimension(*)&#160;</td>
+          <td class="paramname"><em>fnames</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -830,8 +832,8 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="a0b32036a6e65b4909fa355349b9afe1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b32036a6e65b4909fa355349b9afe1a">&#9670;&nbsp;</a></span>mfi()</h2>
+<a id="a05e0886b196049bac2d39b9d500a70d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05e0886b196049bac2d39b9d500a70d1">&#9670;&nbsp;</a></span>mfi()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -840,7 +842,7 @@ Functions/Subroutines</h2></td></tr>
           <td class="memname">subroutine mfi </td>
           <td>(</td>
           <td class="paramtype">character*132&#160;</td>
-          <td class="paramname"><em>fname</em>, </td>
+          <td class="paramname"><em>fname_in</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -873,7 +875,7 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">real*4, dimension(lwk)&#160;</td>
+          <td class="paramtype">real*4, dimension(2*lwk)&#160;</td>
           <td class="paramname"><em>wk</em>, </td>
         </tr>
         <tr>
@@ -925,7 +927,7 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">real*4, dimension(lwk)&#160;</td>
+          <td class="paramtype">real*4, dimension(2*lwk)&#160;</td>
           <td class="paramname"><em>wk</em>, </td>
         </tr>
         <tr>
@@ -1087,6 +1089,23 @@ Functions/Subroutines</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="affd572d261c0e88c1b85da597eced204"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affd572d261c0e88c1b85da597eced204">&#9670;&nbsp;</a></span>projfld_c0()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine projfld_c0 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1304,7 +1323,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_0f4b9a16323f5675af19c4065a199753.html">Nek5000</a></li><li class="navelem"><a class="el" href="dir_b31c345e84fd6c5c979ede0e38a56d25.html">core</a></li><li class="navelem"><a class="el" href="ic_8f.html">ic.f</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
+    <li class="footer">Generated on Thu Jul 16 2020 15:26:42 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

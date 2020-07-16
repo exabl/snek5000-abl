@@ -107,9 +107,9 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:ga13048bf28dd0734640412d69349e3857"><td class="memItemLeft" align="right" valign="top">program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__core.html#ga13048bf28dd0734640412d69349e3857">nekton</a></td></tr>
 <tr class="memdesc:ga13048bf28dd0734640412d69349e3857"><td class="mdescLeft">&#160;</td><td class="mdescRight"><em>Drives</em> the solver calling 3 subroutines:  <a href="#ga13048bf28dd0734640412d69349e3857">More...</a><br /></td></tr>
 <tr class="separator:ga13048bf28dd0734640412d69349e3857"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga87bd37ae2c18426f28f35cc3f24e4355"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__core.html#ga87bd37ae2c18426f28f35cc3f24e4355">nek_init</a> (intracomm)</td></tr>
-<tr class="memdesc:ga87bd37ae2c18426f28f35cc3f24e4355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the solver and variables.  <a href="#ga87bd37ae2c18426f28f35cc3f24e4355">More...</a><br /></td></tr>
-<tr class="separator:ga87bd37ae2c18426f28f35cc3f24e4355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga83f7c6d78ac4e68394f32533e847d0a3"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__core.html#ga83f7c6d78ac4e68394f32533e847d0a3">nek_init</a> (comm)</td></tr>
+<tr class="memdesc:ga83f7c6d78ac4e68394f32533e847d0a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the solver and variables.  <a href="#ga83f7c6d78ac4e68394f32533e847d0a3">More...</a><br /></td></tr>
+<tr class="separator:ga83f7c6d78ac4e68394f32533e847d0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6ad57e0cf728f343e371ef8c9a02cd8a"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__core.html#ga6ad57e0cf728f343e371ef8c9a02cd8a">nek_solve</a></td></tr>
 <tr class="memdesc:ga6ad57e0cf728f343e371ef8c9a02cd8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs post processing or time advancment based on value of <code>instep</code>. Parent subroutine to <a class="el" href="group__core.html#ga18d3e839786263fc4cf91f7eeb714371" title="Multi-level time advancement. Calls nek_advance() msteps times. ">nek__multi_advance()</a> which calls <a class="el" href="group__core.html#gae177ea7efac97f35241521b782a671c0" title="Time advancement. What it does differs based on solver flags and formulation. Summary of calls: ...">nek_advance()</a> once. Also handles:  <a href="#ga6ad57e0cf728f343e371ef8c9a02cd8a">More...</a><br /></td></tr>
 <tr class="separator:ga6ad57e0cf728f343e371ef8c9a02cd8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,7 +159,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_gab0aeca9ad3db8be87a01ba29d069d71e_cgraph.svg" width="442" height="1203"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_gab0aeca9ad3db8be87a01ba29d069d71e_cgraph.svg" width="454" height="1203"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -241,7 +241,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga83189b3d1938d87f00ace2e7e05d9e4c_cgraph.svg" width="196" height="392"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga83189b3d1938d87f00ace2e7e05d9e4c_cgraph.svg" width="199" height="443"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -294,7 +294,7 @@ Functions/Subroutines</h2></td></tr>
 
 <p>Time advancement. What it does differs based on solver flags and formulation. Summary of calls: </p>
 <ul>
-<li><a class="el" href="multimesh_8f.html#a0960e928ef8c9884daa9faa261b9ebb8">userchk_set_xfer()</a></li>
+<li>userchk_set_xfer()</li>
 <li><a class="el" href="group__core.html#gab0aeca9ad3db8be87a01ba29d069d71e" title="Driver for solving the incompressible Navier-Stokes equations. ">fluid()</a>, <a class="el" href="drive2_8f.html#acce80cd37f20e9b52729eb52d86a9c86">heat()</a></li>
 <li><a class="el" href="navier5_8f.html#a519066c177fc94530849e83d3b9d4cfb">q_filter()</a> with <code>param(103)</code> </li>
 </ul>
@@ -303,7 +303,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_gae177ea7efac97f35241521b782a671c0_cgraph.svg" width="666" height="1304"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_gae177ea7efac97f35241521b782a671c0_cgraph.svg" width="679" height="1228"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -335,14 +335,14 @@ Functions/Subroutines</h2></td></tr>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga10055f031c0ac540cc534ab2b0363206_cgraph.svg" width="192" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga10055f031c0ac540cc534ab2b0363206_cgraph.svg" width="192" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
 </div>
 </div>
-<a id="ga87bd37ae2c18426f28f35cc3f24e4355"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga87bd37ae2c18426f28f35cc3f24e4355">&#9670;&nbsp;</a></span>nek_init()</h2>
+<a id="ga83f7c6d78ac4e68394f32533e847d0a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga83f7c6d78ac4e68394f32533e847d0a3">&#9670;&nbsp;</a></span>nek_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -350,8 +350,8 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="memname">subroutine nek_init </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>intracomm</em></td><td>)</td>
+          <td class="paramtype">integer&#160;</td>
+          <td class="paramname"><em>comm</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -360,7 +360,7 @@ Functions/Subroutines</h2></td></tr>
 <p>Initializes the solver and variables. </p>
 <p>Calls the following subroutines in order:</p><ul>
 <li><code>iniparser</code>: ?</li>
-<li>Session <a class="el" href="multimesh_8f.html#a0b340eaa9352e5b5d12ff7d525b30c0a">get_session_info()</a>, <a class="el" href="comm__mpi_8f.html#af06ec29f06aac3f8809e19de2a7e8946">dnekclock()</a>, <a class="el" href="drive2_8f.html#ae3e6cc31f5e6b6b2b5062d80ca77519f">opcount()</a> &lt;- 1</li>
+<li>Session get_session_info(), <a class="el" href="comm__mpi_8f.html#af06ec29f06aac3f8809e19de2a7e8946">dnekclock()</a>, <a class="el" href="drive2_8f.html#ae3e6cc31f5e6b6b2b5062d80ca77519f">opcount()</a> &lt;- 1</li>
 <li>Grid: <a class="el" href="drive2_8f.html#a40017911aaca646c450aff8e81c73de3">initdim()</a>, <a class="el" href="drive2_8f.html#ad39f875830fa693f65e91c2eebe4f6fc">initdat()</a>, <a class="el" href="drive2_8f.html#a29f4f4f29ab462b5dcb910cb6d8a1af1">files()</a>, <a class="el" href="comm__mpi_8f.html#af06ec29f06aac3f8809e19de2a7e8946">dnekclock()</a>, <a class="el" href="connect2_8f.html#a909eeac6dfc8f61a1c9d637c53cc970d">readat()</a></li>
 <li>Sync: <a class="el" href="comm__mpi_8f.html#af434902df36175d2afdc00fbabc84b2c">dnekclock_sync()</a>: <a class="el" href="mpi__dummy_8f.html#a070afe564196eb48413dbf1a9fbc99aa">mpi_barrier()</a> and <a class="el" href="mpi__dummy_8f.html#ae6a5ef945f87c2c27849696b70f3af2a">mpi_wtime()</a></li>
 <li>Initialize variables: <a class="el" href="drive2_8f.html#ac84969997b3b976452e0337647abcb23">setvar()</a></li>
@@ -370,7 +370,7 @@ Functions/Subroutines</h2></td></tr>
 <li>Verify: <a class="el" href="connect2_8f.html#a76e6d86442e217d89107f73fa732ca97">vrdsmsh()</a></li>
 <li>Optionals run if the flags are set<ul>
 <li><code>dg</code>: <a class="el" href="conduct_8f.html#a3b764ba6cf35187ac351c3072456c805">dg_setup()</a></li>
-<li><code>ifflow</code>: <a class="el" href="navier0_8f.html#a316eee2e742b806a39e481d5f5c3e8b2">estrat()</a>. <code>iftran</code> <a class="el" href="navier6_8f.html#a45317b1def173b8f1db2e5083595d095">set_overlap()</a></li>
+<li><code>ifflow</code>: estrat(). <code>iftran</code> <a class="el" href="navier6_8f.html#a45317b1def173b8f1db2e5083595d095">set_overlap()</a></li>
 <li><code>ifcvode</code>: <code>False</code>?</li>
 </ul>
 </li>
@@ -384,7 +384,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga87bd37ae2c18426f28f35cc3f24e4355_cgraph.svg" width="264" height="1912"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga83f7c6d78ac4e68394f32533e847d0a3_cgraph.svg" width="264" height="1963"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -418,7 +418,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga6ad57e0cf728f343e371ef8c9a02cd8a_cgraph.svg" width="282" height="392"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga6ad57e0cf728f343e371ef8c9a02cd8a_cgraph.svg" width="282" height="494"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -441,7 +441,7 @@ Functions/Subroutines</h2></td></tr>
 
 <p><em>Drives</em> the solver calling 3 subroutines: </p>
 <ul>
-<li><a class="el" href="group__core.html#ga87bd37ae2c18426f28f35cc3f24e4355" title="Initializes the solver and variables. ">nek_init()</a></li>
+<li><a class="el" href="group__core.html#ga83f7c6d78ac4e68394f32533e847d0a3" title="Initializes the solver and variables. ">nek_init()</a></li>
 <li><a class="el" href="group__core.html#ga6ad57e0cf728f343e371ef8c9a02cd8a" title="Runs post processing or time advancment based on value of instep. Parent subroutine to nek__multi_adv...">nek_solve()</a></li>
 <li><a class="el" href="group__core.html#ga10055f031c0ac540cc534ab2b0363206" title="Complete simulation. ">nek_end()</a></li>
 <li><a class="el" href="comm__mpi_8f.html#a7c71e890279f4933a841a2d97c7de4bd">exitt0()</a> </li>
@@ -471,7 +471,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga142f9186a662d3de60f09bb0ee26782d_cgraph.svg" width="322" height="1203"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__core_ga142f9186a662d3de60f09bb0ee26782d_cgraph.svg" width="318" height="1203"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -482,7 +482,7 @@ Functions/Subroutines</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
+    <li class="footer">Generated on Thu Jul 16 2020 15:26:42 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

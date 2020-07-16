@@ -132,7 +132,7 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:a7b652d5ffddd9cc491e9afc0d3fa225d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7453c73378380473c945da08e946a0a1"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="genxyz_8f.html#a7453c73378380473c945da08e946a0a1">edg3d</a> (xysrf, x1, x2, i1, i2, j1, j2, nx, ny)</td></tr>
 <tr class="separator:a7453c73378380473c945da08e946a0a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a3061a8ab3b46ffa65ada9ddefa78b8"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="genxyz_8f.html#a0a3061a8ab3b46ffa65ada9ddefa78b8">dot</a> (V1, V2, N)</td></tr>
+<tr class="memitem:a0a3061a8ab3b46ffa65ada9ddefa78b8"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="genxyz_8f.html#a0a3061a8ab3b46ffa65ada9ddefa78b8">dot</a> (V1, V2, <a class="el" href="crs__amg__io_8h.html#a0240ac851181b84ac374872dc5434ee4">N</a>)</td></tr>
 <tr class="separator:a0a3061a8ab3b46ffa65ada9ddefa78b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abaf230ec04e873e9768e7ea62dc6b1a0"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="genxyz_8f.html#abaf230ec04e873e9768e7ea62dc6b1a0">cross</a> (v1, v2, v3)</td></tr>
 <tr class="separator:abaf230ec04e873e9768e7ea62dc6b1a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,6 +158,14 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:a7c0d9ad72ade85a885511477626382a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adebf3e6276187c41a41596d0d4b34419"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="genxyz_8f.html#adebf3e6276187c41a41596d0d4b34419">clean_xyzq</a> (x, y, z, if3d)</td></tr>
 <tr class="separator:adebf3e6276187c41a41596d0d4b34419"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea17dd307e81e2ea9c30d813756a8527"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="genxyz_8f.html#aea17dd307e81e2ea9c30d813756a8527">mesh_metrics</a></td></tr>
+<tr class="separator:aea17dd307e81e2ea9c30d813756a8527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d088d2a2c15ecdd6f239e3627346ad4"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="genxyz_8f.html#a0d088d2a2c15ecdd6f239e3627346ad4">dist_xyzc</a> (i, j, ie)</td></tr>
+<tr class="separator:a0d088d2a2c15ecdd6f239e3627346ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a021da9f679e373b16d7cc1902e61f265"><td class="memItemLeft" align="right" valign="top">function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="genxyz_8f.html#a021da9f679e373b16d7cc1902e61f265">dxmin_e</a> (e)</td></tr>
+<tr class="separator:a021da9f679e373b16d7cc1902e61f265"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb0bb43507a8e76fa4bf80d19200f410"><td class="memItemLeft" align="right" valign="top">function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="genxyz_8f.html#abb0bb43507a8e76fa4bf80d19200f410">dxmax_e</a> (e)</td></tr>
+<tr class="separator:abb0bb43507a8e76fa4bf80d19200f410"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
 <a id="a3e5af3cbd83d806231beb3b9d7190e75"></a>
@@ -420,6 +428,40 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
+<a id="a0d088d2a2c15ecdd6f239e3627346ad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d088d2a2c15ecdd6f239e3627346ad4">&#9670;&nbsp;</a></span>dist_xyzc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">real function dist_xyzc </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ie</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a0a3061a8ab3b46ffa65ada9ddefa78b8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0a3061a8ab3b46ffa65ada9ddefa78b8">&#9670;&nbsp;</a></span>dot()</h2>
 
@@ -448,6 +490,42 @@ Functions/Subroutines</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abb0bb43507a8e76fa4bf80d19200f410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb0bb43507a8e76fa4bf80d19200f410">&#9670;&nbsp;</a></span>dxmax_e()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">function dxmax_e </td>
+          <td>(</td>
+          <td class="paramtype">integer&#160;</td>
+          <td class="paramname"><em>e</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a021da9f679e373b16d7cc1902e61f265"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a021da9f679e373b16d7cc1902e61f265">&#9670;&nbsp;</a></span>dxmin_e()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">function dxmin_e </td>
+          <td>(</td>
+          <td class="paramtype">integer&#160;</td>
+          <td class="paramname"><em>e</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -836,6 +914,23 @@ Functions/Subroutines</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aea17dd307e81e2ea9c30d813756a8527"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea17dd307e81e2ea9c30d813756a8527">&#9670;&nbsp;</a></span>mesh_metrics()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine mesh_metrics </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1372,7 +1467,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_0f4b9a16323f5675af19c4065a199753.html">Nek5000</a></li><li class="navelem"><a class="el" href="dir_b31c345e84fd6c5c979ede0e38a56d25.html">core</a></li><li class="navelem"><a class="el" href="genxyz_8f.html">genxyz.f</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
+    <li class="footer">Generated on Thu Jul 16 2020 15:26:42 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

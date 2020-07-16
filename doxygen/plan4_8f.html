@@ -110,6 +110,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:a0afe6a03f628b5d52eeb491f7baff5b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1e8c9cb142e2062d1c1c8c1e6cd30c9"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plan4_8f.html#ab1e8c9cb142e2062d1c1c8c1e6cd30c9">cresvsp</a> (resv1, resv2, resv3, h1, h2)</td></tr>
 <tr class="separator:ab1e8c9cb142e2062d1c1c8c1e6cd30c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d742e26cc1633cc4148de40f621d590"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plan4_8f.html#a5d742e26cc1633cc4148de40f621d590">cresvsp_weak</a> (resv1, resv2, resv3, h1, h2)</td></tr>
+<tr class="separator:a5d742e26cc1633cc4148de40f621d590"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a133b5c2a8f266ecb811b8baf380f0b76"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plan4_8f.html#a133b5c2a8f266ecb811b8baf380f0b76">op_curl</a> (w1, w2, w3, u1, u2, u3, ifavg, work1, work2)</td></tr>
 <tr class="separator:a133b5c2a8f266ecb811b8baf380f0b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cde16ca4292836a681d1021ada2dc28"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plan4_8f.html#a8cde16ca4292836a681d1021ada2dc28">opadd2cm</a> (a1, a2, a3, b1, b2, b3, c)</td></tr>
@@ -128,8 +130,28 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:a26aff16d60c39fbe34c5ca86c4041824"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dc32896a9c8fafb6bcb0103e7507909"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plan4_8f.html#a7dc32896a9c8fafb6bcb0103e7507909">printdiverr</a></td></tr>
 <tr class="separator:a7dc32896a9c8fafb6bcb0103e7507909"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedd42d0105ac2c4eac995ac75c027a4a"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="plan4_8f.html#aedd42d0105ac2c4eac995ac75c027a4a">bcdirpr</a> (S)</td></tr>
+<tr class="separator:aedd42d0105ac2c4eac995ac75c027a4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="aedd42d0105ac2c4eac995ac75c027a4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedd42d0105ac2c4eac995ac75c027a4a">&#9670;&nbsp;</a></span>bcdirpr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine bcdirpr </td>
+          <td>(</td>
+          <td class="paramtype">dimension(lx1,<a class="el" href="cvode__aux_8h.html#a3132120f434b2d0cf10f38d211dcf0a0">ly1</a>,<a class="el" href="cvode__aux_8h.html#ac45072b583bd82eef205c6781261f33e">lz1</a>,<a class="el" href="cvode__aux_8h.html#ae8a6dbc0082912460ceb6911caa9cc44">lelt</a>)&#160;</td>
+          <td class="paramname"><em>S</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ae69deb230f08be3fd7f4b30adced56de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae69deb230f08be3fd7f4b30adced56de">&#9670;&nbsp;</a></span>col_mu_sij()</h2>
 
@@ -220,6 +242,52 @@ Functions/Subroutines</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">subroutine cresvsp </td>
+          <td>(</td>
+          <td class="paramtype">real, dimension(lx1,<a class="el" href="cvode__aux_8h.html#a3132120f434b2d0cf10f38d211dcf0a0">ly1</a>,<a class="el" href="cvode__aux_8h.html#ac45072b583bd82eef205c6781261f33e">lz1</a>,lelv)&#160;</td>
+          <td class="paramname"><em>resv1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension(lx1,<a class="el" href="cvode__aux_8h.html#a3132120f434b2d0cf10f38d211dcf0a0">ly1</a>,<a class="el" href="cvode__aux_8h.html#ac45072b583bd82eef205c6781261f33e">lz1</a>,lelv)&#160;</td>
+          <td class="paramname"><em>resv2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension(lx1,<a class="el" href="cvode__aux_8h.html#a3132120f434b2d0cf10f38d211dcf0a0">ly1</a>,<a class="el" href="cvode__aux_8h.html#ac45072b583bd82eef205c6781261f33e">lz1</a>,lelv)&#160;</td>
+          <td class="paramname"><em>resv3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension   (lx1,<a class="el" href="cvode__aux_8h.html#a3132120f434b2d0cf10f38d211dcf0a0">ly1</a>,<a class="el" href="cvode__aux_8h.html#ac45072b583bd82eef205c6781261f33e">lz1</a>,lelv)&#160;</td>
+          <td class="paramname"><em>h1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension   (lx1,<a class="el" href="cvode__aux_8h.html#a3132120f434b2d0cf10f38d211dcf0a0">ly1</a>,<a class="el" href="cvode__aux_8h.html#ac45072b583bd82eef205c6781261f33e">lz1</a>,lelv)&#160;</td>
+          <td class="paramname"><em>h2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d742e26cc1633cc4148de40f621d590"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d742e26cc1633cc4148de40f621d590">&#9670;&nbsp;</a></span>cresvsp_weak()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine cresvsp_weak </td>
           <td>(</td>
           <td class="paramtype">real, dimension(lx1,<a class="el" href="cvode__aux_8h.html#a3132120f434b2d0cf10f38d211dcf0a0">ly1</a>,<a class="el" href="cvode__aux_8h.html#ac45072b583bd82eef205c6781261f33e">lz1</a>,lelv)&#160;</td>
           <td class="paramname"><em>resv1</em>, </td>
@@ -547,7 +615,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_0f4b9a16323f5675af19c4065a199753.html">Nek5000</a></li><li class="navelem"><a class="el" href="dir_b31c345e84fd6c5c979ede0e38a56d25.html">core</a></li><li class="navelem"><a class="el" href="plan4_8f.html">plan4.f</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
+    <li class="footer">Generated on Thu Jul 16 2020 15:26:42 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

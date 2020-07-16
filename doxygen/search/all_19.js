@@ -1,15 +1,5 @@
 var searchData=
 [
-  ['z2d',['z2d',['../navier5_8f.html#acc4f6e7dc9fb2caaf3e5d8a79da085a1',1,'navier5.f']]],
-  ['z_5faverage',['z_average',['../navier5_8f.html#a8dbc211b5d0f0618bc921f19f9f35e58',1,'navier5.f']]],
-  ['z_5faverage_5ftranspose',['z_average_transpose',['../navier5_8f.html#ada927f3b6c5729316e244f254d39421d',1,'navier5.f']]],
-  ['z_5favg_5fbuff',['z_avg_buff',['../navier5_8f.html#a5d7fbc03a871c1a6122db9be90df37fd',1,'navier5.f']]],
-  ['z_5fdistribute',['z_distribute',['../navier5_8f.html#a906207c8744ff20e2f60b0a430fb32a0',1,'navier5.f']]],
-  ['z_5fins_5fbuff',['z_ins_buff',['../navier5_8f.html#a67bf109b407ff9cd36aaa873e6e2230e',1,'navier5.f']]],
-  ['z_5fprofile',['z_profile',['../navier5_8f.html#aed8e77705f038af13b9b48e426716ce9',1,'navier5.f']]],
-  ['z_5fprofile_5ftranspose',['z_profile_transpose',['../navier5_8f.html#a86b58244d83ff11bcbadc98bf0fe41e8',1,'navier5.f']]],
-  ['z_5fslice',['z_slice',['../navier5_8f.html#a3d7b8ee06841cb427b18b7475ed082a1',1,'navier5.f']]],
-  ['z_5fslice_5fg',['z_slice_g',['../navier5_8f.html#ae0f1f14a7e525711f2d6ffda6a5b9734',1,'navier5.f']]],
   ['zbrac',['zbrac',['../genxyz_8f.html#aab8ab9498da96048a71f6e81343f747a',1,'genxyz.f']]],
   ['zbrent',['zbrent',['../genxyz_8f.html#a388e028d9c702800ecb8d1ae208a109a',1,'genxyz.f']]],
   ['zero_2eusr',['zero.usr',['../zero_8usr.html',1,'']]],

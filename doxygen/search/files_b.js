@@ -10,7 +10,6 @@ var searchData=
   ['navier6_2ef',['navier6.f',['../navier6_8f.html',1,'']]],
   ['navier7_2ef',['navier7.f',['../navier7_8f.html',1,'']]],
   ['navier8_2ef',['navier8.f',['../navier8_8f.html',1,'']]],
-  ['nek_5fcomm_2ec',['nek_comm.c',['../nek__comm_8c.html',1,'']]],
   ['neknek',['NEKNEK',['../NEKNEK.html',1,'']]],
   ['nekuse',['NEKUSE',['../NEKUSE.html',1,'']]],
   ['noncon',['NONCON',['../NONCON.html',1,'']]]

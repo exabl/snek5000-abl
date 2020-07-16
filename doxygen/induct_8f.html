@@ -155,8 +155,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:ad9f4f0bccae8f16bc99748c359b489db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae640c10e27288b1e650b562ce9ecdcdc"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="induct_8f.html#ae640c10e27288b1e650b562ce9ecdcdc">getdr</a> (dri, zgm1, lx1)</td></tr>
 <tr class="separator:ae640c10e27288b1e650b562ce9ecdcdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0804a1aad3b9e0820df2c055d97942d"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="induct_8f.html#aa0804a1aad3b9e0820df2c055d97942d">ophinv_pr</a> (o1, o2, o3, i1, i2, i3, h1, h2, tolh, nmxhi)</td></tr>
-<tr class="separator:aa0804a1aad3b9e0820df2c055d97942d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a8a16f24236d6e6f08fe4d60cb29d01"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="induct_8f.html#a1a8a16f24236d6e6f08fe4d60cb29d01">ophinv</a> (o1, o2, o3, i1, i2, i3, h1, h2, tolh, nmxhi)</td></tr>
+<tr class="separator:a1a8a16f24236d6e6f08fe4d60cb29d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ab9011a7d77fe8fe5f3d6acc6835aaa"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="induct_8f.html#a8ab9011a7d77fe8fe5f3d6acc6835aaa">set_ifbcor</a></td></tr>
 <tr class="separator:a8ab9011a7d77fe8fe5f3d6acc6835aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85f2bbdd91096e0df0353ebd6968b71d"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="induct_8f.html#a85f2bbdd91096e0df0353ebd6968b71d">setrhsp</a> (p, h1, h2, h2inv, pset, niprev)</td></tr>
@@ -167,8 +167,6 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:a96c838aa6e55891919a329dc50e1ae0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b88749c2f906451df477afc0153c210"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="induct_8f.html#a4b88749c2f906451df477afc0153c210">advab_elsasser_fast</a></td></tr>
 <tr class="separator:a4b88749c2f906451df477afc0153c210"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcae8f87adfb3b7c619cd72c46ccd4ac"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="induct_8f.html#adcae8f87adfb3b7c619cd72c46ccd4ac">set_dealias_rx</a></td></tr>
-<tr class="separator:adcae8f87adfb3b7c619cd72c46ccd4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75294e71da0c68adb56f3804f5dad60f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="induct_8f.html#a75294e71da0c68adb56f3804f5dad60f">cfl_check</a></td></tr>
 <tr class="separator:a75294e71da0c68adb56f3804f5dad60f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -920,14 +918,14 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="aa0804a1aad3b9e0820df2c055d97942d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0804a1aad3b9e0820df2c055d97942d">&#9670;&nbsp;</a></span>ophinv_pr()</h2>
+<a id="a1a8a16f24236d6e6f08fe4d60cb29d01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a8a16f24236d6e6f08fe4d60cb29d01">&#9670;&nbsp;</a></span>ophinv()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine ophinv_pr </td>
+          <td class="memname">subroutine ophinv </td>
           <td>(</td>
           <td class="paramtype">real, dimension (lx1,<a class="el" href="cvode__aux_8h.html#a3132120f434b2d0cf10f38d211dcf0a0">ly1</a>,<a class="el" href="cvode__aux_8h.html#ac45072b583bd82eef205c6781261f33e">lz1</a>,1)&#160;</td>
           <td class="paramname"><em>o1</em>, </td>
@@ -1168,23 +1166,6 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="adcae8f87adfb3b7c619cd72c46ccd4ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adcae8f87adfb3b7c619cd72c46ccd4ac">&#9670;&nbsp;</a></span>set_dealias_rx()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine set_dealias_rx </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a8ab9011a7d77fe8fe5f3d6acc6835aaa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ab9011a7d77fe8fe5f3d6acc6835aaa">&#9670;&nbsp;</a></span>set_ifbcor()</h2>
 
@@ -1412,7 +1393,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_0f4b9a16323f5675af19c4065a199753.html">Nek5000</a></li><li class="navelem"><a class="el" href="dir_b31c345e84fd6c5c979ede0e38a56d25.html">core</a></li><li class="navelem"><a class="el" href="induct_8f.html">induct.f</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
+    <li class="footer">Generated on Thu Jul 16 2020 15:26:42 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -184,12 +184,20 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:a0a477e9aff62b50b56a505fbc4f2e5a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a618bcab324319530f525367d1c8fd603"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mpi__dummy_8f.html#a618bcab324319530f525367d1c8fd603">mpi_comm_create</a> (icomm, igroup, icommd, ierr)</td></tr>
 <tr class="separator:a618bcab324319530f525367d1c8fd603"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3998473bbab079bddeea3f3cd223df5"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mpi__dummy_8f.html#af3998473bbab079bddeea3f3cd223df5">mpi_intercomm_create</a> (ilcomm, ill, ipcomm, irl, itag, newcomm, ierr)</td></tr>
+<tr class="separator:af3998473bbab079bddeea3f3cd223df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a172307525aa39a1df7307a4f93c7b01f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mpi__dummy_8f.html#a172307525aa39a1df7307a4f93c7b01f">mpi_intercomm_merge</a> (icomm, ihigh, icommd, ierr)</td></tr>
+<tr class="separator:a172307525aa39a1df7307a4f93c7b01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab70da585207f96f91cd148d290e290de"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mpi__dummy_8f.html#ab70da585207f96f91cd148d290e290de">mpi_comm_group</a> (icomm, igroup, ierr)</td></tr>
 <tr class="separator:ab70da585207f96f91cd148d290e290de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bca770c4297369fe69dae7f244ece04"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mpi__dummy_8f.html#a7bca770c4297369fe69dae7f244ece04">mpi_group_free</a></td></tr>
 <tr class="separator:a7bca770c4297369fe69dae7f244ece04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcbf0646746ef0620d7dfac6d9d34580"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mpi__dummy_8f.html#adcbf0646746ef0620d7dfac6d9d34580">mpi_comm_get_attr</a> (icomm, ikey, ival, iflag, ierr)</td></tr>
+<tr class="separator:adcbf0646746ef0620d7dfac6d9d34580"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a7def7ca223d7add4a332ec4d3a4e96"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mpi__dummy_8f.html#a9a7def7ca223d7add4a332ec4d3a4e96">mpi_attr_get</a> (icomm, ikey, ival, iflag, ierr)</td></tr>
 <tr class="separator:a9a7def7ca223d7add4a332ec4d3a4e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58d1e95144fc92ebd9334f578c640b97"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mpi__dummy_8f.html#a58d1e95144fc92ebd9334f578c640b97">mpi_type_extent</a> (ikey, isize, ierr)</td></tr>
+<tr class="separator:a58d1e95144fc92ebd9334f578c640b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
 <a id="a8953cf45ebab8a970d1be6c43d63d9dc"></a>
@@ -866,6 +874,52 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
+<a id="adcbf0646746ef0620d7dfac6d9d34580"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcbf0646746ef0620d7dfac6d9d34580">&#9670;&nbsp;</a></span>mpi_comm_get_attr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine mpi_comm_get_attr </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>icomm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ikey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer*8&#160;</td>
+          <td class="paramname"><em>ival</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical&#160;</td>
+          <td class="paramname"><em>iflag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ierr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ab70da585207f96f91cd148d290e290de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab70da585207f96f91cd148d290e290de">&#9670;&nbsp;</a></span>mpi_comm_group()</h2>
 
@@ -1238,6 +1292,104 @@ Functions/Subroutines</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>mpi_is_initialized</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ierr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af3998473bbab079bddeea3f3cd223df5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3998473bbab079bddeea3f3cd223df5">&#9670;&nbsp;</a></span>mpi_intercomm_create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine mpi_intercomm_create </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ilcomm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ill</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ipcomm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>irl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>itag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>newcomm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ierr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a172307525aa39a1df7307a4f93c7b01f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a172307525aa39a1df7307a4f93c7b01f">&#9670;&nbsp;</a></span>mpi_intercomm_merge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine mpi_intercomm_merge </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>icomm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ihigh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>icommd</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1927,6 +2079,40 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
+<a id="a58d1e95144fc92ebd9334f578c640b97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58d1e95144fc92ebd9334f578c640b97">&#9670;&nbsp;</a></span>mpi_type_extent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine mpi_type_extent </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ikey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>isize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ierr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a90b9c69c5b43af73d8821c11b5d8f22d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a90b9c69c5b43af73d8821c11b5d8f22d">&#9670;&nbsp;</a></span>mpi_wait()</h2>
 
@@ -2087,7 +2273,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_0f4b9a16323f5675af19c4065a199753.html">Nek5000</a></li><li class="navelem"><a class="el" href="dir_b31c345e84fd6c5c979ede0e38a56d25.html">core</a></li><li class="navelem"><a class="el" href="mpi__dummy_8f.html">mpi_dummy.f</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
+    <li class="footer">Generated on Thu Jul 16 2020 15:26:42 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

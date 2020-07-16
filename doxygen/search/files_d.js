@@ -1,8 +1,8 @@
 var searchData=
 [
   ['papi_2ef',['papi.f',['../papi_8f.html',1,'']]],
-  ['parallel',['PARALLEL',['../PARALLEL.html',1,'']]],
   ['pardict',['PARDICT',['../PARDICT.html',1,'']]],
+  ['partitioner_2ec',['partitioner.c',['../partitioner_8c.html',1,'']]],
   ['pertsupport_2ef',['pertsupport.f',['../pertsupport_8f.html',1,'']]],
   ['perturb_2ef',['perturb.f',['../perturb_8f.html',1,'']]],
   ['plan4_2ef',['plan4.f',['../plan4_8f.html',1,'']]],

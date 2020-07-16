@@ -106,14 +106,14 @@ $(document).ready(function(){initNavTree('gfldr_8f.html','');});
 Functions/Subroutines</h2></td></tr>
 <tr class="memitem:a8063d81abe16aa8f96b77bea36344fee"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gfldr_8f.html#a8063d81abe16aa8f96b77bea36344fee">gfldr</a> (sourcefld)</td></tr>
 <tr class="separator:a8063d81abe16aa8f96b77bea36344fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0446fc4b8319215ed502f2ff49bfef8"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gfldr_8f.html#aa0446fc4b8319215ed502f2ff49bfef8">gfldr_getxyz</a> (xout, yout, zout, ifbswp)</td></tr>
-<tr class="separator:aa0446fc4b8319215ed502f2ff49bfef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5515676dd35c1a1369d294cf5d91303"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gfldr_8f.html#ae5515676dd35c1a1369d294cf5d91303">gfldr_getfld</a> (out1, out2, out3, nldim, ifldpos, ifbswp)</td></tr>
-<tr class="separator:ae5515676dd35c1a1369d294cf5d91303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e409ae15930f652f9263b1f81e93f1a"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gfldr_8f.html#a1e409ae15930f652f9263b1f81e93f1a">gfldr_getxyz</a> (xout, yout, zout)</td></tr>
+<tr class="separator:a1e409ae15930f652f9263b1f81e93f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb6937d6448c9fc1c201f07b980c7a52"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gfldr_8f.html#adb6937d6448c9fc1c201f07b980c7a52">gfldr_getfld</a> (out1, out2, out3, nout, nldim, ifldpos)</td></tr>
+<tr class="separator:adb6937d6448c9fc1c201f07b980c7a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8440d1a31fda144769b0a6fe8ab8d3e4"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gfldr_8f.html#a8440d1a31fda144769b0a6fe8ab8d3e4">gfldr_buf2vi</a> (vi, index, buf, ldim, wds, nel, nxyz)</td></tr>
 <tr class="separator:a8440d1a31fda144769b0a6fe8ab8d3e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1782f7fdafd852ad716bc412351bea6d"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gfldr_8f.html#a1782f7fdafd852ad716bc412351bea6d">gfldr_intp</a> (fieldout, fieldin, iffpts)</td></tr>
-<tr class="separator:a1782f7fdafd852ad716bc412351bea6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a774676e0ed3d6a3068f76bf5910c43f8"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gfldr_8f.html#a774676e0ed3d6a3068f76bf5910c43f8">gfldr_intp</a> (fieldout, nout, fieldin, iffpts)</td></tr>
+<tr class="separator:a774676e0ed3d6a3068f76bf5910c43f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
 <a id="a8063d81abe16aa8f96b77bea36344fee"></a>
@@ -192,8 +192,8 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="ae5515676dd35c1a1369d294cf5d91303"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5515676dd35c1a1369d294cf5d91303">&#9670;&nbsp;</a></span>gfldr_getfld()</h2>
+<a id="adb6937d6448c9fc1c201f07b980c7a52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb6937d6448c9fc1c201f07b980c7a52">&#9670;&nbsp;</a></span>gfldr_getfld()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,19 +220,19 @@ Functions/Subroutines</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>nout</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
           <td class="paramname"><em>nldim</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>ifldpos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">logical&#160;</td>
-          <td class="paramname"><em>ifbswp</em>&#160;</td>
+          <td class="paramname"><em>ifldpos</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -244,8 +244,8 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="aa0446fc4b8319215ed502f2ff49bfef8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0446fc4b8319215ed502f2ff49bfef8">&#9670;&nbsp;</a></span>gfldr_getxyz()</h2>
+<a id="a1e409ae15930f652f9263b1f81e93f1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e409ae15930f652f9263b1f81e93f1a">&#9670;&nbsp;</a></span>gfldr_getxyz()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -266,13 +266,7 @@ Functions/Subroutines</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">real, dimension(*)&#160;</td>
-          <td class="paramname"><em>zout</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">logical&#160;</td>
-          <td class="paramname"><em>ifbswp</em>&#160;</td>
+          <td class="paramname"><em>zout</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -284,8 +278,8 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="a1782f7fdafd852ad716bc412351bea6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1782f7fdafd852ad716bc412351bea6d">&#9670;&nbsp;</a></span>gfldr_intp()</h2>
+<a id="a774676e0ed3d6a3068f76bf5910c43f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a774676e0ed3d6a3068f76bf5910c43f8">&#9670;&nbsp;</a></span>gfldr_intp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -293,13 +287,19 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="memname">subroutine gfldr_intp </td>
           <td>(</td>
-          <td class="paramtype">real, dimension(*)&#160;</td>
+          <td class="paramtype">real, dimension(nout)&#160;</td>
           <td class="paramname"><em>fieldout</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">real, dimension(*)&#160;</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>nout</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension (*)&#160;</td>
           <td class="paramname"><em>fieldin</em>, </td>
         </tr>
         <tr>
@@ -324,7 +324,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_0f4b9a16323f5675af19c4065a199753.html">Nek5000</a></li><li class="navelem"><a class="el" href="dir_b31c345e84fd6c5c979ede0e38a56d25.html">core</a></li><li class="navelem"><a class="el" href="gfldr_8f.html">gfldr.f</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 10:48:31 for eTurb by
+    <li class="footer">Generated on Thu Jul 16 2020 15:26:42 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

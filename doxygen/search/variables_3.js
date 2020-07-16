@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['mpi_5ftimers',['MPI_TIMERS',['../nek__comm_8c.html#a8cc1c821dae06b66cace1baec111c20b',1,'nek_comm.c']]]
+  ['d',['D',['../structid__data.html#aaac5e860aae0d8bf19e962c5e24ca84b',1,'id_data::D()'],['../structsparse__cholesky.html#a771bb32d816335319ff88d16903c326c',1,'sparse_cholesky::D()']]],
+  ['dff',['Dff',['../structcrs__data.html#aa1fb0167905cf2f9016c63d4c77df598',1,'crs_data']]]
 ];
