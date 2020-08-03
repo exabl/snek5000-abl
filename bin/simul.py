@@ -49,8 +49,29 @@ def cli(
         oper.nx = 24
         oper.ny = 48
         oper.nz = 24
+    elif M == 11:
+        oper.nx = 4
+        oper.ny = 32
+        oper.nz = 4
+        oper.coords_y = (
+            "0.1 5.4 11.6 18.7 26.8 36 46.5 58.5 72 87.5 105 125 147 173 201 "
+            "233 269 310 354 404 458 518 583 654 731 812 900 991 1088 1187 "
+            "1290 1394 1500"
+        )
+    elif M == 12:
+        oper.nx = 4
+        oper.ny = 20
+        oper.nz = 4
+        oper.coords_y = (
+            "0.1 34.6 72.8 115. 161. 211. 266. 326. 390. 459. 534. 613. 697. "
+            "786. 879. 976. 1076. 1180. 1285. 1392. 1500."
+        )
 
-    oper.origin_y = z_wall
+    if M < 10:
+        oper.origin_y = z_wall
+    elif M < 20:
+        oper.origin_y = float(oper.coords_y.split()[0])
+
     oper.Lx = 1280
     oper.Ly = 1500
     oper.Lz = 1280
@@ -190,6 +211,7 @@ def debug(ctx, rule):
     for ds_slice in dsx, dsy, dsz:
         ds_slice.ux.plot()
         plt.show()
+
     breakpoint()
 
 
@@ -205,10 +227,10 @@ def show(ctx, file):
     elif file == "xml":
         print(params)
     elif file in ("size", "box"):
-        from snek5000.operators import Operators
+        from abl.operators import OperatorsABL
         from abl import templates
 
-        oper = Operators(params=params)
+        oper = OperatorsABL(params=params)
         template = getattr(templates, file)
         write_to_stdout = getattr(oper, f"write_{file}")
         write_to_stdout(template)

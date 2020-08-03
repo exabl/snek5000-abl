@@ -23,6 +23,9 @@ class InfoSolverABL(InfoSolverMake):
         self.class_name = "Simul"
         self.short_name = "abl"
 
+        self.classes.Oper.module_name = "abl.operators"
+        self.classes.Oper.class_name = "OperatorsABL"
+
         self.classes.Output.module_name = "abl.output"
         self.classes.Output.class_name = "OutputABL"
 
