@@ -2,7 +2,8 @@ c
 c    Storage for sub-grid scale stress variables
 c
       real ediff(lx1,ly1,lz1,lelv),
-     $       dg2(lx1,ly1,lz1,lelv)
+     $       dg2(lx1,ly1,lz1,lelv),
+     $       dg2_max
 
       common /cdsmag/ ediff, dg2
 

@@ -11,6 +11,9 @@ c> @callgraph
       integer e, eg,ex,ey,ez
       integer n, i, j, k, im, ip, jm, jp, km, kp
       real di, dj, dk, ndim_inv
+      
+      real glmax
+      external glmax
 
       ndim_inv = 1./ndim
 
@@ -54,6 +57,13 @@ c               write(6,*) ip,im,jp,jm
       enddo
 
       call dsavg(dg2)  ! average neighboring elements
+      
+      dg2_max = glmax(dg2, n)
+
+      if (nid.eq.0) print *, "set_grid_spacing :dg2_max =", dg2_max
+      print *, "set_grid_spacing: rank =", nid,
+     &     ",local max =", maxval(dg2),
+     &     ",local min =", minval(dg2)
 
       return
       end
