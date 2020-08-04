@@ -266,9 +266,6 @@ c     Get mesh lengths from userParam0{5,6,7}
       YLEN = uparam(6)
       ZLEN = uparam(7)
 
-c     Define Delta for Smagorinsky method
-      call set_grid_spacing  ! set dg2
-
       n=nx1*ny1*nz1*nelv
       ngll=nx1*ny1*nz1
 
@@ -367,6 +364,10 @@ c-----------------------------------------------------------------------
       implicit none
 
       include 'SIZE'
+      include 'SGS'  ! dg2
+
+c     Define Delta for Smagorinsky method
+      call set_grid_spacing  ! set dg2
 
       return
       end
