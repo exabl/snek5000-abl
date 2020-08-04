@@ -101,6 +101,7 @@ c     e = gllel(eg)
       return
       end
 c-----------------------------------------------------------------------
+c> @note Boundary condition evaluated at higher nodes, may need to be corrected for Ekmann turning
       subroutine userbc(ix,iy,iz,iside,eg) ! set up boundary conditions
 c
 c     NOTE ::: This subroutine MAY NOT be called by every process
@@ -124,10 +125,10 @@ c      if (cbc(iside,gllel(eg),ifield).eq.'v01')
 
 c--------Calculate Moeng's model parameters
        ie=gllel(eg)
-       u1_2=(vx(ix,2,iz,ie)+vx(ix,1,iz,ie))/2
-       w1_2=(vz(ix,2,iz,ie)+vz(ix,1,iz,ie))/2
+       u1_2=(vx(ix,4,iz,ie)+vx(ix,3,iz,ie))/2
+       w1_2=(vz(ix,4,iz,ie)+vz(ix,3,iz,ie))/2
        absu=sqrt(u1_2**2+w1_2**2)
-       y1_2=(ym1(ix,2,iz,ie)+ym1(ix,1,iz,ie))/2
+       y1_2=(ym1(ix,4,iz,ie)+ym1(ix,3,iz,ie))/2
 
 
 c--------Calculate Stresses
