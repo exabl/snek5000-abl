@@ -69,12 +69,15 @@ def cli(
 
     if M < 10:
         oper.origin_y = z_wall
+        oper.Lx = 1280
+        oper.Ly = 1500
+        oper.Lz = 1280
     elif M < 20:
         oper.origin_y = float(oper.coords_y.split()[0])
+        oper.Lx = 640
+        oper.Ly = 1500
+        oper.Lz = 640
 
-    oper.Lx = 1280
-    oper.Ly = 1500
-    oper.Lz = 1280
     oper.boundary = "P P sh SYM P P".split()
 
     save_freq = 10_000
