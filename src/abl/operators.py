@@ -1,3 +1,5 @@
+from textwrap import wrap
+
 from snek5000.operators import Operators as _Operators
 
 
@@ -24,8 +26,18 @@ class OperatorsABL(_Operators):
             nax = getattr(self.params.oper, f"n{ax}")
 
             if coords:
+                if not isinstance(coords, str):
+                    try:
+                        coords = " ".join(str(i) for i in coords)
+                    except TypeError:
+                        raise TypeError(
+                            "params.oper.coords_{x,y,z} should be either "
+                            "a string or an iterable"
+                        )
+
                 del grid_info[f"{ax}0 {ax}1 ratio"]
-                grid_info[f"    {ax} coords"] = coords  # hardcoded coordinates
+                # hardcoded coordinates
+                grid_info[f"{ax} coords"] = "\n".join(wrap(coords, 72)) + " " * 4
 
                 str_nb_elem += str(nax) + " "
             else:
