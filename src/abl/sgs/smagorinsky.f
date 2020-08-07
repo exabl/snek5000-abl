@@ -113,12 +113,12 @@ c------now do for every GLL point
         do i=1,ntot
           Csa = 1.0 / (C0 ** npow)
           Csb = (
-     $      sqrt(dg2(i,1,1,1)) / (kappa * (ym1(i,1,1,1) + y0))
+     $      sqrt(dg2_max) / (kappa * (ym1(i,1,1,1) + y0))
      $    ) ** npow
           Cs(i,1) = (Csa + Csb) ** (-1/npow)
 
           ediff(i,1,1,1) = (
-     $      param(2) + (Cs(i,1)**2) * dg2(i,1,1,1) * snrm(i,1)
+     $      param(2) + (Cs(i,1)**2) * dg2_max * snrm(i,1)
      $    )
         enddo
       endif
