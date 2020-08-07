@@ -7,20 +7,20 @@ from snek5000.log import logger
 from snek5000.util import prepare_for_restart
 
 cluster = Cluster()
-base_name_run = "setup"
+base_name_run = "aug"
 snakemake_rules = "srun"
 modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-stats-new-ic"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-august"
 for path in filter(
     lambda path: path.name
     not in [
         # exceptions
     ]
     and path.is_dir()
-    and "test" not in path.name,
-    subdir.iterdir(),
+    and "bc-3rd" in path.name,
+    subdir.glob("abl*"),
 ):
     try:
         params = prepare_for_restart(path)
@@ -30,7 +30,7 @@ for path in filter(
     else:
         logger.info(f"OK {path}")
 
-    name_run = base_name_run + path.name[-10:]
+    name_run = base_name_run + path.name[-5:]
 
     if modify_params:
         logger.info("Modifying I/O parameters ...")
@@ -42,11 +42,12 @@ for path in filter(
     #  nb_nodes = 1 if params.oper.nx <= 15 else 2
     nb_nodes = 3 if "24x48" in path.name else 1
 
-    # snakemake {snakemake_rules} -j
     cmd = f"""
 cd {path}
-mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
+snakemake {snakemake_rules} -j
 """
+    # mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
+
     if dryrun:
         if list(path.glob("rs6*")):
             logger.info(
