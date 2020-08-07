@@ -190,9 +190,12 @@ def launch(ctx, rule):
 @click.argument("rule", default="srun")
 @click.pass_context
 def debug(ctx, rule):
+    import os
     import matplotlib.pyplot as plt
     from pymech.dataset import open_dataset
     from snek5000.log import logger
+
+    os.environ["SNEK_DEBUG"] = "true"
 
     params = ctx.obj["params"]
     general = params.nek.general

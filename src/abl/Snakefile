@@ -23,7 +23,7 @@ configfile: CONFIG
 
 if os.getenv("SNEK_DEBUG"):
     config["CFLAGS"] += " -O0 -g"
-    config["FFLAGS"] += " -O0 -g -ffpe-trap=invalid,zero,overflow,underflow -Wall"
+    config["FFLAGS"] += " -O0 -g -DDEBUG -Wall -ffpe-trap=invalid,zero,overflow"  #,underflow
 
 if not os.getenv("NEK_SOURCE_ROOT"):
     os.environ["NEK_SOURCE_ROOT"] = NEK_SOURCE_ROOT
