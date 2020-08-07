@@ -60,10 +60,22 @@ c               write(6,*) ip,im,jp,jm
       
       dg2_max = glmax(dg2, n)
 
+#ifdef DEBUG
       if (nid.eq.0) print *, "set_grid_spacing :dg2_max =", dg2_max
       print *, "set_grid_spacing: rank =", nid,
      &     ",local max =", maxval(dg2),
      &     ",local min =", minval(dg2)
+      if (nid.eq.0) then
+        print *, "set_grid_spacing; lx1, ly1, lz1, lelv: ",
+     &      lx1,ly1,lz1,lelv
+        open(unit=5, file="set_grid_spacing.dat", form="unformatted")
+        write(5) xm1
+        write(5) ym1
+        write(5) zm1
+        write(5) dg2
+        close(5)
+      endif
+#endif
 
       return
       end
