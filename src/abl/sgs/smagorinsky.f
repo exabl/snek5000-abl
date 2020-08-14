@@ -11,9 +11,6 @@ c> @callgraph
       integer e, eg,ex,ey,ez
       integer n, i, j, k, im, ip, jm, jp, km, kp
       real di, dj, dk, ndim_inv
-      
-      real glmax
-      external glmax
 
       ndim_inv = 1./ndim
 
@@ -57,8 +54,10 @@ c               write(6,*) ip,im,jp,jm
       enddo
 
       call dsavg(dg2)  ! average neighboring elements
-      
-      dg2_max = glmax(dg2, n)
+
+      do e=1,nelv
+        dg2_max(e) = maxval(dg2(:,:,:,e))
+      enddo
 
 #ifdef DEBUG
       if (nid.eq.0) print *, "set_grid_spacing :dg2_max =", dg2_max
@@ -73,6 +72,7 @@ c               write(6,*) ip,im,jp,jm
         write(5) ym1
         write(5) zm1
         write(5) dg2
+        write(5) dg2_max
         close(5)
       endif
 #endif
@@ -94,8 +94,8 @@ c> @callgraph
       include 'WMLES'  ! C0, kappa, npow, y0
 
       integer e
-      real Csa, Csb
-      integer i, ntot
+      real Csa, Csb, delta_sq
+      integer i, ie, ntot
 
       ntot = nx1*ny1*nz1
 c------need to be by element ->
@@ -108,18 +108,22 @@ c------need to be by element ->
 c---------------------------
 
 c------now do for every GLL point
-      ntot = nx1*ny1*nz1*nelt
       if (e.eq.nelv) then
-        do i=1,ntot
-          Csa = 1.0 / (C0 ** npow)
-          Csb = (
-     $      sqrt(dg2_max) / (kappa * (ym1(i,1,1,1) + y0))
-     $    ) ** npow
-          Cs(i,1) = (Csa + Csb) ** (-1/npow)
+        do ie=1,nelt
+          delta_sq = dg2_max(e)
+          ntot = nx1*ny1*nz1*ie
 
-          ediff(i,1,1,1) = (
-     $      param(2) + (Cs(i,1)**2) * dg2_max * snrm(i,1)
-     $    )
+          do i=1*ie,ntot
+            Csa = 1.0 / (C0 ** npow)
+            Csb = (
+     $        sqrt(delta_sq) / (kappa * (ym1(i,1,1,1) + y0))
+     $      ) ** npow
+            Cs(i,1) = (Csa + Csb) ** (-1/npow)
+
+            ediff(i,1,1,1) = (
+     $        param(2) + (Cs(i,1)**2) * delta_sq * snrm(i,1)
+     $      )
+          enddo
         enddo
       endif
 c----------
