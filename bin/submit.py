@@ -14,7 +14,10 @@ sub_command = "launch compile"
 dry_run = True
 
 for mesh_nb_nodes_walltime, filter_weight, filter_cutoff, z_wall in itertools.product(
-    zip([2], [1] * 1, [f"{days}-00:00:00" for days in (7,) * 1]), [0.05], [0.75], [0.1],
+    zip([11], [1] * 1, [f"{days}-00:00:00" for days in (7,) * 1]),
+    [0.05],
+    [0.75],
+    [0.1],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
     cmd = (
