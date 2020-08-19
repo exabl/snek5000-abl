@@ -30,3 +30,7 @@ class OutputABL(OutputBase):
             ],
             "sgs": [("smagorinsky.f", "SGS", "WMLES")],
         }
+
+    @property
+    def fortran_inc_flags(self):
+        return (f"-I{inc_dir}" for inc_dir in self.makefile_usr_sources)
