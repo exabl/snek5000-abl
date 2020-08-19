@@ -8,10 +8,12 @@ cluster = Cluster()
 sub_dir = "maronga-august"
 name_run = "grid-refine"
 # sub_command = "launch"
-sub_command = "launch compile"
+# sub_command = "launch compile"
+sub_command = "launch release"
+cluster.cmd_run = "echo"
 # sub_command = "debug"
 # sub_command = "show box"
-dry_run = True
+dry_run = False
 
 for mesh_nb_nodes_walltime, filter_weight, filter_cutoff, z_wall in itertools.product(
     zip([2, 11, 12], [1] * 3, [f"{days}-00:00:00" for days in (7,) * 3]),
