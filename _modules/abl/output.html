@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>abl.output &mdash; snek5000-abl 0.1.dev1+g9fc4701 documentation</title>
+  <title>abl.output &mdash; snek5000-abl 0.1.dev1+g9f35a0e documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.dev1+g9fc4701
+                0.1.dev1+g9f35a0e
               </div>
             
           
@@ -205,7 +205,11 @@
                 <span class="p">(</span><span class="s2">&quot;math_tools.f&quot;</span><span class="p">,),</span>
             <span class="p">],</span>
             <span class="s2">&quot;sgs&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;smagorinsky.f&quot;</span><span class="p">,</span> <span class="s2">&quot;SGS&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">)],</span>
-        <span class="p">}</span></div>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fortran_inc_flags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-I</span><span class="si">{</span><span class="n">inc_dir</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">inc_dir</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">makefile_usr_sources</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -219,7 +223,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-08-07
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-08-19
 
     </p>
   </div>
