@@ -180,6 +180,22 @@ rule archive:
         archive(params.tarball, params.rest)
         archive(params.tarball + ".zst", readonly=True)
 
+# create a release with source files
+rule release:
+    input:
+        f'{CASE}.box',
+        f'{CASE}.par',
+        f'{CASE}.usr',
+        'SIZE',
+        'compile.sh',
+        'makefile_usr.inc',
+        *list(Output().makefile_usr_sources)
+    output:
+        'abl-release.tar.gz'
+    shell:
+        """
+        bsdtar czf {output} {input}
+        """
 
 # internal rules
 # ==============
@@ -226,7 +242,7 @@ rule generate_makefile:
         'makefile'
     params:
         case = f'{CASE}',
-        inc = " ".join((f"-I{inc_dir}" for inc_dir in Output().makefile_usr_sources)),
+        inc = " ".join(Output().fortran_inc_flags),
         usr = " ".join(Output().makefile_usr_obj)
     shell:
         """
@@ -236,6 +252,24 @@ rule generate_makefile:
             USR="{params.usr}"
         {input.makenek} {params.case} -nocompile
         """
+
+# generate compile.sh
+rule generate_compile_sh:
+    output: "compile.sh"
+    params:
+        case = f"{CASE}",
+        inc = " ".join(Output().fortran_inc_flags),
+        usr = " ".join(Output().makefile_usr_obj)
+    run:
+        import stat
+        from abl.templates import compile_sh as template
+
+        with open(str(output), 'w') as fp:
+            fp.write(template.render(
+                CASE=params.case, INC=params.inc, USR=params.usr, **config
+            ))
+
+        os.chmod(str(output), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
 # generate sessionfile
 rule generate_session:

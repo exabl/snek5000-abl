@@ -4,6 +4,7 @@ import sys
 
 import click
 from abl.solver import Simul
+from snek5000.log import logger
 
 
 @click.group()
@@ -177,13 +178,24 @@ def cli(
 @click.argument("rule", default="srun")
 @click.pass_context
 def launch(ctx, rule):
-    from snek5000.log import logger
-
     logger.info("Initializing simulation launch...")
 
     sim = Simul(ctx.obj["params"])
     sim.sanity_check()
     sim.make.exec([rule])
+    if rule == "release":
+        import shutil
+        from setuptools_scm.git import GitWorkdir
+
+        wd = GitWorkdir.from_potential_worktree("..")
+        branch = wd.get_branch().replace("/", "-")
+        version = wd.do_ex("git describe --tags")[0]
+        output = f"abl_{version}_{branch}.tar.gz"
+
+        logger.info(f"Release: {output}")
+        shutil.move(sim.path_run / "abl-release.tar.gz", output)
+
+    return sim
 
 
 @cli.command()
@@ -193,7 +205,6 @@ def debug(ctx, rule):
     import os
     import matplotlib.pyplot as plt
     from pymech.dataset import open_dataset
-    from snek5000.log import logger
 
     os.environ["SNEK_DEBUG"] = "true"
 
