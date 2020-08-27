@@ -1,6 +1,5 @@
 var group__abl =
 [
-    [ "set_obj", "group__abl.html#gade410b3017ce291e93fe88acc769c9d6", null ],
     [ "userbc", "group__abl.html#ga5bc9a35082ab7f7115cd6ba8685682fd", null ],
     [ "userchk", "group__abl.html#gaab7e65383186bbbe5e8ee746f763b233", null ],
     [ "userf", "group__abl.html#ga1172abb68180ad165a8080d73ee2a378", null ],

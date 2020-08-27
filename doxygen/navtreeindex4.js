@@ -1,7 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"hmholtz_8f.html#ad6abce07dab50aebc29332154d710d51":[7,0,0,0,0,48,20],
-"hmholtz_8f.html#ae883228509f56e1f673660daca7a909b":[7,0,0,0,0,48,26],
 "hpf_8f.html":[7,0,0,0,0,49],
 "hpf_8f.html#a2ee674be05e81d2fbd9911ce3b2960ed":[7,0,0,0,0,49,0],
 "hpf_8f.html#a79e59cf16751d7adf8bc162441fcbd87":[7,0,0,0,0,49,2],
@@ -249,5 +247,7 @@ var NAVTREEINDEX4 =
 "math_8f.html#a4052b45630e3d7ac3a9b01c8c11a498a":[7,0,0,0,0,63,89],
 "math_8f.html#a430b8ef9397666753bd47f0de85b775f":[7,0,0,0,0,63,11],
 "math_8f.html#a43f9a02e3703b5b2858f5b1b9c602566":[7,0,0,0,0,63,39],
-"math_8f.html#a4671df6a3bb4689a1bb6566729ce4a37":[7,0,0,0,0,63,4]
+"math_8f.html#a4671df6a3bb4689a1bb6566729ce4a37":[7,0,0,0,0,63,4],
+"math_8f.html#a48aadfd4c5ae7f9588ead06b211b5fbc":[7,0,0,0,0,63,79],
+"math_8f.html#a4980248dc5e56aca2716e55ef13181db":[7,0,0,0,0,63,92]
 };
