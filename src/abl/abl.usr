@@ -281,33 +281,6 @@ c      calculate eddy viscosiy and total viscosity
         call copy(t,ediff,n)
       endif
 
-      if (istep.eq.0) then
-         call set_obj                   ! objects for surface integrals
-         call rzero(x0,3)               ! torque w.r.t. x0
-      endif
-
-      ! Calculate forces:
-      call torque_calc(1.0,x0,.false.,.false.) ! wall shear
-
-      A_w    = XLEN * ZLEN  ! spanwise area
-
-      ! Calculate friction velocity
-      utau= sqrt(dragx(1)**2+dragz(1)**2)/A_w
-      utau=sqrt(utau)
-
-      !call gradients
-      call gradm1(gradux,graduy,graduz,vx)
-
-      !generate PHI statistic
-      do i=1,n
-        vgrad(i,1,1,1)=KAPPA * ym1(i,1,1,1) / utau*graduy(i,1,1,1)
-        utauv(i,1,1,1)=utau
-      enddo
-
-      !Output old statistics
-      if (mod(istep,iostep).eq.0)
-     $ call outpost(dg2,vgrad,ediff,pr,t,'vgr')
-
       ! KTH toolbox related
       ! -------------------
       ! start framework
@@ -381,59 +354,6 @@ c> @callgraph
 
       include 'SIZE'
 
-      return
-      end
-c-----------------------------------------------------------------------
-c> Define objects for surface integrals
-c> @callgraph
-      subroutine set_obj
-
-      implicit none
-      include 'SIZE'
-      include 'INPUT'  ! nhis, lochis, hcode
-      include 'PARALLEL'  ! lglel
-c
-      integer e, f, ieg, ii, iobj, mem, nxyz
-c
-c     Define new objects
-c
-      nobj = 1  ! for Periodic
-      iobj = 0
-
-      do ii=nhis+1,nhis+nobj
-         iobj = iobj+1
-         hcode(10,ii) = 'I'
-         hcode( 1,ii) = 'F' ! 'F'
-         hcode( 2,ii) = 'F' ! 'F'
-         hcode( 3,ii) = 'F' ! 'F'
-         lochis(1,ii) = iobj
-      enddo
-      nhis = nhis + nobj
-
-c
-      if (maxobj.lt.nobj) write(6,*) 'increase maxobj in SIZEu. rm *.o'
-      if (maxobj.lt.nobj) call exitt
-c
-      nxyz = nx1*ny1*nz1
-      do e=1,nelv
-        do f=1,2*ndim
-         if (cbc(f,e,1).eq.'sh ') then
-            iobj = 0
-            if (f.eq.1) iobj=1  ! lower wall
-            if (f.eq.3) iobj=2  ! upper wall
-            if (iobj.gt.0) then
-               nmember(iobj) = nmember(iobj) + 1
-               mem = nmember(iobj)
-               ieg = lglel(e)
-               object(iobj,mem,1) = ieg
-               object(iobj,mem,2) = f
-            endif
-c
-         endif
-        enddo
-      enddo
-c     write(6,*) 'number',(nmember(k),k=1,4)
-c
       return
       end
 c ----------------------------------------------------------------------
