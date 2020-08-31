@@ -165,9 +165,9 @@ def cli(
     # ================
     wmles = params.nek.wmles
     # wmles.bc_temp_filt = False
-    # wmles.bc_z1 = 1
+    wmles.bc_z1 = 3
     # wmles.sgs_delta_max = False
-    wmles.sgs_npow = 3.0
+    # wmles.sgs_npow = 3.0
 
     # Fluidsim parameters
     # ===================
