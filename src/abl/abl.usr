@@ -373,6 +373,7 @@ c> @{
       call io_register
       call chkpt_register
       call stat_register
+      call wmles_register
 
       return
       end subroutine
@@ -388,6 +389,7 @@ c> @{
 !     initialise modules
       call chkpt_init
       call stat_init
+      call wmles_init
 
       return
       end subroutine

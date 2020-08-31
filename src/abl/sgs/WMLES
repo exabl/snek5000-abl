@@ -10,4 +10,27 @@ c
       real pi_  ! to avoid conflict with pi defined in TSTEP
       parameter (pi_=4.*atan(1.))
 
+      ! initialisation flag
+      logical wmles_ifinit
+
+      ! parameter section
+      logical wmles_bc_temp_filt  !< @var use temporal filtering to evaluate BC
+      integer wmles_bc_z1         !< @var mesh index away from wall to evaluate BC
+      logical wmles_sgs_delta_max !< @var use delta_max for SGS length scale or not
+
+      real wmles_sgs_npow         !< @var power of wall damping function
+
+      ! parameter internals
+      character*(*) wmles_sec_name
+      parameter (wmles_sec_name="WMLES")
+      integer wmles_id, wmles_sec_id, wmles_par_id(4)
+
+      ! common block for storage
+      common /wmles_log/
+     &    wmles_bc_temp_filt, wmles_sgs_delta_max,
+     &    wmles_ifinit
+
+      common /wmles_real/ wmles_bc_z1
+      common /wmles_int/ wmles_sgs_npow,
+     &    wmles_id, wmles_sec_id, wmles_par_id
 c vim: set ft=fortran

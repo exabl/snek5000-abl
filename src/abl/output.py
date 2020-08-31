@@ -28,7 +28,10 @@ class OutputABL(OutputBase):
                 ("stat_IO.f", "STATD", "MAP2D", "FRAMELP"),
                 ("math_tools.f",),
             ],
-            "sgs": [("smagorinsky.f", "SGS", "WMLES")],
+            "sgs": [
+                ("smagorinsky.f", "SGS", "WMLES"),
+                ("wmles_init.f", "WMLES", "../toolbox/FRAMELP"),
+            ],
         }
 
     @property

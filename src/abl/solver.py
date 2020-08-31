@@ -43,6 +43,12 @@ class SimulABL(SimulKTH):
         params = SimulKTH._complete_params_with_default(params)
         params.nek.velocity._set_attrib("advection", True)
         params.nek.cvode._set_internal_attr("_enabled", True)
+
+        params.nek._set_child(
+            "wmles",
+            dict(bc_temp_filt=False, bc_z1=1, sgs_delta_max=False, sgs_npow=0.5),
+        )
+        params.nek.wmles._set_internal_attr("_enabled", True)
         return params
 
     @classmethod

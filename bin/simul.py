@@ -161,6 +161,14 @@ def cli(
     params.nek.stat.io_step = save_freq
     params.nek.monitor.wall_time = walltime
 
+    # WMLES parameters
+    # ================
+    # wmles = params.nek.wmles
+    # wmles.bc_temp_filt = False
+    # wmles.bc_z1 = 1
+    # wmles.sgs_delta_max = False
+    # wmles.sgs_npow = 0.5
+
     # Fluidsim parameters
     # ===================
     params.short_name_type_run = name_run
@@ -218,13 +226,17 @@ def debug(ctx, rule):
     sim.make.exec([rule])
     logger.info("Finished simulation...")
 
-    ds = open_dataset(sorted(sim.path_run.glob("abl0.f*"))[0])
-    dsx = ds.isel(x=ds.x.size // 2)
-    dsy = ds.isel(y=20)
-    dsz = ds.isel(z=ds.z.size // 2)
-    for ds_slice in dsx, dsy, dsz:
-        ds_slice.ux.plot()
-        plt.show()
+    files = sorted(sim.path_run.glob("abl0.f*"))
+    if files:
+        ds = open_dataset(files[0])
+        dsx = ds.isel(x=ds.x.size // 2)
+        dsy = ds.isel(y=20)
+        dsz = ds.isel(z=ds.z.size // 2)
+        for ds_slice in dsx, dsy, dsz:
+            ds_slice.ux.plot()
+            plt.show()
+    else:
+        logger.error("Simulation failed!")
 
     breakpoint()
 
