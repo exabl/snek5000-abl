@@ -4,8 +4,8 @@ c
       real y0
       parameter (y0=0.1)
 
-      real C0, kappa, npow
-      parameter (C0=0.19, kappa=0.41, npow=0.5)
+      real C0, kappa
+      parameter (C0=0.19, kappa=0.41)
 
       real pi_  ! to avoid conflict with pi defined in TSTEP
       parameter (pi_=4.*atan(1.))
@@ -17,7 +17,6 @@ c
       logical wmles_bc_temp_filt  !< @var use temporal filtering to evaluate BC
       integer wmles_bc_z1         !< @var mesh index away from wall to evaluate BC
       logical wmles_sgs_delta_max !< @var use delta_max for SGS length scale or not
-
       real wmles_sgs_npow         !< @var power of wall damping function
 
       ! parameter internals
@@ -30,7 +29,8 @@ c
      &    wmles_bc_temp_filt, wmles_sgs_delta_max,
      &    wmles_ifinit
 
-      common /wmles_real/ wmles_bc_z1
-      common /wmles_int/ wmles_sgs_npow,
+      common /wmles_int/ wmles_bc_z1,
      &    wmles_id, wmles_sec_id, wmles_par_id
+
+      common /wmles_real/ wmles_sgs_npow
 c vim: set ft=fortran

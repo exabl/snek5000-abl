@@ -272,15 +272,6 @@ c     Define Delta for Smagorinsky method
       n=nx1*ny1*nz1*nelv
       ngll=nx1*ny1*nz1
 
-c      calculate eddy viscosiy and total viscosity
-      if(ifuservp) then
-        if(nid.eq.0) write(6,*) 'Calculating eddy viscosity'
-        do e=1,nelv
-           call eddy_visc(e)
-        enddo
-        call copy(t,ediff,n)
-      endif
-
       ! KTH toolbox related
       ! -------------------
       ! start framework
@@ -291,6 +282,18 @@ c      calculate eddy viscosiy and total viscosity
 
       ! save/load files for full-restart
       call chkpt_main
+
+c     calculate eddy viscosity and total viscosity
+c     Placed here because
+c       - frame_monitor would read the WMLES parameters and
+c       - chkpt_main would load velocity data required for calculating ediff
+      if(ifuservp) then
+        if (nid.eq.0) write(6,*) 'Calculating eddy viscosity'
+        do e=1,nelv
+           call eddy_visc(e)
+        enddo
+        call copy(t,ediff,n)
+      endif
 
       ! for tripping
       call stat_avg

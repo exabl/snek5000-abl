@@ -19,7 +19,7 @@ for path in filter(
         # exceptions
     ]
     and path.is_dir()
-    and "test" not in path.name,
+    and "npow" in path.name,
     subdir.glob("abl*"),
 ):
     try:

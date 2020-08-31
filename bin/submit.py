@@ -6,7 +6,7 @@ from snek5000.clusters import Cluster
 
 cluster = Cluster()
 sub_dir = "maronga-august"
-name_run = "grid-refine"
+name_run = "npow"
 # sub_command = "launch"
 # sub_command = "launch compile"
 sub_command = "launch release"
@@ -16,7 +16,7 @@ cluster.cmd_run = "echo"
 dry_run = False
 
 for mesh_nb_nodes_walltime, filter_weight, filter_cutoff, z_wall in itertools.product(
-    zip([2, 11, 12], [1] * 3, [f"{days}-00:00:00" for days in (7,) * 3]),
+    zip([11], [1] * 1, [f"{days}-00:00:00" for days in (7,) * 1]),
     [0.05],
     [0.75],
     [0.1],

@@ -69,12 +69,13 @@ c> @callgraph
       include 'INPUT'  ! param
       include 'SOLN'  ! vx
       include 'SGS'  ! ediff, sij, snrm, Cs
-      include 'WMLES'  ! C0, kappa, npow, y0
+      include 'WMLES'  ! C0, kappa, wmles_sgs_npow, y0
 
       integer e
-      real Csa, Csb
+      real Csa, Csb, npow
       integer i, ntot
 
+      npow = wmles_sgs_npow
       ntot = nx1*ny1*nz1
 c------need to be by element ->
       call comp_gije(sij, vx(1,1,1,e), vy(1,1,1,e), vz(1,1,1,e), e)
