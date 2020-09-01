@@ -54,7 +54,7 @@
      $)
       call rprm_rp_reg(
      $    wmles_par_id(2), wmles_sec_id,
-     $    'BCZ1', 'Z index for BC', rpar_int,
+     $    'BCZINDEX', 'Z index for BC', rpar_int,
      $    1, 0.0, .false., ' '
      $)
       call rprm_rp_reg(
@@ -112,7 +112,7 @@
 
       call rprm_rp_get(itmp, rtmp, ltmp, ctmp,
      $    wmles_par_id(2), rpar_int)
-      wmles_bc_z1 = itmp
+      wmles_bc_z_index = itmp
 
       call rprm_rp_get(itmp, rtmp, ltmp, ctmp,
      $    wmles_par_id(3), rpar_log)

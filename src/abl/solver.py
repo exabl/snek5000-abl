@@ -48,7 +48,7 @@ class SimulABL(SimulKTH):
             "wmles",
             dict(
                 bc_temp_filt=False,
-                bc_z1=1,
+                bc_z_index=1,
                 bc_z0=0.1,
                 sgs_c0=0.19,
                 sgs_delta_max=False,

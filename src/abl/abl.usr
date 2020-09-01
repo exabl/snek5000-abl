@@ -123,7 +123,7 @@ c
 c      if (cbc(iside,gllel(eg),ifield).eq.'v01')
 
       ! Use value from par file for index to sample velocities at and roughness parameter
-      idx = wmles_bc_z1
+      idx = wmles_bc_z_index
       y0 = wmles_bc_z0
 c--------Calculate Moeng's model parameters
       ie=gllel(eg)

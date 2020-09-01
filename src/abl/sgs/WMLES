@@ -13,7 +13,7 @@ c
 
       ! parameter section
       logical wmles_bc_temp_filt  !< @var use temporal filtering to evaluate BC
-      integer wmles_bc_z1         !< @var mesh index away from wall to evaluate BC
+      integer wmles_bc_z_index    !< @var mesh index away from wall to evaluate BC
       logical wmles_sgs_delta_max !< @var use delta_max for SGS length scale or not
       real wmles_sgs_npow         !< @var power of wall damping function
       real wmles_bc_z0            !<.@var aerodynamic roughness parameter in mesh coordinates
@@ -29,7 +29,7 @@ c
      &    wmles_bc_temp_filt, wmles_sgs_delta_max,
      &    wmles_ifinit
 
-      common /wmles_int/ wmles_bc_z1,
+      common /wmles_int/ wmles_bc_z_index,
      &    wmles_id, wmles_sec_id, wmles_par_id
 
       common /wmles_real/ wmles_sgs_npow,
