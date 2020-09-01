@@ -67,6 +67,16 @@
      $    'SGSNPOW', 'Power of SGS wall damping function', rpar_real,
      $    1, 0.5, .false., ' '
      $)
+      call rprm_rp_reg(
+     $    wmles_par_id(5), wmles_sec_id,
+     $    'BCZ0', 'Aerodynamic roughness parameter for BC', rpar_real,
+     $    1, 0.1, .false., ' '
+     $)
+      call rprm_rp_reg(
+     $    wmles_par_id(6), wmles_sec_id,
+     $    'SGSC0', 'Asymptotic constant in a SGS model', rpar_real,
+     $    1, 0.19, .false., ' '
+     $)
 
       ! set initialisation flag
       wmles_ifinit=.false.
@@ -111,6 +121,14 @@
       call rprm_rp_get(itmp, rtmp, ltmp, ctmp,
      $    wmles_par_id(4), rpar_real)
       wmles_sgs_npow = rtmp
+
+      call rprm_rp_get(itmp, rtmp, ltmp, ctmp,
+     $    wmles_par_id(5), rpar_real)
+      wmles_bc_z0 = rtmp
+
+      call rprm_rp_get(itmp, rtmp, ltmp, ctmp,
+     $    wmles_par_id(6), rpar_real)
+      wmles_sgs_c0 = rtmp
 
       ! everything is initialised
       wmles_ifinit=.true.

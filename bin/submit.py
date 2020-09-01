@@ -6,7 +6,7 @@ from snek5000.clusters import Cluster
 
 cluster = Cluster()
 sub_dir = "maronga-august"
-name_run = "bc-3rd"
+name_run = "sgs-delta"
 # sub_command = "launch"
 # sub_command = "launch compile"
 sub_command = "launch release"

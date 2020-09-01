@@ -110,7 +110,7 @@ c
 
 
       integer ix, iy, iz, iside, eg, ie, idx
-      real u1_2, w1_2, absu, y1_2
+      real u1_2, w1_2, absu, y1_2, y0
 
       include 'SIZE'
       include 'NEKUSE'  ! trx, try, trz, temp
@@ -122,8 +122,9 @@ c
 
 c      if (cbc(iside,gllel(eg),ifield).eq.'v01')
 
-      ! Use value from par file for z index
+      ! Use value from par file for index to sample velocities at and roughness parameter
       idx = wmles_bc_z1
+      y0 = wmles_bc_z0
 c--------Calculate Moeng's model parameters
       ie=gllel(eg)
 
@@ -269,9 +270,6 @@ c     Get mesh lengths from userParam0{5,6,7}
       YLEN = uparam(6)
       ZLEN = uparam(7)
 
-c     Define Delta for Smagorinsky method
-      call set_grid_spacing  ! set dg2
-
       n=nx1*ny1*nz1*nelv
       ngll=nx1*ny1*nz1
 
@@ -346,6 +344,10 @@ c-----------------------------------------------------------------------
       implicit none
 
       include 'SIZE'
+      include 'SGS'  ! dg2
+
+c     Define Delta for Smagorinsky method
+      call set_grid_spacing  ! set dg2
 
       return
       end

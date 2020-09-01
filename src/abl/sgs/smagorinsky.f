@@ -55,6 +55,28 @@ c               write(6,*) ip,im,jp,jm
 
       call dsavg(dg2)  ! average neighboring elements
 
+      do e=1,nelv
+        dg2_max(e) = maxval(dg2(:,:,:,e))
+      enddo
+
+#ifdef DEBUG
+      if (nid.eq.0) print *, "set_grid_spacing :dg2_max =", dg2_max
+      print *, "set_grid_spacing: rank =", nid,
+     &     ",local max =", maxval(dg2),
+     &     ",local min =", minval(dg2)
+      if (nid.eq.0) then
+        print *, "set_grid_spacing; lx1, ly1, lz1, lelv: ",
+     &      lx1,ly1,lz1,lelv
+        open(unit=5, file="set_grid_spacing.dat", form="unformatted")
+        write(5) xm1
+        write(5) ym1
+        write(5) zm1
+        write(5) dg2
+        write(5) dg2_max
+        close(5)
+      endif
+#endif
+
       return
       end
 c-----------------------------------------------------------------------
@@ -69,13 +91,12 @@ c> @callgraph
       include 'INPUT'  ! param
       include 'SOLN'  ! vx
       include 'SGS'  ! ediff, sij, snrm, Cs
-      include 'WMLES'  ! C0, kappa, wmles_sgs_npow, y0
+      include 'WMLES'  ! kappa, wmles_sgs_npow, y0
 
       integer e
-      real Csa, Csb, npow
-      integer i, ntot
+      real C0, Csa, Csb, npow, delta_sq, y0
+      integer i, ie, ntot
 
-      npow = wmles_sgs_npow
       ntot = nx1*ny1*nz1
 c------need to be by element ->
       call comp_gije(sij, vx(1,1,1,e), vy(1,1,1,e), vz(1,1,1,e), e)
@@ -87,18 +108,28 @@ c------need to be by element ->
 c---------------------------
 
 c------now do for every GLL point
-      ntot = nx1*ny1*nz1*nelt
       if (e.eq.nelv) then
-        do i=1,ntot
-          Csa = 1.0 / (C0 ** npow)
-          Csb = (
-     $      sqrt(dg2(i,1,1,1)) / (kappa * (ym1(i,1,1,1) + y0))
-     $    ) ** npow
-          Cs(i,1) = (Csa + Csb) ** (-1/npow)
+        y0 = wmles_bc_z0
+        C0 = wmles_sgs_c0
+        npow = wmles_sgs_npow
+        Csa = 1.0 / (C0 ** npow)
 
-          ediff(i,1,1,1) = (
-     $      param(2) + (Cs(i,1)**2) * dg2(i,1,1,1) * snrm(i,1)
-     $    )
+        do ie=1,nelv
+          if (wmles_sgs_delta_max) delta_sq = dg2_max(ie)
+          ntot = nx1*ny1*nz1*ie
+
+          do i=1*ie,ntot
+            if (.not. wmles_sgs_delta_max) delta_sq = dg2(i,1,1,1)
+
+            Csb = (
+     $        sqrt(delta_sq) / (kappa * (ym1(i,1,1,1) + y0))
+     $      ) ** npow
+            Cs(i,1) = (Csa + Csb) ** (-1/npow)
+
+            ediff(i,1,1,1) = (
+     $        param(2) + (Cs(i,1)**2) * delta_sq * snrm(i,1)
+     $      )
+          enddo
         enddo
       endif
 c----------

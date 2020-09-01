@@ -19,7 +19,7 @@ for path in filter(
         # exceptions
     ]
     and path.is_dir()
-    and "bc-3rd" in path.name,
+    and "sgs-delta" in path.name,
     subdir.glob("abl*"),
 ):
     try:

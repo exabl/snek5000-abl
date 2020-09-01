@@ -46,7 +46,14 @@ class SimulABL(SimulKTH):
 
         params.nek._set_child(
             "wmles",
-            dict(bc_temp_filt=False, bc_z1=1, sgs_delta_max=False, sgs_npow=0.5),
+            dict(
+                bc_temp_filt=False,
+                bc_z1=1,
+                bc_z0=0.1,
+                sgs_c0=0.19,
+                sgs_delta_max=False,
+                sgs_npow=0.5,
+            ),
         )
         params.nek.wmles._set_internal_attr("_enabled", True)
         return params

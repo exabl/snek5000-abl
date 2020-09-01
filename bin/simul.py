@@ -165,9 +165,11 @@ def cli(
     # ================
     wmles = params.nek.wmles
     # wmles.bc_temp_filt = False
-    wmles.bc_z1 = 3
-    # wmles.sgs_delta_max = False
+    # wmles.bc_z1 = 3
+    wmles.bc_z0 = z_wall
+    wmles.sgs_delta_max = True
     # wmles.sgs_npow = 3.0
+    wmles.sgs_c0 = 0.15
 
     # Fluidsim parameters
     # ===================
@@ -210,8 +212,11 @@ def launch(ctx, rule):
 @click.argument("rule", default="srun")
 @click.pass_context
 def debug(ctx, rule):
+    import os
     import matplotlib.pyplot as plt
     from pymech.dataset import open_dataset
+
+    os.environ["SNEK_DEBUG"] = "true"
 
     params = ctx.obj["params"]
     general = params.nek.general
