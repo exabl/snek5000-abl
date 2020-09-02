@@ -27,13 +27,26 @@ Security in case of vulnerabilities.
 
 ## [Unreleased]
 
+## [0.5.0b0] - 2020-09-02
+
+### Added
+
+- Parameter section WMLES to toggle experimental code modifications to boundary conditions and SGS model: (bc-3rd, npow, sgs-delta, temporal filtering)
+- New subcommand `launch release` to generate a Fortran-only tarball
+- Non uniform meshes 11 and 12 and ability to specify hard coded mesh coordinates
+
 ### Changed
 
 - Migrate to Nek5000 v19
 
+### Removed
+
+- Output of velocity gradient files which relies on `torque_calc` subroutine.
+
 ### Fixed
 
-- Requirements: pymech and zstandard
+- Requirements: pymech and standard
+- Working `SNEK_DEBUG` options and appopriate debug flags in Snakefile
 
 ## [0.4.0b0] - 2020-07-15
 
