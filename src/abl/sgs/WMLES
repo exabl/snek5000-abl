@@ -1,13 +1,41 @@
 c
 c     Storage for wall-model and LES parameters
 c
-      real y0
-      parameter (y0=0.1)
 
-      real C0, kappa, npow
-      parameter (C0=0.19, kappa=0.41, npow=0.5)
+      real kappa
+      parameter (kappa=0.41)      !< Von Karman constant
 
       real pi_  ! to avoid conflict with pi defined in TSTEP
       parameter (pi_=4.*atan(1.))
 
+      ! temporal filtering in boundary condition
+      real u_wm(lx1, lz1, lelv), w_wm(lx1, lz1, lelv)
+      common /wmles_bc/ u_wm, w_wm
+
+      ! initialisation flag
+      logical wmles_ifinit
+
+      ! parameter section
+      logical wmles_bc_temp_filt  !< @var use temporal filtering to evaluate BC
+      integer wmles_bc_z_index    !< @var mesh index away from wall to evaluate BC
+      logical wmles_sgs_delta_max !< @var use delta_max for SGS length scale or not
+      real wmles_sgs_npow         !< @var power of wall damping function
+      real wmles_bc_z0            !<.@var aerodynamic roughness parameter in mesh coordinates
+      real wmles_sgs_c0           !< @var asymptotic constant in a SGS model with wall damping
+
+      ! parameter internals
+      character*(*) wmles_sec_name
+      parameter (wmles_sec_name="WMLES")
+      integer wmles_id, wmles_sec_id, wmles_par_id(6)
+
+      ! common block for storage
+      common /wmles_log/
+     &    wmles_bc_temp_filt, wmles_sgs_delta_max,
+     &    wmles_ifinit
+
+      common /wmles_int/ wmles_bc_z_index,
+     &    wmles_id, wmles_sec_id, wmles_par_id
+
+      common /wmles_real/ wmles_sgs_npow,
+     &    wmles_bc_z0, wmles_sgs_c0
 c vim: set ft=fortran

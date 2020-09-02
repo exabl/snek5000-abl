@@ -3,6 +3,7 @@
 import sys
 
 import click
+
 from abl.solver import Simul
 from snek5000.log import logger
 
@@ -15,14 +16,34 @@ from snek5000.log import logger
 @click.option("-w", "--walltime", default="30:00")
 @click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
 @click.option(
-    "-fw", "--filter-weight", default=12, type=float, help="filter weight parameter",
+    "-fw",
+    "--filter-weight",
+    default=12,
+    type=float,
+    help="filter weight parameter",
 )
 @click.option(
     "-fc", "--filter-cutoff", default=0.5, type=float, help="filter cutoff ratio"
 )
+@click.option(
+    "-ft",
+    "--filter-temporal",
+    default=False,
+    type=bool,
+    help="turn on temporal filtering for boundary condition",
+)
 @click.pass_context
 def cli(
-    ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, filter_cutoff
+    ctx,
+    sub_dir,
+    mesh,
+    name_run,
+    nodes,
+    walltime,
+    z_wall,
+    filter_weight,
+    filter_cutoff,
+    filter_temporal,
 ):
     """\b
     Notes
@@ -161,6 +182,16 @@ def cli(
     params.nek.stat.io_step = save_freq
     params.nek.monitor.wall_time = walltime
 
+    # WMLES parameters
+    # ================
+    wmles = params.nek.wmles
+    wmles.bc_temp_filt = filter_temporal
+    # wmles.bc_z_index = 3
+    wmles.bc_z0 = z_wall
+    wmles.sgs_delta_max = True
+    # wmles.sgs_npow = 3.0
+    wmles.sgs_c0 = 0.15
+
     # Fluidsim parameters
     # ===================
     params.short_name_type_run = name_run
@@ -202,8 +233,11 @@ def launch(ctx, rule):
 @click.argument("rule", default="srun")
 @click.pass_context
 def debug(ctx, rule):
+    import os
     import matplotlib.pyplot as plt
     from pymech.dataset import open_dataset
+
+    os.environ["SNEK_DEBUG"] = "true"
 
     params = ctx.obj["params"]
     general = params.nek.general
@@ -218,13 +252,17 @@ def debug(ctx, rule):
     sim.make.exec([rule])
     logger.info("Finished simulation...")
 
-    ds = open_dataset(sorted(sim.path_run.glob("abl0.f*"))[0])
-    dsx = ds.isel(x=ds.x.size // 2)
-    dsy = ds.isel(y=20)
-    dsz = ds.isel(z=ds.z.size // 2)
-    for ds_slice in dsx, dsy, dsz:
-        ds_slice.ux.plot()
-        plt.show()
+    files = sorted(sim.path_run.glob("abl0.f*"))
+    if files:
+        ds = open_dataset(files[0])
+        dsx = ds.isel(x=ds.x.size // 2)
+        dsy = ds.isel(y=20)
+        dsz = ds.isel(z=ds.z.size // 2)
+        for ds_slice in dsx, dsy, dsz:
+            ds_slice.ux.plot()
+            plt.show()
+    else:
+        logger.error("Simulation failed!")
 
     breakpoint()
 
