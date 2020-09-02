@@ -164,7 +164,7 @@ def cli(
     # WMLES parameters
     # ================
     wmles = params.nek.wmles
-    # wmles.bc_temp_filt = False
+    wmles.bc_temp_filt = True
     # wmles.bc_z_index = 3
     wmles.bc_z0 = z_wall
     wmles.sgs_delta_max = True

@@ -139,6 +139,7 @@
       logical function wmles_is_initialised()
       implicit none
 
+      include 'SIZE'
       include 'WMLES'
       wmles_is_initialised = wmles_ifinit
 

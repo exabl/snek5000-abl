@@ -8,7 +8,7 @@ c> @callgraph
       include 'GEOM'  ! xm1, ym1, zm1
       include 'SGS'  ! dg2
 
-      integer e, eg,ex,ey,ez
+      integer e
       integer n, i, j, k, im, ip, jm, jp, km, kp
       real di, dj, dk, ndim_inv
 

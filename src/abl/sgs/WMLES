@@ -8,6 +8,10 @@ c
       real pi_  ! to avoid conflict with pi defined in TSTEP
       parameter (pi_=4.*atan(1.))
 
+      ! temporal filtering in boundary condition
+      real u_wm(lx1, lz1, lelv), w_wm(lx1, lz1, lelv)
+      common /wmles_bc/ u_wm, w_wm
+
       ! initialisation flag
       logical wmles_ifinit
 
