@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>abl.output &mdash; snek5000-abl 0.1.dev1+g804f08c documentation</title>
+  <title>abl.output &mdash; snek5000-abl 0.1.dev1+g1809f2e documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.dev1+g804f08c
+                0.1.dev1+g1809f2e
               </div>
             
           
@@ -204,7 +204,10 @@
                 <span class="p">(</span><span class="s2">&quot;stat_IO.f&quot;</span><span class="p">,</span> <span class="s2">&quot;STATD&quot;</span><span class="p">,</span> <span class="s2">&quot;MAP2D&quot;</span><span class="p">,</span> <span class="s2">&quot;FRAMELP&quot;</span><span class="p">),</span>
                 <span class="p">(</span><span class="s2">&quot;math_tools.f&quot;</span><span class="p">,),</span>
             <span class="p">],</span>
-            <span class="s2">&quot;sgs&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;smagorinsky.f&quot;</span><span class="p">,</span> <span class="s2">&quot;SGS&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">)],</span>
+            <span class="s2">&quot;sgs&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;smagorinsky.f&quot;</span><span class="p">,</span> <span class="s2">&quot;SGS&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;wmles_init.f&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">,</span> <span class="s2">&quot;../toolbox/FRAMELP&quot;</span><span class="p">),</span>
+            <span class="p">],</span>
         <span class="p">}</span>
 
     <span class="nd">@property</span>
@@ -223,7 +226,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-08-27
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-09-02
 
     </p>
   </div>

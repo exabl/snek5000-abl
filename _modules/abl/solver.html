@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>abl.solver &mdash; snek5000-abl 0.1.dev1+g804f08c documentation</title>
+  <title>abl.solver &mdash; snek5000-abl 0.1.dev1+g1809f2e documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.dev1+g804f08c
+                0.1.dev1+g1809f2e
               </div>
             
           
@@ -218,7 +218,19 @@
         <span class="sd">&quot;&quot;&quot;Add missing default parameters.&quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">SimulKTH</span><span class="o">.</span><span class="n">_complete_params_with_default</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">_set_attrib</span><span class="p">(</span><span class="s2">&quot;advection&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">cvode</span><span class="o">.</span><span class="n">_set_internal_attr</span><span class="p">(</span><span class="s2">&quot;_enabled&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">_set_child</span><span class="p">(</span>
+            <span class="s2">&quot;wmles&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">bc_temp_filt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">bc_z_index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">bc_z0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                <span class="n">sgs_c0</span><span class="o">=</span><span class="mf">0.19</span><span class="p">,</span>
+                <span class="n">sgs_delta_max</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">sgs_npow</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">wmles</span><span class="o">.</span><span class="n">_set_internal_attr</span><span class="p">(</span><span class="s2">&quot;_enabled&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">params</span>
 
 <div class="viewcode-block" id="SimulABL.create_default_params"><a class="viewcode-back" href="../../_generated/abl.solver.html#abl.solver.SimulABL.create_default_params">[docs]</a>    <span class="nd">@classmethod</span>
@@ -267,7 +279,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-08-27
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-09-02
 
     </p>
   </div>
