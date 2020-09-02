@@ -3,6 +3,7 @@
 import sys
 
 import click
+
 from abl.solver import Simul
 from snek5000.log import logger
 
@@ -15,14 +16,34 @@ from snek5000.log import logger
 @click.option("-w", "--walltime", default="30:00")
 @click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
 @click.option(
-    "-fw", "--filter-weight", default=12, type=float, help="filter weight parameter",
+    "-fw",
+    "--filter-weight",
+    default=12,
+    type=float,
+    help="filter weight parameter",
 )
 @click.option(
     "-fc", "--filter-cutoff", default=0.5, type=float, help="filter cutoff ratio"
 )
+@click.option(
+    "-ft",
+    "--filter-temporal",
+    default=False,
+    type=bool,
+    help="turn on temporal filtering for boundary condition",
+)
 @click.pass_context
 def cli(
-    ctx, sub_dir, mesh, name_run, nodes, walltime, z_wall, filter_weight, filter_cutoff
+    ctx,
+    sub_dir,
+    mesh,
+    name_run,
+    nodes,
+    walltime,
+    z_wall,
+    filter_weight,
+    filter_cutoff,
+    filter_temporal,
 ):
     """\b
     Notes
@@ -164,7 +185,7 @@ def cli(
     # WMLES parameters
     # ================
     wmles = params.nek.wmles
-    wmles.bc_temp_filt = True
+    wmles.bc_temp_filt = filter_temporal
     # wmles.bc_z_index = 3
     wmles.bc_z0 = z_wall
     wmles.sgs_delta_max = True
