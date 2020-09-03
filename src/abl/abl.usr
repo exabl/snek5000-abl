@@ -141,7 +141,7 @@ c--------Calculate Moeng's model parameters
         if (istep .le . 5) then
           eps = 1.
         else
-          Tf = 5 * sqrt(dg2_max(ie)) / absu
+          Tf = 5. * sqrt(dg2_max(ie)) / absu
           eps = dt / Tf
         endif
 
