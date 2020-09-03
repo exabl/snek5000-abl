@@ -141,8 +141,8 @@ c--------Calculate Moeng's model parameters
         if (istep .le . 5) then
           eps = 1.
         else
-          Tf = sqrt(dg2_max(ie)) / absu
-          eps = 2. * dt / Tf
+          Tf = 5 * sqrt(dg2_max(ie)) / absu
+          eps = dt / Tf
         endif
 
 #ifdef DEBUG
@@ -161,8 +161,8 @@ c--------Calculate Moeng's model parameters
 
 c--------Calculate Stresses
       trx = -KAPPA**2*(u1_2*absu)/(log(y1_2/y0)**2)
-      try= 0.0
-      trz= -KAPPA**2*(w1_2*absu)/(log(y1_2/y0)**2)
+      try = 0.0
+      trz = -KAPPA**2*(w1_2*absu)/(log(y1_2/y0)**2)
       temp = 0.0
 
       return

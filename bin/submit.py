@@ -24,7 +24,7 @@ for (
     zip([11], [1] * 1, [f"{days}-00:00:00" for days in (7,) * 1]),
     [0.05],
     [0.75],
-    [False, True],
+    [True],
     [0.1],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
