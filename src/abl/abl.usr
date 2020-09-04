@@ -321,8 +321,13 @@ c       - chkpt_main would load velocity data required for calculating ediff
         call copy(t,ediff,n)
       endif
 
-      ! for tripping
+      ! statistics computed by toolbox
       call stat_avg
+
+      ! spatially averged statistics
+      if ((mod(istep, 20) .eq. 0) .and. (istep .gt. 0)) then
+         call spatial_means
+      endif
 
       ! finalise framework
       if (ISTEP.eq.NSTEPS.or.LASTEP.eq.1) then
@@ -668,6 +673,34 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
      $    vort(1,1,1,1,2), dudx(1,1,1,1,3), dwdx(1,1,1,1,1), itmp)
 
       return
+      end subroutine
+!======================================================================
+      subroutine spatial_means
+      implicit none
+      include 'SIZE'
+      include 'SOLN'  ! vx, vy
+      include 'MASS'  ! bm1, volvm1
+      include 'TSTEP'  ! time, istep
+
+      integer n
+      real ubar, e2
+
+      ! functions
+      real glsc2, glsc3
+      external glsc2, glsc3
+
+      n = nx1*ny1*nz1*nelv
+      ubar = glsc2(vx,bm1,n) / volvm1  ! bulk mean streamwise velocity
+      e2 = glsc3(vy,bm1,vy,n) / volvm1  ! wall normal component of K.E. ?
+
+      if (nid.eq.0) then
+         open(26, file='spatial_means.txt', position='append')
+         write(26, 2) istep, time, ubar, e2
+      close(26)
+
+   2  format(I10, 1P 8E13.4)
+
+      endif
       end subroutine
 !======================================================================
 c> @}

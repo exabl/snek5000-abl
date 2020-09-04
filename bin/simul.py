@@ -3,7 +3,6 @@
 import sys
 
 import click
-
 from abl.solver import Simul
 from snek5000.log import logger
 
@@ -16,11 +15,7 @@ from snek5000.log import logger
 @click.option("-w", "--walltime", default="30:00")
 @click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
 @click.option(
-    "-fw",
-    "--filter-weight",
-    default=12,
-    type=float,
-    help="filter weight parameter",
+    "-fw", "--filter-weight", default=12, type=float, help="filter weight parameter",
 )
 @click.option(
     "-fc", "--filter-cutoff", default=0.5, type=float, help="filter cutoff ratio"
@@ -242,7 +237,7 @@ def debug(ctx, rule):
     params = ctx.obj["params"]
     general = params.nek.general
     general.stop_at = "num_steps"
-    general.num_steps = 10
+    general.num_steps = 21
 
     logger.info("Initializing simulation debug...")
 
