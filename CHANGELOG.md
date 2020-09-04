@@ -45,7 +45,7 @@ Security in case of vulnerabilities.
 
 ### Fixed
 
-- Requirements: pymech and standard
+- Requirements: pymech and zstandard
 - Working `SNEK_DEBUG` options and appopriate debug flags in Snakefile
 
 ## [0.4.0b0] - 2020-07-15

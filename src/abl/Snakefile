@@ -21,9 +21,12 @@ NEK_SOURCE_ROOT = snek5000.source_root()
 # TODO: define configuration files for SNIC clusters
 configfile: CONFIG
 
+
 if os.getenv("SNEK_DEBUG"):
     config["CFLAGS"] += " -O0 -g"
-    config["FFLAGS"] += " -O0 -g -DDEBUG -Wall -ffpe-trap=invalid,zero,overflow"  #,underflow
+    config[
+        "FFLAGS"
+    ] += " -O0 -g -DDEBUG -Wall -ffpe-trap=invalid,zero,overflow"  # ,underflow
 
 if not os.getenv("NEK_SOURCE_ROOT"):
     os.environ["NEK_SOURCE_ROOT"] = NEK_SOURCE_ROOT
@@ -34,60 +37,67 @@ if NEK_SOURCE_ROOT not in os.getenv("PATH"):
 
 subworkflow Nek5000:
     workdir: NEK_SOURCE_ROOT
-    snakefile: snek5000.get_asset('nek5000.smk')
+    snakefile: snek5000.get_asset("nek5000.smk")
     configfile: CONFIG
+
 
 # default rule
 rule all:
     input:
-        'nek5000'
+        "nek5000",
+
 
 # shorthand for mesh
 rule mesh:
-    input: f"{CASE}.re2", f"{CASE}.ma2"
+    input:
+        f"{CASE}.re2",
+        f"{CASE}.ma2",
 
 
 # gslib, lapack ...
 rule build_third_party:
     input:
-        nekconfig = NEK_SOURCE_ROOT + "/bin/nekconfig"
+        nekconfig=NEK_SOURCE_ROOT + "/bin/nekconfig",
     output:
         NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a",
-        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a"
+        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a",
     shell:
         "{input.nekconfig} -build-dep"
+
 
 # compile
 rule compile:
     input:
-        'SIZE',
+        "SIZE",
         f"{CASE}.usr",
-        'makefile_usr.inc',
-        'makefile',
-        *iglob('toolbox/*'),
-        *iglob('sgs/*'),
+        "makefile_usr.inc",
+        "makefile",
+        * iglob("toolbox/*"),
+        * iglob("sgs/*"),
         NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a",
-        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a"
+        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a",
     output:
-        f'{CASE}.f',
-        exe='nek5000'
+        f"{CASE}.f",
+        exe="nek5000",
     shell:
         """
         make -j {output.exe}
         """
+
+
 # run
 rule run:
     input:
-        f'{CASE}.re2',
-        f'{CASE}.ma2',
-        f'{CASE}.par',
-        'SESSION.NAME',
-        'nek5000'
+        f"{CASE}.re2",
+        f"{CASE}.ma2",
+        f"{CASE}.par",
+        "SESSION.NAME",
+        "nek5000",
     log:
-        "logs/run_" + now() + ".log"
+        "logs/run_" + now() + ".log",
     params:
-        nproc = str(os.cpu_count()),
-        case = f"{CASE}"
+        nproc=str(os.cpu_count()),
+        case=f"{CASE}",
     shell:
         """
         ln -sf {log} {params.case}.log
@@ -95,19 +105,20 @@ rule run:
         {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
         """
 
+
 # on cluster
 rule srun:
     input:
-        f'{CASE}.re2',
-        f'{CASE}.ma2',
-        f'{CASE}.par',
-        'SESSION.NAME',
-        'nek5000'
+        f"{CASE}.re2",
+        f"{CASE}.ma2",
+        f"{CASE}.par",
+        "SESSION.NAME",
+        "nek5000",
     log:
-        "logs/run_" + now() + ".log"
+        "logs/run_" + now() + ".log",
     params:
-        nproc = str(os.cpu_count()),
-        case = f"{CASE}"
+        nproc=str(os.cpu_count()),
+        case=f"{CASE}",
     shell:
         """
         ln -sf {log} {params.case}.log
@@ -115,10 +126,11 @@ rule srun:
         {config[MPIEXEC]} -n {params.nproc} ./nek5000 | tee {log}
         """
 
+
 # clean compiler output
 rule clean:
     params:
-        case = f'{CASE}',
+        case=f"{CASE}",
     shell:
         """
         echo "cleaning Nek5000 ..."
@@ -127,23 +139,26 @@ rule clean:
         rm -fv $NEK_SOURCE_ROOT/core/mpif.h
         """
 
+
 # clean simulation files
 rule cleansimul:
     params:
-        case = f'{CASE}',
-        tarball = tar_name(compress_format=".zst")
+        case=f"{CASE}",
+        tarball=tar_name(compress_format=".zst"),
     run:
         clean_simul(params.case, params.tarball)
+
 
 # clean third party
 rule clean3rd:
     params:
-        gslib_dir = NEK_SOURCE_ROOT + "/3rd_party/gslib"
+        gslib_dir=NEK_SOURCE_ROOT + "/3rd_party/gslib",
     shell:
         """
         nekconfig clean < <(yes)
         rm -rf {params.gslib_dir}/{{gslib-*,*.tar.gz}}
         """
+
 
 # clean everything
 rule cleanall:
@@ -153,97 +168,102 @@ rule cleanall:
         snakemake clean clean3rd cleansimul -j
         """
 
+
 # create an archive with all of our results
 rule archive:
     params:
-        solution = sorted(
+        solution=sorted(
             itertools.chain.from_iterable(
-                (
-                    iglob(f'{prefix}{CASE}0.f*')
-                    for prefix in ("", "vgr", "c2D", "sts")
-                )
+                (iglob(f"{prefix}{CASE}0.f*") for prefix in ("", "vgr", "c2D", "sts"))
             )
         ),
-        rest = [
-            'SESSION.NAME',
-            'params.xml',
-            'SIZE',
-            *iglob(f'rs6{CASE}0.f*'),
-            f'{CASE}.re2',
-            f'{CASE}.ma2',
-            f'{CASE}.par',
-            f'{CASE}.usr',
+        rest=[
+            "SESSION.NAME",
+            "params.xml",
+            "SIZE",
+            *iglob(f"rs6{CASE}0.f*"),
+            f"{CASE}.re2",
+            f"{CASE}.ma2",
+            f"{CASE}.par",
+            f"{CASE}.usr",
         ],
-        tarball = tar_name()
+        tarball=tar_name(),
     run:
         archive(params.tarball, params.solution, remove=True)
         archive(params.tarball, params.rest)
         archive(params.tarball + ".zst", readonly=True)
 
+
 # create a release with source files
 rule release:
     input:
-        f'{CASE}.box',
-        f'{CASE}.par',
-        f'{CASE}.usr',
-        'SIZE',
-        'compile.sh',
-        'makefile_usr.inc',
-        *list(Output().makefile_usr_sources)
+        f"{CASE}.box",
+        f"{CASE}.par",
+        f"{CASE}.usr",
+        "SIZE",
+        "compile.sh",
+        "makefile_usr.inc",
+        * list(Output().makefile_usr_sources),
     output:
-        'abl-release.tar.gz'
+        "abl-release.tar.gz",
     shell:
         """
         bsdtar czf {output} {input}
         """
+
 
 # internal rules
 # ==============
 # generate a box mesh
 rule generate_box:
     input:
-        box = f'{CASE}.box',
-        genbox = Nek5000('bin/genbox')
+        box=f"{CASE}.box",
+        genbox=Nek5000("bin/genbox"),
     output:
-        'box.re2'
+        "box.re2",
     shell:
-        'echo {input.box} | '
-        '{input.genbox}'
+        "echo {input.box} | "
+        "{input.genbox}"
+
 
 # rename mesh file re2
 rule move_box:
-    input: 'box.re2'
-    output: f'{CASE}.re2'
+    input:
+        "box.re2",
+    output:
+        f"{CASE}.re2",
     shell:
-        'mv -f {input} {output}'
+        "mv -f {input} {output}"
+
 
 # generate map / connectivity matrix
 rule generate_map:
     input:
-        f'{CASE}.re2',
-        genmap = Nek5000('bin/genmap')
+        f"{CASE}.re2",
+        genmap=Nek5000("bin/genmap"),
     output:
-        f'{CASE}.ma2'
+        f"{CASE}.ma2",
     params:
-        prefix = f'{CASE}',
-        tolerance = 0.01
+        prefix=f"{CASE}",
+        tolerance=0.01,
     shell:
         'echo "{params.prefix}\n{params.tolerance}" | '
-        '{input.genmap}'
+        "{input.genmap}"
+
 
 # generate makefile
 rule generate_makefile:
     input:
-        f'{CASE}.re2',
-        f'{CASE}.ma2',
-        f'{CASE}.usr',
-        makenek = NEK_SOURCE_ROOT + "/bin/makenek",
+        f"{CASE}.re2",
+        f"{CASE}.ma2",
+        f"{CASE}.usr",
+        makenek=NEK_SOURCE_ROOT + "/bin/makenek",
     output:
-        'makefile'
+        "makefile",
     params:
-        case = f'{CASE}',
-        inc = " ".join(Output().fortran_inc_flags),
-        usr = " ".join(Output().makefile_usr_obj)
+        case=f"{CASE}",
+        inc=" ".join(Output().fortran_inc_flags),
+        usr=" ".join(Output().makefile_usr_obj),
     shell:
         """
         set +u  # Do not error on undefined bash variables
@@ -253,30 +273,35 @@ rule generate_makefile:
         {input.makenek} {params.case} -nocompile
         """
 
+
 # generate compile.sh
 rule generate_compile_sh:
-    output: "compile.sh"
+    output:
+        "compile.sh",
     params:
-        case = f"{CASE}",
-        inc = " ".join(Output().fortran_inc_flags),
-        usr = " ".join(Output().makefile_usr_obj)
+        case=f"{CASE}",
+        inc=" ".join(Output().fortran_inc_flags),
+        usr=" ".join(Output().makefile_usr_obj),
     run:
         import stat
         from abl.templates import compile_sh as template
 
-        with open(str(output), 'w') as fp:
-            fp.write(template.render(
-                CASE=params.case, INC=params.inc, USR=params.usr, **config
-            ))
+        with open(str(output), "w") as fp:
+            fp.write(
+                template.render(
+                    CASE=params.case, INC=params.inc, USR=params.usr, **config
+                )
+            )
 
         os.chmod(str(output), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+
 
 # generate sessionfile
 rule generate_session:
     output:
-        "SESSION.NAME"
+        "SESSION.NAME",
     params:
-        case = f"{CASE}"
+        case=f"{CASE}",
     shell:
         """
         touch SESSION.NAME
