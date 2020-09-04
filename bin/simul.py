@@ -9,16 +9,17 @@ from snek5000.log import logger
 
 @click.group()
 @click.option("-d", "--sub-dir", default="test")
-@click.option("-m", "--mesh", default=1, type=int, help="mesh configuration")
+@click.option("-m", "--mesh", default=11, type=int, help="mesh configuration")
 @click.option("-n", "--name-run", default="demo", help="short description of the run")
 @click.option("-o", "--nodes", default=1, type=int, help="number of nodes")
 @click.option("-w", "--walltime", default="30:00")
 @click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
+@click.option("-z0", "--z-rough", default=0.1, type=float, help="roughness parameter")
 @click.option(
-    "-fw", "--filter-weight", default=12, type=float, help="filter weight parameter",
+    "-fw", "--filter-weight", default=0.05, type=float, help="filter weight parameter",
 )
 @click.option(
-    "-fc", "--filter-cutoff", default=0.5, type=float, help="filter cutoff ratio"
+    "-fc", "--filter-cutoff", default=0.75, type=float, help="filter cutoff ratio"
 )
 @click.option(
     "-ft",
@@ -36,6 +37,7 @@ def cli(
     nodes,
     walltime,
     z_wall,
+    z_rough,
     filter_weight,
     filter_cutoff,
     filter_temporal,
@@ -182,7 +184,7 @@ def cli(
     wmles = params.nek.wmles
     wmles.bc_temp_filt = filter_temporal
     # wmles.bc_z_index = 3
-    wmles.bc_z0 = z_wall
+    wmles.bc_z0 = z_rough
     wmles.sgs_delta_max = True
     # wmles.sgs_npow = 3.0
     wmles.sgs_c0 = 0.15
