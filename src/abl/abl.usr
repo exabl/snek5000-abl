@@ -326,6 +326,7 @@ c       - chkpt_main would load velocity data required for calculating ediff
 
       ! spatially averged statistics
       if ((mod(istep, 20) .eq. 0) .and. (istep .gt. 0)) then
+         call bounds_check(dt)  ! Bounds check via inspecting timestep
          call spatial_means
       endif
 
@@ -675,6 +676,7 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
       return
       end subroutine
 !======================================================================
+!> Calculate spatial averaged quantities and write it into a text file.
       subroutine spatial_means
       implicit none
       include 'SIZE'
@@ -700,6 +702,27 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
 
    2  format(I10, 1P 8E13.4)
 
+      endif
+      end subroutine
+!======================================================================
+!> Check for nan or infinity
+!! @param[in]  x   real, variable to be checked
+      subroutine bounds_check(x)
+      ! use ieee_arithmetic
+      implicit none
+
+      real x
+
+      !! Testing
+      ! x = ieee_value(1., ieee_quiet_nan)
+      ! x = ieee_value(1., ieee_negative_inf)
+      ! x = ieee_value(1., ieee_positive_inf)
+
+      !> @todo Why are the error messages not displayed?
+      if (abs(x) >= huge(x)) then
+          call exittr("Inf encountered => bounds_check failed", x, 0)
+      elseif (isnan(x)) then
+          call exittr("NaN encountered => bounds_check failed", x, 0)
       endif
       end subroutine
 !======================================================================
