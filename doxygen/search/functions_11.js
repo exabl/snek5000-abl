@@ -123,6 +123,7 @@ var searchData=
   ['sparse_5fcholesky_5ffactor',['sparse_cholesky_factor',['../crs__xxt_8c.html#aa4f9f9e732b179adc01ed3b8a887dfe1',1,'crs_xxt.c']]],
   ['sparse_5fcholesky_5ffree',['sparse_cholesky_free',['../crs__xxt_8c.html#a9d5701bfdf39b7cff2587a1fa2659c3f',1,'crs_xxt.c']]],
   ['sparse_5fcholesky_5fsolve',['sparse_cholesky_solve',['../crs__xxt_8c.html#a63c06449874fed00aaa500327b03c058',1,'crs_xxt.c']]],
+  ['spatial_5fmeans',['spatial_means',['../group__framework.html#gad7bf1bb6172cfe21bceaf5b288b6de10',1,'abl.usr']]],
   ['spec_5fcoeff_5finit',['spec_coeff_init',['../hpf_8f.html#ae427fdcae61cfa60e92be399a33df470',1,'hpf.f']]],
   ['spec_5fcurl_5fe',['spec_curl_e',['../induct_8f.html#a3d1ea77fdd5376c43f220345c8c1b20e',1,'induct.f']]],
   ['specmp',['specmp',['../navier1_8f.html#a20934009ab8a550857444068a025ba28',1,'navier1.f']]],

@@ -121,10 +121,43 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:ga3737d0f38b1a9847edf53beaabc8c5f4"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__framework.html#ga3737d0f38b1a9847edf53beaabc8c5f4">user_stat_trnsv</a> (lvel, dudx, dvdx, dwdx, vort)</td></tr>
 <tr class="memdesc:ga3737d0f38b1a9847edf53beaabc8c5f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide velocity, deriv. and vort. in required coordinates.  <a href="#ga3737d0f38b1a9847edf53beaabc8c5f4">More...</a><br /></td></tr>
 <tr class="separator:ga3737d0f38b1a9847edf53beaabc8c5f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad7bf1bb6172cfe21bceaf5b288b6de10"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__framework.html#gad7bf1bb6172cfe21bceaf5b288b6de10">spatial_means</a></td></tr>
+<tr class="memdesc:gad7bf1bb6172cfe21bceaf5b288b6de10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate spatial averaged quantities and write it into a text file.  <a href="#gad7bf1bb6172cfe21bceaf5b288b6de10">More...</a><br /></td></tr>
+<tr class="separator:gad7bf1bb6172cfe21bceaf5b288b6de10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabfa9321d0e78857e5fafb7bada7c3ae3"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__framework.html#gabfa9321d0e78857e5fafb7bada7c3ae3">bounds_check</a> (x)</td></tr>
+<tr class="memdesc:gabfa9321d0e78857e5fafb7bada7c3ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for nan or infinity.  <a href="#gabfa9321d0e78857e5fafb7bada7c3ae3">More...</a><br /></td></tr>
+<tr class="separator:gabfa9321d0e78857e5fafb7bada7c3ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Register user specified modules. </p>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="gabfa9321d0e78857e5fafb7bada7c3ae3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabfa9321d0e78857e5fafb7bada7c3ae3">&#9670;&nbsp;</a></span>bounds_check()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine bounds_check </td>
+          <td>(</td>
+          <td class="paramtype">real&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check for nan or infinity. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>real, variable to be checked </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Why are the error messages not displayed? </dd></dl>
+
+</div>
+</div>
 <a id="gaea07736cd03d1acb47a32b0ec6228e2c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaea07736cd03d1acb47a32b0ec6228e2c">&#9670;&nbsp;</a></span>frame_usr_end()</h2>
 
@@ -177,6 +210,25 @@ Functions/Subroutines</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="gad7bf1bb6172cfe21bceaf5b288b6de10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad7bf1bb6172cfe21bceaf5b288b6de10">&#9670;&nbsp;</a></span>spatial_means()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine spatial_means </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculate spatial averaged quantities and write it into a text file. </p>
 
 </div>
 </div>
@@ -327,7 +379,7 @@ Functions/Subroutines</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 3 2020 14:57:24 for eTurb by
+    <li class="footer">Generated on Wed Sep 9 2020 10:02:17 for eTurb by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
