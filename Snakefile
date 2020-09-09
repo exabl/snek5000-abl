@@ -12,88 +12,102 @@ rule env_export:
         sed -i '/eturb/d' environment.yml
         """
 
+
 rule env_update:
-    shell: 'conda env update --file environment.yml'
+    shell:
+        "conda env update --file environment.yml"
+
 
 rule develop:
-    shell: 'pip install -e .[dev]'
+    shell:
+        "pip install -e .[dev]"
+
 
 rule docs:
-    input: 'src/'
-    shell: 'cd docs && SPHINXOPTS="-W" make html'
+    input:
+        "src/",
+    shell:
+        'cd docs && SPHINXOPTS="-W" make html'
+
 
 rule docs_clean:
-    shell: 'cd docs && SPHINXOPTS="-W" make cleanall'
+    shell:
+        'cd docs && SPHINXOPTS="-W" make cleanall'
+
 
 rule bin_archive:
     input:
-        iglob('bin/SLURM*'),
-        iglob('bin/launcher_20*')
+        iglob("bin/SLURM*"),
+        iglob("bin/launcher_20*"),
     params:
-        tarball = tar_name(
+        tarball=tar_name(
             Path.cwd().name,
             pattern="bin/SLURM*",
             subdir="bin",
-            default_prefix="archive"
-        )
+            default_prefix="archive",
+        ),
     run:
         archive(params.tarball, input, remove=True)
         archive(params.tarball + ".zst", readonly=True)
 
 
+
 rule ctags:
     input:
-        nek5000='lib/Nek5000/core',
-        abl='src/abl',
+        nek5000="lib/Nek5000/core",
+        abl="src/abl",
     output:
-        '.tags'
+        ".tags",
     params:
-        excludes = ' '.join(
+        excludes=" ".join(
             (
-                f'--exclude={pattern}'
-                for pattern in
-                (
-                    '.snakemake',
-                    '__pycache__',
-                    'obj',
-                    'logs',
-                    '*.tar.gz',
-                    '*.f?????'
+                f"--exclude={pattern}"
+                for pattern in (
+                    ".snakemake",
+                    "__pycache__",
+                    "obj",
+                    "logs",
+                    "*.tar.gz",
+                    "*.f?????",
                 )
             )
-        )
+        ),
     shell:
         """
         ctags -f {output} --language-force=Fortran -R {input.nek5000}
         ctags -f {output} {params.excludes} --append --language-force=Fortran -R {input.abl}
         """
 
+
 rule watch:
     params:
         per_second=5,
-        rules='docs ctags'
+        rules="docs ctags",
     shell:
-        'nohup watch -n {params.per_second} snakemake {params.rules} 2>&1 > /tmp/watch.log&'
+        "nohup watch -n {params.per_second} snakemake {params.rules} 2>&1 > /tmp/watch.log&"
+
 
 rule squeue:
     params:
         per_second=59,
-        rules='docs ctags'
+        rules="docs ctags",
     shell:
-        'watch -n {params.per_second} squeue -u $USER --start'
+        "watch -n {params.per_second} squeue -u $USER --start"
+
 
 rule salloc:
     params:
-        # project='snic2019-1-2',
-        # walltime='05:00',
-        project='snic2014-10-3 --reservation=dcs',
-        walltime='30:00',
-        nproc=8
+        project="snic2014-10-3 --reservation=dcs",
+        walltime="30:00",
+        nproc=8,
     shell:
-        'interactive -A {params.project} -t {params.walltime} -n {params.nproc}'
+        "interactive -A {params.project} -t {params.walltime} -n {params.nproc}"
+
 
 rule ipykernel:
-    shell: 'ipython kernel install --user --name=$(basename $CONDA_PREFIX)'
+    shell:
+        "ipython kernel install --user --name=$(basename $CONDA_PREFIX)"
+
 
 rule jlab:
     shell:
