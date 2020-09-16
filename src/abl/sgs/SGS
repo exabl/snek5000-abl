@@ -8,8 +8,7 @@ c
       common /cdsmag/ ediff, dg2, dg2_max
 
       real sij(lx1*ly1*lz1,ldim,ldim),
-     $     snrm(lx1*ly1*lz1,lelv),
-     $     Cs(lx1*ly1*lz1,lelv)
-      common /dynsmg/ sij,snrm,Cs
+     $     snrm(lx1*ly1*lz1,lelv)
+      common /constsmg/ sij, snrm
 
 c vim: set ft=fortran

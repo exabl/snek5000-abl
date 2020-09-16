@@ -29,7 +29,9 @@ class OutputABL(OutputBase):
                 ("math_tools.f",),
             ],
             "sgs": [
-                ("smagorinsky.f", "SGS", "WMLES"),
+                #  ("smagorinsky.f", "SGS", "WMLES"),
+                ("dynsmag.f", "DYN", "SGS", "WMLES"),
+                ("utils.f", "SGS"),
                 ("wmles_init.f", "WMLES", "../toolbox/FRAMELP"),
             ],
         }

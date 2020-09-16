@@ -46,6 +46,13 @@ $(OBJDIR)/stat_IO.o           :toolbox/stat_IO.f toolbox/STATD toolbox/MAP2D too
 $(OBJDIR)/math_tools.o        :toolbox/math_tools.f
 	$(F77) -c $(FL2) -I./ $< -o $@
 
-$(OBJDIR)/smagorinsky.o       :sgs/smagorinsky.f sgs/SGS sgs/WMLES
+# $(OBJDIR)/smagorinsky.o       :sgs/smagorinsky.f sgs/SGS sgs/WMLES
+$(OBJDIR)/dynsmag.o           :sgs/dynsmag.f sgs/DYN sgs/SGS sgs/WMLES
+	$(F77) -c $(FL2) -I./ $< -o $@
+
+$(OBJDIR)/utils.o             :sgs/utils.f sgs/SGS
+	$(F77) -c $(FL2) -I./ $< -o $@
+
+$(OBJDIR)/wmles_init.o        :sgs/wmles_init.f sgs/WMLES sgs/../toolbox/FRAMELP
 	$(F77) -c $(FL2) -I./ $< -o $@
 
