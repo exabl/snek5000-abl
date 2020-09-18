@@ -75,18 +75,18 @@ c     smoothing numerator and denominator in time
          call dsavg(num)   ! average across element boundaries
          call dsavg(den)
 
-         call planar_average_s      (numy,num,w1,w2)
-c        call wall_normal_average_s (numy,ny1,nely,w1,w2)
-         call planar_fill_s         (num,numy)
-
-         call planar_average_s      (deny,den,w1,w2)
-c        call wall_normal_average_s (deny,ny1,nely,w1,w2)
-         call planar_fill_s         (den,deny)
-
-         call planar_average_s(yy,ym1,w1,w2)
-
 c - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 c DIAGNOSTICS ONLY
+         ! call planar_average_s      (numy,num,w1,w2)
+c        call wall_normal_average_s (numy,ny1,nely,w1,w2)
+         ! call planar_fill_s         (num,numy)
+
+         ! call planar_average_s      (deny,den,w1,w2)
+c        call wall_normal_average_s (deny,ny1,nely,w1,w2)
+         ! call planar_fill_s         (den,deny)
+
+         ! call planar_average_s(yy,ym1,w1,w2)
+
 c         if (nid.eq.0.and.istep.eq.0) open(unit=55,file='z.z')
 c         if (nid.eq.0.and.mod(istep,10).eq.0) write(55,1)
 c    1    format(/)
