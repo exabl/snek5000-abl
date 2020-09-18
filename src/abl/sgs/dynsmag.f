@@ -1,7 +1,6 @@
 c-----------------------------------------------------------------------
 c> Compute eddy viscosity using dynamic smagorinsky model
 c> @callgraph @callergraph
-c> @callgraph @callergraph
       subroutine eddy_visc(e)
       implicit none
 
@@ -129,9 +128,9 @@ c     if (e.eq.nelv) call exitt
       return
       end
 c-----------------------------------------------------------------------
-c> Compute Lij for dynamic Smagorinsky model:
+c> Compute \f$\mathcal{L}\f$ for dynamic Smagorinsky model:
 c> \f[
-c       L_ij  :=  \bar{u}_i \bar{u}_j  - \widebar{u_i u_j}
+c>      L_{ij} := {\bar{u}_i} {\bar{u}_j} - \overline{u_i u_j}
 c> \f]
 c> @callgraph @callergraph
       subroutine comp_lij(u,v,w,fu,fv,fw,e)
@@ -190,9 +189,9 @@ c
       return
       end
 c-----------------------------------------------------------------------
-c> Compute Mij for dynamic Smagorinsky model:
+c> Compute \f$\mathcal{M}\f$ for dynamic Smagorinsky model:
 c> \f[
-c>     M_ij  :=  a^2  \bar{S} \bar{S}_{ij} -\widebar{S S_{ij}}
+c>     M_{ij}  :=  a^2  \bar{S} \bar{S}_{ij} -\overline{S S_{ij}}
 c> \f]
 c> @callgraph @callergraph
       subroutine comp_mij(fs,fi,nt,e)

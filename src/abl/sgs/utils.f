@@ -111,6 +111,7 @@ c      nt = nx - 2
       end
 c-----------------------------------------------------------------------
 c> @callgraph @callergraph
+c> @todo This does not work. Need to be updated for Nek v19 planar_average
       subroutine planar_average_s(ua,u,w1,w2)
       implicit none
 
@@ -133,6 +134,13 @@ c
 c
       do e=1,nelt
          eg = lglel(e)
+         !> @note Fails here
+         !! Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+         !! #1  0x55d6830036a7 in get_exyz_
+         !!        at .../Nek5000/core/navier5.f:1262
+         !! #2  0x55d6830ca17d in planar_average_s_
+         !!        at sgs/utils.f:136
+
          call get_exyz(ex,ey,ez,eg,nelx,nely,nelz)
 c
          do k=1,nz1
