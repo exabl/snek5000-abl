@@ -111,54 +111,6 @@ c      nt = nx - 2
       end
 c-----------------------------------------------------------------------
 c> @callgraph @callergraph
-      subroutine planar_average_r(ua,u,w1,w2)
-      implicit none
-
-c
-c     Compute s-t planar average of quantity u()
-c
-      include 'SIZE'
-      include 'GEOM'
-      include 'PARALLEL'
-      include 'WZ'
-      include 'ZPER'
-c
-      real ua(nx1,lelx),u(nx1,ny1,nx1,nelv),w1(nx1,lelx),w2(nx1,lelx)
-      integer e, eg, ex, ey, ez, i, j, k, nx
-      real zz, aa
-c
-      nx = nx1*nelx
-      call rzero(ua,nx)
-      call rzero(w1,nx)
-c
-      do e=1,nelt
-c
-         eg = lglel(e)
-         call get_exyz(ex,ey,ez,eg,nelx,nely,nelz)
-c
-         do i=1,nx1
-         do k=1,nz1
-         do j=1,ny1
-            zz = (1.-zgm1(i,1))/2.  ! = 1 for i=1, = 0 for k=nx1
-            aa = zz*area(j,k,4,e) + (1-zz)*area(j,k,2,e)  ! wgtd jacobian
-            w1(i,ex) = w1(i,ex) + aa
-            ua(i,ex) = ua(i,ex) + aa*u(i,j,k,e)
-         enddo
-         enddo
-         enddo
-      enddo
-c
-      call gop(ua,w2,'+  ',nx)
-      call gop(w1,w2,'+  ',nx)
-c
-      do i=1,nx
-         ua(i,1) = ua(i,1) / w1(i,1)   ! Normalize
-      enddo
-c
-      return
-      end
-c-----------------------------------------------------------------------
-c> @callgraph @callergraph
       subroutine planar_average_s(ua,u,w1,w2)
       implicit none
 
@@ -245,57 +197,6 @@ c
 
       enddo
 
-      return
-      end
-c-----------------------------------------------------------------------
-c> @callgraph @callergraph
-      subroutine wall_normal_average_s(u,ny,nel,v,w)
-      implicit none
-
-      integer nel, ny
-      real u(ny,nel),w(1),v(1)
-
-      ! Local variables
-      integer e, i, k, n, ipass, npass
-      real alpha
-
-      k=0
-      do e=1,nel    ! get rid of duplicated (ny,e),(1,e+1) points
-      do i=1,ny-1
-         k=k+1
-         w(k) = u(i,e)
-      enddo
-      enddo
-      k=k+1
-      w(k) = u(ny,nel)
-      n=k
-
-      npass = 2     ! Smooth
-      alpha = 0.2
-
-      do ipass=1,npass
-         do k=2,n-1
-            v(k) = (1.-alpha)*w(k) + 0.5*alpha*(w(k-1)+w(k+1))
-         enddo
-
-         do k=1,n
-            w(k) = v(k)
-         enddo
-      enddo
-
-      k=0
-      do e=1,nel    ! restore duplicated (ny,e),(1,e+1) points
-         do i=1,ny-1
-            k=k+1
-            u(i,e) = w(k)
-         enddo
-      enddo
-      k=k+1
-      u(ny,nel)=w(k)
-
-      do e=1,nel-1    ! restore duplicated (ny,e),(1,e+1) points
-         u(ny,e) = u(1,e+1)
-      enddo
       return
       end
 c-----------------------------------------------------------------------
