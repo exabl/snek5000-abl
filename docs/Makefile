@@ -30,3 +30,6 @@ intersphinx-jinja2:
 
 cleanall: clean
 	@rm -rf _generated/
+
+serve:
+	@python -m http.server --directory $(BUILDDIR)/html
