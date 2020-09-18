@@ -38,6 +38,7 @@ c> @callgraph @callergraph
      $   set_ds_filt(fh,fht,nt,diag,nx1)! dyn. Smagorinsky filter
 
       call comp_gije(sij,vx(1,1,1,e),vy(1,1,1,e),vz(1,1,1,e),e)
+      ! Compute symmetric part of the strain tensor
       call comp_sije(sij)
 
       call mag_tensor_e(snrm(1,e),sij)
@@ -64,7 +65,7 @@ c     smoothing numerator and denominator in time
       if (istep.gt.1) beta1 = 0.9   ! Retain 90 percent of past
       beta2 = 1. - beta1
 
-      do i=1,n
+      do i=1,ntot
          num (i,e) = beta1*num(i,e) + beta2*vr(i)
          den (i,e) = beta1*den(i,e) + beta2*vs(i)
       enddo
@@ -200,15 +201,21 @@ c> @callgraph @callergraph
       include 'SIZE'
       include 'SGS'  ! sij, dg2
       include 'DYN'  ! mij, fh, fht
+      include 'WMLES'  ! wmles_sgs_delta_max
 c
       integer nt, e
       real fs(lxyz), fi(lxyz)
 
-      integer a2, i, jj, k, n
-      real magS(lxyz)
+      integer a2, i, j, k, n, sym
+      real magS(lxyz), delta_sq
 
-      integer imap(6)
-      data imap / 0,4,8,1,5,2 /
+      integer sym_map(3,3)
+      sym_map = reshape((/1, 4, 6, 4, 2, 5, 6, 5, 3/), shape=(/3,3/))
+
+      ! Map 3x3-symmetric-tensor to be stored in a 6-element array
+      ! 1 4 6
+      ! 4 2 5
+      ! 6 5 3
 
       n = nx1*ny1*nz1
 
@@ -223,15 +230,22 @@ c     a2 is the test- to grid-filter ratio, squared
       a2 = nx1-1       ! nx1-1 is number of spaces in grid
       a2 = a2 /(nt-1)  ! nt-1 is number of spaces in filtered grid
 
-      do k=1,6
-         jj = n*imap(k) + 1
-         call col3   (fi,magS,sij(jj,1,1),n)  ! TODO: fix imap and for our 3D sij
-         call tens3d1(mij(1,k),fi,fh,fht,nx1,nx1)  ! fh x fh x fh x (|S| S_ij)
-         call tens3d1(fi,sij(jj),fh,fht,nx1,nx1)  ! fh x fh x fh x S_ij
+      if (wmles_sgs_delta_max) delta_sq = dg2_max(e)
+
+      do k=1,3
+        do j=1,k
+         sym = sym_map(j, k)
+
+         call col3(fi, magS, sij(:,j,k), n)  ! TODO: fix imap and for our 3D sij
+         call tens3d1(mij(1,sym), fi, fh, fht, nx1, nx1)  ! fh x fh x fh x (|S| S_ij)
+         call tens3d1(fi, sij(:,j,k), fh, fht, nx1, nx1)  ! fh x fh x fh x S_ij
          do i=1,n
-            mij(i,k) = (a2**2 * fs(i)*fi(i) - mij(i,k))*dg2(i,e)
+            if (.not. wmles_sgs_delta_max) delta_sq = dg2(i*e,1,1,1)
+
+            mij(i, sym) = (a2**2 * fs(i)*fi(i) - mij(i, sym))*delta_sq
          enddo
-      enddo
+        enddo
+        enddo
 
       return
       end

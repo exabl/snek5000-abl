@@ -87,19 +87,20 @@ c> @callgraph @callergraph
 
       INCLUDE 'SIZE'
 
+      integer nt, nx
       real fh(nx*nx),fht(nx*nx),diag(nx)
 
 c Construct transfer function
       call rone(diag,nx)
 
-c      diag(nx-0) = 0.01   
-c      diag(nx-1) = 0.10  
+c      diag(nx-0) = 0.01
+c      diag(nx-1) = 0.10
 c      diag(nx-2) = 0.50
 c      diag(nx-3) = 0.90
 c      diag(nx-4) = 0.99
 c      nt = nx - 2
 
-      diag(nx-0) = 0.05   
+      diag(nx-0) = 0.05
       diag(nx-1) = 0.50
       diag(nx-2) = 0.95
       nt = nx - 1
@@ -123,7 +124,8 @@ c
       include 'ZPER'
 c
       real ua(nx1,lelx),u(nx1,ny1,nx1,nelv),w1(nx1,lelx),w2(nx1,lelx)
-      integer e,eg,ex,ey,ez
+      integer e, eg, ex, ey, ez, i, j, k, nx
+      real zz, aa
 c
       nx = nx1*nelx
       call rzero(ua,nx)
@@ -170,7 +172,8 @@ c
       include 'ZPER'
 c
       real ua(ny1,nely),u(nx1,ny1,nx1,nelv),w1(ny1,nely),w2(ny1,nely)
-      integer e,eg,ex,ey,ez
+      integer e, eg, ex, ey, ez, i, j, k, ny
+      real zz, aa
 c
       ny = ny1*nely
       call rzero(ua,ny)
@@ -219,7 +222,7 @@ c
 
       real u(nx1,ny1,nz1,nelv),ua(ly1,lely)
 
-      integer e,eg,ex,ey,ez
+      integer e, eg, ex, ey, ez, melxyz, i, j, k
 
       melxyz = nelx*nely*nelz
       if (melxyz.ne.nelgt) then
@@ -249,8 +252,12 @@ c> @callgraph @callergraph
       subroutine wall_normal_average_s(u,ny,nel,v,w)
       implicit none
 
+      integer nel, ny
       real u(ny,nel),w(1),v(1)
-      integer e
+
+      ! Local variables
+      integer e, i, k, n, ipass, npass
+      real alpha
 
       k=0
       do e=1,nel    ! get rid of duplicated (ny,e),(1,e+1) points
