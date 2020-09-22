@@ -255,48 +255,9 @@ c> @callgraph
       include 'CHKPOINTD'  ! chpt_ifrst
       include 'WMLES'  ! KAPPA
 
-      integer e,i
-      real gradux(lx1,ly1,lz1,lelv)
-      real graduy(lx1,ly1,lz1,lelv)
-      real graduz(lx1,ly1,lz1,lelv)
-      real vgrad(lx1,ly1,lz1,lelv)
-      real x0(3),utau
-      real utauv(lx1,ly1,lz1,lelv)
-      save x0
-
-      real XLEN, YLEN, ZLEN
-c     call common blocks
-!       common /scrsf/ trx(lx1,ly1,lz1)
-!      $             , trz(lx1,ly1,lz1)
-
-      integer n, ngll
-      real A_w
-      real dpdx_mean, dpdy_mean, dpdz_mean, dgtq,
-     $      dragx, dragpx, dragvx,
-     $      dragy, dragpy, dragvy,
-     $      dragz, dragpz, dragvz,
-     $      torqx, torqpx, torqvx,
-     $      torqy, torqpy, torqvy,
-     $      torqz, torqpz, torqvz
-
-      common /ctorq/ dragx(0:maxobj),dragpx(0:maxobj),dragvx(0:maxobj)
-     $             , dragy(0:maxobj),dragpy(0:maxobj),dragvy(0:maxobj)
-     $             , dragz(0:maxobj),dragpz(0:maxobj),dragvz(0:maxobj)
-c
-     $             , torqx(0:maxobj),torqpx(0:maxobj),torqvx(0:maxobj)
-     $             , torqy(0:maxobj),torqpy(0:maxobj),torqvy(0:maxobj)
-     $             , torqz(0:maxobj),torqpz(0:maxobj),torqvz(0:maxobj)
-c
-     $             , dpdx_mean,dpdy_mean,dpdz_mean
-     $             , dgtq(3,4)
-
-c     Get mesh lengths from userParam0{5,6,7}
-      XLEN = uparam(5)
-      YLEN = uparam(6)
-      ZLEN = uparam(7)
+      integer e, n
 
       n=nx1*ny1*nz1*nelv
-      ngll=nx1*ny1*nz1
 
       ! KTH toolbox related
       ! -------------------
