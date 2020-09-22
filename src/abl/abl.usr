@@ -681,9 +681,9 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
 
       !> @todo Why are the error messages not displayed?
       if (abs(x) >= huge(x)) then
-          call exitti("Inf encountered => bounds_check failed", 0)
+          call exitti("Inf encountered => bounds_check failed$", 0)
       elseif (isnan(x)) then
-          call exitti("NaN encountered => bounds_check failed", 0)
+          call exitti("NaN encountered => bounds_check failed$", 0)
       endif
       end subroutine
 !======================================================================
