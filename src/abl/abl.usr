@@ -326,7 +326,7 @@ c       - chkpt_main would load velocity data required for calculating ediff
 
       ! spatially averged statistics
       if ((mod(istep, 20) .eq. 0) .and. (istep .gt. 0)) then
-         call bounds_check(dt)  ! Bounds check via inspecting timestep
+         call bounds_check(courno)  ! Bounds check via inspecting Courant number
          call spatial_means
       endif
 
@@ -720,9 +720,9 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
 
       !> @todo Why are the error messages not displayed?
       if (abs(x) >= huge(x)) then
-          call exittr("Inf encountered => bounds_check failed", x, 0)
+          call exitti("Inf encountered => bounds_check failed", 0)
       elseif (isnan(x)) then
-          call exittr("NaN encountered => bounds_check failed", x, 0)
+          call exitti("NaN encountered => bounds_check failed", 0)
       endif
       end subroutine
 !======================================================================
