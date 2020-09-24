@@ -1,9 +1,12 @@
 c-----------------------------------------------------------------------
+c> Stress boundary condition as formulated by Moeng (1984)
+c> Also has optional temporal filtering c.f: Yang et al. Physical Review
+c>      Fluids 2, no. 10 (2017): 104601.
+c>      https://doi.org/10.1103/PhysRevFluids.2.104601.
+c>
 c> @note Boundary condition evaluated at higher nodes, may need to be corrected for Ekmann turning
+c> @note This subroutine MAY NOT be called by every process
       subroutine userbc(ix,iy,iz,iside,eg) ! set up boundary conditions
-c
-c     NOTE ::: This subroutine MAY NOT be called by every process
-c
       implicit none
 
 
@@ -34,8 +37,6 @@ c--------Calculate Moeng's model parameters
       absu=sqrt(u1_2**2 + w1_2**2)
 
       if (wmles_bc_temp_filt) then
-        !< @note Refer: Yang et al. . Physical Review Fluids 2, no. 10 (2017): 104601.
-        !!              https://doi.org/10.1103/PhysRevFluids.2.104601.
         if (istep .le . 5) then
           eps = 1.
         else

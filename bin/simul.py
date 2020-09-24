@@ -122,6 +122,16 @@ def cli(
     # oper.max.order_time = 3
     # TODO: assess if SIZE parameters are correct.
 
+    # SGS and BC
+    # ==========
+    output = params.output
+
+    #  output.sgs_model = "constant"
+    output.sgs_model = "dynamic"
+
+    #  output.boundary_cond = "moeng"
+    output.boundary_cond = "noslip"
+
     # Nek5000: abl.par
     # ================
     general = params.nek.general
@@ -156,8 +166,18 @@ def cli(
         7: oper.Lz,
     }
 
+    problem_type = params.nek.problemtype
+    if params.output.boundary_cond == "noslip":
+        problem_type.stress_formulation = False
+        params.oper.boundary = ["P", "P", "W", "SYM", "P", "P"]
+    elif params.output.boundary_cond == "moeng":
+        problem_type.stress_formulation = True
+        params.oper.boundary = ["P", "P", "sh", "SYM", "P", "P"]
+    else:
+        raise NotImplementedError("Stress formulation or not?")
+
     pressure = params.nek.pressure
-    #  velocity = params.nek.velocity
+    velocity = params.nek.velocity
 
     # TODO: Why so?
     #  pressure.residual_proj = True
@@ -168,8 +188,12 @@ def cli(
     pressure.residual_tol = 1e-5
     #  velocity.residual_tol = 1e-8
     #
-    #  reynolds_number = 1e10
-    #  velocity.viscosity = -reynolds_number
+    if params.output.boundary_cond == "noslip":
+        reynolds_number = 1e4
+    else:
+        reynolds_number = 1e10
+
+    velocity.viscosity = -reynolds_number
 
     # KTH Toolbox
     # ===========
