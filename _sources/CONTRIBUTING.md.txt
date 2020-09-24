@@ -51,5 +51,5 @@ Vim users could benefit by setting:
 ```vim
 set secure exrc
 ```
-This sources the `.vimrc` file which comes along with the repository and
+This sources the `.exrc` file which comes along with the repository and
 enables syntax highlighting for file extensions used in `lib/Nek5000`.
