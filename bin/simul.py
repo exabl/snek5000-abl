@@ -129,8 +129,8 @@ def cli(
     #  output.sgs_model = "constant"
     output.sgs_model = "dynamic"
 
-    #  output.boundary_cond = "moeng"
-    output.boundary_cond = "noslip"
+    output.boundary_cond = "moeng"
+    # output.boundary_cond = "noslip"
 
     # Nek5000: abl.par
     # ================

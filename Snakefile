@@ -74,8 +74,8 @@ rule ctags:
         ),
     shell:
         """
-        ctags -f {output} --language-force=Fortran -R {input.nek5000}
-        ctags -f {output} {params.excludes} --append --language-force=Fortran -R {input.abl}
+        ctags --verbose -f {output} --language-force=Fortran -R {input.nek5000}
+        ctags --verbose -f {output} {params.excludes} --append --language-force=Fortran -R {input.abl}
         """
 
 
