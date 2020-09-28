@@ -110,100 +110,34 @@ c      nt = nx - 2
       return
       end
 c-----------------------------------------------------------------------
+c> Compute planar average of quantity u along horizontal directions.
+c> @param[in] u Array to be averaged
+c> @param[out] ua Planar average of `u`
 c> @callgraph @callergraph
-c> @todo This does not work. Need to be updated for Nek v19 planar_average
-      subroutine planar_average_s(ua,u,w1,w2)
+      subroutine planar_avg_horiz(ua,u)
       implicit none
 
-c
-c     Compute r-t planar average of quantity u()
-c
       include 'SIZE'
-      include 'GEOM'
-      include 'PARALLEL'
-      include 'WZ'
-      include 'ZPER'
-c
-      real ua(ny1,nely),u(nx1,ny1,nx1,nelv),w1(ny1,nely),w2(ny1,nely)
-      integer e, eg, ex, ey, ez, i, j, k, ny
-      real zz, aa
-c
-      ny = ny1*nely
-      call rzero(ua,ny)
-      call rzero(w1,ny)
-c
-      do e=1,nelt
-         eg = lglel(e)
-         !> @note Fails here
-         !! Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
-         !! #1  0x55d6830036a7 in get_exyz_
-         !!        at .../Nek5000/core/navier5.f:1262
-         !! #2  0x55d6830ca17d in planar_average_s_
-         !!        at sgs/utils.f:136
+      real u(lx1, ly1, lz1, lelt), ua(lx1,ly1,lz1,lelt)
 
-         call get_exyz(ex,ey,ez,eg,nelx,nely,nelz)
-c
-         do k=1,nz1
-         do j=1,ny1
-         do i=1,nx1
-            zz = (1.-zgm1(j,2))/2.  ! = 1 for i=1, = 0 for k=nx1
-            aa = zz*area(i,k,1,e) + (1-zz)*area(i,k,3,e)  ! wgtd jacobian
-            w1(j,ey) = w1(j,ey) + aa
-            ua(j,ey) = ua(j,ey) + aa*u(i,j,k,e)
-         enddo
-         enddo
-         enddo
-      enddo
-c
-      call gop(ua,w2,'+  ',ny)
-      call gop(w1,w2,'+  ',ny)
-c
-      do i=1,ny
-         ua(i,1) = ua(i,1) / w1(i,1)   ! Normalize
-      enddo
+      integer igs_x, igs_z
+      real work(lx1, ly1, lz1, lelt)
+      common /planar_avg_tmp/ igs_x, igs_z, work
 
-      return
-      end
-c-----------------------------------------------------------------------
-c> @callgraph @callergraph
-      subroutine planar_fill_s(u,ua)
-      implicit none
-
-c
-c     Fill array u with planar values from ua().
-c     For tensor-product array of spectral elements
-c
-      include 'SIZE'
-      include 'GEOM'
-      include 'PARALLEL'
-      include 'WZ'
-      include 'ZPER'
+      logical planar_avg_init
+      save planar_avg_init
+      data planar_avg_init /.false./
 
 
-      real u(nx1,ny1,nz1,nelv),ua(ly1,lely)
+      if (.not. planar_avg_init) then
+        call gtpp_gs_setup(igs_x, nx1, ny1, nz1, 1) ! x-avg
+        call gtpp_gs_setup(igs_z, nx1*ny1, 1, nz1, 3) ! z-avg
 
-      integer e, eg, ex, ey, ez, melxyz, i, j, k
-
-      melxyz = nelx*nely*nelz
-      if (melxyz.ne.nelgt) then
-         write(6,*) nid,' Error in planar_fill_s'
-     $                 ,nelgt,melxyz,nelx,nely,nelz
-         call exitt
+        planar_avg_init = .true.
       endif
 
-      do e=1,nelt
-         eg = lglel(e)
-         call get_exyz(ex,ey,ez,eg,nelx,nely,nelz)
-
-         do j=1,ny1
-         do k=1,nz1
-         do i=1,nx1
-            u(i,j,k,e) = ua(j,ey)
-         enddo
-         enddo
-         enddo
-
-      enddo
+      call planar_avg(work, u, igs_x)  ! average in x
+      call planar_avg(ua, work,igs_z)  ! average in z
 
       return
       end

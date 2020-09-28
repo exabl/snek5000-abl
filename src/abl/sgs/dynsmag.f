@@ -5,8 +5,8 @@ c> @callgraph @callergraph
       implicit none
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'ZPER'
+      include 'SOLN'  ! vx, vy, vz
+      include 'INPUT'  ! param
       include 'SGS'  ! ediff, sij, snrm
       include 'DYN'  ! mij, lij, num{,y}, den{,y}, yy, {u,v,w}{r,s,t}
       include 'WMLES'  ! wmles_sgs_delta_max
@@ -61,7 +61,8 @@ c     smoothing numerator and denominator in time
       call copy (vs,us,nx1*nx1*nx1)
 
       beta1 = 0.0                   ! Temporal averaging coefficients
-      if (istep.gt.1) beta1 = 0.9   ! Retain 90 percent of past
+      ! NOTE: disabled temporal filtering here
+      ! if (istep.gt.1) beta1 = 0.9   ! Retain 90 percent of past
       beta2 = 1. - beta1
 
       do i=1,ntot
@@ -75,18 +76,11 @@ c     smoothing numerator and denominator in time
          call dsavg(num)   ! average across element boundaries
          call dsavg(den)
 
+         call planar_avg_horiz(num, num)
+         call planar_avg_horiz(den, den)
+
 c - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 c DIAGNOSTICS ONLY
-         ! call planar_average_s      (numy,num,w1,w2)
-c        call wall_normal_average_s (numy,ny1,nely,w1,w2)
-         ! call planar_fill_s         (num,numy)
-
-         ! call planar_average_s      (deny,den,w1,w2)
-c        call wall_normal_average_s (deny,ny1,nely,w1,w2)
-         ! call planar_fill_s         (den,deny)
-
-         ! call planar_average_s(yy,ym1,w1,w2)
-
 c         if (nid.eq.0.and.istep.eq.0) open(unit=55,file='z.z')
 c         if (nid.eq.0.and.mod(istep,10).eq.0) write(55,1)
 c    1    format(/)
