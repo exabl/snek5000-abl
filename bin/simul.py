@@ -3,6 +3,7 @@
 import sys
 
 import click
+from abl.output import avail_boundary_conds, avail_sgs_models
 from abl.solver import Simul
 from snek5000.log import logger
 
@@ -28,6 +29,20 @@ from snek5000.log import logger
     type=bool,
     help="turn on temporal filtering for boundary condition",
 )
+@click.option(
+    "-b",
+    "--boundary-cond",
+    default="moeng",
+    type=click.Choice(avail_boundary_conds),
+    help="boundary condition",
+)
+@click.option(
+    "-s",
+    "--sgs-model",
+    default="constant",
+    type=click.Choice(avail_sgs_models),
+    help="SGS models",
+)
 @click.pass_context
 def cli(
     ctx,
@@ -41,6 +56,8 @@ def cli(
     filter_weight,
     filter_cutoff,
     filter_temporal,
+    boundary_cond,
+    sgs_model,
 ):
     """\b
     Notes
@@ -126,10 +143,8 @@ def cli(
     # ==========
     output = params.output
 
-    #  output.sgs_model = "constant"
-    output.sgs_model = "dynamic"
-
-    output.boundary_cond = "moeng"
+    output.sgs_model = sgs_model
+    output.boundary_cond = boundary_cond
     # output.boundary_cond = "noslip"
 
     # Nek5000: abl.par

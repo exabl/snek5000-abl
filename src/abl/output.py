@@ -1,4 +1,25 @@
+from collections import namedtuple
+
 from snek5000.output.base import Output as OutputBase
+
+SGS = namedtuple("SGS", ["name", "sources"])
+# Specific SGS models
+constant = SGS("constant", ("smagorinsky.f", "SGS", "WMLES"))
+dynamic = SGS("dynamic", ("dyn_smag.f", "DYN", "SGS", "WMLES"))
+shear_imp = SGS("shear_imp", ("shear_imp_smag.f", "SGS", "WMLES"))
+
+BC = namedtuple("BC", ["name", "sources"])
+# Specific boundary conditions
+moeng = BC("moeng", ("moeng.f", "../sgs/SGS", "../sgs/WMLES"))
+noslip = BC("noslip", ("noslip.f",))
+
+
+avail_sgs_models = {
+    model.name: model for model in locals().values() if isinstance(model, SGS)
+}
+avail_boundary_conds = {
+    model.name: model for model in locals().values() if isinstance(model, BC)
+}
 
 
 class OutputABL(OutputBase):
@@ -36,31 +57,29 @@ class OutputABL(OutputBase):
         }
 
         if not self.sim:
-            # Hack to load params from current file
+            # Hack to load params from params.xml in current directory
             from abl.solver import Simul
 
             params = Simul.load_params_from_file(path_xml="params.xml")
         else:
             params = self.sim.params
 
-        if params.output.sgs_model == "constant":
-            sources["sgs"].append(("smagorinsky.f", "SGS", "WMLES"))
-        elif params.output.sgs_model == "dynamic":
-            sources["sgs"].append(("dyn_smag.f", "DYN", "SGS", "WMLES"))
-        elif params.output.sgs_model == "shear_imp":
-            sources["sgs"].append(("shear_imp_smag.f", "SGS", "WMLES"))
-        else:
-            raise NotImplementedError(f"SGS model {params.output.sgs_model}")
-
-        if params.output.boundary_cond == "moeng":
-            sources["bc"].append(("moeng.f", "../sgs/SGS", "../sgs/WMLES"))
-        elif params.output.boundary_cond == "noslip":
-            sources["bc"].append(("noslip.f",))
-        else:
+        if params.output.sgs_model not in avail_sgs_models:
             raise NotImplementedError(
-                f"Boundary condition {params.output.boundary_cond}"
+                f"SGS model {params.output.sgs_model}. "
+                f"Must be in {avail_sgs_models}."
             )
 
+        if params.output.boundary_cond not in avail_boundary_conds:
+            raise NotImplementedError(
+                f"Boundary condition {params.output.boundary_cond}. "
+                f"Must be in {avail_boundary_conds}."
+            )
+
+        sgs = avail_sgs_models[params.output.sgs_model]
+        sources["sgs"].append(sgs.sources)
+        bc = avail_boundary_conds[params.output.boundary_cond]
+        sources["bc"].append(bc.sources)
         return sources
 
     @property

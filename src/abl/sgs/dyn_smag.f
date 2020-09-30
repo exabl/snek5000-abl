@@ -8,7 +8,7 @@ c> @callgraph @callergraph
       include 'SOLN'  ! vx, vy, vz
       include 'INPUT'  ! param
       include 'SGS'  ! ediff, sij, snrm
-      include 'DYN'  ! mij, lij, num{,y}, den{,y}, yy, {u,v,w}{r,s,t}
+      include 'DYN'  ! lxyz, mij, lij, num, den
       include 'WMLES'  ! wmles_sgs_delta_max
 
       integer e
