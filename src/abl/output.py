@@ -47,6 +47,8 @@ class OutputABL(OutputBase):
             sources["sgs"].append(("smagorinsky.f", "SGS", "WMLES"))
         elif params.output.sgs_model == "dynamic":
             sources["sgs"].append(("dyn_smag.f", "DYN", "SGS", "WMLES"))
+        elif params.output.sgs_model == "shear_imp":
+            sources["sgs"].append(("shear_imp_smag.f", "SGS", "WMLES"))
         else:
             raise NotImplementedError(f"SGS model {params.output.sgs_model}")
 
