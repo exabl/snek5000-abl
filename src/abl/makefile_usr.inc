@@ -1,6 +1,6 @@
 
 # vim: set ft=make
-# run
+# demo
 $(OBJDIR)/frame.o             :toolbox/frame.f toolbox/FRAMELP
 	$(F77) -c $(FL2) -I./ $< -o $@
 
@@ -37,7 +37,7 @@ $(OBJDIR)/chkpt_mstp.o        :toolbox/chkpt_mstp.f toolbox/CHKPTMSTPD toolbox/C
 $(OBJDIR)/map2D.o             :toolbox/map2D.f toolbox/MAP2D toolbox/FRAMELP
 	$(F77) -c $(FL2) -I./ $< -o $@
 
-$(OBJDIR)/stat.o              :toolbox/stat.f toolbox/STATD toolbox/MAP2D toolbox/FRAMELP sgs/SGS
+$(OBJDIR)/stat.o              :toolbox/stat.f toolbox/STATD toolbox/MAP2D toolbox/FRAMELP toolbox/../sgs/SGS
 	$(F77) -c $(FL2) -I./ $< -o $@
 
 $(OBJDIR)/stat_IO.o           :toolbox/stat_IO.f toolbox/STATD toolbox/MAP2D toolbox/FRAMELP
@@ -46,13 +46,27 @@ $(OBJDIR)/stat_IO.o           :toolbox/stat_IO.f toolbox/STATD toolbox/MAP2D too
 $(OBJDIR)/math_tools.o        :toolbox/math_tools.f
 	$(F77) -c $(FL2) -I./ $< -o $@
 
-# $(OBJDIR)/smagorinsky.o       :sgs/smagorinsky.f sgs/SGS sgs/WMLES
-$(OBJDIR)/dynsmag.o           :sgs/dynsmag.f sgs/DYN sgs/SGS sgs/WMLES
-	$(F77) -c $(FL2) -I./ $< -o $@
-
 $(OBJDIR)/utils.o             :sgs/utils.f sgs/SGS
 	$(F77) -c $(FL2) -I./ $< -o $@
 
 $(OBJDIR)/wmles_init.o        :sgs/wmles_init.f sgs/WMLES sgs/../toolbox/FRAMELP
+	$(F77) -c $(FL2) -I./ $< -o $@
+
+$(OBJDIR)/stat_extras_dummy.o :toolbox/stat_extras_dummy.f
+	$(F77) -c $(FL2) -I./ $< -o $@
+
+$(OBJDIR)/smagorinsky.o       :sgs/smagorinsky.f sgs/SGS sgs/WMLES
+	$(F77) -c $(FL2) -I./ $< -o $@
+
+$(OBJDIR)/shear_imp_smag.o    :sgs/shear_imp_smag.f sgs/SGS sgs/WMLES
+	$(F77) -c $(FL2) -I./ $< -o $@
+
+$(OBJDIR)/dyn_smag.o          :sgs/dyn_smag.f sgs/DYN sgs/SGS sgs/WMLES
+	$(F77) -c $(FL2) -I./ $< -o $@
+
+$(OBJDIR)/noslip.o            :bc/noslip.f
+	$(F77) -c $(FL2) -I./ $< -o $@
+
+$(OBJDIR)/moeng.o             :bc/moeng.f bc/../sgs/SGS bc/../sgs/WMLES
 	$(F77) -c $(FL2) -I./ $< -o $@
 
