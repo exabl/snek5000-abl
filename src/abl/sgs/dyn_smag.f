@@ -27,7 +27,7 @@ c> @callgraph @callergraph
      $          , (wr,lij(1,4)),(ws,lij(1,5)),(wt,lij(1,6))
 
 
-      integer nt, i, ie, ntot
+      integer nt, i, ie, j, ntot
       save    nt
       data    nt / -9 /
 
@@ -46,6 +46,16 @@ c> @callgraph @callergraph
       ! Cross and Leonard stress
       call comp_mij(ur,us,nt,e)
       call comp_lij(vx,vy,vz,ur,us,ut,e)
+
+#ifdef DEBUG
+      ! For statistics
+      do j=1,6
+        do i=1,ntot
+           mij_global(j,i,e) = mij(i,j)
+           lij_global(j,i,e) = lij(i,j)
+        end do
+      end do
+#endif
 
 c     Compute numerator (ur) & denominator (us) for Lilly contraction
 
@@ -79,25 +89,6 @@ c     smoothing numerator and denominator in time
          call planar_avg_horiz(num, num)
          call planar_avg_horiz(den, den)
 
-c - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-c DIAGNOSTICS ONLY
-c         if (nid.eq.0.and.istep.eq.0) open(unit=55,file='z.z')
-c         if (nid.eq.0.and.mod(istep,10).eq.0) write(55,1)
-c    1    format(/)
-c
-c         ny = ny1*nely
-c         do i=1,ny
-c            cdyn = 0
-c            if (deny(i).gt.0) cdyn = 0.5*numy(i)/deny(i)
-c            cdyn0 = max(cdyn,0.)
-c            if (nid.eq.0.and.mod(istep,10).eq.0) write(55,6)
-c     $         istep,i,time,yy(i),cdyn0,cdyn,numy(i),deny(i)
-c    6       format(i6,i4,1p6e12.4)
-c         enddo
-c DIAGNOSTICS ONLY
-c - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-         ntot = nx1*ny1*nz1*nelv
          do ie=1,nelv
            if (wmles_sgs_delta_max) delta_sq = dg2_max(ie)
            ntot = nx1*ny1*nz1*ie
@@ -242,4 +233,58 @@ c     a2 is the test- to grid-filter ratio, squared
 
       return
       end
+c-----------------------------------------------------------------------
+      subroutine stat_compute_extras(alpha, beta)
+      implicit none
+
+      include 'SIZE'
+      include 'STATD'
+      include 'SGS'  ! snrm
+      include 'DYN'  ! lij, mij
+
+      ! local variables
+      integer j
+      integer npos              ! position in STAT_RUAVG
+      real alpha, beta          ! time averaging parameters
+      integer lnvar             ! count number of variables
+
+      ! saved number of variables, by stat_compute
+      lnvar = stat_nvar
+
+!=======================================================================
+      ! Computation of extra statistics
+!-----------------------------------------------------------------------
+      ! <num>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav1(num(1,1),npos,alpha,beta)
+!-----------------------------------------------------------------------
+      ! <den>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav1(den(1,1),npos,alpha,beta)
+!-----------------------------------------------------------------------
+#ifdef DEBUG
+      ! <L_ij>t
+      do j=1,6
+        lnvar = lnvar + 1
+        npos = lnvar
+        call stat_compute_1Dav1(lij_global(j,1,1),npos,alpha,beta)
+      end do
+!-----------------------------------------------------------------------
+      ! <M_ij>t
+      do j=1,6
+        lnvar = lnvar + 1
+        npos = lnvar
+        call stat_compute_1Dav1(mij_global(j,1,1),npos,alpha,beta)
+      end do
+#endif
+!=======================================================================
+      ! End of extra statistics compute
+
+      ! save number of variables
+      stat_nvar = lnvar
+
+      return
+      end subroutine
 c-----------------------------------------------------------------------

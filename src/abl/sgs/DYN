@@ -9,6 +9,12 @@ c
      $              , den(lxyz, lelv)
       real mij, lij, num, den
 
+#ifdef DEBUG
+      common /dynsmg_stats/ mij_global(3*ldim-3, lxyz, lelv)
+     $                    , lij_global(3*ldim-3, lxyz, lelv)
+      real mij_global, lij_global
+#endif
+
       common /sgsflt/ fh(lx1*lx1),fht(lx1*lx1),diag(lx1)
       real fh, fht, diag
 

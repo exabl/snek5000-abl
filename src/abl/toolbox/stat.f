@@ -1179,6 +1179,11 @@
       lnvar = lnvar + 1
       npos = lnvar
       call stat_compute_1Dav1(ediff(1,1,1,1),npos,alpha,beta)
+!-----------------------------------------------------------------------
+      ! <|S_ij|>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav1(snrm(1,1),npos,alpha,beta)
 !=======================================================================
       !End of local compute
 
@@ -1186,7 +1191,7 @@
       stat_nvar = lnvar
 
       ! Add more diagnostics
-      ! (upto 3 (normal) or 16 (in case of debug) more arrays)
+      ! upto 15 more arrays
       call stat_compute_extras(alpha, beta)
 
       return

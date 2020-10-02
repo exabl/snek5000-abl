@@ -39,11 +39,7 @@
       integer stat_rdim         ! Parameter setting reduction of the space dimension (form LDIM to LDIM - stat_rdim)
       parameter (stat_rdim=1)   ! 0 - time averaging on LDIM space (no space averaging), 1 - time and space averaging to LDIM - 1 space
       integer stat_lvar         ! Max number of statistical fields
-#ifdef DEBUG
       parameter (stat_lvar=69)
-#else
-      parameter (stat_lvar=57)
-#endif
 
       integer stat_nvar         ! number of avaraged variables
 
