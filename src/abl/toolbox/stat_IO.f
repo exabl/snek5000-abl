@@ -97,6 +97,7 @@
       ! <(nu + nu_t)dwdy>t, <(nu + nu_t)dwdz>t
       call outpost(stat_ruavg(1,1,49),stat_ruavg(1,1,50),
      $     stat_ruavg(1,1,52),pr,stat_ruavg(1,1,53),'s13')
+      ! Note: also skipping <(nu + nu_t>t
 
       ifpo=ifpo_tmp
 

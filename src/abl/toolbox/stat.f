@@ -1174,11 +1174,20 @@
       call stat_compute_1Dav2(ediff(1,1,1,1),dwdx(1,1,1,1,3),
      $     npos,alpha,beta)
 
+!-----------------------------------------------------------------------
+      ! <(nu+nu_t)>t
+      lnvar = lnvar + 1
+      npos = lnvar
+      call stat_compute_1Dav1(ediff(1,1,1,1),npos,alpha,beta)
 !=======================================================================
       !End of local compute
 
       ! save number of variables
       stat_nvar = lnvar
+
+      ! Add more diagnostics
+      ! (upto 3 (normal) or 16 (in case of debug) more arrays)
+      call stat_compute_extras(alpha, beta)
 
       return
       end subroutine

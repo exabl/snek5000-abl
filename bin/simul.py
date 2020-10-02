@@ -270,7 +270,7 @@ def launch(ctx, rule):
 @click.pass_context
 def debug(ctx, rule):
     import os
-    import matplotlib.pyplot as plt
+    import matplotlib.pyplot as plt  # noqa
     from pymech.dataset import open_dataset
 
     os.environ["SNEK_DEBUG"] = "true"
@@ -279,6 +279,8 @@ def debug(ctx, rule):
     general = params.nek.general
     general.stop_at = "num_steps"
     general.num_steps = 21
+    params.nek.stat.av_step = 2
+    params.nek.stat.io_step = 20
 
     logger.info("Initializing simulation debug...")
 
@@ -289,15 +291,19 @@ def debug(ctx, rule):
     logger.info("Finished simulation...")
 
     files = sorted(sim.path_run.glob("abl0.f*"))
+    stat_files = sorted(sim.path_run.glob("stsabl0.f*"))
     if files:
-        ds = open_dataset(files[0])
-        dsx = ds.isel(x=ds.x.size // 2)
-        dsy = ds.isel(y=20)
-        dsz = ds.isel(z=ds.z.size // 2)
-        for ds_slice in dsx, dsy, dsz:
-            ds_slice.ux.plot()
-            plt.show()
-    else:
+        ds = open_dataset(files[-1])
+        dsx = ds.isel(x=ds.x.size // 2)  # noqa
+        dsy = ds.isel(y=20)  # noqa
+        dsz = ds.isel(z=ds.z.size // 2)  # noqa
+        #  for ds_slice in dsx, dsy, dsz:
+        #      ds_slice.ux.plot()
+        #      plt.show()
+    if stat_files:
+        ds_stat = open_dataset(stat_files[0])  # noqa
+
+    if not (files or stat_files):
         logger.error("Simulation failed!")
 
     breakpoint()

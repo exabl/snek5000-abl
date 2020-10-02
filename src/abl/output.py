@@ -78,6 +78,9 @@ class OutputABL(OutputBase):
 
         sgs = avail_sgs_models[params.output.sgs_model]
         sources["sgs"].append(sgs.sources)
+        if sgs.name in ("constant", "shear_imp"):
+            sources["toolbox"].append(("stat_extras_dummy.f",))
+
         bc = avail_boundary_conds[params.output.boundary_cond]
         sources["bc"].append(bc.sources)
         return sources
