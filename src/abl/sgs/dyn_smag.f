@@ -27,7 +27,7 @@ c> @callgraph @callergraph
      $          , (wr,lij(1,4)),(ws,lij(1,5)),(wt,lij(1,6))
 
 
-      integer nt, i, ie, j, ntot
+      integer nt, i, ie, istart, iend, j, ntot
       save    nt
       data    nt / -9 /
 
@@ -91,9 +91,11 @@ c     smoothing numerator and denominator in time
 
          do ie=1,nelv
            if (wmles_sgs_delta_max) delta_sq = dg2_max(ie)
-           ntot = nx1*ny1*nz1*ie
 
-           do i=1*ie,ntot
+           istart = ntot * (ie-1) + 1
+           iend = ntot * ie
+
+           do i=istart,iend
              if (.not. wmles_sgs_delta_max) delta_sq = dg2(i,1,1,1)
 
              Cs = 0.

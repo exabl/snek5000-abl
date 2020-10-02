@@ -18,7 +18,7 @@ c> @callgraph @callergraph
 
       integer e
       real C0, delta_sq, y0
-      integer i, ie, ntot
+      integer i, ie, istart, iend, ntot
 
       real snrm_planar_avg(lx1*ly1*lz1,lelv)
       common /smag_avg/ snrm_planar_avg
@@ -41,9 +41,11 @@ c------now do for every GLL point
 
         do ie=1,nelv
           if (wmles_sgs_delta_max) delta_sq = dg2_max(ie)
-          ntot = nx1*ny1*nz1*ie
 
-          do i=1*ie,ntot
+          istart = ntot * (ie-1) + 1
+          iend = ntot * ie
+
+          do i=istart,iend
             if (.not. wmles_sgs_delta_max) delta_sq = dg2(i,1,1,1)
 
             ediff(i,1,1,1) = (
