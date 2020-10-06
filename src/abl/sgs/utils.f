@@ -130,14 +130,43 @@ c> @callgraph @callergraph
 
 
       if (.not. planar_avg_init) then
-        call gtpp_gs_setup(igs_x, nx1, ny1, nz1, 1) ! x-avg
         call gtpp_gs_setup(igs_z, nx1*ny1, 1, nz1, 3) ! z-avg
+        call gtpp_gs_setup(igs_x, nx1, ny1, nz1, 1) ! x-avg
 
         planar_avg_init = .true.
       endif
 
-      call planar_avg(work, u, igs_x)  ! average in x
-      call planar_avg(ua, work,igs_z)  ! average in z
+      call planar_avg(work, u, igs_z)  ! average in z
+      call planar_avg(ua, work,igs_x)  ! average in x
+
+      return
+      end
+c-----------------------------------------------------------------------
+c> Compute planar average of quantity u along spanwise direction.
+c> @param[in] u Array to be averaged
+c> @param[out] ua Planar average of `u`
+c> @callgraph @callergraph
+      subroutine planar_avg_spanwise(ua,u)
+      implicit none
+
+      include 'SIZE'
+      real u(lx1, ly1, lz1, lelt), ua(lx1,ly1,lz1,lelt)
+
+      integer igs_span
+      common /planar_avg_spanwise_tmp/ igs_span
+
+      logical planar_avg_spanwise_init
+      save planar_avg_spanwise_init
+      data planar_avg_spanwise_init /.false./
+
+
+      if (.not. planar_avg_spanwise_init) then
+        call gtpp_gs_setup(igs_span, nx1*ny1, 1, nz1, 3) ! z-avg
+
+        planar_avg_spanwise_init = .true.
+      endif
+
+      call planar_avg(ua, u, igs_span)  ! average in z
 
       return
       end

@@ -86,8 +86,10 @@ c     smoothing numerator and denominator in time
          call dsavg(num)   ! average across element boundaries
          call dsavg(den)
 
-         call planar_avg_horiz(num, num)
-         call planar_avg_horiz(den, den)
+         ! call planar_avg_horiz(num, num)
+         ! call planar_avg_horiz(den, den)
+         call planar_avg_spanwise(num, num)
+         call planar_avg_spanwise(den, den)
 
          do ie=1,nelv
            if (wmles_sgs_delta_max) delta_sq = dg2_max(ie)

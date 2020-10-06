@@ -37,7 +37,8 @@ c------now do for every GLL point
       if (e.eq.nelv) then
         y0 = wmles_bc_z0
         C0 = wmles_sgs_c0
-        call planar_avg_horiz(snrm_planar_avg, snrm)
+        ! call planar_avg_horiz(snrm_planar_avg, snrm)
+        call planar_avg_spanwise(snrm_planar_avg, snrm)
 
         do ie=1,nelv
           if (wmles_sgs_delta_max) delta_sq = dg2_max(ie)
