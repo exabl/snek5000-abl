@@ -5,8 +5,8 @@ import sys
 from snek5000.clusters import Cluster
 
 cluster = Cluster()
-sub_dir = "september"
-base_name_run = "sgs-delta"
+sub_dir = "october"
+base_name_run = "sgs"
 sub_command = "launch"
 # sub_command = "launch compile"
 # sub_command = "launch release"; cluster.cmd_run = "echo"
@@ -19,21 +19,24 @@ for (
     filter_weight,
     filter_cutoff,
     filter_temporal,
+    sgs_model,
     z_wall,
 ) in itertools.product(
-    zip([11], [1] * 1, [f"{days}-00:00:00" for days in (7,) * 1]),
+    zip([11], [1] * 1, [f"{days}-00:00:00" for days in (4,) * 1]),
     [0.05],
     [0.75],
-    [True],
+    [False],
+    ["constant", "dynamic", "shear_imp", "vreman"],
     [0.1],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
 
-    name_run = f"{base_name_run}-ft-{filter_temporal}"
+    name_run = f"{base_name_run}-{sgs_model}"
     cmd = (
         f"\n{sys.executable} ./simul.py "
         f"-d {sub_dir} -m {mesh} -n {name_run} -o {nb_nodes} -w {walltime} "
         f"-fw {filter_weight} -fc {filter_cutoff} -ft {filter_temporal} "
+        f"-s {sgs_model} "
         f"-zw {z_wall} "
         f"{sub_command}"
     )
