@@ -6,7 +6,7 @@ c>      https://doi.org/10.1103/PhysRevFluids.2.104601.
 c>
 c> @note Boundary condition evaluated at higher nodes, may need to be corrected for Ekmann turning
 c> @note This subroutine MAY NOT be called by every process
-      subroutine userbc(ix,iy,iz,iside,eg) ! set up boundary conditions
+      subroutine abl_userbc(ix,iy,iz,iside,eg) ! set up boundary conditions
       implicit none
 
 

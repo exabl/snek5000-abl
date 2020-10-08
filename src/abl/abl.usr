@@ -173,6 +173,17 @@ c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
       return
       end
 c-----------------------------------------------------------------------
+c> Compute the boundary condition. See subdirectory bc/
+c> @callgraph
+      subroutine userbc(ix,iy,iz,iside,eg)
+      implicit none
+      integer ix, iy, iz, iside, eg
+
+      call abl_userbc(ix, iy, iz, iside, eg)
+
+      return
+      end
+c-----------------------------------------------------------------------
 c> Compute the turbulent stress tensors and write statistics
 c> @callgraph
       subroutine userchk()

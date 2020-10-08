@@ -1,6 +1,6 @@
 !-----------------------------------------------------------------------
 c> No slip and no penetration condition
-      subroutine userbc (ix,iy,iz,iside,eg)
+      subroutine abl_userbc(ix,iy,iz,iside,eg)
       implicit none
 
       include 'SIZE'
