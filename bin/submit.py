@@ -6,7 +6,7 @@ from snek5000.clusters import Cluster
 
 cluster = Cluster()
 sub_dir = "october"
-base_name_run = "sgs"
+base_name_run = "bc"
 sub_command = "launch"
 # sub_command = "launch compile"
 # sub_command = "launch release"; cluster.cmd_run = "echo"
