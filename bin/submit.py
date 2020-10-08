@@ -6,7 +6,7 @@ from snek5000.clusters import Cluster
 
 cluster = Cluster()
 sub_dir = "october"
-base_name_run = "bc"
+base_name_run = "bc-nofilt"
 sub_command = "launch"
 # sub_command = "launch compile"
 # sub_command = "launch release"; cluster.cmd_run = "echo"
@@ -23,8 +23,8 @@ for (
     z_wall,
 ) in itertools.product(
     zip([11], [1] * 1, [f"{days}-00:00:00" for days in (4,) * 1]),
-    [0.05],
-    [0.75],
+    #  [0.05], [0.75],
+    [0.], [1.],
     [False],
     ["constant", "dynamic", "shear_imp", "vreman"],
     [0.1],

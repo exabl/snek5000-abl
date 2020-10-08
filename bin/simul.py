@@ -169,8 +169,10 @@ def cli(
     general.write_interval = save_freq * 2
     # general.write_double_precision = False
 
-    general.filtering = "hpfrt"
-    #  general.filtering = None
+    if filter_weight == 0 or filter_cutoff == 1:
+        general.filtering = None
+    else:
+        general.filtering = "hpfrt"
     general.filter_weight = filter_weight
     general.filter_cutoff_ratio = filter_cutoff
     general.user_params = {
