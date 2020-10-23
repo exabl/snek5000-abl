@@ -121,8 +121,10 @@ c> @callgraph @callergraph
       real u(lx1, ly1, lz1, lelt), ua(lx1,ly1,lz1,lelt)
 
       integer igs_x, igs_z
+      save igs_x, igs_z
+
       real work(lx1, ly1, lz1, lelt)
-      common /planar_avg_tmp/ igs_x, igs_z, work
+      common /planar_avg_tmp/ work
 
       logical planar_avg_init
       save planar_avg_init
@@ -130,8 +132,8 @@ c> @callgraph @callergraph
 
 
       if (.not. planar_avg_init) then
-        call gtpp_gs_setup(igs_z, nx1*ny1, 1, nz1, 3) ! z-avg
-        call gtpp_gs_setup(igs_x, nx1, ny1, nz1, 1) ! x-avg
+        call gtpp_gs_setup(igs_z, u_nelx * u_nely, 1, u_nelz, 3) ! z-avg
+        call gtpp_gs_setup(igs_x, u_nelx, u_nely, u_nelz, 1) ! x-avg
 
         planar_avg_init = .true.
       endif
@@ -153,7 +155,7 @@ c> @callgraph @callergraph
       real u(lx1, ly1, lz1, lelt), ua(lx1,ly1,lz1,lelt)
 
       integer igs_span
-      common /planar_avg_spanwise_tmp/ igs_span
+      save igs_span
 
       logical planar_avg_spanwise_init
       save planar_avg_spanwise_init
@@ -161,9 +163,10 @@ c> @callgraph @callergraph
 
 
       if (.not. planar_avg_spanwise_init) then
-        call gtpp_gs_setup(igs_span, nx1*ny1, 1, nz1, 3) ! z-avg
+        call gtpp_gs_setup(igs_span, u_nelx * u_nely, 1, u_nelz, 3) ! z-avg
 
         planar_avg_spanwise_init = .true.
+
       endif
 
       call planar_avg(ua, u, igs_span)  ! average in z

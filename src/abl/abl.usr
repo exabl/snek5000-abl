@@ -265,7 +265,20 @@ c> @callgraph
       include 'INPUT'  ! param
       include 'SGS'  ! ediff, dg2
 
-      integer n
+      integer n, u_nelt, nelt_global, nelt_
+
+      ! check SIZE file constraints
+      u_nelt = u_nelx * u_nely * u_nelz
+      ! MPI_reduce
+      nelt_ = nelt
+      call igop(nelt_, nelt_global, '+  ', 1)
+#ifdef DEBUG
+      print *, "usrdat: u_nelx*u_nely*u_nelz & nelt=", u_nelt, nelt
+#endif
+      if (u_nelt .ne. nelt_global) then
+         call exitti(
+     &       'u_nelx*u_nely*u_nelz != nelt, fix them!$', nelt_global)
+      endif
 
       ! initialize variables
       n = nx1*ny1*nz1*nelt

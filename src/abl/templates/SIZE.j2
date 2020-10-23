@@ -50,6 +50,13 @@ c
       {{ parameter("lpelt", order_linear) }}  ! set to lelt for linear stability
       {{ parameter("lcvelt", order_cvode) }}  ! set to lelt for cvode
 
+      ! USER SPECIFIED: u_ prefix added to avoid name clash
+      integer u_nelx, u_nely, u_nelz
+      {{ parameter("u_nelx", params.oper.nx) }}  ! number of elements in x direction
+      {{ parameter("u_nely", params.oper.ny) }}  ! number of elements in y direction
+      {{ parameter("u_nelz", params.oper.nz) }}  ! number of elements in z direction
+
+
       ! INTERNALS
       include 'SIZE.inc'
 c vim: set ft=fortran

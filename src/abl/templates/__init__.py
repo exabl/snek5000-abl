@@ -24,11 +24,11 @@ env = jinja2.Environment(
 )
 
 box = env.get_template("box.j2")
-size = env.get_template("SIZE.j2")
 makefile_usr = env.get_template("makefile_usr.inc.j2")
 
 env_abl = jinja2.Environment(
     loader=jinja2.PackageLoader("abl", "templates"), undefined=jinja2.StrictUndefined,
 )
 
+size = env_abl.get_template("SIZE.j2")
 compile_sh = env_abl.get_template("compile.sh.j2")
