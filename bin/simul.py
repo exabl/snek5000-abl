@@ -251,7 +251,7 @@ def launch(ctx, rule):
 
     sim = Simul(ctx.obj["params"])
     sim.sanity_check()
-    sim.make.exec([rule])
+    assert sim.make.exec([rule])
     if rule == "release":
         import shutil
         from setuptools_scm.git import GitWorkdir
