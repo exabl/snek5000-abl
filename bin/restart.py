@@ -7,19 +7,19 @@ from snek5000.log import logger
 from snek5000.util import prepare_for_restart
 
 cluster = Cluster()
-base_name_run = "aug"
+base_name_run = "pl-avg"
 snakemake_rules = "srun"
 modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "maronga-august"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "october"
 for path in filter(
     lambda path: path.name
     not in [
         # exceptions
     ]
     and path.is_dir()
-    and "sgs-delta" in path.name,
+    and base_name_run in path.name,
     subdir.glob("abl*"),
 ):
     try:
@@ -39,8 +39,8 @@ for path in filter(
         params.nek.pressure.residual_tol = 1e-10
         params.nek.general.num_steps = 1000
 
-    #  nb_nodes = 1 if params.oper.nx <= 15 else 2
-    nb_nodes = 3 if "24x48" in path.name else 1
+    nb_nodes = 1 if params.oper.nx <= 15 else 2
+    # nb_nodes = 3 if "24x48" in path.name else 1
 
     cmd = f"""
 cd {path}
@@ -68,8 +68,8 @@ snakemake {snakemake_rules} -j
             nb_nodes=nb_nodes,
             command=cmd,
             name_run=name_run,
-            walltime="7-00:00:00",
-            # walltime="06:00:00",
+            # walltime="7-00:00:00",
+            walltime="3-00:00:00",
             signal_num=False,
             ask=False,
             bash=False,

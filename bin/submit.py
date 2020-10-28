@@ -6,13 +6,13 @@ from snek5000.clusters import Cluster
 
 cluster = Cluster()
 sub_dir = "october"
-base_name_run = "bc-nofilt"
-sub_command = "launch"
-# sub_command = "launch compile"
+base_name_run = "pl-avg"
+# sub_command = "launch"
+sub_command = "launch compile"
 # sub_command = "launch release"; cluster.cmd_run = "echo"
 # sub_command = "debug"
 # sub_command = "show box"
-dry_run = False
+dry_run = not False
 
 for (
     mesh_nb_nodes_walltime,
@@ -23,10 +23,10 @@ for (
     z_wall,
 ) in itertools.product(
     zip([11], [1] * 1, [f"{days}-00:00:00" for days in (4,) * 1]),
-    #  [0.05], [0.75],
-    [0.], [1.],
+    [0.05], [0.75],
+    # [0.], [1.],
     [False],
-    ["constant", "dynamic", "shear_imp", "vreman"],
+    ["shear_imp", "dynamic"],  # "vreman", "constant",
     [0.1],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime

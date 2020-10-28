@@ -228,7 +228,7 @@ def cli(
     wmles.bc_z0 = z_rough
     wmles.sgs_delta_max = True
     # wmles.sgs_npow = 3.0
-    wmles.sgs_c0 = 0.15
+    wmles.sgs_c0 = 0.18
 
     # Fluidsim parameters
     # ===================
