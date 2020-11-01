@@ -34,13 +34,12 @@ c--------Calculate Moeng's model parameters
 
       u1_2=(vx(ix, idx+1, iz, ie) + vx(ix, idx, iz, ie))/2
       w1_2=(vz(ix, idx+1, iz, ie) + vz(ix, idx, iz, ie))/2
-      absu=sqrt(u1_2**2 + w1_2**2)
 
       if (wmles_bc_temp_filt) then
         if (istep .le . 5) then
           eps = 1.
         else
-          Tf = 5. * sqrt(dg2_max(ie)) / absu
+          Tf = 5. * sqrt(dg2_max(ie)) / u1_2
           eps = dt / Tf
         endif
 
@@ -56,6 +55,8 @@ c--------Calculate Moeng's model parameters
         w_wm(ix, iz, ie) = w1_2
       endif
 
+      absu=sqrt(u1_2**2 + w1_2**2)
+
       y1_2=(ym1(ix, idx+1, iz, ie) + ym1(ix, idx, iz, ie))/2
 
 c--------Calculate Stresses
@@ -66,4 +67,4 @@ c--------Calculate Stresses
 
       return
       end
-c-----------------------------------------------------------------------
+-----------------------------------------------------------------------
