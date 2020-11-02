@@ -11,7 +11,7 @@ c> @note This subroutine MAY NOT be called by every process
 
 
       integer ix, iy, iz, iside, eg, ie, idx
-      real u1_2, w1_2, absu, y1_2, y0
+      real u1_2, w1_2, y1_2, y0, uh, ustar, alpha
       real eps, Tf
 
       include 'SIZE'
@@ -55,14 +55,16 @@ c--------Calculate Moeng's model parameters
         w_wm(ix, iz, ie) = w1_2
       endif
 
-      absu=sqrt(u1_2**2 + w1_2**2)
-
       y1_2=(ym1(ix, idx+1, iz, ie) + ym1(ix, idx, iz, ie))/2
 
+      uh = sqrt(u1_2**2 + w1_2**2)
+      u_star = (uh * kappa) / log(y1_2 / y0)
+      alpha = atan2(w1_2, u1_2)
+
 c--------Calculate Stresses
-      trx = -KAPPA**2*(u1_2*absu)/(log(y1_2/y0)**2)
+      trx = -(u_star ** 2) * cos(alpha)
       try = 0.0
-      trz = -KAPPA**2*(w1_2*absu)/(log(y1_2/y0)**2)
+      trz = -(u_star ** 2) * sin(alpha)
       temp = 0.0
 
       return
