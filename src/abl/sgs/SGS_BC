@@ -6,5 +6,7 @@ c
 
       real u_star_bc(lx1,nlev_bc,lz1,lelv)  ! friction velocity
       real alpha_bc(lx1,nlev_bc,lz1,lelv)  ! arctan(spanwise vel / streamwise vel)
-      common /sgs_bc/ u_star_bc, alpha_bc
+      integer mask_bc(lx1,nlev_bc,lz1,lelv)  ! mask to set=1 at boundary & rest to 0
+      integer area_bc
+      common /sgs_bc/ u_star_bc, alpha_bc, mask_bc, area_bc
 

@@ -174,6 +174,7 @@ c> @callgraph @callergraph
       return
       end
 c-----------------------------------------------------------------------
+c> Adjust gradient at the boundary using the MOST relation
       subroutine gij_from_bc(gij, ie)
       implicit none
 
@@ -189,17 +190,17 @@ c-----------------------------------------------------------------------
       ! Local parameters
       integer ix, iy, iz, f
       integer x0, x1, y0, y1, z0, z1
-      
+
       real y1_2, grad, u_star, alpha
 
 
       do f=1,6  ! 6 faces of the element
         if (cbc(f, ie, 1) .eq.'sh ') then  ! boundary condition == sh
-            call facind(x0, x1, y0, y1, z0, z1, f)
+            call facind(x0, x1, y0, y1, z0, z1, nx1, nlev_bc, nz1, f)
             do iz=z0, z1
             do iy=y0, y1
             do ix=x0, x1
-            
+
               y1_2 = (ym1(ix, iy+1, iz, ie) + ym1(ix, iy, iz, ie)) / 2
               u_star = u_star_bc(ix, iy, iz, ie)
               grad = u_star / (kappa * y1_2)
@@ -218,3 +219,41 @@ c-----------------------------------------------------------------------
         endif
       enddo
       end subroutine
+c-----------------------------------------------------------------------
+c> Calculate the surface "area" of the boundary
+c> @note It is not a true area, but merely a count of all points on the
+c> boundary.
+      subroutine calc_area_bc
+      implicit none
+
+      include 'SIZE'
+      include 'INPUT'  ! cbc
+      include 'SGS_BC'  ! u_star_bc, alpha_bc, mask_bc, area_bc
+
+      integer iglsum
+      external iglsum
+
+      integer n_bc, ix, iy, iz, ie, f, x0, x1, y0, y1, z0, z1
+      n_bc = nx1*nlev_bc*nz1*nelv
+
+      do ie=1,nelv
+      do f=1,6  ! 6 faces of the element
+        if (cbc(f, ie, 1) .eq.'sh ') then  ! boundary condition == sh
+            call facind(x0, x1, y0, y1, z0, z1, nx1, nlev_bc, nz1, f)
+            do iz=z0, z1
+            do iy=y0, y1
+            do ix=x0, x1
+
+              mask_bc(ix, iy, iz, ie) = 1
+
+            enddo
+            enddo
+            enddo
+        endif
+      enddo
+      enddo
+
+      area_bc = iglsum(mask_bc, n_bc)
+
+      end subroutine
+c-----------------------------------------------------------------------

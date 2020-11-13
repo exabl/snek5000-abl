@@ -293,10 +293,20 @@ c-----------------------------------------------------------------------
       implicit none
 
       include 'SIZE'
-      include 'SGS'  ! dg2
+      include 'SGS_BC'  ! nlev_bc, u_star_bc, alpha_bc, mask_bc
+
+      integer n_bc
 
 c     Define Delta for Smagorinsky method
       call set_grid_spacing  ! set dg2
+
+      ! Initialize SGS_BC arrays with 0.
+      n_bc = nx1*nlev_bc*nz1*nelv
+      call rzero(u_star_bc, n_bc)
+      call rzero(alpha_bc, n_bc)
+      call izero(mask_bc, n_bc)
+
+      call calc_area_bc
 
       return
       end
@@ -601,9 +611,10 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
       include 'SOLN'  ! vx, vy
       include 'MASS'  ! bm1, volvm1
       include 'TSTEP'  ! time, istep
+      include 'SGS_BC'  ! ustar_bc, mask_bc, area_bc
 
-      integer n
-      real ubar, e2
+      integer n, n_bc
+      real ubar, e2, u_star
 
       ! functions
       real glsc2, glsc3
@@ -613,9 +624,12 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
       ubar = glsc2(vx,bm1,n) / volvm1  ! bulk mean streamwise velocity
       e2 = glsc3(vy,bm1,vy,n) / volvm1  ! wall normal component of K.E. ?
 
+      n_bc = nx1*nlev_bc*nz1*nelv
+      u_star = glsc2(u_star_bc, mask_bc, n_bc) / area_bc
+
       if (nid.eq.0) then
          open(26, file='spatial_means.txt', position='append')
-         write(26, 2) istep, time, ubar, e2
+         write(26, 2) istep, time, ubar, e2, u_star
       close(26)
 
    2  format(I10, 1P 8E13.4)

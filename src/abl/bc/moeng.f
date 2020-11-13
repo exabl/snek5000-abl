@@ -75,9 +75,11 @@ c--------Calculate Stresses
         endif
 #endif
         ! Save and later use it in gij_from_bc
-        u_star_bc(ix, iy, iz, ie) = u_star
         alpha_bc(ix, iy, iz, ie) = alpha
       endif
+
+      ! Save u_star anyway for spatial_means
+      u_star_bc(ix, iy, iz, ie) = u_star
 
       return
       end
