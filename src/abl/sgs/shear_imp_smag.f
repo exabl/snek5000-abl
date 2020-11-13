@@ -45,7 +45,10 @@ c------now do for every GLL point
            do k=j,ldim
               call planar_avg_horiz(
      &           sij_avg(:,:,j,k), sij_global(:,:,j,k))
-              if (i .ne. j) call copy(
+
+              call dsavg(sij_avg(:,:,j,k))   ! average across element boundaries
+
+              if (j .ne. k) call copy(
      &           sij_avg(:,:,k,j), sij_avg(:,:,j,k),
      &           lx1*ly1*lz1*lelv)
            end do
