@@ -22,8 +22,8 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(skip_slow)
 
 
-@pytest.fixture(scope="session")
-def sim():
+@pytest.fixture(scope="session", params=["constant", "dynamic", "shear_imp", "vreman"])
+def sim(request):
     from abl.solver import Simul
 
     params = Simul.create_default_params()
@@ -35,6 +35,8 @@ def sim():
     params.oper.nproc_min = 4
     params.oper.Lx = params.oper.Ly = params.oper.Lz = 1280
     params.oper.nx = params.oper.ny = params.oper.nz = 6
+
+    params.output.sgs_model = request.param
 
     params.nek.stat.av_step = 3
     params.nek.stat.io_step = 9

@@ -1,11 +1,14 @@
 import pytest
-
 from snek5000.util import prepare_for_restart
 
 
-def test_init(sim):
+def test_init():
+    from abl.solver import Simul
+
+    params = Simul.create_default_params()
+    params.output.sub_directory = "test"
+    sim = Simul(params)
     print(sim.info_solver)
-    pass
 
 
 def test_make(sim):

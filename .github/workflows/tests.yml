@@ -48,4 +48,4 @@ jobs:
     - name: Run tests
       run: |
         source activate.sh
-        pytest -s
+        pytest -s -n 4
