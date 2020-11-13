@@ -174,3 +174,47 @@ c> @callgraph @callergraph
       return
       end
 c-----------------------------------------------------------------------
+      subroutine gij_from_bc(gij, ie)
+      implicit none
+
+      include 'SIZE'
+      include 'GEOM'  ! ym1
+      include 'INPUT'  ! cbc
+      include 'SGS_BC'  ! u_star_bc, alpha_bc
+      include 'WMLES'  ! kappa
+
+      real gij(lx1, ly1, lz1, ldim, ldim)
+      integer ie
+
+      ! Local parameters
+      integer ix, iy, iz, f
+      integer x0, x1, y0, y1, z0, z1
+      
+      real y1_2, grad, u_star, alpha
+
+
+      do f=1,6  ! 6 faces of the element
+        if (cbc(f, ie, 1) .eq.'sh ') then  ! boundary condition == sh
+            call facind(x0, x1, y0, y1, z0, z1, f)
+            do iz=z0, z1
+            do iy=y0, y1
+            do ix=x0, x1
+            
+              y1_2 = (ym1(ix, iy+1, iz, ie) + ym1(ix, iy, iz, ie)) / 2
+              u_star = u_star_bc(ix, iy, iz, ie)
+              grad = u_star / (kappa * y1_2)
+              alpha = alpha_bc(ix, iy, iz, ie)
+              ! du_dy
+              gij(ix, iy, iz, 1, 2) = grad * cos(alpha)
+              ! dw_dy
+              gij(ix, iy, iz, 3, 2) = grad * sin(alpha)
+
+            enddo
+            enddo
+            enddo
+
+            ! exit face loop
+            exit
+        endif
+      enddo
+      end subroutine

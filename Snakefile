@@ -51,7 +51,6 @@ rule bin_archive:
         archive(params.tarball + ".zst", readonly=True)
 
 
-
 rule ctags:
     input:
         nek5000="lib/Nek5000/core",

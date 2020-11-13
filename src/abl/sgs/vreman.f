@@ -26,6 +26,8 @@ c> @callgraph @callergraph
 
 c------need to be by element ->
       call comp_gije(sij, vx(1,1,1,e), vy(1,1,1,e), vz(1,1,1,e), e)
+      ! Set gradient to match boundary condition
+      if (wmles_sgs_bc) call gij_from_bc(sij, e)
 
       C_vreman = 2.5 * wmles_sgs_c0**2
 
@@ -62,7 +64,7 @@ c------need to be by element ->
         !> Note \f$ B_\beta \f$ is being stored in snrm here
         snrm(i, e) = (
      &      beta(1,1) * beta(2,2)
-     &    - beta(1,2)**2  ! check 
+     &    - beta(1,2)**2  ! check
      &    + beta(1,1) * beta(3,3)
      &    - beta(1,3)**2  ! check
      &    + beta(2,2) * beta(3,3)

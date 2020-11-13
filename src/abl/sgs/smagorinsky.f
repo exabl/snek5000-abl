@@ -18,6 +18,8 @@ c> @callgraph @callergraph
       ntot = nx1*ny1*nz1
 c------need to be by element ->
       call comp_gije(sij, vx(1,1,1,e), vy(1,1,1,e), vz(1,1,1,e), e)
+      ! Set gradient to match boundary condition
+      if (wmles_sgs_bc) call gij_from_bc(sij, e)
 
       call comp_sije(sij)
 

@@ -77,6 +77,11 @@
      $    'SGSC0', 'Asymptotic constant in a SGS model', rpar_real,
      $    1, 0.19, .false., ' '
      $)
+      call rprm_rp_reg(
+     $    wmles_par_id(7), wmles_sec_id,
+     $    'SGSBC', 'Set SGS boundary condition', rpar_log,
+     $    1, 0.0, .false., ' '
+     $)
 
       ! set initialisation flag
       wmles_ifinit=.false.
@@ -129,6 +134,10 @@
       call rprm_rp_get(itmp, rtmp, ltmp, ctmp,
      $    wmles_par_id(6), rpar_real)
       wmles_sgs_c0 = rtmp
+
+      call rprm_rp_get(itmp, rtmp, ltmp, ctmp,
+     $    wmles_par_id(7), rpar_log)
+      wmles_sgs_bc = ltmp
 
       ! everything is initialised
       wmles_ifinit=.true.

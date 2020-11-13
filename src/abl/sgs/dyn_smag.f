@@ -37,6 +37,8 @@ c> @callgraph @callergraph
      $   set_ds_filt(fh,fht,nt,diag,nx1)! dyn. Smagorinsky filter
 
       call comp_gije(sij,vx(1,1,1,e),vy(1,1,1,e),vz(1,1,1,e),e)
+      ! Set gradient to match boundary condition
+      if (wmles_sgs_bc) call gij_from_bc(sij, e)
       ! Compute symmetric part of the strain tensor
       call comp_sije(sij)
 

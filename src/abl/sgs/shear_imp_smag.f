@@ -29,6 +29,8 @@ c> @callgraph @callergraph
 c------need to be by element ->
       call comp_gije(
      &   sij_global(:,e,:,:), vx(1,1,1,e), vy(1,1,1,e), vz(1,1,1,e), e)
+      ! Set gradient to match boundary condition
+      if (wmles_sgs_bc) call gij_from_bc(sij_global(:,e,:,:), e)
       call comp_sije(sij_global(:,e,:,:))
 
       call mag_tensor_e(snrm(1,e), sij_global(:,e,:,:))

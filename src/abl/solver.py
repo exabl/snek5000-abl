@@ -49,6 +49,7 @@ class SimulABL(SimulKTH):
                 bc_temp_filt=False,
                 bc_z_index=1,
                 bc_z0=0.1,
+                sgs_bc=False,
                 sgs_c0=0.19,
                 sgs_delta_max=False,
                 sgs_npow=0.5,

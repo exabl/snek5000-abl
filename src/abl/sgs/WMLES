@@ -20,17 +20,18 @@ c
       integer wmles_bc_z_index    !< @var mesh index away from wall to evaluate BC
       logical wmles_sgs_delta_max !< @var use delta_max for SGS length scale or not
       real wmles_sgs_npow         !< @var power of wall damping function
-      real wmles_bc_z0            !<.@var aerodynamic roughness parameter in mesh coordinates
+      real wmles_bc_z0            !< @var aerodynamic roughness parameter in mesh coordinates
       real wmles_sgs_c0           !< @var asymptotic constant in a SGS model with wall damping
+      logical wmles_sgs_bc        !< @var set SGS boundary condition
 
       ! parameter internals
       character*(*) wmles_sec_name
       parameter (wmles_sec_name="WMLES")
-      integer wmles_id, wmles_sec_id, wmles_par_id(6)
+      integer wmles_id, wmles_sec_id, wmles_par_id(7)
 
       ! common block for storage
       common /wmles_log/
-     &    wmles_bc_temp_filt, wmles_sgs_delta_max,
+     &    wmles_bc_temp_filt, wmles_sgs_delta_max, wmles_sgs_bc,
      &    wmles_ifinit
 
       common /wmles_int/ wmles_bc_z_index,

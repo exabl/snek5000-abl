@@ -11,7 +11,7 @@ c> @note This subroutine MAY NOT be called by every process
 
 
       integer ix, iy, iz, iside, eg, ie, idx
-      real u1_2, w1_2, y1_2, y0, uh, ustar, alpha
+      real u1_2, w1_2, y1_2, y0, uh, u_star, alpha
       real eps, Tf
 
       include 'SIZE'
@@ -21,6 +21,7 @@ c> @note This subroutine MAY NOT be called by every process
       include 'GEOM'  ! ym1
       include 'TSTEP'  ! istep
       include 'SGS'  ! dg2_max
+      include 'SGS_BC'  ! u_star_bc, alpha_bc
       include 'WMLES'  ! KAPPA, wmles_bc_z_index, wmles_bc_z0, wmles_bc_temp_filt, u_wm, w_wm
 
 
@@ -67,6 +68,17 @@ c--------Calculate Stresses
       trz = -(u_star ** 2) * sin(alpha)
       temp = 0.0
 
+      if (wmles_sgs_bc) then
+#ifdef DEBUG
+        if (iy > nlev_bc) then
+          call exitti("iy exceeded allocated shape: ", iy)
+        endif
+#endif
+        ! Save and later use it in gij_from_bc
+        u_star_bc(ix, iy, iz, ie) = u_star
+        alpha_bc(ix, iy, iz, ie) = alpha
+      endif
+
       return
       end
------------------------------------------------------------------------
+c----------------------------------------------------------------------

@@ -43,6 +43,13 @@ from snek5000.log import logger
     type=click.Choice(avail_sgs_models),
     help="SGS models",
 )
+@click.option(
+    "-sb",
+    "--sgs-boundary",
+    default=False,
+    type=bool,
+    help="Boundary condition for SGS models",
+)
 @click.pass_context
 def cli(
     ctx,
@@ -58,6 +65,7 @@ def cli(
     filter_temporal,
     boundary_cond,
     sgs_model,
+    sgs_boundary,
 ):
     """\b
     Notes
@@ -229,6 +237,7 @@ def cli(
     wmles.sgs_delta_max = True
     # wmles.sgs_npow = 3.0
     wmles.sgs_c0 = 0.18
+    wmles.sgs_bc = sgs_boundary
 
     # Fluidsim parameters
     # ===================
