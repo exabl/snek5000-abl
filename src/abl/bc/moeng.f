@@ -21,7 +21,7 @@ c> @note This subroutine MAY NOT be called by every process
       include 'GEOM'  ! ym1
       include 'TSTEP'  ! istep
       include 'SGS'  ! dg2_max
-      include 'SGS_BC'  ! u_star_bc, alpha_bc
+      include 'SGS_BC'  ! u_star_bc, alpha_bc, u_star_max
       include 'WMLES'  ! KAPPA, wmles_bc_z_index, wmles_bc_z0, wmles_bc_temp_filt, u_wm, w_wm
 
 
@@ -80,6 +80,8 @@ c--------Calculate Stresses
 
       ! Save u_star anyway for spatial_means
       u_star_bc(ix, iy, iz, ie) = u_star
+
+      u_star_max = max(u_star, u_star_max)
 
       return
       end

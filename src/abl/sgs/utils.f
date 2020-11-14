@@ -230,8 +230,8 @@ c> boundary.
       include 'INPUT'  ! cbc
       include 'SGS_BC'  ! u_star_bc, alpha_bc, mask_bc, area_bc
 
-      integer iglsum
-      external iglsum
+      real glsum
+      external glsum
 
       integer n_bc, ix, iy, iz, ie, f, x0, x1, y0, y1, z0, z1
       n_bc = nx1*nlev_bc*nz1*nelv
@@ -244,7 +244,7 @@ c> boundary.
             do iy=y0, y1
             do ix=x0, x1
 
-              mask_bc(ix, iy, iz, ie) = 1
+              mask_bc(ix, iy, iz, ie) = 1.0
 
             enddo
             enddo
@@ -253,7 +253,7 @@ c> boundary.
       enddo
       enddo
 
-      area_bc = iglsum(mask_bc, n_bc)
+      area_bc = glsum(mask_bc, n_bc)
 
       end subroutine
 c-----------------------------------------------------------------------

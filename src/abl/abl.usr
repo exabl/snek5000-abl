@@ -304,7 +304,7 @@ c     Define Delta for Smagorinsky method
       n_bc = nx1*nlev_bc*nz1*nelv
       call rzero(u_star_bc, n_bc)
       call rzero(alpha_bc, n_bc)
-      call izero(mask_bc, n_bc)
+      call rzero(mask_bc, n_bc)
 
       call calc_area_bc
 
@@ -611,30 +611,54 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
       include 'SOLN'  ! vx, vy
       include 'MASS'  ! bm1, volvm1
       include 'TSTEP'  ! time, istep
-      include 'SGS_BC'  ! ustar_bc, mask_bc, area_bc
+      include 'SGS_BC'  ! ustar_bc, mask_bc, area_bc, u_star_max
 
       integer n, n_bc
-      real ubar, e2, u_star
+      real ubar, e2, u_star_avg, u_star_max_
+
+      logical file_exists, header_written
+      save header_written
+      data header_written /.false./
 
       ! functions
-      real glsc2, glsc3
-      external glsc2, glsc3
+      real glsc2, glsc3, glmax
+      external glsc2, glsc3, glmax
 
       n = nx1*ny1*nz1*nelv
       ubar = glsc2(vx,bm1,n) / volvm1  ! bulk mean streamwise velocity
       e2 = glsc3(vy,bm1,vy,n) / volvm1  ! wall normal component of K.E. ?
 
       n_bc = nx1*nlev_bc*nz1*nelv
-      u_star = glsc2(u_star_bc, mask_bc, n_bc) / area_bc
+      u_star_avg = glsc2(u_star_bc, mask_bc, n_bc) / area_bc
+      u_star_max_ = glmax(u_star_max, 1)
 
       if (nid.eq.0) then
-         open(26, file='spatial_means.txt', position='append')
-         write(26, 2) istep, time, ubar, e2, u_star
-      close(26)
+          if (.not. header_written) then
+              inquire(file='spatial_means.txt', exist=file_exists)
 
-   2  format(I10, 1P 8E13.4)
+              if (.not. file_exists) then
+                 open(26, file='spatial_means.txt')
+                 write(26, 22)
+     &        "it", "t", "ux_avg", "ez_avg", "u_star_avg", "u_star_max"
+
+   22            format(6A13)
+                 close(26)
+              endif
+
+              header_written = .true.
+          endif
+
+         open(26, file='spatial_means.txt', position='append')
+         write(26, 2) istep, time, ubar, e2, u_star_avg, u_star_max_
+         close(26)
+
+   2  format(I13, 1P 8E13.4)
 
       endif
+
+      ! reset u_star_max
+      u_star_max = 0.0
+
       end subroutine
 !======================================================================
 !> Check for nan or infinity
