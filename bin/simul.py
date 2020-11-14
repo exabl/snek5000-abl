@@ -93,15 +93,17 @@ def cli(
         oper.nx = 24
         oper.ny = 48
         oper.nz = 24
-    elif M == 11:
-        oper.nx = 8
+    elif M in (11, 111):
         oper.ny = 32
-        oper.nz = 8
         oper.coords_y = (
             "0.1 5.4 11.6 18.7 26.8 36 46.5 58.5 72 87.5 105 125 147 173 201 "
             "233 269 310 354 404 458 518 583 654 731 812 900 991 1088 1187 "
             "1290 1394 1500"
         )
+        if M == 11:
+            oper.nx = oper.nz = 4
+        elif M == 111:
+            oper.nx = oper.nz = 8
     elif M == 12:
         oper.nx = 4
         oper.ny = 20
@@ -260,7 +262,7 @@ def launch(ctx, rule):
 
     sim = Simul(ctx.obj["params"])
     sim.sanity_check()
-    assert sim.make.exec([rule])
+    assert sim.make.exec([rule])  # , scheduler="greedy")
     if rule == "release":
         import shutil
         from setuptools_scm.git import GitWorkdir
