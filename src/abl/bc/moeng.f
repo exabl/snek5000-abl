@@ -40,12 +40,14 @@ c--------Calculate Moeng's model parameters
         if (istep .le . 5) then
           eps = 1.
         else
-          Tf = 5. * sqrt(dg2_max(ie)) / u1_2
-          eps = dt / Tf
+          Tf = sqrt(dg2_max(ie)) / u1_2
+          eps = 5. * dt / Tf
         endif
 
 #ifdef DEBUG
-        print*, "userbc: temporal filtering eps=", eps
+        if (nid .eq. 0) then
+            print*, "userbc: temporal filtering eps=", eps
+        endif
 #endif
 
         u1_2 = (1.-eps)*u_wm(ix, iz, ie) + eps*u1_2
