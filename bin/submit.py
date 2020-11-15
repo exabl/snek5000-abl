@@ -23,20 +23,26 @@ for (
     sgs_boundary,
     z_wall,
 ) in itertools.product(
-    zip([11], [1] * 1, [f"{days}-00:00:00" for days in (4,) * 1]),
+    zip([111], [1] * 1, [f"{days}-00:00:00" for days in (7,) * 1]),
     [0.05],
     [0.75],
     # [0.], [1.],
     [False],
-    ["shear_imp", "vreman", "constant"],  # "dynamic"],
+    ["vreman", "constant", "shear_imp"],
+    # "dynamic"],
     [False],
     [0.1],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
 
+
     name_run = (
         f"{base_name_run}-{sgs_model}-ft{int(filter_temporal)}-sb{int(sgs_boundary)}"
     )
+    if filter_temporal and sgs_boundary:
+        print(f"skipping ... {name_run}")
+        continue
+
     cmd = (
         f"\n{sys.executable} ./simul.py "
         f"-d {sub_dir} -m {mesh} -n {name_run} -o {nb_nodes} -w {walltime} "
