@@ -7,19 +7,20 @@ from snek5000.log import logger
 from snek5000.util import prepare_for_restart
 
 cluster = Cluster()
-base_name_run = "pl-avg"
+base_name_run = "lo"
 snakemake_rules = "srun"
 modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "october"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "november"
 for path in filter(
     lambda path: path.name
     not in [
         # exceptions
     ]
     and path.is_dir()
-    and base_name_run in path.name,
+    and base_name_run in path.name
+    and not (path / "abl.log").exists(),
     subdir.glob("abl*"),
 ):
     try:
@@ -30,7 +31,8 @@ for path in filter(
     else:
         logger.info(f"OK {path}")
 
-    name_run = base_name_run + path.name[-5:]
+    name_run = base_name_run + path.name[6:]
+    name_run = name_run[:name_run.index('_4x32x4')]
 
     if modify_params:
         logger.info("Modifying I/O parameters ...")
@@ -54,6 +56,7 @@ snakemake {snakemake_rules} -j
                 "Has restart files... modified parameters will be written to abl.par"
             )
 
+        print("name_run =", name_run)
         print(cmd)
     else:
         if list(path.glob("rs6*")):

@@ -6,13 +6,13 @@ from snek5000.clusters import Cluster
 
 cluster = Cluster()
 sub_dir = "november"
-base_name_run = "lo"
+base_name_run = "hi"
 sub_command = "launch"
 #  sub_command = "launch compile"
 # sub_command = "launch release"; cluster.cmd_run = "echo"
 # sub_command = "debug"
 # sub_command = "show box"
-dry_run = not False
+dry_run = False
 
 for (
     mesh_nb_nodes_walltime,
@@ -27,7 +27,7 @@ for (
     [0.05],
     [0.75],
     # [0.], [1.],
-    [True, False],
+    [False],
     ["shear_imp", "vreman", "constant"],  # "dynamic"],
     [False],
     [0.1],
