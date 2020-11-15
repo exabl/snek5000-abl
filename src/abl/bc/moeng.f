@@ -40,8 +40,9 @@ c--------Calculate Moeng's model parameters
         if (istep .le . 5) then
           eps = 1.
         else
-          Tf = sqrt(dg2_max(ie)) / u1_2
-          eps = 5. * dt / Tf
+          ! Tf = sqrt(dg2_max(ie)) / u1_2
+          ! eps = 5. * dt / abs(Tf)
+          eps = 0.1
         endif
 
 #ifdef DEBUG
