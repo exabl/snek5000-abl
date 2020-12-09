@@ -17,7 +17,11 @@ from snek5000.log import logger
 @click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
 @click.option("-z0", "--z-rough", default=0.1, type=float, help="roughness parameter")
 @click.option(
-    "-fw", "--filter-weight", default=0.05, type=float, help="filter weight parameter",
+    "-fw",
+    "--filter-weight",
+    default=0.05,
+    type=float,
+    help="filter weight parameter",
 )
 @click.option(
     "-fc", "--filter-cutoff", default=0.75, type=float, help="filter cutoff ratio"
@@ -262,7 +266,7 @@ def launch(ctx, rule):
 
     sim = Simul(ctx.obj["params"])
     sim.sanity_check()
-    assert sim.make.exec([rule])  # , scheduler="greedy")
+    assert sim.make.exec([rule], scheduler="greedy")
     if rule == "release":
         import shutil
         from setuptools_scm.git import GitWorkdir
