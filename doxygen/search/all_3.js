@@ -73,5 +73,6 @@ var searchData=
   ['dxmax_5fe',['dxmax_e',['../genxyz_8f.html#abb0bb43507a8e76fa4bf80d19200f410',1,'genxyz.f']]],
   ['dxmin_5fe',['dxmin_e',['../genxyz_8f.html#a021da9f679e373b16d7cc1902e61f265',1,'genxyz.f']]],
   ['dxyz',['DXYZ',['../DXYZ.html',1,'']]],
+  ['dyn_5fsmag_2ef',['dyn_smag.f',['../dyn__smag_8f.html',1,'']]],
   ['developer_20guide',['Developer guide',['../md__home_runner_work_snek5000-abl_snek5000-abl_CONTRIBUTING.html',1,'']]]
 ];

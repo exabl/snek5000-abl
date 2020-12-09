@@ -28,6 +28,8 @@ var searchData=
   ['plan4_5fvol_5fms',['plan4_vol_ms',['../multimesh_8f.html#a1abe8f51886fce3a30fb4f68c8c132b9',1,'multimesh.f']]],
   ['plan5',['plan5',['../plan5_8f.html#ae6f47947bd1a89d608ae3b90ac8f433d',1,'plan5.f']]],
   ['planar_5favg',['planar_avg',['../navier5_8f.html#a43c9d798cb7be60e09268f4176c0d13f',1,'navier5.f']]],
+  ['planar_5favg_5fhoriz',['planar_avg_horiz',['../utils_8f.html#acdb01a4b3d25323d8e05757532080584',1,'utils.f']]],
+  ['planar_5favg_5fspanwise',['planar_avg_spanwise',['../utils_8f.html#af6035e279b38e4354f206f1f707e5ad7',1,'utils.f']]],
   ['plane_5fspace',['plane_space',['../fast3d_8f.html#a657bf5a4b87c3e07069aa7bbc7d4ee43',1,'fast3d.f']]],
   ['plane_5fspace2',['plane_space2',['../fast3d_8f.html#a9f885131f2d7c409d6c650fd22af8359',1,'fast3d.f']]],
   ['plane_5fspace_5fstd',['plane_space_std',['../fast3d_8f.html#afc1d81b45f6537a54ba863178a79c7bc',1,'fast3d.f']]],

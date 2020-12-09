@@ -27,6 +27,15 @@ Security in case of vulnerabilities.
 
 ## [Unreleased]
 
+### Added
+
+- Add more SGS models options: dynamic, shear_imp, vreman in addition to the
+  default one constant. Dynamic remains to be tested.
+- Add more boundary conditions, including no-slip.
+- Utilities module.
+- Output u_star and other global statistics in to spatial_means.txt
+
+
 ## [0.5.0b0] - 2020-09-02
 
 ### Added

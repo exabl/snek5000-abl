@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>abl.output &mdash; snek5000-abl 0.1.dev1+g2c799a1 documentation</title>
+  <title>abl.output &mdash; snek5000-abl 0.1.dev1+g833c204 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.dev1+g2c799a1
+                0.1.dev1+g833c204
               </div>
             
           
@@ -174,7 +174,29 @@
            <div itemprop="articleBody">
             
   <h1>Source code for abl.output</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">snek5000.output.base</span> <span class="kn">import</span> <span class="n">Output</span> <span class="k">as</span> <span class="n">OutputBase</span>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="kn">from</span> <span class="nn">snek5000.output.base</span> <span class="kn">import</span> <span class="n">Output</span> <span class="k">as</span> <span class="n">OutputBase</span>
+
+<span class="n">SGS</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;SGS&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;sources&quot;</span><span class="p">])</span>
+<span class="c1"># Specific SGS models</span>
+<span class="n">constant</span> <span class="o">=</span> <span class="n">SGS</span><span class="p">(</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;smagorinsky.f&quot;</span><span class="p">,</span> <span class="s2">&quot;SGS&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">))</span>
+<span class="n">dynamic</span> <span class="o">=</span> <span class="n">SGS</span><span class="p">(</span><span class="s2">&quot;dynamic&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;dyn_smag.f&quot;</span><span class="p">,</span> <span class="s2">&quot;DYN&quot;</span><span class="p">,</span> <span class="s2">&quot;SGS&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">))</span>
+<span class="n">shear_imp</span> <span class="o">=</span> <span class="n">SGS</span><span class="p">(</span><span class="s2">&quot;shear_imp&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;shear_imp_smag.f&quot;</span><span class="p">,</span> <span class="s2">&quot;SGS&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">))</span>
+<span class="n">vreman</span> <span class="o">=</span> <span class="n">SGS</span><span class="p">(</span><span class="s2">&quot;vreman&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;vreman.f&quot;</span><span class="p">,</span> <span class="s2">&quot;SGS&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">))</span>
+
+<span class="n">BC</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;BC&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;sources&quot;</span><span class="p">])</span>
+<span class="c1"># Specific boundary conditions</span>
+<span class="n">moeng</span> <span class="o">=</span> <span class="n">BC</span><span class="p">(</span><span class="s2">&quot;moeng&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;moeng.f&quot;</span><span class="p">,</span> <span class="s2">&quot;../sgs/SGS&quot;</span><span class="p">,</span> <span class="s2">&quot;../sgs/WMLES&quot;</span><span class="p">))</span>
+<span class="n">noslip</span> <span class="o">=</span> <span class="n">BC</span><span class="p">(</span><span class="s2">&quot;noslip&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;noslip.f&quot;</span><span class="p">,))</span>
+
+
+<span class="n">avail_sgs_models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">model</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">SGS</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">avail_boundary_conds</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">model</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">BC</span><span class="p">)</span>
+<span class="p">}</span>
 
 
 <div class="viewcode-block" id="OutputABL"><a class="viewcode-back" href="../../_generated/abl.output.html#abl.output.OutputABL">[docs]</a><span class="k">class</span> <span class="nc">OutputABL</span><span class="p">(</span><span class="n">OutputBase</span><span class="p">):</span>
@@ -186,7 +208,7 @@
 <span class="sd">        Sources for inclusion to makefile_usr.inc</span>
 <span class="sd">        Dict[directory]  -&gt; list of source files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
+        <span class="n">sources</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;toolbox&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">(</span><span class="s2">&quot;frame.f&quot;</span><span class="p">,</span> <span class="s2">&quot;FRAMELP&quot;</span><span class="p">),</span>
                 <span class="p">(</span><span class="s2">&quot;mntrlog_block.f&quot;</span><span class="p">,</span> <span class="s2">&quot;MNTRLOGD&quot;</span><span class="p">),</span>
@@ -205,14 +227,49 @@
                 <span class="p">(</span><span class="s2">&quot;math_tools.f&quot;</span><span class="p">,),</span>
             <span class="p">],</span>
             <span class="s2">&quot;sgs&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">(</span><span class="s2">&quot;smagorinsky.f&quot;</span><span class="p">,</span> <span class="s2">&quot;SGS&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;utils.f&quot;</span><span class="p">,</span> <span class="s2">&quot;SGS&quot;</span><span class="p">),</span>
                 <span class="p">(</span><span class="s2">&quot;wmles_init.f&quot;</span><span class="p">,</span> <span class="s2">&quot;WMLES&quot;</span><span class="p">,</span> <span class="s2">&quot;../toolbox/FRAMELP&quot;</span><span class="p">),</span>
             <span class="p">],</span>
+            <span class="s2">&quot;bc&quot;</span><span class="p">:</span> <span class="p">[],</span>
         <span class="p">}</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="p">:</span>
+            <span class="c1"># Hack to load params from params.xml in current directory</span>
+            <span class="kn">from</span> <span class="nn">abl.solver</span> <span class="kn">import</span> <span class="n">Simul</span>
+
+            <span class="n">params</span> <span class="o">=</span> <span class="n">Simul</span><span class="o">.</span><span class="n">load_params_from_file</span><span class="p">(</span><span class="n">path_xml</span><span class="o">=</span><span class="s2">&quot;params.xml&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">params</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">sgs_model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">avail_sgs_models</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;SGS model </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">sgs_model</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Must be in </span><span class="si">{</span><span class="n">avail_sgs_models</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">boundary_cond</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">avail_boundary_conds</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Boundary condition </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">boundary_cond</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Must be in </span><span class="si">{</span><span class="n">avail_boundary_conds</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">sgs</span> <span class="o">=</span> <span class="n">avail_sgs_models</span><span class="p">[</span><span class="n">params</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">sgs_model</span><span class="p">]</span>
+        <span class="n">sources</span><span class="p">[</span><span class="s2">&quot;sgs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sgs</span><span class="o">.</span><span class="n">sources</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sgs</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="s2">&quot;shear_imp&quot;</span><span class="p">,</span> <span class="s2">&quot;vreman&quot;</span><span class="p">):</span>
+            <span class="n">sources</span><span class="p">[</span><span class="s2">&quot;toolbox&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;stat_extras_dummy.f&quot;</span><span class="p">,))</span>
+
+        <span class="n">bc</span> <span class="o">=</span> <span class="n">avail_boundary_conds</span><span class="p">[</span><span class="n">params</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">boundary_cond</span><span class="p">]</span>
+        <span class="n">sources</span><span class="p">[</span><span class="s2">&quot;bc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bc</span><span class="o">.</span><span class="n">sources</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sources</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fortran_inc_flags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-I</span><span class="si">{</span><span class="n">inc_dir</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">inc_dir</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">makefile_usr_sources</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-I</span><span class="si">{</span><span class="n">inc_dir</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">inc_dir</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">makefile_usr_sources</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_complete_params_with_default</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">info_solver</span><span class="p">):</span>
+        <span class="n">OutputBase</span><span class="o">.</span><span class="n">_complete_params_with_default</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">info_solver</span><span class="p">)</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">_set_attribs</span><span class="p">({</span><span class="s2">&quot;sgs_model&quot;</span><span class="p">:</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="s2">&quot;boundary_cond&quot;</span><span class="p">:</span> <span class="s2">&quot;moeng&quot;</span><span class="p">})</span></div>
 </pre></div>
 
            </div>
@@ -226,7 +283,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-09-24
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-12-09
 
     </p>
   </div>

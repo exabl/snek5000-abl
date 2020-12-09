@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ABL case files &mdash; snek5000-abl 0.1.dev1+g2c799a1 documentation</title>
+  <title>ABL case files &mdash; snek5000-abl 0.1.dev1+g833c204 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.dev1+g2c799a1
+                0.1.dev1+g833c204
               </div>
             
           
@@ -202,7 +202,13 @@
 <dt id="_CPPv46uservp2ix2iy2iz3ieg">
 <span id="_CPPv36uservp2ix2iy2iz3ieg"></span><span id="_CPPv26uservp2ix2iy2iz3ieg"></span><span id="uservp__ix.iy.iz.ieg"></span><span class="target" id="group__abl_1ga32657b69f54f96dc5aea199db3658bc3"></span>subroutine <code class="sig-name descname">uservp</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::ix">ix</a> <em>ix</em>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::iy">iy</a> <em>iy</em>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::iz">iz</a> <em>iz</em>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::ieg">ieg</a> <em>ieg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46uservp2ix2iy2iz3ieg" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set variable properties, does not call any subroutines / functions. </p>
-<p><dl class="simple">
+<p><dl class="xrefsect">
+<dt>
+<em>Todo:</em></dt>
+<dd><p>implement ifield = 2 case for temperature </p>
+</dd></dl>
+
+<dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ix</span></code>: x-index </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">iy</span></code>: y-index </p></li>
@@ -236,19 +242,15 @@
 <dd></dd></dl>
 
 <dl class="cpp function">
-<dt id="_CPPv46userbc2ix2iy2iz5iside2eg">
-<span id="_CPPv36userbc2ix2iy2iz5iside2eg"></span><span id="_CPPv26userbc2ix2iy2iz5iside2eg"></span><span id="userbc__ix.iy.iz.iside.eg"></span><span class="target" id="group__abl_1ga5bc9a35082ab7f7115cd6ba8685682fd"></span>subroutine <code class="sig-name descname">userbc</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::ix">ix</a> <em>ix</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iy">iy</a> <em>iy</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iz">iz</a> <em>iz</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iside">iside</a> <em>iside</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::eg">eg</a> <em>eg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl class="simple">
-<dt><strong>Note</strong></dt><dd><p>Boundary condition evaluated at higher nodes, may need to be corrected for Ekmann turning </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="cpp function">
 <dt id="_CPPv46useric2ix2iy2iz2eg">
 <span id="_CPPv36useric2ix2iy2iz2eg"></span><span id="_CPPv26useric2ix2iy2iz2eg"></span><span id="useric__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga9fca046e76d53cec863a2ef596ded5d8"></span>subroutine <code class="sig-name descname">useric</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::ix">ix</a> <em>ix</em>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::iy">iy</a> <em>iy</em>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::iz">iz</a> <em>iz</em>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::eg">eg</a> <em>eg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46useric2ix2iy2iz2eg" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set up initial conditions. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv46userbc2ix2iy2iz5iside2eg">
+<span id="_CPPv36userbc2ix2iy2iz5iside2eg"></span><span id="_CPPv26userbc2ix2iy2iz5iside2eg"></span><span id="userbc__ix.iy.iz.iside.eg"></span><span class="target" id="group__abl_1ga5bc9a35082ab7f7115cd6ba8685682fd"></span>subroutine <code class="sig-name descname">userbc</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::ix">ix</a> <em>ix</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iy">iy</a> <em>iy</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iz">iz</a> <em>iz</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iside">iside</a> <em>iside</em>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::eg">eg</a> <em>eg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compute the boundary condition. See subdirectory bc/. </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -304,7 +306,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-09-24
+        &copy; Copyright 2019 - 2020, Ashwin Vishnu Mohanan. Published: 2020-12-09
 
     </p>
   </div>

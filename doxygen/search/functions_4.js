@@ -3,6 +3,7 @@ var searchData=
   ['echopar',['echopar',['../drive2_8f.html#ad6a42dd98e540bc5a0563ef620239e1e',1,'drive2.f']]],
   ['econj',['econj',['../navier4_8f.html#a06054dac336f2f8055223e0e77ae4c96',1,'navier4.f']]],
   ['econjp',['econjp',['../induct_8f.html#a96c838aa6e55891919a329dc50e1ae0e',1,'induct.f']]],
+  ['eddy_5fvisc',['eddy_visc',['../dyn__smag_8f.html#aaf0f4048a4e81a838bf903f040cf2db1',1,'eddy_visc(e):&#160;dyn_smag.f'],['../shear__imp__smag_8f.html#aaf0f4048a4e81a838bf903f040cf2db1',1,'eddy_visc(e):&#160;shear_imp_smag.f'],['../smagorinsky_8f.html#aaf0f4048a4e81a838bf903f040cf2db1',1,'eddy_visc(e):&#160;smagorinsky.f'],['../vreman_8f.html#aaf0f4048a4e81a838bf903f040cf2db1',1,'eddy_visc(e):&#160;vreman.f']]],
   ['edg3d',['edg3d',['../genxyz_8f.html#a7453c73378380473c945da08e946a0a1',1,'genxyz.f']]],
   ['edgindf',['edgindf',['../subs2_8f.html#a035bf65bef427747dc6bc8532db391e2',1,'subs2.f']]],
   ['edgindv',['edgindv',['../subs2_8f.html#a908712a7bda07dea26860c57bbd68b4c',1,'subs2.f']]],

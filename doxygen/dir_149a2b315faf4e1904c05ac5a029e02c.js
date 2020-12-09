@@ -22,6 +22,7 @@ var dir_149a2b315faf4e1904c05ac5a029e02c =
     [ "rprm_block.f", "rprm__block_8f.html", null ],
     [ "RPRMD", "RPRMD.html", null ],
     [ "stat.f", "stat_8f.html", "stat_8f" ],
+    [ "stat_extras_dummy.f", "stat__extras__dummy_8f.html", "stat__extras__dummy_8f" ],
     [ "stat_IO.f", "stat__IO_8f.html", "stat__IO_8f" ],
     [ "STATD", "STATD.html", null ]
 ];

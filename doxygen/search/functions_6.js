@@ -78,6 +78,7 @@ var searchData=
   ['gh_5fface_5fextend',['gh_face_extend',['../navier5_8f.html#af2ef7089f186c5f1d1cde2552169d2e8',1,'navier5.f']]],
   ['gh_5fface_5fextend_5f2d',['gh_face_extend_2d',['../navier5_8f.html#a873cc89bd529760e23bcf8268c35e796',1,'navier5.f']]],
   ['gh_5fface_5fextend_5f3d',['gh_face_extend_3d',['../navier5_8f.html#ab9636759396facc6b191e5dd837e7236',1,'navier5.f']]],
+  ['gij_5ffrom_5fbc',['gij_from_bc',['../utils_8f.html#a75d89f87799764b6cb777d9ce36c19b7',1,'utils.f']]],
   ['givens_5frotation',['givens_rotation',['../navier4_8f.html#a175a74fde36ad061edc2ea92146a9ed3',1,'navier4.f']]],
   ['gl2norm',['gl2norm',['../math_8f.html#afbcb211774fb85998d4a71b49c3c95e3',1,'math.f']]],
   ['gl2norm2',['gl2norm2',['../math_8f.html#a3259ac9962bd354b325a42c25f872180',1,'math.f']]],
