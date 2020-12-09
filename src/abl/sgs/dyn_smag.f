@@ -69,8 +69,8 @@ c     Compute numerator (ur) & denominator (us) for Lilly contraction
       enddo
 
 c     smoothing numerator and denominator in time
-      call copy (vr,ur,nx1*nx1*nx1)
-      call copy (vs,us,nx1*nx1*nx1)
+      call copy (vr,ur,nx1*ny1*nz1)
+      call copy (vs,us,nx1*ny1*nz1)
 
       beta1 = 0.0                   ! Temporal averaging coefficients
       ! NOTE: disabled temporal filtering here
