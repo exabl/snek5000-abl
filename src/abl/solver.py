@@ -7,13 +7,8 @@ from .templates import box, makefile_usr, size
 
 
 class InfoSolverABL(InfoSolverMake):
-    """Contain the information on a :class:`eturb.solvers.abl.Simul`
+    """Contain the information on a :class:`abl.solver.SimulABL`
     instance.
-
-    .. todo::
-
-        Move Output info to :class:`InfoSolverNek` and only override it in
-        :class:`InfoSolverABL`.
 
     """
 
@@ -31,9 +26,7 @@ class InfoSolverABL(InfoSolverMake):
 
 
 class SimulABL(SimulKTH):
-    """A solver which compiles and runs using a Snakefile.
-
-    """
+    """A solver which compiles and runs using a Snakefile."""
 
     InfoSolver = InfoSolverABL
 
@@ -76,11 +69,12 @@ class SimulABL(SimulKTH):
 
         return params
 
-    def __init__(self, params):
-        super().__init__(params)
-        self.output.write_box(box)
-        self.output.write_size(size)
-        self.output.write_makefile_usr(makefile_usr)
+    def __init__(self, params, existing_path_run=None):
+        super().__init__(params, existing_path_run)
+        if not existing_path_run:
+            self.output.write_box(box)
+            self.output.write_size(size)
+            self.output.write_makefile_usr(makefile_usr)
 
     def sanity_check(self):
         """Check params for errors"""
