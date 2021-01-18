@@ -23,6 +23,11 @@ class InfoSolverABL(InfoSolverMake):
         self.classes.Output.module_name = "abl.output"
         self.classes.Output.class_name = "OutputABL"
 
+        self.classes._set_child(
+            "Postproc",
+            attribs={"module_name": "abl.postproc", "class_name": "PostprocABL"},
+        )
+
 
 class SimulABL(SimulKTH):
     """A solver which compiles and runs using a Snakefile."""
@@ -67,6 +72,11 @@ class SimulABL(SimulKTH):
         params.nek._read_par(primary_par_file)
 
         return params
+
+    def __init__(self, params):
+        super().__init__(params)
+
+        self.postproc.post_init(self)
 
 
 Simul = SimulABL

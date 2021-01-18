@@ -5,11 +5,10 @@ import pandas as pd
 
 class SpatialMeansABL:
     def __init__(self, sim):
-        path_run = sim.path_run
+        self.file = Path(sim.path_run / "spatial_means.txt")
 
-        df = pd.read_csv(
-            Path(path_run) / "spatial_means.txt", sep=r"\s+", index_col="it"
-        )
+    def load(self):
+        df = pd.read_csv(self.file, sep=r"\s+", index_col="it")
         df["hours"] = df.t / 3600
         self.df = df
 
