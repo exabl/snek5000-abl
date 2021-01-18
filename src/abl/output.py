@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+from abl.templates import box, makefile_usr, size
+from snek5000 import mpi
 from snek5000.output.base import Output as OutputBase
 
 SGS = namedtuple("SGS", ["name", "sources"])
@@ -94,3 +96,17 @@ class OutputABL(OutputBase):
     def _complete_params_with_default(params, info_solver):
         OutputBase._complete_params_with_default(params, info_solver)
         params.output._set_attribs({"sgs_model": "constant", "boundary_cond": "moeng"})
+
+    def post_init(self):
+        params = self.sim.params
+        params.nek.general.user_params[5] = params.oper.Lx
+        params.nek.general.user_params[6] = params.oper.Ly
+        params.nek.general.user_params[7] = params.oper.Lz
+
+        super().post_init()
+
+        # Write additional source files to compile the simulation
+        if mpi.rank == 0 and self._has_to_save and self.sim.params.NEW_DIR_RESULTS:
+            self.write_box(box)
+            self.write_size(size)
+            self.write_makefile_usr(makefile_usr)
