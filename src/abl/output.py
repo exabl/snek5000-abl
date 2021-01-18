@@ -63,7 +63,7 @@ class OutputABL(OutputBase):
             # Hack to load params from params.xml in current directory
             from abl.solver import Simul
 
-            params = Simul.load_params_from_file(path_xml="params.xml")
+            params = Simul.load_params_from_file(path_xml="params_simul.xml")
         else:
             params = self.sim.params
 
