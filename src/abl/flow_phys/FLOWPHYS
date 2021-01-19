@@ -1,0 +1,21 @@
+c
+c     Storage for flow / physics parameters
+c
+      ! initialisation flag
+      logical fp_ifinit
+
+      ! parameter section
+      logical fp_corio_on      !< @var turn coriolis forcing on / off
+      real fp_corio_freq       !< @var coriolis frequency
+      real fp_u_geo            !< @var geostrophic velocity
+
+      ! parameter internals
+      character*(*) fp_sec_name
+      parameter (fp_sec_name="FLOWPHYS")
+      integer fp_id, fp_sec_id, fp_par_id(3)
+
+      ! common block for storage
+      common /fp_log/ fp_corio_on
+
+      common /fp_real/ fp_corio_freq, fp_u_geo
+c vim: set ft=fortran

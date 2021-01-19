@@ -65,21 +65,19 @@ c
       include 'INPUT'           ! uparam
       include 'PARALLEL'        ! GLLEL
       include 'NEKUSE'            ! ffx, ffy, ffz, ux, uz
+      include 'FLOWPHYS'        ! fp_corio_on, fp_corio_freq, fp_u_geo
 
       ! argument list
       integer ix,iy,iz,eg
 
-      ! local variables
-      real U_GEO, f_corio
 
 c     e = gllel(eg)
 
-      U_GEO = uparam(3)
-      f_corio = uparam(4)
-
-      ffx = f_corio * uz
-      ffy = 0.0
-      ffz = -f_corio * (ux - U_GEO)
+      if (fp_corio_on) then
+         ffx = fp_corio_freq * uz
+         ffy = 0.0
+         ffz = -fp_corio_freq * (ux - fp_u_geo)
+      endif
 
       return
       end
@@ -320,6 +318,14 @@ c> @callgraph
       implicit none
 
       include 'SIZE'
+      include 'INPUT'  ! param
+      include 'FLOWPHYS'  ! fp_corio_on
+
+      if (.not. fp_corio_on) then
+         param(54) = -1  ! use >0 for const flowrate or <0 bulk vel
+                         ! flow direction is given by (1=x, 2=y, 3=z)
+         param(55) = 1.0 ! flowrate/bulk-velocity
+      endif
 
       return
       end
@@ -341,6 +347,7 @@ c> @{
       call chkpt_register
       call stat_register
       call wmles_register
+      call fp_register
 
       return
       end subroutine
@@ -357,6 +364,7 @@ c> @{
       call chkpt_init
       call stat_init
       call wmles_init
+      call fp_init
 
       return
       end subroutine
