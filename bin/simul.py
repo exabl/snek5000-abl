@@ -175,6 +175,7 @@ def cli(
     # Original value:
     # general.target_cfl = 0.8
     #  general.target_cfl = 0.3
+    # TODO: try BDF3
     #  general.time_stepper = "BDF2"
     general.write_control = (
         "timeStep"
