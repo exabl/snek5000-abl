@@ -11,7 +11,7 @@ c
 
       ! parameter internals
       character*(*) fp_sec_name
-      parameter (fp_sec_name="FLOWPHYS")
+      parameter (fp_sec_name="FLOW_PHYS")
       integer fp_id, fp_sec_id, fp_par_id(3)
 
       ! common block for storage

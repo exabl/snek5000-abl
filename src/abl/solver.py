@@ -53,6 +53,16 @@ class SimulABL(SimulKTH):
             ),
         )
         params.nek.wmles._set_internal_attr("_enabled", True)
+
+        params.nek._set_child(
+            "flow_phys",
+            dict(
+                corio_on=True,
+                corio_freq=1.4e-4,
+                u_geo=5.0,
+            ),
+        )
+        params.nek.flow_phys._set_internal_attr("_enabled", True)
         return params
 
     @classmethod

@@ -56,6 +56,9 @@ class OutputABL(OutputBase):
                 ("utils.f", "SGS"),
                 ("wmles_init.f", "WMLES", "../toolbox/FRAMELP"),
             ],
+            "flow_phys": [
+                ("flow_phys_init.f", "FLOWPHYS", "../toolbox/FRAMELP"),
+            ],
             "bc": [],
         }
 
