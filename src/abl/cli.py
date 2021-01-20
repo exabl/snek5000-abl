@@ -189,8 +189,6 @@ def cli(
     general.filter_weight = filter_weight
     general.filter_cutoff_ratio = filter_cutoff
     general.user_params = {
-        3: 5.0,  # Geostrophic velocity
-        4: -1.4e-4,  # Coriolis frequency at 73 S
         5: oper.Lx,
         6: oper.Ly,
         7: oper.Lz,
@@ -264,7 +262,6 @@ def launch(ctx, rule):
     logger.info("Initializing simulation launch...")
 
     sim = Simul(ctx.obj["params"])
-    sim.sanity_check()
     assert sim.make.exec([rule], scheduler="greedy")
     if rule == "release":
         import shutil
