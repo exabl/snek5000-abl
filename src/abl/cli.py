@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
-import sys
-
 import click
 from abl.output import avail_boundary_conds, avail_sgs_models
 from abl.solver import Simul
@@ -352,6 +350,9 @@ def show(ctx, file):
         )
 
 
-if __name__ == "__main__":
-    print(sys.executable)
+def main():
     cli(obj={})
+
+
+if __name__ == "__main__":
+    main()
