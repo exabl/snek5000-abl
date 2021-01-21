@@ -62,7 +62,6 @@ c
       implicit none
 
       include 'SIZE'
-      include 'INPUT'           ! uparam
       include 'PARALLEL'        ! GLLEL
       include 'NEKUSE'            ! ffx, ffy, ffz, ux, uz
       include 'FLOWPHYS'        ! fp_corio_on, fp_corio_freq, fp_u_geo
@@ -111,6 +110,7 @@ c> @callgraph
       include 'GEOM'  ! ym1
       include 'INPUT'  ! uparam
       include 'WMLES'  ! KAPPA, PI_, y0
+      include 'FLOWPHYS'  ! fp_u_geo
 
       integer ix,iy,iz,eg
       real Ly
@@ -124,7 +124,7 @@ c      uz   = 0.0
       temp = 0.0
 
 c     Geostrophic velocity
-      U_GEO = uparam(3)
+      U_GEO = fp_u_geo
 c     Get mesh lengths from userParam0{5,6,7}
       XLEN = uparam(5)
       YLEN = uparam(6)
@@ -319,12 +319,12 @@ c> @callgraph
 
       include 'SIZE'
       include 'INPUT'  ! param
-      include 'FLOWPHYS'  ! fp_corio_on
+      include 'FLOWPHYS'  ! fp_corio_on, fp_u_geo
 
       if (.not. fp_corio_on) then
          param(54) = -1  ! use >0 for const flowrate or <0 bulk vel
                          ! flow direction is given by (1=x, 2=y, 3=z)
-         param(55) = 1.0 ! flowrate/bulk-velocity
+         param(55) = fp_u_geo ! flowrate/bulk-velocity
       endif
 
       return
