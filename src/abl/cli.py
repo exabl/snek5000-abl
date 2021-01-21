@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
+from math import pi
+
 import click
 from abl.output import avail_boundary_conds, avail_sgs_models
 from abl.solver import Simul
@@ -114,6 +116,17 @@ def cli(
             "0.1 34.6 72.8 115. 161. 211. 266. 326. 390. 459. 534. 613. 697. "
             "786. 879. 976. 1076. 1180. 1285. 1392. 1500."
         )
+    elif M == 21:
+        # Similar to M 11 - scaled by 1500
+        oper.nx = 4
+        oper.ny = 32
+        oper.nz = 4
+        oper.coords_y = (
+            "0.0001 0.0036 0.0077 0.0125 0.0179 0.0240 0.0310 0.0390 0.0480 "
+            "0.0583 0.0700 0.0833 0.0980 0.1153 0.1340 0.1553 0.1793 0.2067 "
+            "0.2360 0.2693 0.3053 0.3453 0.3887 0.4360 0.4873 0.5413 0.6000 "
+            "0.6607 0.7253 0.7913 0.8600 0.9293 1.0000"
+        )
 
     if M < 10:
         oper.origin_y = z_wall
@@ -125,6 +138,12 @@ def cli(
         oper.Lx = 640
         oper.Ly = 1500
         oper.Lz = 640
+    elif M < 30:
+        # Chatterjee & Peet:
+        oper.origin_y = float(oper.coords_y.split()[0])
+        oper.Lx = pi
+        oper.Ly = 1.0
+        oper.Lz = pi
 
     oper.boundary = "P P sh SYM P P".split()
 
@@ -241,6 +260,12 @@ def cli(
     # wmles.sgs_npow = 3.0
     wmles.sgs_c0 = 0.18
     wmles.sgs_bc = sgs_boundary
+
+    # Flow phys parameters
+    # ====================
+    fp = params.nek.flow_phys
+    fp.corio_on = False
+    fp.u_geo = 1.0
 
     # Fluidsim parameters
     # ===================
