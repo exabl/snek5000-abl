@@ -141,9 +141,9 @@ def cli(
     elif M < 30:
         # Chatterjee & Peet:
         oper.origin_y = float(oper.coords_y.split()[0])
-        oper.Lx = pi
+        oper.Lx = round(pi, 4)
         oper.Ly = 1.0
-        oper.Lz = pi
+        oper.Lz = round(pi, 4)
 
     oper.boundary = "P P sh SYM P P".split()
 

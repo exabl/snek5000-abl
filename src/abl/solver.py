@@ -44,6 +44,7 @@ class SimulABL(SimulKTH):
                 "density": 1.0,
             }
         )
+        params.nek.pressure.residual_proj = True
 
         params.nek._set_child(
             "wmles",

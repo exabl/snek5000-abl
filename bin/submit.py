@@ -23,6 +23,7 @@ for (
     sgs_model,
     sgs_boundary,
     z_wall,
+    z_rough,
 ) in itertools.product(
     zip([21], [1] * 1, [f"{days}-00:00:00" for days in (7,) * 1]),
     [0.05],
@@ -32,6 +33,7 @@ for (
     ["vreman"],  # , "constant", "shear_imp"],
     # "dynamic"],
     [False],
+    [0.0001],
     [0.0001],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
@@ -48,7 +50,7 @@ for (
         f"-d {sub_dir} -m {mesh} -n {name_run} -o {nb_nodes} -w {walltime} "
         f"-fw {filter_weight} -fc {filter_cutoff} -ft {filter_temporal} "
         f"-s {sgs_model} -sb {sgs_boundary} "
-        f"-zw {z_wall} "
+        f"-zw {z_wall} -z0 {z_rough} "
         f"{sub_command}"
     )
     if dry_run:
