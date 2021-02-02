@@ -77,9 +77,9 @@ c     e = gllel(eg)
       U_GEO = uparam(3)
       f_corio = uparam(4)
 
-      ffx = f_corio * uz
+      ffx = 0.0 ! f_corio * uz
       ffy = 0.0
-      ffz = -f_corio * (ux - U_GEO)
+      ffz = 0.0 ! -f_corio * (ux - U_GEO)
 
       return
       end
@@ -321,6 +321,11 @@ c> @callgraph
 
       include 'SIZE'
 
+      include 'INPUT'  ! param
+
+      param(54) = -1  ! use >0 for const flowrate or <0 bulk vel
+                     ! flow direction is given by (1=x, 2=y, 3=z)
+      param(55) = 1.0 ! flowrate/bulk-velocity
       return
       end
 c ----------------------------------------------------------------------
