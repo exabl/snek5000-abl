@@ -76,6 +76,10 @@ c     e = gllel(eg)
          ffx = fp_corio_freq * uz
          ffy = 0.0
          ffz = -fp_corio_freq * (ux - fp_u_geo)
+      else
+         ffx = 0.0
+         ffy = 0.0
+         ffz = 0.0
       endif
 
       return

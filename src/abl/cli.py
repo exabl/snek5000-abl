@@ -17,11 +17,7 @@ from snek5000.log import logger
 @click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
 @click.option("-z0", "--z-rough", default=0.1, type=float, help="roughness parameter")
 @click.option(
-    "-fw",
-    "--filter-weight",
-    default=0.05,
-    type=float,
-    help="filter weight parameter",
+    "-fw", "--filter-weight", default=0.05, type=float, help="filter weight parameter",
 )
 @click.option(
     "-fc", "--filter-cutoff", default=0.75, type=float, help="filter cutoff ratio"
@@ -100,7 +96,7 @@ def cli(
     elif M in (11, 111):
         oper.ny = 32
         oper.coords_y = (
-            "0.1 5.4 11.6 18.7 26.8 36 46.5 58.5 72 87.5 105 125 147 173 201 "
+            f"{z_wall} 5.4 11.6 18.7 26.8 36 46.5 58.5 72 87.5 105 125 147 173 201 "
             "233 269 310 354 404 458 518 583 654 731 812 900 991 1088 1187 "
             "1290 1394 1500"
         )
@@ -113,7 +109,7 @@ def cli(
         oper.ny = 20
         oper.nz = 4
         oper.coords_y = (
-            "0.1 34.6 72.8 115. 161. 211. 266. 326. 390. 459. 534. 613. 697. "
+            f"{z_wall} 34.6 72.8 115. 161. 211. 266. 326. 390. 459. 534. 613. 697. "
             "786. 879. 976. 1076. 1180. 1285. 1392. 1500."
         )
     elif M == 21:
@@ -122,7 +118,7 @@ def cli(
         oper.ny = 32
         oper.nz = 4
         oper.coords_y = (
-            "0.0001 0.0036 0.0077 0.0125 0.0179 0.0240 0.0310 0.0390 0.0480 "
+            f"{z_wall} 0.0036 0.0077 0.0125 0.0179 0.0240 0.0310 0.0390 0.0480 "
             "0.0583 0.0700 0.0833 0.0980 0.1153 0.1340 0.1553 0.1793 0.2067 "
             "0.2360 0.2693 0.3053 0.3453 0.3887 0.4360 0.4873 0.5413 0.6000 "
             "0.6607 0.7253 0.7913 0.8600 0.9293 1.0000"
@@ -141,9 +137,9 @@ def cli(
     elif M < 30:
         # Chatterjee & Peet:
         oper.origin_y = float(oper.coords_y.split()[0])
-        oper.Lx = round(pi, 4)
+        oper.Lx = round(pi / 2, 4)
         oper.Ly = 1.0
-        oper.Lz = round(pi, 4)
+        oper.Lz = round(pi / 2, 4)
 
     oper.boundary = "P P sh SYM P P".split()
 
@@ -233,7 +229,7 @@ def cli(
     # NOTE: reducing pressure residual tolerance affects velocity divergence
     # TODO: check if w -> O(pressure.residual_tol)
     pressure.residual_tol = 1e-5
-    #  velocity.residual_tol = 1e-8
+    velocity.residual_tol = 1e-8
     #
     if params.output.boundary_cond == "noslip":
         reynolds_number = 1e4
@@ -323,7 +319,6 @@ def debug(ctx, rule):
     logger.info("Initializing simulation debug...")
 
     sim = Simul(params)
-    sim.sanity_check()
     logger.info("Executing simulation...")
     sim.make.exec([rule])
     logger.info("Finished simulation...")

@@ -5,18 +5,20 @@ import sys
 from snek5000.clusters import Cluster
 
 cluster = Cluster()
-sub_dir = "november"
+sub_dir = "test-abl-cli"
 base_name_run = "hi"
 # sub_command = "launch"
 # sub_command = "launch compile"
-sub_command = "launch release"
+# sub_command = "launch release"
+sub_command = "debug"
 cluster.cmd_run = "echo"
 # sub_command = "debug"
 # sub_command = "show box"
 dry_run = not False
 
 for (
-    mesh_nb_nodes_walltime,
+    mesh_nb_nodes,
+    walltime,
     filter_weight,
     filter_cutoff,
     filter_temporal,
@@ -25,18 +27,19 @@ for (
     z_wall,
     z_rough,
 ) in itertools.product(
-    zip([21], [1] * 1, [f"{days}-00:00:00" for days in (7,) * 1]),
-    [0.05],
+    itertools.zip_longest([11, 21], [1], fillvalue=1),
+    ["7-00:00:00"],
+    [0.05, 12],
     [0.75],
     # [0.], [1.],
     [False],
-    ["vreman"],  # , "constant", "shear_imp"],
+    ["constant"],  # "vreman"], "shear_imp"],
     # "dynamic"],
     [False],
-    [0.0001],
-    [0.0001],
+    [0.1],
+    [0.1],
 ):
-    mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
+    mesh, nb_nodes = mesh_nb_nodes
 
     name_run = (
         f"{base_name_run}-{sgs_model}-ft{int(filter_temporal)}-sb{int(sgs_boundary)}"
