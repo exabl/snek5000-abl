@@ -1,19 +1,10 @@
-from snek5000 import logger, mpi
 from snek5000.info import InfoSolverMake
 from snek5000.solvers.kth import SimulKTH
 
-from .output import OutputABL
-from .templates import box, makefile_usr, size
-
 
 class InfoSolverABL(InfoSolverMake):
-    """Contain the information on a :class:`eturb.solvers.abl.Simul`
+    """Contain the information on a :class:`abl.solver.SimulABL`
     instance.
-
-    .. todo::
-
-        Move Output info to :class:`InfoSolverNek` and only override it in
-        :class:`InfoSolverABL`.
 
     """
 
@@ -29,11 +20,14 @@ class InfoSolverABL(InfoSolverMake):
         self.classes.Output.module_name = "abl.output"
         self.classes.Output.class_name = "OutputABL"
 
+        self.classes._set_child(
+            "Postproc",
+            attribs={"module_name": "abl.postproc", "class_name": "PostprocABL"},
+        )
+
 
 class SimulABL(SimulKTH):
-    """A solver which compiles and runs using a Snakefile.
-
-    """
+    """A solver which compiles and runs using a Snakefile."""
 
     InfoSolver = InfoSolverABL
 
@@ -41,7 +35,11 @@ class SimulABL(SimulKTH):
     def _complete_params_with_default(params):
         """Add missing default parameters."""
         params = SimulKTH._complete_params_with_default(params)
-        params.nek.velocity._set_attrib("advection", True)
+
+        params.nek.problemtype.variable_properties = True
+
+        params.nek.velocity._set_attribs({"density": 1.0})
+        params.nek.pressure.residual_proj = True
 
         params.nek._set_child(
             "wmles",
@@ -56,6 +54,11 @@ class SimulABL(SimulKTH):
             ),
         )
         params.nek.wmles._set_internal_attr("_enabled", True)
+
+        params.nek._set_child(
+            "flow_phys", dict(corio_on=True, corio_freq=1.4e-4, u_geo=5.0,),
+        )
+        params.nek.flow_phys._set_internal_attr("_enabled", True)
         return params
 
     @classmethod
@@ -66,28 +69,12 @@ class SimulABL(SimulKTH):
         """
         params = super().create_default_params()
 
-        # Synchronize baseline parameters as follows:
-        # -----------------------------------------------------------------
-        primary_par_file = OutputABL.get_root() / "abl.par"
-        if mpi.rank == 0:
-            logger.info(f"Reading baseline parameters from {primary_par_file}")
-
-        params.nek._read_par(primary_par_file)
-
         return params
 
     def __init__(self, params):
         super().__init__(params)
-        self.output.write_box(box)
-        self.output.write_size(size)
-        self.output.write_makefile_usr(makefile_usr)
 
-    def sanity_check(self):
-        """Check params for errors"""
-        params = self.params
-        assert params.oper.Lx == params.nek.general.user_params[5]
-        assert params.oper.Ly == params.nek.general.user_params[6]
-        assert params.oper.Lz == params.nek.general.user_params[7]
+        self.postproc.post_init(self)
 
 
 Simul = SimulABL

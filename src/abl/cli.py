@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
-import sys
+from math import pi
 
 import click
 from abl.output import avail_boundary_conds, avail_sgs_models
@@ -17,11 +17,7 @@ from snek5000.log import logger
 @click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
 @click.option("-z0", "--z-rough", default=0.1, type=float, help="roughness parameter")
 @click.option(
-    "-fw",
-    "--filter-weight",
-    default=0.05,
-    type=float,
-    help="filter weight parameter",
+    "-fw", "--filter-weight", default=0.05, type=float, help="filter weight parameter",
 )
 @click.option(
     "-fc", "--filter-cutoff", default=0.75, type=float, help="filter cutoff ratio"
@@ -100,7 +96,7 @@ def cli(
     elif M in (11, 111):
         oper.ny = 32
         oper.coords_y = (
-            "0.1 5.4 11.6 18.7 26.8 36 46.5 58.5 72 87.5 105 125 147 173 201 "
+            f"{z_wall} 5.4 11.6 18.7 26.8 36 46.5 58.5 72 87.5 105 125 147 173 201 "
             "233 269 310 354 404 458 518 583 654 731 812 900 991 1088 1187 "
             "1290 1394 1500"
         )
@@ -113,20 +109,49 @@ def cli(
         oper.ny = 20
         oper.nz = 4
         oper.coords_y = (
-            "0.1 34.6 72.8 115. 161. 211. 266. 326. 390. 459. 534. 613. 697. "
+            f"{z_wall} 34.6 72.8 115. 161. 211. 266. 326. 390. 459. 534. 613. 697. "
             "786. 879. 976. 1076. 1180. 1285. 1392. 1500."
         )
+    elif M == 21:
+        # Similar to M 11 - scaled by 1500
+        oper.nx = 4
+        oper.ny = 32
+        oper.nz = 4
+        oper.coords_y = (
+            f"{z_wall} 0.0036 0.0077 0.0125 0.0179 0.0240 0.0310 0.0390 0.0480 "
+            "0.0583 0.0700 0.0833 0.0980 0.1153 0.1340 0.1553 0.1793 0.2067 "
+            "0.2360 0.2693 0.3053 0.3453 0.3887 0.4360 0.4873 0.5413 0.6000 "
+            "0.6607 0.7253 0.7913 0.8600 0.9293 1.0000"
+        )
+    elif M in (22, 122):
+        # Similar to M 12 - scaled by 1500
+        oper.ny = 20
+        oper.coords_y = (
+            f"{z_wall} 0.0231 0.0485 0.0767 0.1073 0.1407 0.1773 0.2173 0.2600 "
+            "0.3060 0.3560 0.4087 0.4647 0.5240 0.5860 0.6507 0.7173 0.7867 "
+            "0.8567 0.9280 1.0000"
+        )
+        if M == 22:
+            oper.nx = oper.nz = 4
+        elif M == 122:
+            oper.nx = oper.nz = 8
 
-    if M < 10:
+    if M <= 9:
         oper.origin_y = z_wall
         oper.Lx = 1280
         oper.Ly = 1500
         oper.Lz = 1280
-    elif M < 20:
+    elif M % 100 <= 19:
         oper.origin_y = float(oper.coords_y.split()[0])
         oper.Lx = 640
         oper.Ly = 1500
         oper.Lz = 640
+    elif M % 100 <= 29:
+        # Chatterjee & Peet:
+        oper.origin_y = float(oper.coords_y.split()[0])
+        oper.Lx = round(2 * pi, 4)
+        oper.Ly = 1.0
+        oper.Lz = round(pi, 4)
 
     oper.boundary = "P P sh SYM P P".split()
 
@@ -175,6 +200,7 @@ def cli(
     # Original value:
     # general.target_cfl = 0.8
     #  general.target_cfl = 0.3
+    # TODO: try BDF3
     #  general.time_stepper = "BDF2"
     general.write_control = (
         "timeStep"
@@ -190,8 +216,6 @@ def cli(
     general.filter_weight = filter_weight
     general.filter_cutoff_ratio = filter_cutoff
     general.user_params = {
-        3: 5.0,  # Geostrophic velocity
-        4: -1.4e-4,  # Coriolis frequency at 73 S
         5: oper.Lx,
         6: oper.Ly,
         7: oper.Lz,
@@ -217,7 +241,7 @@ def cli(
     # NOTE: reducing pressure residual tolerance affects velocity divergence
     # TODO: check if w -> O(pressure.residual_tol)
     pressure.residual_tol = 1e-5
-    #  velocity.residual_tol = 1e-8
+    velocity.residual_tol = 1e-8
     #
     if params.output.boundary_cond == "noslip":
         reynolds_number = 1e4
@@ -242,8 +266,14 @@ def cli(
     wmles.bc_z0 = z_rough
     wmles.sgs_delta_max = True
     # wmles.sgs_npow = 3.0
-    wmles.sgs_c0 = 0.18
+    wmles.sgs_c0 = 0.19
     wmles.sgs_bc = sgs_boundary
+
+    # Flow phys parameters
+    # ====================
+    fp = params.nek.flow_phys
+    fp.corio_on = False
+    fp.u_geo = 1.0
 
     # Fluidsim parameters
     # ===================
@@ -265,7 +295,6 @@ def launch(ctx, rule):
     logger.info("Initializing simulation launch...")
 
     sim = Simul(ctx.obj["params"])
-    sim.sanity_check()
     assert sim.make.exec([rule], scheduler="greedy")
     if rule == "release":
         import shutil
@@ -302,7 +331,6 @@ def debug(ctx, rule):
     logger.info("Initializing simulation debug...")
 
     sim = Simul(params)
-    sim.sanity_check()
     logger.info("Executing simulation...")
     sim.make.exec([rule])
     logger.info("Finished simulation...")
@@ -351,6 +379,9 @@ def show(ctx, file):
         )
 
 
-if __name__ == "__main__":
-    print(sys.executable)
+def main():
     cli(obj={})
+
+
+if __name__ == "__main__":
+    main()

@@ -179,7 +179,7 @@ rule archive:
         ),
         rest=[
             "SESSION.NAME",
-            "params.xml",
+            "params_simul.xml",
             "SIZE",
             *iglob(f"rs6{CASE}0.f*"),
             f"{CASE}.re2",

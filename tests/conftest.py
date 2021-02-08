@@ -38,6 +38,9 @@ def sim(request):
 
     params.output.sgs_model = request.param
 
+    reynolds_number = 1e10
+
+    params.nek.velocity.viscosity = -reynolds_number
     params.nek.stat.av_step = 3
     params.nek.stat.io_step = 9
 
