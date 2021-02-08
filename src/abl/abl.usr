@@ -80,7 +80,7 @@ c
       ffy = 0.0
       ffz = 0.0 ! -f_corio * (ux - U_GEO)
 
-      call abl_penalty(ix, iy, iz, eg)
+      ! call abl_penalty(ix, iy, iz, eg)
 
       return
       end
@@ -88,9 +88,11 @@ c-----------------------------------------------------------------------
       subroutine abl_penalty(ix, iy, iz, eg)
       implicit none
 
+      include 'SIZE'
       include 'INPUT'   ! uparam
       include 'MASS'    ! binvm1
       include 'NEKUSE'  ! y, ffx, ffz, ux, uz
+      include 'PARALLEL'  ! gllel
       include 'SOLN'    ! vx
       include 'DXYZ'    ! DYM12
       include 'WMLES'   ! wmles_bc_z0
@@ -99,9 +101,9 @@ c-----------------------------------------------------------------------
       integer ix, iy, iz, eg, iel
 
       ! penalty boundary condition terms
-      real P_inv, sigma, K
-      real du_dy(ly1)
-      parameter(sigma = -1.0)
+      real p_inv_pen, sigma_pen, k_pen
+      real du_dy_pen
+      parameter(sigma_pen = -1.0)
 
       ! Get mesh height from userParam06
       real YLEN
@@ -109,13 +111,13 @@ c-----------------------------------------------------------------------
 
       ! Apply penalty as a forcing term
       if (y < 0.02 * YLEN) then
-        iel = gllel(ieg)
-        P_inv = binvm1(ix, iy, iz, iel)
-        K = y * log(y / wmles_bc_z0)
+        iel = gllel(eg)
+        p_inv_pen = binvm1(ix, iy, iz, iel)
+        k_pen = y * log(y / wmles_bc_z0)
         ! derivative operator for staggered mesh. See coef.f
         ! FIXME: point or stencil? dym12(ly2, ly1) -> why?
-        du_dy = dot_product(dym12(iy, :), vx(ix, :, iz, iel))
-        ffx = ffx + P_inv * sigma * (ux - K * du_dy)
+        du_dy_pen = dot_product(dym12(iy, :), vx(ix, :, iz, iel))
+        ffx = ffx + p_inv_pen * sigma_pen * (ux - k_pen * du_dy_pen)
         ! TODO: when coriolis is on
         ! ffz = ffz + ...
       end if
@@ -360,11 +362,11 @@ c> @callgraph
 
       include 'SIZE'
 
-      include 'INPUT'  ! param
+      include 'INPUT'  ! param, uparam
 
       param(54) = -1  ! use >0 for const flowrate or <0 bulk vel
-                     ! flow direction is given by (1=x, 2=y, 3=z)
-      param(55) = 1.0 ! flowrate/bulk-velocity
+                      ! flow direction is given by (1=x, 2=y, 3=z)
+      param(55) = uparam(3)  ! flowrate/bulk-velocity
       return
       end
 c ----------------------------------------------------------------------

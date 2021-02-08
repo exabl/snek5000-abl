@@ -38,7 +38,7 @@ class SimulABL(SimulKTH):
     def _complete_params_with_default(params):
         """Add missing default parameters."""
         params = SimulKTH._complete_params_with_default(params)
-        params.nek.velocity._set_attrib("advection", True)
+        params.nek.velocity._set_attribs({"advection": True, "density": 1.0})
 
         params.nek._set_child(
             "wmles",
