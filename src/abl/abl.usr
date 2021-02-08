@@ -72,7 +72,6 @@ c
       ! local variables
       real U_GEO, f_corio
 
-c     e = gllel(eg)
 
       U_GEO = uparam(3)
       f_corio = uparam(4)
@@ -81,8 +80,48 @@ c     e = gllel(eg)
       ffy = 0.0
       ffz = 0.0 ! -f_corio * (ux - U_GEO)
 
+      call abl_penalty(ix, iy, iz, eg)
+
       return
       end
+c-----------------------------------------------------------------------
+      subroutine abl_penalty(ix, iy, iz, eg)
+      implicit none
+
+      include 'INPUT'   ! uparam
+      include 'MASS'    ! binvm1
+      include 'NEKUSE'  ! y, ffx, ffz, ux, uz
+      include 'SOLN'    ! vx
+      include 'DXYZ'    ! DYM12
+      include 'WMLES'   ! wmles_bc_z0
+
+      ! argument list
+      integer ix, iy, iz, eg, iel
+
+      ! penalty boundary condition terms
+      real P_inv, sigma, K
+      real du_dy(ly1)
+      parameter(sigma = -1.0)
+
+      ! Get mesh height from userParam06
+      real YLEN
+      YLEN = uparam(6)
+
+      ! Apply penalty as a forcing term
+      if (y < 0.02 * YLEN) then
+        iel = gllel(ieg)
+        P_inv = binvm1(ix, iy, iz, iel)
+        K = y * log(y / wmles_bc_z0)
+        ! derivative operator for staggered mesh. See coef.f
+        ! FIXME: point or stencil? dym12(ly2, ly1) -> why?
+        du_dy = dot_product(dym12(iy, :), vx(ix, :, iz, iel))
+        ffx = ffx + P_inv * sigma * (ux - K * du_dy)
+        ! TODO: when coriolis is on
+        ! ffz = ffz + ...
+      end if
+
+      return
+      end subroutine
 c-----------------------------------------------------------------------
       subroutine userq(ix,iy,iz,eg) ! set source term
 
