@@ -123,23 +123,35 @@ def cli(
             "0.2360 0.2693 0.3053 0.3453 0.3887 0.4360 0.4873 0.5413 0.6000 "
             "0.6607 0.7253 0.7913 0.8600 0.9293 1.0000"
         )
+    elif M in (22, 122):
+        # Similar to M 12 - scaled by 1500
+        oper.ny = 20
+        oper.coords_y = (
+            f"{z_wall} 0.0231 0.0485 0.0767 0.1073 0.1407 0.1773 0.2173 0.2600 "
+            "0.3060 0.3560 0.4087 0.4647 0.5240 0.5860 0.6507 0.7173 0.7867 "
+            "0.8567 0.9280 1.0000"
+        )
+        if M == 22:
+            oper.nx = oper.nz = 4
+        elif M == 122:
+            oper.nx = oper.nz = 8
 
-    if M < 10:
+    if M <= 9:
         oper.origin_y = z_wall
         oper.Lx = 1280
         oper.Ly = 1500
         oper.Lz = 1280
-    elif M < 20:
+    elif M % 100 <= 19:
         oper.origin_y = float(oper.coords_y.split()[0])
         oper.Lx = 640
         oper.Ly = 1500
         oper.Lz = 640
-    elif M < 30:
+    elif M % 100 <= 29:
         # Chatterjee & Peet:
         oper.origin_y = float(oper.coords_y.split()[0])
-        oper.Lx = round(pi / 2, 4)
+        oper.Lx = round(2 * pi, 4)
         oper.Ly = 1.0
-        oper.Lz = round(pi / 2, 4)
+        oper.Lz = round(pi, 4)
 
     oper.boundary = "P P sh SYM P P".split()
 
@@ -254,7 +266,7 @@ def cli(
     wmles.bc_z0 = z_rough
     wmles.sgs_delta_max = True
     # wmles.sgs_npow = 3.0
-    wmles.sgs_c0 = 0.18
+    wmles.sgs_c0 = 0.19
     wmles.sgs_bc = sgs_boundary
 
     # Flow phys parameters
