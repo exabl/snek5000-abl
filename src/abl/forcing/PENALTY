@@ -1,0 +1,84 @@
+!> @file PENALTY
+!! @ingroup pen_line
+!! @brief Include file with parameter and common block definitions
+!!  for applying penalty as forcing term
+!! @author Ashwin V. Mohanan
+!! @date May 03, 2018
+!=======================================================================
+
+!     timer id
+      integer pen_tmr_id
+
+!     initialisation flag
+      logical pen_ifinit
+
+!     runtime parameter part
+!     module id, section id and name
+      character*(*) pen_sec_name  ! TODO: pen_name -> pen_sec_name change elsewhere
+      parameter(pen_sec_name='PENALTY')
+      integer pen_id, pen_sec_id, pen_par_id(:)  ! TODO: count the number of params
+
+
+!     parameter section
+      real pen_tiamp                     !< @var time independent amplitude
+      integer pen_tiamp_id
+      real pen_tdamp                     !< @var time dependent amplitude
+      integer pen_tdamp_id
+      real pen_spos(LDIM,pen_nline_max) !< @var coordinates of starting point of tripping line
+      integer pen_spos_id(LDIM,pen_nline_max)
+      real pen_epos(LDIM,pen_nline_max) !< @var coordinates of ending point of tripping line
+      integer pen_epos_id(LDIM,pen_nline_max)
+      real pen_smth(LDIM,pen_nline_max) !< @var smoothing radius
+      integer pen_smth_id(LDIM,pen_nline_max)
+      real pen_rota(pen_nline_max)      !< @var elipse rotation angle
+      integer pen_rota_id(pen_nline_max)
+      integer pen_nmode(pen_nline_max)  !< @var number of Fourier modes
+      integer pen_nmode_id(pen_nline_max)
+      real pen_tdt(pen_nline_max)       !< @var time step for tripping
+      integer pen_tdt_id(pen_nline_max)
+
+!     inverse line length
+      real pen_ilngt(pen_nline_max)
+
+!     inverse smoothing radius
+      real pen_ismth(LDIM,pen_nline_max)
+
+!     projection of 3D pionts on 1D line
+      real pen_prj(lx1*ly1*lz1*lelt,pen_nline_max)
+
+!     number of points in 1D projection
+      integer pen_npoint(pen_nline_max)
+
+!     mapping of 3D array to 1D projection array
+      integer pen_map(lx1,ly1,lz1,lelt,pen_nline_max)
+
+!     function for smoothing of the forcing
+      real pen_fsmth(lx1,ly1,lz1,lelt,pen_nline_max)
+
+!     seed for random number generator; different for each line
+      integer pen_seed(pen_nline_max)
+
+!     number of tripping time intervals
+      integer pen_ntdt, pen_ntdt_old
+
+!     set of random phases (static, current and prevoious)
+      real pen_rphs(pen_nmode_max,pen_nset_max,pen_nline_max)
+
+!     set of forcing arrays (static, current and prevoious)
+      real pen_frcs(lx1*ly1*lz1*lelt,pen_nset_max,pen_nline_max)
+
+!     tripping array; interpolated value to set in 3D arrays
+      real pen_ftrp(lx1*ly1*lz1*lelt,pen_nline_max)
+
+!     common block section
+      common /peni/ pen_id, pen_tmr_id, pen_sec_id, pen_nline,
+     $     pen_nline_id, pen_nmode, pen_nmode_id, pen_tiamp_id,
+     $     pen_tdamp_id, pen_tdt_id, pen_spos_id, pen_epos_id,
+     $     pen_smth_id, pen_rota_id, pen_npoint, pen_map,
+     $     pen_seed, pen_ntdt, pen_ntdt_old
+
+      common /penr/ pen_tiamp, pen_tdamp, pen_tdt, pen_spos,
+     $     pen_epos, pen_smth, pen_rota, pen_ilngt, pen_ismth,
+     $     pen_prj, pen_fsmth, pen_rphs, pen_frcs, pen_ftrp
+
+      common /penl/ pen_ifinit
