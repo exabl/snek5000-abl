@@ -1,19 +1,16 @@
-!> @file penalty.f
-!! @ingroup pen_line
-!! @brief Tripping function for AMR version of nek5000
-!! @note  This version uses developed framework parts. This is because
-!!   I'm in a hurry and I want to save some time writing the code. So
-!!   I reuse already tested code and focuse important parts. For the
-!!   same reason for now only lines parallel to z axis are considered. 
-!!   The penalty is based on a similar implementation in the SIMSON code
-!!   (Chevalier et al. 2007, KTH Mechanics), and is described in detail 
-!!   in the paper Schlatter & Örlü, JFM 2012, DOI 10.1017/jfm.2012.324.
-!! @author Adam Peplinski
-!! @date May 03, 2018
+!-----------------------------------------------------------------------
+!> @defgroup penalty_mini Penalty "boundary conditions"
+!!   A BC which appears as a/forcing": the mini version
+!! @file penalty_mini.f
+!! @ingroup penalty_mini
+!! @brief Penalty for ABL user code of nek5000
+!! @note This module is derived from the forcing module in KTH
+!!   framework 
 !=======================================================================
 !> @brief Register penalty module
-!! @ingroup pen_line
+!! @ingroup penalty_mini
 !! @note This routine should be called in frame_usr_register
+!! @callgraph
       subroutine pen_register()
       implicit none
 
@@ -34,10 +31,10 @@
       ltim = dnekclock()
 
       ! check if the current module was already registered
-      call mntr_mod_is_name_reg(lpmid,pen_name)
+      call mntr_mod_is_name_reg(lpmid,pen_sec_name)
       if (lpmid.gt.0) then
          call mntr_warn(lpmid,
-     $        'module ['//trim(pen_name)//'] already registered')
+     $        'module ['//trim(pen_sec_name)//'] already registered')
          return
       endif
 
@@ -50,7 +47,7 @@
       endif
 
       ! register module
-      call mntr_mod_reg(pen_id,lpmid,pen_name,
+      call mntr_mod_reg(pen_id,lpmid,pen_sec_name,
      $      'Tripping along the line')
 
       ! register timer
@@ -59,7 +56,7 @@
      $     'PENALTY_TOT','Tripping total time',.false.)
 
       ! register and set active section
-      call rprm_sec_reg(pen_sec_id,pen_id,'_'//adjustl(pen_name),
+      call rprm_sec_reg(pen_sec_id,pen_id,'_'//adjustl(pen_sec_name),
      $     'Runtime paramere section for penalty module')
       call rprm_sec_set_act(.true.,pen_sec_id)
 
@@ -131,7 +128,7 @@
       end subroutine
 !=======================================================================
 !> @brief Initilise penalty module
-!! @ingroup pen_line
+!! @ingroup penalty_mini
 !! @note This routine should be called in frame_usr_init
       subroutine pen_init()
       implicit none
@@ -156,7 +153,7 @@
       ! check if the module was already initialised
       if (pen_ifinit) then
          call mntr_warn(pen_id,
-     $        'module ['//trim(pen_name)//'] already initiaised.')
+     $        'module ['//trim(pen_sec_name)//'] already initiaised.')
          return
       endif
       
@@ -225,7 +222,7 @@
       pen_nfdt_old = pen_nfdt
       
       ! generate random phases (time independent and time dependent)
-      call pen_rphs_get
+      ! call pen_rphs_get
 
       ! get forcing
       call pen_frcs_get(.true.)
@@ -241,7 +238,7 @@
       end subroutine
 !=======================================================================
 !> @brief Check if module was initialised
-!! @ingroup pen_line
+!! @ingroup penalty_mini
 !! @return pen_is_initialised
       logical function pen_is_initialised()
       implicit none
@@ -255,7 +252,7 @@
       end function
 !=======================================================================
 !> @brief Update penalty
-!! @ingroup pen_line
+!! @ingroup penalty_mini
       subroutine pen_update()
       implicit none
 
@@ -272,7 +269,7 @@
       ltim = dnekclock()      
 
       ! update random phases (time independent and time dependent)
-      call pen_rphs_get
+      ! call pen_rphs_get
 
       ! update forcing
       call pen_frcs_get(.false.)
@@ -285,41 +282,52 @@
       end subroutine      
 !=======================================================================
 !> @brief Compute penalty forcing
-!! @ingroup pen_line
+!! @ingroup penalty_mini
 !! @param[inout] ffx,ffy,ffz     forcing; x,y,z component
 !! @param[in]    ix,iy,iz        GLL point index
 !! @param[in]    ieg             global element number
-      subroutine pen_forcing(ffx,ffy,ffz,ix,iy,iz,ieg)
+!! @todo add ffy component and rotation
+!! @callgraph @callergraph
+      subroutine pen_forcing(ix,iy,iz,ieg)
       implicit none
 
       include 'SIZE'
       include 'PARALLEL'
+      include 'MASS'    ! binvm1
+      include 'NEKUSE'  ! ffx, ffz, ux, uz
+      include 'SGS'     ! du_dy
       include 'PENALTY'
 
       ! argument list
-      real ffx, ffy, ffz
+      ! real ffx, ffy, ffz
       integer ix,iy,iz,ieg
 
       ! local variables
       integer ipos,iel,il
+      real k_len
       real ffn
 !-----------------------------------------------------------------------
       iel=GLLEL(ieg)
-      ffn = 0.0
       
-      do il= 1, pen_regions
-         ipos = pen_map(ix,iy,iz,iel,il)
-         ffn = pen_famp(ipos,il)*pen_fsmth(ix,iy,iz,iel,il)
-         
-         ffx = ffx - ffn*sin(pen_rota(il))
-         ffy = ffy + ffn*cos(pen_rota(il))
+      k_len = pen_k_len(ix,iy,iz,iel)
+      ffn = 0
+
+      do il=1, pen_regions_max
+        ipos = pen_map(ix,iy,iz,iel,il)
+        ffn = ffn + (
+     &       binvm1(ix, iy, iz, iel)  !  P^{-1}
+     &       * pen_famp(ipos,il) * pen_fsmth(ix,iy,iz,iel,il)  ! sigma * E_{i,j}
+     &       * (ux - k_len * du_dy(ix,iy,iz,iel)))
+
       enddo
-      
+     
+      ffx = ffx + ffn
+
       return
       end subroutine
 !=======================================================================
 !> @brief Reset penalty
-!! @ingroup pen_line
+!! @ingroup penalty_mini
       subroutine pen_reset()
       implicit none
 
@@ -349,9 +357,12 @@
       end subroutine
 !=======================================================================
 !> @brief Get 1D projection, array mapping and forcing smoothing
-!! @ingroup pen_line
+!! @ingroup penalty_mini
 !! @details This routine is just a simple version supporting only lines
 !!   paralles to z axis. In future it can be generalised.
+!!   The subroutine initializes pen_prj, pen_map and pen_npoint
+!! @see Schlatter and Örlü, “Turbulent Boundary Layers at Moderate Reynolds Numbers.” 
+!!   pg. 12
 !! @remark This routine uses global scratch space \a CTMP0 and \a CTMP1
       subroutine pen_1dprj()
       implicit none
@@ -365,11 +376,11 @@
       integer nxy, nxyz, ntot !< @var number of points in xy face of an element, whole element and whole mesh
       integer itmp, jtmp, ktmp, eltmp
       integer il, jl
-      real xl, yl, xr, yr !< @var left and right extents of the region
+      real xl, yl, zl, xr, yr, zr !< @var left and right extents of the region
       real rota, epsl
       real rtmp !< @var temporary variable: distance**2 from starting position (pen_spos)
       parameter (epsl = 1.0e-10)
-
+      
       real lcoord(LX1*LY1*LZ1*LELT)
       common /CTMP0/ lcoord
       integer lmap(LX1*LY1*LZ1*LELT)
@@ -379,7 +390,7 @@
       nxyz = nxy*NZ1
       ntot = nxyz*NELV
       
-      ! for each line
+      ! for each region
       do il=1,pen_regions
       ! Get coordinates and sort them
          call copy(lcoord,zm1,ntot)
@@ -397,8 +408,10 @@
          itmp = itmp - nx1*(jtmp-1) + 1
          pen_map(itmp,jtmp,ktmp,eltmp,il) = pen_npoint(il)
          do jl=2,ntot
-            if((lcoord(jl)-pen_prj(pen_npoint(il),il)).gt.
-     $           max(epsl,abs(epsl*lcoord(jl)))) then
+            if(
+     &          (lcoord(jl) - pen_prj(pen_npoint(il),il)) .gt.
+     &           max(epsl, abs(epsl * lcoord(jl)))
+     &       ) then
                pen_npoint(il) = pen_npoint(il) + 1
                pen_prj(pen_npoint(il),il) = lcoord(jl)
             endif
@@ -420,7 +433,7 @@
          enddo
          
          ! get smoothing profile
-         rota = pen_rota(il)
+         ! rota = pen_rota(il)
          
          do jl=1,ntot
             itmp = jl-1
@@ -431,160 +444,56 @@
             jtmp = itmp/nx1 + 1
             itmp = itmp - nx1*(jtmp-1) + 1
 
-            ! rotation
+            ! calculate distances
             xl = xm1(itmp,jtmp,ktmp,eltmp)-pen_spos(1,il)
             yl = ym1(itmp,jtmp,ktmp,eltmp)-pen_spos(2,il)
 
-            xr = xl*cos(rota)+yl*sin(rota)
-            yr = -xl*sin(rota)+yl*cos(rota)
-            
-            ! distance**2 from starting position (pen_spos)
-            rtmp = (xr*pen_ismth(1,il))**2 + (yr*pen_ismth(2,il))**2
-            ! Gauss
-            !pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = exp(-4.0*rtmp)
-            ! limited support
+            if (IF3D) then
+                zl = zm1(itmp,jtmp,ktmp,eltmp)-pen_spos(3,il)
+            endif
+
+            ! no rotation
+            xr = xl
+            yr = yl
+            zr = zl
+
+            ! For isolated 3D masks
+            !         rtmp = xr**2 + yr**2 + zr**2
+            !         rtmp = (
+            !  &          (xr*pen_ismth(1,il))**2
+            !  &        + (yr*pen_ismth(2,il))**2
+            !  &        + (zr*pen_ismth(3,il))**2 )
+
+            ! Distance along y
+            rtmp = abs(yr * pen_ismth(2, il))
+
+            ! Delta function masking. NOTE: not smooth
             if (rtmp.lt.1.0) then
-               pen_fsmth(itmp,jtmp,ktmp,eltmp,il) =
-     $              exp(-rtmp)*(1-rtmp)**2
+               pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 1.0
             else
                pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 0.0
             endif
-
          enddo
       enddo
 
       return
       end subroutine      
 !=======================================================================
-!> @brief Generate set of random phases
-!! @ingroup pen_line
-      subroutine pen_rphs_get
-      implicit none
-
-      include 'SIZE'
-      include 'TSTEP'
-      include 'PARALLEL'
-      include 'PENALTY'
-      
-      ! local variables
-      integer il, jl, kl
-      integer itmp
-      real pen_ran2
-
-#ifdef DEBUG
-      character*3 str1, str2
-      integer iunit, ierr
-      ! call number
-      integer icalldl
-      save icalldl
-      data icalldl /0/
-#endif
-!-----------------------------------------------------------------------
-      ! time independent part
-      if (pen_tiamp.gt.0.0.and..not.pen_ifinit) then
-         do il = 1, pen_regions
-            do jl=1, pen_nmode(il)
-               pen_rphs(jl,1,il) = 2.0*pi*pen_ran2(il)
-            enddo
-         enddo
-      endif
-
-      ! time dependent part
-      do il = 1, pen_regions
-         itmp = int(time/pen_fdt(il))
-         call bcast(itmp,ISIZE) ! just for safety
-         do kl= pen_nfdt+1, itmp
-            do jl= pen_nset_max,3,-1
-               call copy(pen_rphs(1,jl,il),pen_rphs(1,jl-1,il),
-     $              pen_nmode(il))
-            enddo
-            do jl=1, pen_nmode(il)
-               pen_rphs(jl,2,il) = 2.0*pi*pen_ran2(il)
-            enddo
-         enddo
-      enddo
-      
-      ! update time interval
-      pen_nfdt_old = pen_nfdt
-      pen_nfdt = itmp
-
-#ifdef DEBUG
-      ! for testing
-      ! to output refinement
-      icalldl = icalldl+1
-      call io_file_freeid(iunit, ierr)
-      write(str1,'(i3.3)') NID
-      write(str2,'(i3.3)') icalldl
-      open(unit=iunit,file='trp_rps.txt'//str1//'i'//str2)
-
-      do il=1,pen_nmode(1)
-         write(iunit,*) il,pen_rphs(il,1:4,1)
-      enddo
-
-      close(iunit)
-#endif
-
-      return
-      end subroutine
-!=======================================================================
-!> @brief A simple portable random number generator
-!! @ingroup pen_line
-!! @details  Requires 32-bit integer arithmetic. Taken from Numerical
-!!   Recipes, William Press et al. Gives correlation free random
-!!   numbers but does not have a very large dynamic range, i.e only
-!!   generates 714025 different numbers. Set seed negative for
-!!   initialization
-!! @param[in]   il      line number
-!! @return      ran
-      real function pen_ran2(il)
-      implicit none
-
-      include 'SIZE'
-      include 'PENALTY'
-      
-      ! argument list
-      integer il
-
-      ! local variables
-      integer iff(pen_regions_max), iy(pen_regions_max)
-      integer ir(97,pen_regions_max)
-      integer m,ia,ic,j
-      real rm
-      parameter (m=714025,ia=1366,ic=150889,rm=1./m)
-      save iff,ir,iy
-      data iff /pen_regions_max*0/
-!-----------------------------------------------------------------------
-      ! initialise
-      if (pen_seed(il).lt.0.or.iff(il).eq.0) then
-         iff(il)=1
-         pen_seed(il)=mod(ic-pen_seed(il),m)
-         do j=1,97
-            pen_seed(il)=mod(ia*pen_seed(il)+ic,m)
-            ir(j,il)=pen_seed(il)
-         end do
-         pen_seed(il)=mod(ia*pen_seed(il)+ic,m)
-         iy(il)=pen_seed(il)
-      end if
-      
-      ! generate random number
-      j=1+(97*iy(il))/m
-      iy(il)=ir(j,il)
-      pen_ran2=iy(il)*rm
-      pen_seed(il)=mod(ia*pen_seed(il)+ic,m)
-      ir(j,il)=pen_seed(il)
-
-      end function
-!=======================================================================
 !> @brief Generate forcing along 1D line
-!! @ingroup pen_line
+!! @details Initializes the pen_famp array. The facility to use
+!!    temporal history has been removed in this version.
+!! @ingroup penalty_mini
 !! @param[in] ifreset    reset flag
+!! @callgraph @callergraph
       subroutine pen_frcs_get(ifreset)
       implicit none
 
       include 'SIZE'
       include 'INPUT'
+      include 'GEOM'  ! ym1
       include 'TSTEP'
       include 'PENALTY'
+      include 'WMLES'  ! wmles_bc_z0
 
       ! argument list
       logical ifreset
@@ -613,21 +522,13 @@
 !-----------------------------------------------------------------------
       ! reset all
       if (ifreset) then
-         if (pen_tiamp.gt.0.0) then
-            istart = 1
-         else
-            istart = 2
-         endif
+        ! something to do with Fourier modes, instead we compute
+        ! penalties for log-law
          do il= 1, pen_regions
             do jl = istart, pen_nset_max
                call rzero(pen_frcs(1,jl,il),pen_npoint(il))
                do kl= 1, pen_npoint(il)
-                  theta0 = 2*pi*pen_prj(kl,il)
-                  do ll= 1, pen_nmode(il)
-                     theta = theta0*ll
-                     pen_frcs(kl,jl,il) = pen_frcs(kl,jl,il) +
-     $                    sin(theta+pen_rphs(ll,jl,il))
-                  enddo
+                  
                enddo
             enddo
          enddo
@@ -637,44 +538,20 @@
                call cmult(pen_frcs(1,1,il),pen_tiamp,pen_npoint(il))
             enddo
          endif
-      else
+
+         ! compute K array
+         pen_k_len(:nx1,:ny1,:nz1,:nelv) = (
+     &       ym1(:nx1,:ny1,:nz1,:nelv) * log(
+     &          ym1(:nx1,:ny1,:nz1,:nelv) / wmles_bc_z0
+     &       )
+     &   )
+      ! else
          ! reset only time dependent part if needed
-         if (pen_nfdt.ne.pen_nfdt_old) then
-#ifdef PENALTY_PR_RST
-            ! reset projection space
-            ! pressure
-            if (int(PARAM(95)).gt.0) then
-               PARAM(95) = ISTEP
-               nprv(1) = 0      ! veloctiy field only
-            endif
-            ! velocity
-            if (int(PARAM(94)).gt.0) then
-               PARAM(94) = ISTEP!+2
-               ivproj(2,1) = 0
-               ivproj(2,2) = 0
-               if (IF3D) ivproj(2,3) = 0
-            endif
-#endif
-            do il= 1, pen_regions
-               do jl= pen_nset_max,3,-1
-                  call copy(pen_frcs(1,jl,il),pen_frcs(1,jl-1,il),
-     $                 pen_npoint(il))
-               enddo
-               call rzero(pen_frcs(1,2,il),pen_npoint(il))
-               do jl= 1, pen_npoint(il)
-                  theta0 = 2*pi*pen_prj(jl,il)
-                  do kl= 1, pen_nmode(il)
-                     theta = theta0*kl
-                     pen_frcs(jl,2,il) = pen_frcs(jl,2,il) +
-     $                    sin(theta+pen_rphs(kl,2,il))
-                  enddo
-               enddo
-            enddo
-         endif
       endif
       
       ! get penalty for current time step
       if (pen_tiamp.gt.0.0) then
+         ! copy pen_tiamp or pen_frcs -> pen_famp 
          do il= 1, pen_regions
            call copy(pen_famp(1,il),pen_frcs(1,1,il),pen_npoint(il))
          enddo
@@ -683,28 +560,7 @@
             call rzero(pen_famp(1,il),pen_npoint(il))
          enddo
       endif
-      ! interpolation in time
-      do il = 1, pen_regions
-         theta0= time/pen_fdt(il)-real(pen_nfdt)
-         if (theta0.gt.0.0) then
-            theta0=theta0*theta0*(3.0-2.0*theta0)
-            !theta0=theta0*theta0*theta0*(10.0+(6.0*theta0-15.0)*theta0)
-            do jl= 1, pen_npoint(il)
-               pen_famp(jl,il) = pen_famp(jl,il) +
-     $              pen_tdamp*((1.0-theta0)*pen_frcs(jl,3,il) +
-     $              theta0*pen_frcs(jl,2,il))
-            enddo
-         else
-            theta0=theta0+1.0
-            theta0=theta0*theta0*(3.0-2.0*theta0)
-            !theta0=theta0*theta0*theta0*(10.0+(6.0*theta0-15.0)*theta0)
-            do jl= 1, pen_npoint(il)
-               pen_famp(jl,il) = pen_famp(jl,il) +
-     $              pen_tdamp*((1.0-theta0)*pen_frcs(jl,4,il) +
-     $              theta0*pen_frcs(jl,3,il))
-            enddo
-         endif
-      enddo
+      ! interpolation in time: disabled
 
 #ifdef DEBUG
       ! for testing
@@ -717,7 +573,7 @@
 
       do il=1,pen_npoint(1)
          write(iunit,*) il,pen_prj(il,1),pen_famp(il,1),
-     $        pen_frcs(il,1:4,1)
+     $        pen_frcs(il,:,1)
       enddo
 
       close(iunit)

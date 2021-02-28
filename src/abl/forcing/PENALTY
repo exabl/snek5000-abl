@@ -1,9 +1,10 @@
 !> @file PENALTY
-!! @ingroup pen_line
+!! @ingroup penalty_mini
 !! @brief Include file with parameter and common block definitions
 !!  for applying penalty as forcing term
 !! @author Ashwin V. Mohanan
 !! @date May 03, 2018
+!! @{
 !=======================================================================
 
 !     timer id
@@ -16,69 +17,74 @@
 !     module id, section id and name
       character*(*) pen_sec_name  ! TODO: pen_name -> pen_sec_name change elsewhere
       parameter(pen_sec_name='PENALTY')
-      integer pen_id, pen_sec_id, pen_par_id(:)  ! TODO: count the number of params
+      integer pen_id, pen_sec_id
 
+!     max number of regions in the mesh where penalty is applied
+      integer pen_regions_max
+      parameter (pen_regions_max=1)
+!     max number of random phase sets stored; 1- time independent, 2, 3 and 4 - time dependent
+!     I keep two old random pahase sets to get correct restart after AMR refinement
+      integer pen_nset_max
+      parameter (pen_nset_max=1)
 
 !     parameter section
+      integer pen_regions                !< @var number of penalty regions
+      integer pen_regions_id
       real pen_tiamp                     !< @var time independent amplitude
       integer pen_tiamp_id
       real pen_tdamp                     !< @var time dependent amplitude
       integer pen_tdamp_id
-      real pen_spos(LDIM,pen_nline_max) !< @var coordinates of starting point of tripping line
-      integer pen_spos_id(LDIM,pen_nline_max)
-      real pen_epos(LDIM,pen_nline_max) !< @var coordinates of ending point of tripping line
-      integer pen_epos_id(LDIM,pen_nline_max)
-      real pen_smth(LDIM,pen_nline_max) !< @var smoothing radius
-      integer pen_smth_id(LDIM,pen_nline_max)
-      real pen_rota(pen_nline_max)      !< @var elipse rotation angle
-      integer pen_rota_id(pen_nline_max)
-      integer pen_nmode(pen_nline_max)  !< @var number of Fourier modes
-      integer pen_nmode_id(pen_nline_max)
-      real pen_tdt(pen_nline_max)       !< @var time step for tripping
-      integer pen_tdt_id(pen_nline_max)
 
-!     inverse line length
-      real pen_ilngt(pen_nline_max)
+      real pen_spos(LDIM,pen_regions_max) !< @var coordinates of starting point of forcing line
+      integer pen_spos_id(LDIM,pen_regions_max)
+      real pen_epos(LDIM,pen_regions_max) !< @var coordinates of ending point of forcing line
+      integer pen_epos_id(LDIM,pen_regions_max)
 
-!     inverse smoothing radius
-      real pen_ismth(LDIM,pen_nline_max)
+      real pen_smth(LDIM,pen_regions_max) !< @var smoothing radius
+      integer pen_smth_id(LDIM,pen_regions_max)
+      real pen_rota(pen_regions_max)      !< @var elipse rotation angle
+      integer pen_rota_id(pen_regions_max)
+      integer pen_nmode(pen_regions_max)  !< @var number of Fourier modes
+      integer pen_nmode_id(pen_regions_max)
+      real pen_fdt(pen_regions_max)       !< @var time step for forcing
+      integer pen_fdt_id(pen_regions_max)
 
-!     projection of 3D pionts on 1D line
-      real pen_prj(lx1*ly1*lz1*lelt,pen_nline_max)
+!     Internal arrays
+      real pen_ilngt(pen_regions_max) !< @var inverse line length
 
-!     number of points in 1D projection
-      integer pen_npoint(pen_nline_max)
+      real pen_ismth(LDIM,pen_regions_max) !< @var inverse smoothing radius
 
-!     mapping of 3D array to 1D projection array
-      integer pen_map(lx1,ly1,lz1,lelt,pen_nline_max)
+      real pen_prj(lx1*ly1*lz1*lelt,pen_regions_max) !< @var projection of 3D pionts on 1D line
 
-!     function for smoothing of the forcing
-      real pen_fsmth(lx1,ly1,lz1,lelt,pen_nline_max)
+      integer pen_npoint(pen_regions_max) !< @var number of points in 1D projection
 
-!     seed for random number generator; different for each line
-      integer pen_seed(pen_nline_max)
+      integer pen_map(lx1,ly1,lz1,lelt,pen_regions_max) !< @var mapping of 3D array to 1D projection array
 
-!     number of tripping time intervals
-      integer pen_ntdt, pen_ntdt_old
+      real pen_fsmth(lx1,ly1,lz1,lelt,pen_regions_max) !< @var function for smoothing and masking of the forcing
 
-!     set of random phases (static, current and prevoious)
-      real pen_rphs(pen_nmode_max,pen_nset_max,pen_nline_max)
+      integer pen_seed(pen_regions_max) !< @var seed for random number generator; different for each line
 
-!     set of forcing arrays (static, current and prevoious)
-      real pen_frcs(lx1*ly1*lz1*lelt,pen_nset_max,pen_nline_max)
+      integer pen_nfdt, pen_nfdt_old !< @var number of forcing time intervals
 
-!     tripping array; interpolated value to set in 3D arrays
-      real pen_ftrp(lx1*ly1*lz1*lelt,pen_nline_max)
+      ! real pen_rphs(pen_nmode_max,pen_nset_max,pen_regions_max) !< @var set of random phases (static, current and prevoious)
+
+      real pen_frcs(lx1*ly1*lz1*lelt,pen_nset_max,pen_regions_max) !< @var set of forcing arrays with temporal history (static, current and prevoious)
+
+      real pen_famp(lx1*ly1*lz1*lelt,pen_regions_max) !< @var forcing amplitude array; interpolated value to set in 3D arrays
+
+      real pen_k_len(lx1,ly1,lz1,lelt) !< @var a term, K, with dimensions of length which multiplies with velocity gradient in a penalty forcing.
 
 !     common block section
-      common /peni/ pen_id, pen_tmr_id, pen_sec_id, pen_nline,
-     $     pen_nline_id, pen_nmode, pen_nmode_id, pen_tiamp_id,
-     $     pen_tdamp_id, pen_tdt_id, pen_spos_id, pen_epos_id,
+      common /peni/ pen_id, pen_tmr_id, pen_sec_id, pen_regions,
+     $     pen_regions_id, pen_nmode, pen_nmode_id, pen_tiamp_id,
+     $     pen_tdamp_id, pen_fdt_id, pen_spos_id, pen_epos_id,
      $     pen_smth_id, pen_rota_id, pen_npoint, pen_map,
-     $     pen_seed, pen_ntdt, pen_ntdt_old
+     $     pen_seed, pen_nfdt, pen_nfdt_old
 
-      common /penr/ pen_tiamp, pen_tdamp, pen_tdt, pen_spos,
+      common /penr/ pen_tiamp, pen_tdamp, pen_fdt, pen_spos,
      $     pen_epos, pen_smth, pen_rota, pen_ilngt, pen_ismth,
-     $     pen_prj, pen_fsmth, pen_rphs, pen_frcs, pen_ftrp
+     $     pen_prj, pen_fsmth, pen_frcs, pen_famp ! pen_rphs
 
       common /penl/ pen_ifinit
+!> @}
+! vim: set ft=fortran

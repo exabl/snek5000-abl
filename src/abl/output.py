@@ -10,6 +10,7 @@ constant = SGS("constant", ("smagorinsky.f", "SGS", "WMLES"))
 dynamic = SGS("dynamic", ("dyn_smag.f", "DYN", "SGS", "WMLES"))
 shear_imp = SGS("shear_imp", ("shear_imp_smag.f", "SGS", "WMLES"))
 vreman = SGS("vreman", ("vreman.f", "SGS", "WMLES"))
+mixing_len = SGS("mixing_len", ("mixing_len.f", "SGS", "WMLES", "../forcing/PENALTY"))
 
 BC = namedtuple("BC", ["name", "sources"])
 # Specific boundary conditions
@@ -56,6 +57,7 @@ class OutputABL(OutputBase):
                 ("utils.f", "SGS"),
                 ("wmles_init.f", "WMLES", "../toolbox/FRAMELP"),
             ],
+            "forcing": [("penalty_mini.f", "PENALTY", "../sgs/SGS", "../sgs/WMLES")],
             "bc": [],
         }
 
@@ -81,7 +83,7 @@ class OutputABL(OutputBase):
 
         sgs = avail_sgs_models[params.output.sgs_model]
         sources["sgs"].append(sgs.sources)
-        if sgs.name in ("constant", "shear_imp", "vreman"):
+        if sgs.name in ("constant", "shear_imp", "vreman", "mixing_len"):
             sources["toolbox"].append(("stat_extras_dummy.f",))
 
         bc = avail_boundary_conds[params.output.boundary_cond]

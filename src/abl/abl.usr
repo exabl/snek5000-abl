@@ -1,16 +1,16 @@
 c-----------------------------------------------------------------------
 c> @defgroup abl The ABL case user-file
 c> Contains: user specified routines for the ABL case
-c>     - uservp  : variable properties
-c>     - userf   : local acceleration term for fluid
-c>     - userq   : local source term for scalars
-c>     - userbc  : boundary conditions
-c>     - useric  : initial conditions
-c>     - userchk : general purpose routine for checking errors etc.
-c>     - userqtl : thermal divergence for lowMach number flows
-c>     - usrdat  : modify element vertices
-c>     - usrdat2 : modify mesh coordinates
-c>     - usrdat3 : general purpose routine for initialization
+c>     - uservp()  : variable properties
+c>     - userf()   : local acceleration term for fluid
+c>     - userq()   : local source term for scalars
+c>     - userbc()  : boundary conditions
+c>     - useric()  : initial conditions
+c>     - userchk() : general purpose routine for checking errors etc.
+c>     - userqtl() : thermal divergence for lowMach number flows
+c>     - usrdat()  : modify element vertices
+c>     - usrdat2() : modify mesh coordinates
+c>     - usrdat3() : general purpose routine for initialization
 c>
 c> @{
 c----------------------------------------------------------------------
@@ -48,12 +48,15 @@ c> @todo implement ifield = 2 case for temperature
       return
       end
 c-----------------------------------------------------------------------
-c
 c> Compute Coriolis acceleration
 c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
 c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
+c> @note The Coroiolis acceleration also absorbs the part of the
+c>   pressure under hydrostatic balance, which in turn drives the flow.
+c>   When it is turned off, usrdat3() drives the flow.
 c> @param[in]    ix,iy,iz        GLL point index
 c> @param[in]    eg              global element number
+c> @callgraph
       subroutine userf(ix,iy,iz,eg) ! set acceleration term
 c
 c     Note: this is an acceleration term, NOT a force!
@@ -81,6 +84,7 @@ c
       ffz = 0.0 ! -f_corio * (ux - U_GEO)
 
       ! call abl_penalty(ix, iy, iz, eg)
+      call pen_forcing(ix, iy, iz, eg)
 
       return
       end
@@ -236,7 +240,7 @@ c> @callgraph
       include 'INPUT'  ! IF3D, PARAM
       include 'SOLN'  ! t, pr, vx
       include 'TSTEP'  ! ISTEP, lastep, time
-      include 'SGS'  ! dg2, ediff
+      include 'SGS'  ! dg2, ediff, du_dx, du_dy, du_dz
       include 'CHKPOINTD'  ! chpt_ifrst
       include 'WMLES'  ! KAPPA
 
@@ -254,6 +258,12 @@ c> @callgraph
 
       ! save/load files for full-restart
       call chkpt_main
+
+      ! compute velocity gradient
+      call gradm1(du_dx, du_dy, du_dz, vx)
+
+!     for penalty
+      call pen_update
 
 c     calculate eddy viscosity and total viscosity
 c     Placed here because
@@ -387,6 +397,7 @@ c> @{
       call chkpt_register
       call stat_register
       call wmles_register
+      call pen_register
 
       return
       end subroutine
@@ -403,6 +414,7 @@ c> @{
       call chkpt_init
       call stat_init
       call wmles_init
+      call pen_init
 
       return
       end subroutine
