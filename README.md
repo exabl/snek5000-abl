@@ -14,8 +14,3 @@ pytest
 # Run slow tests: launches simulation
 pytest --runslow
 ```
-# Authors
-
-* [Ashwin Vishnu Mohanan](mailto:avmo@misu.su.se)
-* [Geert Brethouwer](mailto:geert@mech.kth.se) 
-* [Luigi Antonialli](mailto:luigialbieri@gmail.com)
