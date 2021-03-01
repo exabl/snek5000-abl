@@ -56,7 +56,7 @@ class SimulABL(SimulKTH):
             "penalty",
             dict(
                 nregions=0,  # Number of penalty regions
-                tiamp=-1e0,  # Time independent amplitude
+                tiamp=0e0,  # Time independent amplitude
                 #  tdamp=0.e+00,  # Time dependent amplitude
                 sposx01=0.0e00,  # Starting point X
                 sposy01=0.0e00,  # Starting point Y

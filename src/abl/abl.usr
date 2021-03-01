@@ -160,7 +160,6 @@ c> @callgraph
       include 'WMLES'  ! KAPPA, PI_, y0
 
       integer ix,iy,iz,eg
-      real Ly
       real rand1, rand2, rand3
       real eps, kx, kz, alpha, beta, perturb_thick
       real U_GEO, XLEN, YLEN, ZLEN
