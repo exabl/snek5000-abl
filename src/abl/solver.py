@@ -52,6 +52,26 @@ class SimulABL(SimulKTH):
                 sgs_npow=0.5,
             ),
         )
+        params.nek._set_child(
+            "penalty",
+            dict(
+                nregions=0,  # Number of penalty regions
+                tiamp=-1e0,  # Time independent amplitude
+                #  tdamp=0.e+00,  # Time dependent amplitude
+                sposx01=0.0e00,  # Starting point X
+                sposy01=0.0e00,  # Starting point Y
+                sposz01=0.0e00,  # Starting point Z
+                eposx01=0.0e00,  # Ending point X
+                eposy01=0.0e00,  # Ending point Y
+                eposz01=0.0e00,  # Ending point Z
+                smthx01=0.0e00,  # Smoothing length X
+                smthy01=0.0e00,  # Smoothing length Y
+                smthz01=0.0e00,  # Smoothing length Z
+                #  rota01=0.e+00,  # Rotation angle
+                #  fdt01=0.e+00,  # Time step for penalty
+            ),
+        )
+
         params.nek.wmles._set_internal_attr("_enabled", True)
         return params
 

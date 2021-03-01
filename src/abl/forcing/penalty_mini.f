@@ -61,8 +61,8 @@
       call rprm_sec_set_act(.true.,pen_sec_id)
 
       ! register parameters
-      call rprm_rp_reg(pen_regions_id,pen_sec_id,'NLINE',
-     $     'Number of penalty lines',rpar_int,0,0.0,.false.,' ')
+      call rprm_rp_reg(pen_regions_id,pen_sec_id,'NREGION',
+     $     'Number of penalty regions',rpar_int,0,0.0,.false.,' ')
 
       call rprm_rp_reg(pen_tiamp_id,pen_sec_id,'TIAMP',
      $     'Time independent amplitude',rpar_real,0,0.0,.false.,' ')
