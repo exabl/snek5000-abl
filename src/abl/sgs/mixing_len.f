@@ -7,8 +7,7 @@ c> @callgraph @callergraph
       include 'SIZE'
       include 'GEOM'  ! ym1
       include 'INPUT' ! param, uparam
-      include 'PENALTY'  ! du_dy
-      include 'SGS'  ! ediff
+      include 'SGS'  ! ediff, du_dy
       include 'WMLES'  ! kappa
 
       integer e

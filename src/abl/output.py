@@ -10,12 +10,12 @@ constant = SGS("constant", ("smagorinsky.f", "SGS", "WMLES"))
 dynamic = SGS("dynamic", ("dyn_smag.f", "DYN", "SGS", "WMLES"))
 shear_imp = SGS("shear_imp", ("shear_imp_smag.f", "SGS", "WMLES"))
 vreman = SGS("vreman", ("vreman.f", "SGS", "WMLES"))
-mixing_len = SGS("mixing_len", ("mixing_len.f", "SGS", "WMLES", "../forcing/PENALTY"))
+mixing_len = SGS("mixing_len", ("mixing_len.f", "SGS", "WMLES"))
 
 BC = namedtuple("BC", ["name", "sources"])
 # Specific boundary conditions
 moeng = BC("moeng", ("moeng.f", "../sgs/SGS", "../sgs/WMLES"))
-noslip = BC("noslip", ("noslip.f",))
+noslip = BC("noslip", ("noslip.f", "../sgs/SGS", "../sgs/WMLES"))
 
 
 avail_sgs_models = {
