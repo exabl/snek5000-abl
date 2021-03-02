@@ -35,7 +35,6 @@ for (
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
 
-
     name_run = (
         f"{base_name_run}-{sgs_model}-ft{int(filter_temporal)}-sb{int(sgs_boundary)}"
     )
@@ -44,7 +43,7 @@ for (
         continue
 
     cmd = (
-        f"\n{sys.executable} ./simul.py "
+        f"\n{sys.executable} -m  abl.cli"
         f"-d {sub_dir} -m {mesh} -n {name_run} -o {nb_nodes} -w {walltime} "
         f"-fw {filter_weight} -fc {filter_cutoff} -ft {filter_temporal} "
         f"-s {sgs_model} -sb {sgs_boundary} "

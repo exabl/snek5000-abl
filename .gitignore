@@ -63,6 +63,7 @@ src/*/_version.py
 pip-wheel-metadata
 build/
 .nox
+.coverage
 
 # Jupyter
 .ipynb_checkpoints
