@@ -23,6 +23,7 @@ for (
     sgs_model,
     boundary_cond,
     z_wall,
+    z0,
     pen_tiamp,
 ) in itertools.product(
     zip([222], [1] * 1, [f"{days}-00:00:00" for days in (1,) * 1]),
@@ -36,6 +37,7 @@ for (
     # "dynamic"],
     ["noslip"],
     [0.0001],
+    [0.001],
     [-(10 ** p) for p in range(6)],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
@@ -51,7 +53,7 @@ for (
         f"-fw {filter_weight} -fc {filter_cutoff} -ft {filter_temporal} "
         f"-s {sgs_model} -sb {sgs_boundary} "
         f"-b {boundary_cond} "
-        f"-zw {z_wall} "
+        f"-zw {z_wall} -z0 {z0} "
         f"-p {pen_tiamp} "
         f"{sub_command}"
     )

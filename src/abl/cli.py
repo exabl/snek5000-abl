@@ -268,7 +268,7 @@ def cli(
     velocity.residual_tol = 1e-8
     #
     if params.output.boundary_cond == "noslip":
-        reynolds_number = 1e3
+        reynolds_number = 1e4
     else:
         reynolds_number = 1e10
 
@@ -308,8 +308,8 @@ def cli(
     penalty.nregions = 1
     penalty.tiamp = pen_tiamp
     penalty.eposx01 = oper.Lx
-    penalty.sposy01 = 0.1 * oper.Ly
-    penalty.eposy01 = 0.2 * oper.Ly
+    penalty.sposy01 = 0.05 * oper.Ly
+    penalty.eposy01 = 0.3 * oper.Ly
     # float(oper.coords_y.split()[1])  # boundary of first element
     penalty.eposz01 = oper.Lz
     penalty.smthy01 = penalty.eposy01 - penalty.sposy01
