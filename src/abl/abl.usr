@@ -235,6 +235,10 @@ c       - chkpt_main would load velocity data required for calculating ediff
         call copy(t,ediff,n)
       endif
 
+#ifdef DEBUG
+      print *,  "ediff (min/max) = ", minval(ediff), maxval(ediff)
+#endif
+
       ! statistics computed by toolbox
       call stat_avg
 

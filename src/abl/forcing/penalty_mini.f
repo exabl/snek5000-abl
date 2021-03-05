@@ -278,6 +278,17 @@
       ltim = dnekclock() - ltim
       call mntr_tmr_add(pen_tmr_id,1,ltim)
 
+#ifdef DEBUG
+      print *,  "pen_npoint = ", pen_npoint
+      print *,  "pen_k_len (min/max) = ", minval(pen_k_len),
+     &   maxval(pen_k_len)
+      print *,  "pen_frcs (min/max) = ", minval(pen_frcs),
+     &   maxval(pen_frcs)
+      print *,  "pen_famp (min/max) = ", minval(pen_famp),
+     &   maxval(pen_famp)
+      print *,  "pen_fsmth (min/max) = ", minval(pen_fsmth),
+     &   maxval(pen_fsmth)
+#endif
       return
       end subroutine      
 !=======================================================================
@@ -320,7 +331,10 @@
      &       * (ux - k_len * du_dy(ix,iy,iz,iel)))
 
       enddo
-     
+
+#ifdef DEBUG
+      ! print *, "Penalty ffn = ", ffn
+#endif
       ffx = ffx + ffn
 
       return
@@ -533,7 +547,7 @@
             enddo
          enddo
          ! rescale time independent part
-         if (pen_tiamp.gt.0.0) then
+         if (pen_tiamp.ne.0.0) then
             do il= 1, pen_regions
                call cmult(pen_frcs(1,1,il),pen_tiamp,pen_npoint(il))
             enddo
@@ -550,7 +564,7 @@
       endif
       
       ! get penalty for current time step
-      if (pen_tiamp.gt.0.0) then
+      if (pen_tiamp.ne.0.0) then
          ! copy pen_tiamp or pen_frcs -> pen_famp 
          do il= 1, pen_regions
            call copy(pen_famp(1,il),pen_frcs(1,1,il),pen_npoint(il))
