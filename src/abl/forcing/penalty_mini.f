@@ -48,12 +48,12 @@
 
       ! register module
       call mntr_mod_reg(pen_id,lpmid,pen_sec_name,
-     $      'Tripping along the line')
+     $      'Penalty forcing term')
 
       ! register timer
       call mntr_tmr_is_name_reg(lpmid,'FRM_TOT')
       call mntr_tmr_reg(pen_tmr_id,lpmid,pen_id,
-     $     'PENALTY_TOT','Tripping total time',.false.)
+     $     'PENALTY_TOT','Penalty timer',.false.)
 
       ! register and set active section
       call rprm_sec_reg(pen_sec_id,pen_id,'_'//adjustl(pen_sec_name),
@@ -541,10 +541,7 @@
         ! penalties for log-law
          do il= 1, pen_regions
             do jl = istart, pen_nset_max
-               call rzero(pen_frcs(1,jl,il),pen_npoint(il))
-               do kl= 1, pen_npoint(il)
-                  
-               enddo
+               call cfill(pen_frcs(1,jl,il),1.0,pen_npoint(il))
             enddo
          enddo
          ! rescale time independent part
