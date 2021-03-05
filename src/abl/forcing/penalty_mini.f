@@ -279,6 +279,7 @@
       call mntr_tmr_add(pen_tmr_id,1,ltim)
 
 #ifdef DEBUG
+      print *,  "pen_regions = ", pen_regions
       print *,  "pen_npoint = ", pen_npoint
       print *,  "pen_k_len (min/max) = ", minval(pen_k_len),
      &   maxval(pen_k_len)
@@ -395,7 +396,7 @@
       real rtmp !< @var temporary variable: distance**2 from starting position (pen_spos)
       parameter (epsl = 1.0e-10)
       
-      real lcoord(LX1*LY1*LZ1*LELT)
+      real lcoord(LX1*LY1*LZ1*LELT)  ! @var NOTE: distance along 
       common /CTMP0/ lcoord
       integer lmap(LX1*LY1*LZ1*LELT)
       common /CTMP1/ lmap
@@ -407,7 +408,7 @@
       ! for each region
       do il=1,pen_regions
       ! Get coordinates and sort them
-         call copy(lcoord,zm1,ntot)
+         call copy(lcoord,ym1,ntot)
          call sort(lcoord,lmap,ntot)
 
          ! find unique entrances and provide mapping

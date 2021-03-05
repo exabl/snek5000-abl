@@ -305,7 +305,7 @@ def cli(
     # ==================
     assert pen_tiamp < 0, "Penalty amplitude is not negative!"
     penalty = params.nek.penalty
-    penalty.nregions = 1
+    penalty.nregion = 1
     penalty.tiamp = pen_tiamp
     penalty.eposx01 = oper.Lx
     penalty.sposy01 = 0.05 * oper.Ly
