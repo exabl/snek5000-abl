@@ -363,7 +363,7 @@ c     Define Delta for Smagorinsky method
 c-----------------------------------------------------------------------
 c> Compute inflow / outflow conditions a.k.a. driving force. Ubar=1
 c> Not required when coriolis force is specified in userf
-c> https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386
+c> @see https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386
 c> @callgraph
       subroutine usrdat3()
 

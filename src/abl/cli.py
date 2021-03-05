@@ -51,6 +51,9 @@ from snek5000.log import logger
     type=bool,
     help="Boundary condition for SGS models",
 )
+@click.option(
+    "-p", "--pen-tiamp", type=float, help="penalty time independent amplitude"
+)
 @click.pass_context
 def cli(
     ctx,
@@ -67,6 +70,7 @@ def cli(
     boundary_cond,
     sgs_model,
     sgs_boundary,
+    pen_tiamp,
 ):
     """\b
     Notes
@@ -299,14 +303,16 @@ def cli(
 
     # Penalty parameters
     # ==================
+    assert pen_tiamp < 0, "Penalty amplitude is not negative!"
     penalty = params.nek.penalty
     penalty.nregions = 1
-    penalty.tiamp = -1.0
+    penalty.tiamp = pen_tiamp
     penalty.eposx01 = oper.Lx
-    penalty.eposy01 = 0.1 * oper.Ly
+    penalty.sposy01 = 0.1 * oper.Ly
+    penalty.eposy01 = 0.2 * oper.Ly
     # float(oper.coords_y.split()[1])  # boundary of first element
     penalty.eposz01 = oper.Lz
-    penalty.smthy01 = penalty.eposy01
+    penalty.smthy01 = penalty.eposy01 - penalty.sposy01
 
     # Fluidsim parameters
     # ===================
