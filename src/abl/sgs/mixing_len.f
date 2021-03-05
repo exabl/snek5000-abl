@@ -29,6 +29,7 @@ c> @callgraph @callergraph
             else
                l_mix = kappa0 * y_delta  ! constant mixing length
             endif
+            ! print *, du_dy(ix, iy, iz, e)
             ediff(ix, iy, iz, e) = param(2) + (
      &        l_mix ** 2 *
      &        abs(du_dy(ix, iy, iz, e))
@@ -36,5 +37,4 @@ c> @callgraph @callergraph
           end do
         end do
       end do
-      
       end subroutine
