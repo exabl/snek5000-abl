@@ -624,14 +624,19 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
       subroutine spatial_means
       implicit none
       include 'SIZE'
+      include 'INPUT'  ! param, uparam
       include 'SOLN'  ! vx, vy
       include 'MASS'  ! bm1, volvm1
       include 'TSTEP'  ! time, istep
       include 'SGS_BC'  ! ustar_bc, mask_bc, area_bc, u_star_max
 
-      integer n, n_bc
-      real ubar, e2, u_star_avg, u_star_max_
+      real scale_vf(3)
+      common /cvflow_r/ scale_vf
 
+      ! local variables
+      integer n, n_bc
+      real ubar, e2, u_star_avg, u_star_max_, dpdx_avg, dpdy_avg
+      real U_GEO, f_corio
       logical file_exists, header_written
       save header_written
       data header_written /.false./
@@ -648,6 +653,18 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
       u_star_avg = glsc2(u_star_bc, mask_bc, n_bc) / area_bc
       u_star_max_ = glmax(u_star_max, 1)
 
+
+      if (param(55) .ne. 0) then
+         dpdx_avg = -scale_vf(1)
+         dpdy_avg = -scale_vf(3)
+      else
+         U_GEO = uparam(3)
+         f_corio = uparam(4)
+
+         dpdx_avg = 0.0
+         dpdy_avg = -f_corio * U_GEO
+      endif
+
       if (nid.eq.0) then
           if (.not. header_written) then
               inquire(file='spatial_means.txt', exist=file_exists)
@@ -655,9 +672,10 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
               if (.not. file_exists) then
                  open(26, file='spatial_means.txt')
                  write(26, 22)
-     &        "it", "t", "ux_avg", "ez_avg", "u_star_avg", "u_star_max"
+     &        "it", "t", "ux_avg", "ez_avg", "u_star_avg", "u_star_max",
+     &        "dpdx_avg", "dpdy_avg"
 
-   22            format(6A13)
+   22            format(8A13)
                  close(26)
               endif
 
@@ -665,7 +683,8 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
           endif
 
          open(26, file='spatial_means.txt', position='append')
-         write(26, 2) istep, time, ubar, e2, u_star_avg, u_star_max_
+         write(26, 2) istep, time, ubar, e2, u_star_avg, u_star_max_,
+     &     dpdx_avg, dpdy_avg
          close(26)
 
    2  format(I13, 1P 8E13.4)
