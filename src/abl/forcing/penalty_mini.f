@@ -524,7 +524,7 @@
       ! local variables
       integer il, jl, kl, ll
       integer istart
-      real theta0, theta
+      real y
 
 #ifdef DEBUG
       character*3 str1, str2
@@ -552,7 +552,19 @@
          endif
 
          ! compute K array
-         pen_k_len(:nx1,:ny1,:nz1,:nelv) = (
+         print *, "Computing penalty K array"
+        !      do ll=1, nelv
+        !         do kl=1, nz1
+        !            do jl=1, ny1
+        !               do il=1, nx1
+        !                  y = ym1(il, jl, kl, ll)
+        !                  pen_k_len(il, jl, kl, ll) = (
+        !  &                  y * log(y / wmles_bc_z0))
+        !               enddo
+        !            enddo 
+        !         enddo 
+        !     enddo
+        pen_k_len(:nx1,:ny1,:nz1,:nelv) = (
      &       ym1(:nx1,:ny1,:nz1,:nelv) * log(
      &          ym1(:nx1,:ny1,:nz1,:nelv) / wmles_bc_z0
      &       )

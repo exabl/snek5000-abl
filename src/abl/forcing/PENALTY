@@ -83,7 +83,7 @@
 
       common /penr/ pen_tiamp, pen_tdamp, pen_fdt, pen_spos,
      $     pen_epos, pen_smth, pen_rota, pen_ilngt, pen_ismth,
-     $     pen_prj, pen_fsmth, pen_frcs, pen_famp ! pen_rphs
+     $     pen_prj, pen_fsmth, pen_frcs, pen_famp, pen_k_len
 
       common /penl/ pen_ifinit
 !> @}
