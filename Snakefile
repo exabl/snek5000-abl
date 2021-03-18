@@ -1,4 +1,8 @@
+import os
 from glob import iglob
+from pathlib import Path
+
+import snek5000
 from snek5000.util.archive import tar_name, archive
 
 PYTHON_DIRECTORIES = ["docs", "src", "tests"]
@@ -55,6 +59,8 @@ rule ctags:
     input:
         nek5000="lib/Nek5000/core",
         abl="src/abl",
+        snek=Path(snek5000.__file__).parent,
+        py_env=os.getenv("VIRTUAL_ENV", os.getenv("CONDA_PREFIX", ""))
     output:
         ".tags",
     params:
@@ -68,6 +74,7 @@ rule ctags:
                     "logs",
                     "*.tar.gz",
                     "*.f?????",
+                    "*.py",
                 )
             )
         ),
@@ -75,6 +82,7 @@ rule ctags:
         """
         ctags --verbose -f {output} --language-force=Fortran -R {input.nek5000}
         ctags --verbose -f {output} {params.excludes} --append --language-force=Fortran -R {input.abl}
+        ctags -f {output} --append --languages=Python -R {input.abl} {input.snek} {input.py_env}/lib
         """
 
 
