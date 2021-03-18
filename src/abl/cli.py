@@ -2,6 +2,7 @@
 """Make a simulation of with solver abl."""
 from math import pi
 from pathlib import Path
+from pprint import pprint
 
 import click
 from abl.output import avail_boundary_conds, avail_sgs_models
@@ -52,7 +53,11 @@ from snek5000.log import logger
     help="Boundary condition for SGS models",
 )
 @click.option(
-    "-p", "--pen-tiamp", type=float, help="penalty time independent amplitude"
+    "-p",
+    "--pen-tiamp",
+    default=0.0,
+    type=float,
+    help="penalty time independent amplitude",
 )
 @click.pass_context
 def cli(
@@ -303,7 +308,7 @@ def cli(
 
     # Penalty parameters
     # ==================
-    assert pen_tiamp < 0, "Penalty amplitude is not negative!"
+    assert pen_tiamp >= 0.0, f"Penalty amplitude {pen_tiamp} should not be negative!"
     penalty = params.nek.penalty
     penalty.nregion = 1
     penalty.tiamp = pen_tiamp
@@ -395,10 +400,16 @@ def debug(ctx, rule):
     breakpoint()
 
 
+_show_options = ("xml", "par", "size", "box", "makefile_usr", "config")
+
+
 @cli.command()
-@click.argument("file", default="par")
+@click.argument("file", default="par", type=click.Choice(_show_options))
 @click.pass_context
 def show(ctx, file):
+    import yaml
+    from abl.output import OutputABL as Output
+
     params = ctx.obj["params"]
     file = file.lower()
 
@@ -406,7 +417,11 @@ def show(ctx, file):
         params.nek._write_par()
     elif file == "xml":
         print(params)
-    elif file in ("size", "box"):
+    elif file == "config":
+        with Output.get_configfile().open() as fp:
+            config = yaml.safe_load(fp)
+        pprint(config)
+    elif file in ("size", "box", "makefile_usr"):
         from abl.operators import OperatorsABL
         from abl import templates
 
@@ -415,9 +430,7 @@ def show(ctx, file):
         write_to_stdout = getattr(oper, f"write_{file}")
         write_to_stdout(template)
     else:
-        raise ValueError(
-            "The CLI argument file should be one of {'xml', 'par', 'size', 'box'}"
-        )
+        raise ValueError(f"The CLI argument file should be one of {_show_options}")
 
 
 def main():

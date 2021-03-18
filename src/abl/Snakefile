@@ -3,7 +3,6 @@ import itertools
 import os
 from glob import iglob
 from pathlib import Path
-from socket import gethostname
 
 import snek5000
 from abl.output import OutputABL as Output
