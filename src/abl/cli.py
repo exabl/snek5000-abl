@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
+import sys
 from math import pi
 from pathlib import Path
 from pprint import pprint
@@ -409,6 +410,7 @@ _show_options = ("xml", "par", "size", "box", "makefile_usr", "config")
 def show(ctx, file):
     import yaml
     from abl.output import OutputABL as Output
+    from abl import templates
 
     params = ctx.obj["params"]
     file = file.lower()
@@ -421,9 +423,11 @@ def show(ctx, file):
         with Output.get_configfile().open() as fp:
             config = yaml.safe_load(fp)
         pprint(config)
-    elif file in ("size", "box", "makefile_usr"):
-        from abl.operators import OperatorsABL
-        from abl import templates
+    elif file == "makefile_usr":
+        output = Output(params=params)
+        output.write_makefile_usr(templates.makefile_usr, sys.stdout)
+    elif file in ("size", "box"):
+        from abl.output import OperatorsABL
 
         oper = OperatorsABL(params=params)
         template = getattr(templates, file)
