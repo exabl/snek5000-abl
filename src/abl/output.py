@@ -57,17 +57,25 @@ class OutputABL(OutputBase):
                 ("utils.f", "SGS"),
                 ("wmles_init.f", "WMLES", "../toolbox/FRAMELP"),
             ],
-            "forcing": [("penalty_mini.f", "PENALTY", "../sgs/SGS", "../sgs/WMLES")],
+            "forcing": [
+                (
+                    "penalty_mini.f",
+                    "penalty_par.f",
+                    "PENALTY",
+                    "../sgs/SGS",
+                    "../sgs/WMLES",
+                )
+            ],
             "bc": [],
         }
 
-        if not self.sim:
+        if not self.sim and not self.params:
             # Hack to load params from params.xml in current directory
             from abl.solver import Simul
 
             params = Simul.load_params_from_file(path_xml="params_simul.xml")
         else:
-            params = self.sim.params
+            params = self.params
 
         if params.output.sgs_model not in avail_sgs_models:
             raise NotImplementedError(
