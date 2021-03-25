@@ -58,13 +58,8 @@ class OutputABL(OutputBase):
                 ("wmles_init.f", "WMLES", "../toolbox/FRAMELP"),
             ],
             "forcing": [
-                (
-                    "penalty_mini.f",
-                    "penalty_par.f",
-                    "PENALTY",
-                    "../sgs/SGS",
-                    "../sgs/WMLES",
-                )
+                ("penalty_mini.f", "PENALTY", "../sgs/SGS", "../sgs/WMLES",),
+                ("penalty_par.f", "PENALTY", "../toolbox/FRAMELP",),
             ],
             "bc": [],
         }
