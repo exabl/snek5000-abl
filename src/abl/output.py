@@ -73,28 +73,27 @@ class OutputABL(OutputBase):
             # Hack to load params from params.xml in current directory
             from abl.solver import Simul
 
-            params = Simul.load_params_from_file(path_xml="params_simul.xml")
+            params = Simul.load_params_from_file(path_xml="params_simul.xml").output
         else:
             params = self.params
 
-        if params.output.sgs_model not in avail_sgs_models:
+        if params.sgs_model not in avail_sgs_models:
             raise NotImplementedError(
-                f"SGS model {params.output.sgs_model}. "
-                f"Must be in {avail_sgs_models}."
+                f"SGS model {params.sgs_model}. " f"Must be in {avail_sgs_models}."
             )
 
-        if params.output.boundary_cond not in avail_boundary_conds:
+        if params.boundary_cond not in avail_boundary_conds:
             raise NotImplementedError(
-                f"Boundary condition {params.output.boundary_cond}. "
+                f"Boundary condition {params.boundary_cond}. "
                 f"Must be in {avail_boundary_conds}."
             )
 
-        sgs = avail_sgs_models[params.output.sgs_model]
+        sgs = avail_sgs_models[params.sgs_model]
         sources["sgs"].append(sgs.sources)
         if sgs.name in ("constant", "shear_imp", "vreman", "mixing_len"):
             sources["toolbox"].append(("stat_extras_dummy.f",))
 
-        bc = avail_boundary_conds[params.output.boundary_cond]
+        bc = avail_boundary_conds[params.boundary_cond]
         sources["bc"].append(bc.sources)
         return sources
 
