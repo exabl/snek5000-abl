@@ -102,8 +102,28 @@ rule run:
         ln -sf {log} {params.case}.log
         echo "Log file: $PWD"/{params.case}.log
         {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
+        realpath {log}
         """
 
+# no-recompile run: useful for in-place compilation
+rule nrun:
+    input:
+        f"{CASE}.re2",
+        f"{CASE}.ma2",
+        f"{CASE}.par",
+        "SESSION.NAME",
+    log:
+        "logs/run_" + now() + ".log",
+    params:
+        nproc=str(os.cpu_count()),
+        case=f"{CASE}",
+    shell:
+        """
+        ln -sf {log} {params.case}.log
+        echo "Log file: $PWD"/{params.case}.log
+        {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
+        realpath {log}
+        """
 
 # on cluster
 rule srun:

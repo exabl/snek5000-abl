@@ -362,7 +362,7 @@ def launch(ctx, rule):
 
 
 @cli.command()
-@click.argument("rule", default="srun")
+@click.argument("rule", default="nrun")
 @click.pass_context
 def debug(ctx, rule):
     import os

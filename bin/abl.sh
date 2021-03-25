@@ -9,4 +9,5 @@ abl -d penalty -m $MESH -n penalty -o 1 -w 7-00:00:00 --in-place True \
   -s mixing_len \
   -b noslip \
   -zw $ROUGH -z0 $ROUGH \
+  -p 0.0 \
   $@
