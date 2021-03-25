@@ -17,6 +17,7 @@ from snek5000.log import logger
 @click.option("-n", "--name-run", default="demo", help="short description of the run")
 @click.option("-o", "--nodes", default=1, type=int, help="number of nodes")
 @click.option("-w", "--walltime", default="30:00")
+@click.option("-i", "--in-place", default=False, type=bool, help="compile in place")
 @click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
 @click.option("-z0", "--z-rough", default=0.1, type=float, help="roughness parameter")
 @click.option(
@@ -68,6 +69,7 @@ def cli(
     name_run,
     nodes,
     walltime,
+    in_place,
     z_wall,
     z_rough,
     filter_weight,
@@ -324,6 +326,7 @@ def cli(
     # ===================
     params.short_name_type_run = name_run
     params.output.sub_directory = sub_dir
+    params.compile_in_place = in_place
 
     ctx.ensure_object(dict)
 
@@ -427,7 +430,7 @@ def show(ctx, file):
         output = Output(params=params)
         output.write_makefile_usr(templates.makefile_usr, sys.stdout)
     elif file in ("size", "box"):
-        from abl.output import OperatorsABL
+        from abl.operators import OperatorsABL
 
         oper = OperatorsABL(params=params)
         template = getattr(templates, file)
