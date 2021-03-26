@@ -9,12 +9,17 @@
 
       ! local variables
       real ltim
-      
+
       ! functions
       real dnekclock
 !-----------------------------------------------------------------------
+      if (.not. pen_enabled) then
+          ! Do nothing!
+          return
+      endif
+
       ! timing
-      ltim = dnekclock()      
+      ltim = dnekclock()
 
       ! update random phases (time independent and time dependent)
       ! call pen_rphs_get
@@ -39,7 +44,7 @@
      &   maxval(pen_fsmth)
 #endif
       return
-      end subroutine      
+      end subroutine
 !=======================================================================
 !> @brief Compute penalty forcing
 !! @ingroup penalty_mini
@@ -68,18 +73,20 @@
       real ffn
 !-----------------------------------------------------------------------
       iel=GLLEL(ieg)
-      
+
       k_len = pen_k_len(ix,iy,iz,iel)
       ffn = 0
 
-      do il=1, pen_regions_max
-        ipos = pen_map(ix,iy,iz,iel,il)
-        ffn = ffn + (
-     &       binvm1(ix, iy, iz, iel)  !  P^{-1}
-     &       * pen_famp(ipos,il) * pen_fsmth(ix,iy,iz,iel,il)  ! sigma * E_{i,j}
-     &       * (ux - k_len * du_dy(ix,iy,iz,iel)))
+      if (pen_enabled) then
+         do il=1, pen_regions_max
+           ipos = pen_map(ix,iy,iz,iel,il)
+           ffn = ffn + (
+     &          binvm1(ix, iy, iz, iel)  !  P^{-1}
+     &          * pen_famp(ipos,il) * pen_fsmth(ix,iy,iz,iel,il)  ! sigma * E_{i,j}
+     &          * (ux - k_len * du_dy(ix,iy,iz,iel)))
 
-      enddo
+         enddo
+      endif
 
 #ifdef DEBUG
       ! print *, "Penalty ffn = ", ffn
@@ -99,16 +106,16 @@
 
       ! local variables
       real ltim
-      
+
       ! functions
       real dnekclock
 !-----------------------------------------------------------------------
       ! timing
-      ltim = dnekclock()      
+      ltim = dnekclock()
 
       ! get 1D projection and array mapping
       call pen_1dprj
-      
+
       ! update forcing
       call pen_frcs_get(.true.)
 
@@ -124,7 +131,7 @@
 !! @details This routine is just a simple version supporting only lines
 !!   paralles to z axis. In future it can be generalised.
 !!   The subroutine initializes pen_prj, pen_map and pen_npoint
-!! @see Schlatter and Örlü, “Turbulent Boundary Layers at Moderate Reynolds Numbers.” 
+!! @see Schlatter and Örlü, “Turbulent Boundary Layers at Moderate Reynolds Numbers.”
 !!   pg. 12
 !! @remark This routine uses global scratch space \a CTMP0 and \a CTMP1
       subroutine pen_1dprj()
@@ -143,8 +150,8 @@
       real rota, epsl
       real rtmp !< @var temporary variable: distance**2 from starting position (pen_spos)
       parameter (epsl = 1.0e-10)
-      
-      real lcoord(LX1*LY1*LZ1*LELT)  ! @var NOTE: distance along 
+
+      real lcoord(LX1*LY1*LZ1*LELT)  ! @var NOTE: distance along
       common /CTMP0/ lcoord
       integer lmap(LX1*LY1*LZ1*LELT)
       common /CTMP1/ lmap
@@ -152,7 +159,7 @@
       nxy = NX1*NY1
       nxyz = nxy*NZ1
       ntot = nxyz*NELV
-      
+
       ! for each region
       do il=1,pen_regions
       ! Get coordinates and sort them
@@ -188,16 +195,16 @@
             itmp = itmp - nx1*(jtmp-1) + 1
             pen_map(itmp,jtmp,ktmp,eltmp,il) = pen_npoint(il)
          enddo
-             
+
          ! rescale 1D array
          do jl=1,pen_npoint(il)
             pen_prj(jl,il) = (pen_prj(jl,il) - pen_spos(ldim,il))
      $           *pen_ilngt(il)
          enddo
-         
+
          ! get smoothing profile
          ! rota = pen_rota(il)
-         
+
          do jl=1,ntot
             itmp = jl-1
             eltmp = itmp/nxyz + 1
@@ -240,7 +247,7 @@
       enddo
 
       return
-      end subroutine      
+      end subroutine
 !=======================================================================
 !> @brief Generate forcing along 1D line
 !! @details Initializes the pen_famp array. The facility to use
@@ -268,7 +275,7 @@
 
       ! variables necessary to reset velocity projection for P_n-P_n-2
       include 'VPROJ'
-#endif      
+#endif
       ! local variables
       integer il, jl, kl, ll
       integer istart
@@ -309,8 +316,8 @@
         !                  pen_k_len(il, jl, kl, ll) = (
         !  &                  y * log(y / wmles_bc_z0))
         !               enddo
-        !            enddo 
-        !         enddo 
+        !            enddo
+        !         enddo
         !     enddo
         pen_k_len(:nx1,:ny1,:nz1,:nelv) = (
      &       ym1(:nx1,:ny1,:nz1,:nelv) * log(
@@ -320,14 +327,15 @@
       ! else
          ! reset only time dependent part if needed
       endif
-      
+
       ! get penalty for current time step
       if (pen_tiamp.ne.0.0) then
-         ! copy pen_tiamp or pen_frcs -> pen_famp 
+         ! copy pen_tiamp stored in pen_frcs (see above) -> pen_famp
          do il= 1, pen_regions
            call copy(pen_famp(1,il),pen_frcs(1,1,il),pen_npoint(il))
          enddo
       else
+         ! fill zeros -> pen_famp
          do il= 1, pen_regions
             call rzero(pen_famp(1,il),pen_npoint(il))
          enddo
@@ -350,7 +358,7 @@
 
       close(iunit)
 #endif
-      
+
       return
       end subroutine
 !=======================================================================

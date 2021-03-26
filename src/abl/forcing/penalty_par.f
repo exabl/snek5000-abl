@@ -117,6 +117,9 @@
      $     'Time step for penalty',rpar_real,0,0.0,.false.,' ')
       enddo
 
+      call rprm_rp_reg(pen_enabled_id,pen_sec_id,'ENABLED',
+     $     'Enable penalty forcing term',rpar_log,0,0.0,.false.,' ')
+
       ! set initialisation flag
       pen_ifinit=.false.
       
@@ -189,6 +192,8 @@
      $        rpar_real)
          pen_fdt(il) = rtmp
       enddo
+      call rprm_rp_get(itmp,rtmp,ltmp,ctmp,pen_enabled_id,rpar_log)
+      pen_enabled = ltmp
 
       ! get inverse line lengths and smoothing radius
       do il=1,pen_regions

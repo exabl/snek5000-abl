@@ -49,7 +49,11 @@
       real pen_fdt(pen_regions_max)       !< @var time step for forcing
       integer pen_fdt_id(pen_regions_max)
 
+      logical pen_enabled                !< @var penalty toggle
+      integer pen_enabled_id
+
 !     Internal arrays
+
       real pen_ilngt(pen_regions_max) !< @var inverse line length
 
       real pen_ismth(LDIM,pen_regions_max) !< @var inverse smoothing radius
@@ -78,13 +82,13 @@
       common /peni/ pen_id, pen_tmr_id, pen_sec_id, pen_regions,
      $     pen_regions_id, pen_nmode, pen_nmode_id, pen_tiamp_id,
      $     pen_tdamp_id, pen_fdt_id, pen_spos_id, pen_epos_id,
-     $     pen_smth_id, pen_rota_id, pen_npoint, pen_map,
-     $     pen_seed, pen_nfdt, pen_nfdt_old
+     $     pen_smth_id, pen_rota_id, pen_enabled_id,
+     $     pen_npoint, pen_map, pen_seed, pen_nfdt, pen_nfdt_old
 
       common /penr/ pen_tiamp, pen_tdamp, pen_fdt, pen_spos,
      $     pen_epos, pen_smth, pen_rota, pen_ilngt, pen_ismth,
      $     pen_prj, pen_fsmth, pen_frcs, pen_famp, pen_k_len
 
-      common /penl/ pen_ifinit
+      common /penl/ pen_ifinit, pen_enabled
 !> @}
 ! vim: set ft=fortran
