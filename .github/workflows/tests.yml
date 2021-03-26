@@ -24,7 +24,7 @@ jobs:
     - name: Install apt packages
       run: |
         sudo apt-get update
-        sudo apt-get install gfortran libopenmpi-dev
+        sudo apt-get install gfortran libopenmpi-dev ccache
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1

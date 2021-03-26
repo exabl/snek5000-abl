@@ -1,7 +1,7 @@
-CC: gcc-8
-FC: gfortran-8
-MPICC: mpicc
-MPIFC: mpif77
+CC: "ccache gcc"
+FC: "ccache gfortran"
+MPICC: "ccache mpicc"
+MPIFC: "ccache mpif77"
 MPIEXEC: "mpiexec --oversubscribe"
 CFLAGS: "-march=native"
 FFLAGS: "-march=native -mcmodel=medium -std=legacy"
