@@ -319,6 +319,8 @@ c     Define Delta for Smagorinsky method
       call rzero(alpha_bc, n_bc)
       call rzero(mask_bc, n_bc)
 
+      u_star_max = 0.0
+
       call calc_area_bc
 
       return
