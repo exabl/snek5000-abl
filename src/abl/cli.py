@@ -158,6 +158,11 @@ def cli(
             # FIXME: try reducing it further
             # Now causes WARNINGb: Detected non-right-handed element and erros
             # See connect1.f line: 954
+    elif M in (31,):
+        # Similar to Lee and Moser
+        oper.nx = 14
+        oper.ny = 4
+        oper.nz = 7
 
     if M <= 9:
         oper.origin_y = z_wall
@@ -180,6 +185,10 @@ def cli(
             oper.Lz = round(pi, 4)
         elif M == 222:
             oper.Lx = oper.Lz = 0.1
+    elif M % 100 <= 39:  # 31
+        oper.Lx = round(2 * pi, 4)
+        oper.Ly = 2.0
+        oper.Lz = round(pi, 4)
 
     oper.boundary = "P P sh SYM P P".split()
 
@@ -260,6 +269,9 @@ def cli(
     elif params.output.boundary_cond == "moeng":
         problem_type.stress_formulation = True
         params.oper.boundary = ["P", "P", "sh", "SYM", "P", "P"]
+    elif params.output.boundary_cond == "channel":
+        problem_type.stress_formulation = True
+        params.oper.boundary = ["P", "P", "sh", "sh", "P", "P"]
     else:
         raise NotImplementedError("Stress formulation or not?")
 

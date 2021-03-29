@@ -14,6 +14,7 @@ mixing_len = SGS("mixing_len", ("mixing_len.f", "SGS", "WMLES"))
 
 BC = namedtuple("BC", ["name", "sources"])
 # Specific boundary conditions
+channel = BC("channel", ("channel.f", "../sgs/SGS", "../sgs/WMLES"))
 moeng = BC("moeng", ("moeng.f", "../sgs/SGS", "../sgs/WMLES"))
 noslip = BC("noslip", ("noslip.f", "../sgs/SGS", "../sgs/WMLES"))
 
