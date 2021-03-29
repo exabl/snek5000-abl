@@ -276,7 +276,7 @@ def cli(
     velocity.residual_tol = 1e-8
     #
     if params.output.boundary_cond == "noslip":
-        reynolds_number = 1e4
+        reynolds_number = 1e3
     else:
         reynolds_number = 1e10
 
@@ -313,6 +313,7 @@ def cli(
     # ==================
     assert pen_tiamp >= 0.0, f"Penalty amplitude {pen_tiamp} should not be negative!"
     penalty = params.nek.penalty
+    penalty.enabled = True
     penalty.nregion = 1
     penalty.tiamp = pen_tiamp
     penalty.eposx01 = oper.Lx
