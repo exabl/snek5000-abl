@@ -11,5 +11,6 @@ var modules =
     [ "KTH Toolbox: math", "group__math.html", "group__math" ],
     [ "KTH Toolbox: monitor", "group__monitor.html", "group__monitor" ],
     [ "KTH Toolbox: runparam", "group__runparam.html", "group__runparam" ],
-    [ "KTH Toolbox: stat", "group__stat.html", "group__stat" ]
+    [ "KTH Toolbox: stat", "group__stat.html", "group__stat" ],
+    [ "Penalty \"boundary conditions\"", "group__penalty__mini.html", "group__penalty__mini" ]
 ];

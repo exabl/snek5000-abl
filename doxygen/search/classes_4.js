@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gnz',['gnz',['../structgnz.html',1,'']]]
+  ['gnz_2060',['gnz',['../structgnz.html',1,'']]]
 ];

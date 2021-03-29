@@ -1,6 +1,7 @@
 <map id="comp_mij" name="comp_mij">
-<area shape="rect" id="node2" href="$postpro_8f.html#af9d2aff92c48c37b10261e543b5f18fb" title="mag_tensor_e" alt="" coords="132,5,236,32"/>
-<area shape="rect" id="node3" href="$math_8f.html#ad2b51b68d370651f4f6d81952503e7be" title="cmult" alt="" coords="157,56,211,83"/>
-<area shape="rect" id="node4" href="$postpro_8f.html#a2b64593a113feea75ebb2c0820824729" title="tens3d1" alt="" coords="150,107,218,133"/>
-<area shape="rect" id="node5" href="$math_8f.html#a0d9af374781723c272547a185cb3da5e" title="col3" alt="" coords="161,157,207,184"/>
+<area shape="rect" id="node1" title="Compute &#160;for dynamic Smagorinsky model:" alt="" coords="5,81,92,108"/>
+<area shape="rect" id="node2" href="$math_8f.html#ad2b51b68d370651f4f6d81952503e7be" title=" " alt="" coords="168,5,227,32"/>
+<area shape="rect" id="node3" href="$math_8f.html#a0d9af374781723c272547a185cb3da5e" title=" " alt="" coords="173,56,222,83"/>
+<area shape="rect" id="node4" href="$postpro_8f.html#af9d2aff92c48c37b10261e543b5f18fb" title=" " alt="" coords="140,107,255,133"/>
+<area shape="rect" id="node5" href="$postpro_8f.html#a2b64593a113feea75ebb2c0820824729" title=" " alt="" coords="160,157,235,184"/>
 </map>
