@@ -3,17 +3,11 @@ from snek5000.info import InfoSolverMake
 from snek5000.solvers.kth import SimulKTH
 
 from .output import OutputABL
-from .templates import box, makefile_usr, size
 
 
 class InfoSolverABL(InfoSolverMake):
-    """Contain the information on a :class:`eturb.solvers.abl.Simul`
+    """Contain the information on a :class:`abl.solver.SimulABL`
     instance.
-
-    .. todo::
-
-        Move Output info to :class:`InfoSolverNek` and only override it in
-        :class:`InfoSolverABL`.
 
     """
 
@@ -29,11 +23,14 @@ class InfoSolverABL(InfoSolverMake):
         self.classes.Output.module_name = "abl.output"
         self.classes.Output.class_name = "OutputABL"
 
+        self.classes._set_child(
+            "Postproc",
+            attribs={"module_name": "abl.postproc", "class_name": "PostprocABL"},
+        )
+
 
 class SimulABL(SimulKTH):
-    """A solver which compiles and runs using a Snakefile.
-
-    """
+    """A solver which compiles and runs using a Snakefile."""
 
     InfoSolver = InfoSolverABL
 
@@ -41,7 +38,7 @@ class SimulABL(SimulKTH):
     def _complete_params_with_default(params):
         """Add missing default parameters."""
         params = SimulKTH._complete_params_with_default(params)
-        params.nek.velocity._set_attrib("advection", True)
+        params.nek.velocity._set_attribs({"advection": True, "density": 1.0})
 
         params.nek._set_child(
             "wmles",
@@ -55,6 +52,27 @@ class SimulABL(SimulKTH):
                 sgs_npow=0.5,
             ),
         )
+        params.nek._set_child(
+            "penalty",
+            dict(
+                enabled=False,  # Enable penalty term
+                nregion=0,  # Number of penalty regions
+                tiamp=0.0e0,  # Time independent amplitude
+                #  tdamp=0.e+00,  # Time dependent amplitude
+                sposx01=0.0e00,  # Starting point X
+                sposy01=0.0e00,  # Starting point Y
+                sposz01=0.0e00,  # Starting point Z
+                eposx01=0.0e00,  # Ending point X
+                eposy01=0.0e00,  # Ending point Y
+                eposz01=0.0e00,  # Ending point Z
+                smthx01=0.0e00,  # Smoothing length X
+                smthy01=0.0e00,  # Smoothing length Y
+                smthz01=0.0e00,  # Smoothing length Z
+                #  rota01=0.e+00,  # Rotation angle
+                #  fdt01=0.e+00,  # Time step for penalty
+            ),
+        )
+
         params.nek.wmles._set_internal_attr("_enabled", True)
         return params
 
@@ -78,16 +96,8 @@ class SimulABL(SimulKTH):
 
     def __init__(self, params):
         super().__init__(params)
-        self.output.write_box(box)
-        self.output.write_size(size)
-        self.output.write_makefile_usr(makefile_usr)
 
-    def sanity_check(self):
-        """Check params for errors"""
-        params = self.params
-        assert params.oper.Lx == params.nek.general.user_params[5]
-        assert params.oper.Ly == params.nek.general.user_params[6]
-        assert params.oper.Lz == params.nek.general.user_params[7]
+        self.postproc.post_init(self)
 
 
 Simul = SimulABL

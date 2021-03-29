@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+from abl.templates import box, makefile_usr, size
+from snek5000 import mpi
 from snek5000.output.base import Output as OutputBase
 
 SGS = namedtuple("SGS", ["name", "sources"])
@@ -8,11 +10,12 @@ constant = SGS("constant", ("smagorinsky.f", "SGS", "WMLES"))
 dynamic = SGS("dynamic", ("dyn_smag.f", "DYN", "SGS", "WMLES"))
 shear_imp = SGS("shear_imp", ("shear_imp_smag.f", "SGS", "WMLES"))
 vreman = SGS("vreman", ("vreman.f", "SGS", "WMLES"))
+mixing_len = SGS("mixing_len", ("mixing_len.f", "SGS", "WMLES"))
 
 BC = namedtuple("BC", ["name", "sources"])
 # Specific boundary conditions
 moeng = BC("moeng", ("moeng.f", "../sgs/SGS", "../sgs/WMLES"))
-noslip = BC("noslip", ("noslip.f",))
+noslip = BC("noslip", ("noslip.f", "../sgs/SGS", "../sgs/WMLES"))
 
 
 avail_sgs_models = {
@@ -54,35 +57,38 @@ class OutputABL(OutputBase):
                 ("utils.f", "SGS"),
                 ("wmles_init.f", "WMLES", "../toolbox/FRAMELP"),
             ],
+            "forcing": [
+                ("penalty_mini.f", "PENALTY", "../sgs/SGS", "../sgs/WMLES",),
+                ("penalty_par.f", "PENALTY", "../toolbox/FRAMELP",),
+            ],
             "bc": [],
         }
 
-        if not self.sim:
+        if not self.sim and not self.params:
             # Hack to load params from params.xml in current directory
             from abl.solver import Simul
 
-            params = Simul.load_params_from_file(path_xml="params.xml")
+            params = Simul.load_params_from_file(path_xml="params_simul.xml").output
         else:
-            params = self.sim.params
+            params = self.params
 
-        if params.output.sgs_model not in avail_sgs_models:
+        if params.sgs_model not in avail_sgs_models:
             raise NotImplementedError(
-                f"SGS model {params.output.sgs_model}. "
-                f"Must be in {avail_sgs_models}."
+                f"SGS model {params.sgs_model}. " f"Must be in {avail_sgs_models}."
             )
 
-        if params.output.boundary_cond not in avail_boundary_conds:
+        if params.boundary_cond not in avail_boundary_conds:
             raise NotImplementedError(
-                f"Boundary condition {params.output.boundary_cond}. "
+                f"Boundary condition {params.boundary_cond}. "
                 f"Must be in {avail_boundary_conds}."
             )
 
-        sgs = avail_sgs_models[params.output.sgs_model]
+        sgs = avail_sgs_models[params.sgs_model]
         sources["sgs"].append(sgs.sources)
-        if sgs.name in ("constant", "shear_imp", "vreman"):
+        if sgs.name in ("constant", "shear_imp", "vreman", "mixing_len"):
             sources["toolbox"].append(("stat_extras_dummy.f",))
 
-        bc = avail_boundary_conds[params.output.boundary_cond]
+        bc = avail_boundary_conds[params.boundary_cond]
         sources["bc"].append(bc.sources)
         return sources
 
@@ -94,3 +100,17 @@ class OutputABL(OutputBase):
     def _complete_params_with_default(params, info_solver):
         OutputBase._complete_params_with_default(params, info_solver)
         params.output._set_attribs({"sgs_model": "constant", "boundary_cond": "moeng"})
+
+    def post_init(self):
+        params = self.sim.params
+        params.nek.general.user_params[5] = params.oper.Lx
+        params.nek.general.user_params[6] = params.oper.Ly
+        params.nek.general.user_params[7] = params.oper.Lz
+
+        super().post_init()
+
+        # Write additional source files to compile the simulation
+        if mpi.rank == 0 and self._has_to_save and self.sim.params.NEW_DIR_RESULTS:
+            self.write_box(box)
+            self.write_size(size)
+            self.write_makefile_usr(makefile_usr)

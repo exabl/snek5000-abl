@@ -238,7 +238,9 @@ c> boundary.
 
       do ie=1,nelv
       do f=1,6  ! 6 faces of the element
-        if (cbc(f, ie, 1) .eq.'sh ') then  ! boundary condition == sh
+        if ((cbc(f, ie, 1) .eq. 'sh ' ) .or.
+     &      (cbc(f, ie, 1) .eq. 'W  ' )
+     &   ) then  ! boundary condition == sh
             call facind(x0, x1, y0, y1, z0, z1, nx1, nlev_bc, nz1, f)
             do iz=z0, z1
             do iy=y0, y1

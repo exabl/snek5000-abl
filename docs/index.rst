@@ -1,10 +1,14 @@
-.. eturb documentation master file, created by
+.. snek5000-abl documentation master file, created by
    sphinx-quickstart on Wed Dec 25 01:55:26 2019.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 Welcome to snek5000-*abl*'s documentation!
 ===========================================
+
+The ABL_ project is an interdisciplinary effort to model the atmospheric
+boundary layer using Nek5000_. This documentation describes the Fortran user
+code and its Python interface made using snek5000_'s API.
 
 .. raw:: html
 
@@ -58,9 +62,9 @@ Links
 .. * :ref:`Upstream documentation for Nek5000 <nek:genindex>`
 .. Strange intersphinx bug: WARNING: undefined label: nek:genindex (if the link has no caption the label must precede a section header)
 
-* `Nek5000 documentation <https://nek5000.github.io/NekDoc/appendix.html>`_
+* Nek5000_ documentation
 * `KTH framework documentation <https://kth-nek5000.github.io/KTH_Framework>`_
-* `snek5000 documentation <https://exabl.github.io/snek5000>`_
+* snek5000_ documentation
 * `pymech documentation <https://pymech.readthedocs.io>`_
 
 Indices and tables
@@ -71,3 +75,6 @@ Indices and tables
 * :ref:`search`
 * `Documentation produced with Doxygen <doxygen/modules.html>`_
 
+.. _ABL: https://e-science.se/people-and-research/projects/exabl/
+.. _Nek5000: https://nek5000.github.io/NekDoc/appendix.html
+.. _snek5000: https://snek5000.readthedocs.io

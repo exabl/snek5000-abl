@@ -3,7 +3,6 @@ import itertools
 import os
 from glob import iglob
 from pathlib import Path
-from socket import gethostname
 
 import snek5000
 from abl.output import OutputABL as Output
@@ -81,7 +80,7 @@ rule compile:
         exe="nek5000",
     shell:
         """
-        make -j {output.exe}
+        unbuffer make -j {output.exe} | tee -a build.log
         """
 
 
@@ -103,8 +102,29 @@ rule run:
         ln -sf {log} {params.case}.log
         echo "Log file: $PWD"/{params.case}.log
         {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
+        realpath {log}
         """
 
+# no-recompile run: useful for in-place compilation
+rule nrun:
+    input:
+        f"{CASE}.re2",
+        f"{CASE}.ma2",
+        f"{CASE}.par",
+        "SESSION.NAME",
+        "nek5000",
+    log:
+        "logs/run_" + now() + ".log",
+    params:
+        nproc=str(os.cpu_count()),
+        case=f"{CASE}",
+    shell:
+        """
+        ln -sf {log} {params.case}.log
+        {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
+        echo "Log file:"
+        realpath {params.case}.log
+        """
 
 # on cluster
 rule srun:
@@ -179,7 +199,7 @@ rule archive:
         ),
         rest=[
             "SESSION.NAME",
-            "params.xml",
+            "params_simul.xml",
             "SIZE",
             *iglob(f"rs6{CASE}0.f*"),
             f"{CASE}.re2",
@@ -257,9 +277,10 @@ rule generate_makefile:
         f"{CASE}.re2",
         f"{CASE}.ma2",
         f"{CASE}.usr",
-        makenek=NEK_SOURCE_ROOT + "/bin/makenek",
+        cmd=NEK_SOURCE_ROOT + "/bin/nekconfig",
     output:
         "makefile",
+        ".state",
     params:
         case=f"{CASE}",
         inc=" ".join(Output().fortran_inc_flags),
@@ -270,7 +291,7 @@ rule generate_makefile:
         export CC="{config[MPICC]}" FC="{config[MPIFC]}" \
             CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]} {params.inc}" \
             USR="{params.usr}"
-        {input.makenek} {params.case} -nocompile
+        {input.cmd} {params.case}
         """
 
 

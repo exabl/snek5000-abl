@@ -4,7 +4,7 @@
 # Compiled Object files
 *.slo
 *.lo
-*.o
+# *.o
 *.obj
 
 # Precompiled Headers
@@ -23,7 +23,7 @@
 # Compiled Static libraries
 *.lai
 *.la
-*.a
+# *.a
 *.lib
 
 # Executables
@@ -63,6 +63,7 @@ src/*/_version.py
 pip-wheel-metadata
 build/
 .nox
+.coverage
 
 # Jupyter
 .ipynb_checkpoints

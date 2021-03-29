@@ -1,16 +1,16 @@
 c-----------------------------------------------------------------------
 c> @defgroup abl The ABL case user-file
 c> Contains: user specified routines for the ABL case
-c>     - uservp  : variable properties
-c>     - userf   : local acceleration term for fluid
-c>     - userq   : local source term for scalars
-c>     - userbc  : boundary conditions
-c>     - useric  : initial conditions
-c>     - userchk : general purpose routine for checking errors etc.
-c>     - userqtl : thermal divergence for lowMach number flows
-c>     - usrdat  : modify element vertices
-c>     - usrdat2 : modify mesh coordinates
-c>     - usrdat3 : general purpose routine for initialization
+c>     - uservp()  : variable properties
+c>     - userf()   : local acceleration term for fluid
+c>     - userq()   : local source term for scalars
+c>     - userbc()  : boundary conditions
+c>     - useric()  : initial conditions
+c>     - userchk() : general purpose routine for checking errors etc.
+c>     - userqtl() : thermal divergence for lowMach number flows
+c>     - usrdat()  : modify element vertices
+c>     - usrdat2() : modify mesh coordinates
+c>     - usrdat3() : general purpose routine for initialization
 c>
 c> @{
 c----------------------------------------------------------------------
@@ -48,12 +48,15 @@ c> @todo implement ifield = 2 case for temperature
       return
       end
 c-----------------------------------------------------------------------
-c
 c> Compute Coriolis acceleration
 c> \f[ F_x, F_z = - f\hat{e}_y \times \vec{u} \f]
 c> See https://lists.mcs.anl.gov/pipermail/nek5000-users/2014-May/002798.html
+c> @note The Coroiolis acceleration also absorbs the part of the
+c>   pressure under hydrostatic balance, which in turn drives the flow.
+c>   When it is turned off, usrdat3() drives the flow.
 c> @param[in]    ix,iy,iz        GLL point index
 c> @param[in]    eg              global element number
+c> @callgraph
       subroutine userf(ix,iy,iz,eg) ! set acceleration term
 c
 c     Note: this is an acceleration term, NOT a force!
@@ -72,14 +75,15 @@ c
       ! local variables
       real U_GEO, f_corio
 
-c     e = gllel(eg)
 
       U_GEO = uparam(3)
       f_corio = uparam(4)
 
-      ffx = f_corio * uz
+      ffx = 0.0 ! f_corio * uz
       ffy = 0.0
-      ffz = -f_corio * (ux - U_GEO)
+      ffz = 0.0 ! -f_corio * (ux - U_GEO)
+
+      call pen_forcing(ix, iy, iz, eg)
 
       return
       end
@@ -115,7 +119,6 @@ c> @callgraph
       include 'WMLES'  ! KAPPA, PI_, y0
 
       integer ix,iy,iz,eg
-      real Ly
       real rand1, rand2, rand3
       real eps, kx, kz, alpha, beta, perturb_thick
       real U_GEO, XLEN, YLEN, ZLEN
@@ -166,9 +169,9 @@ c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
 
       !- a boundary-layer-like profile
       !- eps * (large scale sinusoidal field + random noise)
-      ux  = ux  + eps*(beta * sin(alpha*x)*cos(beta*z) + rand1 * 1e-1)
-      uy  = 0.  + eps*(       sin(alpha*x)*sin(beta*z) + rand2 * 1e-1)
-      uz  = 0.  - eps*(alpha * cos(alpha*x)*sin(beta*z) + rand3 * 1e-1)
+      ux  = ux !+ eps*(beta * sin(alpha*x)*cos(beta*z) + rand1 * 1e-1)
+      uy  = 0. !+ eps*(       sin(alpha*x)*sin(beta*z) + rand2 * 1e-1)
+      uz  = 0. !- eps*(alpha * cos(alpha*x)*sin(beta*z) + rand3 * 1e-1)
 
       return
       end
@@ -195,7 +198,7 @@ c> @callgraph
       include 'INPUT'  ! IF3D, PARAM
       include 'SOLN'  ! t, pr, vx
       include 'TSTEP'  ! ISTEP, lastep, time
-      include 'SGS'  ! dg2, ediff
+      include 'SGS'  ! dg2, ediff, du_dx, du_dy, du_dz
       include 'CHKPOINTD'  ! chpt_ifrst
       include 'WMLES'  ! KAPPA
 
@@ -214,6 +217,12 @@ c> @callgraph
       ! save/load files for full-restart
       call chkpt_main
 
+      ! compute velocity gradient
+      call gradm1(du_dx, du_dy, du_dz, vx)
+
+!     for penalty
+      call pen_update
+
 c     calculate eddy viscosity and total viscosity
 c     Placed here because
 c       - frame_monitor would read the WMLES parameters and
@@ -225,6 +234,10 @@ c       - chkpt_main would load velocity data required for calculating ediff
         enddo
         call copy(t,ediff,n)
       endif
+
+#ifdef DEBUG
+      print *,  "ediff (min/max) = ", minval(ediff), maxval(ediff)
+#endif
 
       ! statistics computed by toolbox
       call stat_avg
@@ -306,6 +319,8 @@ c     Define Delta for Smagorinsky method
       call rzero(alpha_bc, n_bc)
       call rzero(mask_bc, n_bc)
 
+      u_star_max = 0.0
+
       call calc_area_bc
 
       return
@@ -313,7 +328,7 @@ c     Define Delta for Smagorinsky method
 c-----------------------------------------------------------------------
 c> Compute inflow / outflow conditions a.k.a. driving force. Ubar=1
 c> Not required when coriolis force is specified in userf
-c> https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386
+c> @see https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386
 c> @callgraph
       subroutine usrdat3()
 
@@ -321,6 +336,11 @@ c> @callgraph
 
       include 'SIZE'
 
+      include 'INPUT'  ! param, uparam
+
+      param(54) = -1  ! use >0 for const flowrate or <0 bulk vel
+                      ! flow direction is given by (1=x, 2=y, 3=z)
+      param(55) = uparam(3)  ! flowrate/bulk-velocity
       return
       end
 c ----------------------------------------------------------------------
@@ -341,6 +361,7 @@ c> @{
       call chkpt_register
       call stat_register
       call wmles_register
+      call pen_register
 
       return
       end subroutine
@@ -357,6 +378,7 @@ c> @{
       call chkpt_init
       call stat_init
       call wmles_init
+      call pen_init
 
       return
       end subroutine
@@ -608,14 +630,19 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
       subroutine spatial_means
       implicit none
       include 'SIZE'
+      include 'INPUT'  ! param, uparam
       include 'SOLN'  ! vx, vy
       include 'MASS'  ! bm1, volvm1
       include 'TSTEP'  ! time, istep
       include 'SGS_BC'  ! ustar_bc, mask_bc, area_bc, u_star_max
 
-      integer n, n_bc
-      real ubar, e2, u_star_avg, u_star_max_
+      real scale_vf(3)
+      common /cvflow_r/ scale_vf
 
+      ! local variables
+      integer n, n_bc
+      real ubar, e2, u_star_avg, u_star_max_, dpdx_avg, dpdy_avg
+      real U_GEO, f_corio
       logical file_exists, header_written
       save header_written
       data header_written /.false./
@@ -632,6 +659,18 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
       u_star_avg = glsc2(u_star_bc, mask_bc, n_bc) / area_bc
       u_star_max_ = glmax(u_star_max, 1)
 
+
+      if (param(55) .ne. 0) then
+         dpdx_avg = -scale_vf(1)
+         dpdy_avg = -scale_vf(3)
+      else
+         U_GEO = uparam(3)
+         f_corio = uparam(4)
+
+         dpdx_avg = 0.0
+         dpdy_avg = -f_corio * U_GEO
+      endif
+
       if (nid.eq.0) then
           if (.not. header_written) then
               inquire(file='spatial_means.txt', exist=file_exists)
@@ -639,9 +678,10 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
               if (.not. file_exists) then
                  open(26, file='spatial_means.txt')
                  write(26, 22)
-     &        "it", "t", "ux_avg", "ez_avg", "u_star_avg", "u_star_max"
+     &        "it", "t", "ux_avg", "ez_avg", "u_star_avg", "u_star_max",
+     &        "dpdx_avg", "dpdy_avg"
 
-   22            format(6A13)
+   22            format(8A13)
                  close(26)
               endif
 
@@ -649,7 +689,8 @@ c>    d/dz (numerical, gradm1) -> d/dy (physical spanwise direction)
           endif
 
          open(26, file='spatial_means.txt', position='append')
-         write(26, 2) istep, time, ubar, e2, u_star_avg, u_star_max_
+         write(26, 2) istep, time, ubar, e2, u_star_avg, u_star_max_,
+     &     dpdx_avg, dpdy_avg
          close(26)
 
    2  format(I13, 1P 8E13.4)

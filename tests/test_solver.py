@@ -8,6 +8,11 @@ def test_init():
     params = Simul.create_default_params()
     params.output.sub_directory = "test"
     sim = Simul(params)
+    # Check params for errors
+    params = sim.params
+    assert params.oper.Lx == params.nek.general.user_params[5]
+    assert params.oper.Ly == params.nek.general.user_params[6]
+    assert params.oper.Lz == params.nek.general.user_params[7]
     print(sim.info_solver)
 
 

@@ -11,4 +11,9 @@ c
      $     snrm(lx1*ly1*lz1,lelv)
       common /constsmg/ sij, snrm
 
+      real du_dx(lx1,ly1,lz1,lelv)
+      real du_dy(lx1,ly1,lz1,lelv)
+      real du_dz(lx1,ly1,lz1,lelv)
+
+      common /gradients/ du_dx, du_dy, du_dz
 c vim: set ft=fortran

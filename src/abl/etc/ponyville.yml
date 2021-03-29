@@ -1,0 +1,8 @@
+CC: gcc-7
+FC: gfortran-7
+MPICC: mpicc
+MPIFC: mpif77
+MPIEXEC: "mpiexec"
+CFLAGS: "-march=native"
+FFLAGS: "-march=native -mcmodel=medium -std=legacy"
+

@@ -1,6 +1,6 @@
-DIR="$(pwd)"
+DIR="$(pwd -P)"
 export NEK_SOURCE_ROOT="$DIR/lib/Nek5000"
-export PATH="$PATH:$NEK_SOURCE_ROOT/bin"
+export PATH="$PATH:$NEK_SOURCE_ROOT/bin:$DIR/bin"
 
 alias smake="snakemake"
 # tarball utilities
