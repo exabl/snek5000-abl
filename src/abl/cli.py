@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
 import sys
-from math import pi
+from math import nan, pi
 from pathlib import Path
 from pprint import pprint
 
@@ -289,6 +289,8 @@ def cli(
     #
     if params.output.boundary_cond == "noslip":
         reynolds_number = 1e3
+    elif params.output.boundary_cond == "channel":
+        reynolds_number = 125_000
     else:
         reynolds_number = 1e10
 
@@ -340,6 +342,28 @@ def cli(
     params.short_name_type_run = name_run
     params.output.sub_directory = sub_dir
     params.compile_in_place = in_place
+
+    # Channel flow overides
+    # =====================
+    general.start_from = "ics.f00000"
+    general.stop_at = "end_time"
+    general.end_time = 1500
+    general.num_steps = nan
+
+    general.dt = 5e-3
+    general.variable_dt = False
+
+    general.write_control = "runTime"
+    general.write_interval = 50
+
+    general.filter_weight = 10
+    general.filter_cutoff_ratio = nan
+    general.user_params.update({3: 1.0, 4: 0.00})
+
+    params.nek.stat.av_step = 1
+    params.nek.stat.io_step = 300
+
+    penalty.enabled = False
 
     ctx.ensure_object(dict)
 
