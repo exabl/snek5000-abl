@@ -5,6 +5,7 @@
       implicit none
 
       include 'SIZE'
+      include 'TSTEP'  ! istep
       include 'PENALTY'
 
       ! local variables
@@ -13,10 +14,15 @@
       ! functions
       real dnekclock
 !-----------------------------------------------------------------------
-      if (.not. pen_enabled) then
+      if (
+     &      (.not. pen_enabled) .or.
+     &      (istep > 0 .and. pen_tdamp < 1.e-14)  ! no need to recompute forcing arrays
+     &) then
           ! Do nothing!
           return
       endif
+
+
 
       ! timing
       ltim = dnekclock()
