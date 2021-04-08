@@ -5,8 +5,8 @@ import sys
 from snek5000.clusters import Cluster
 
 cluster = Cluster()
-sub_dir = "21march"
-base_name_run = "pen"
+sub_dir = "channel_tests"
+base_name_run = "ch"
 sub_command = "launch"
 #  sub_command = "launch compile"
 # sub_command = "launch release"; cluster.cmd_run = "echo"
@@ -26,23 +26,25 @@ for (
     z0,
     pen_tiamp,
 ) in itertools.product(
-    zip([222], [1] * 1, [f"{days}-00:00:00" for days in (1,) * 1]),
+    # zip([222], [1] * 1, [f"{days}-00:00:00" for days in (1,) * 1]),
+    zip([31], [2] * 1, ["03:00:00"]),
     [0.05],
     [0.75],
     # [0.], [1.],
     [False],
     [False],
-    ["mixing_len"],
+    ["channel_mixing_len"],
     #  ["vreman", "constant", "shear_imp"],
     # "dynamic"],
-    ["noslip"],
-    [0.0001],
-    [0.001],
-    [-(10 ** p) for p in range(6)],
+    ["moeng"],
+    [0.000],
+    [3.4289e-5],
+    #  [-(10 ** p) for p in range(6)],
+    [0],
 ):
     mesh, nb_nodes, walltime = mesh_nb_nodes_walltime
 
-    name_run = f"{base_name_run}-{sgs_model}-{pen_tiamp:07d}"
+    name_run = f"{base_name_run}-{sgs_model}"  # "-{pen_tiamp:07d}"
     if filter_temporal and sgs_boundary:
         print(f"skipping ... {name_run}")
         continue
