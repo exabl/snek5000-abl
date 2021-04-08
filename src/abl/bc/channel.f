@@ -12,7 +12,7 @@ c> @note This subroutine MAY NOT be called by every process
 
       integer ix, iy, iz, iside, eg, ie, idx1, idx2
       real u1_2, w1_2, y1_2, y0, uh, u_star, alpha
-      real eps, Tf
+      real eps, Tf, half_channel
 
       include 'SIZE'
       include 'INPUT'  ! uparam
