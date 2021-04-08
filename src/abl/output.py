@@ -11,6 +11,7 @@ dynamic = SGS("dynamic", ("dyn_smag.f", "DYN", "SGS", "WMLES"))
 shear_imp = SGS("shear_imp", ("shear_imp_smag.f", "SGS", "WMLES"))
 vreman = SGS("vreman", ("vreman.f", "SGS", "WMLES"))
 mixing_len = SGS("mixing_len", ("mixing_len.f", "SGS", "WMLES"))
+channel_mixing_len = SGS("channel_mixing_len", ("channel_mixing_len.f", "SGS", "WMLES"))
 
 BC = namedtuple("BC", ["name", "sources"])
 # Specific boundary conditions
@@ -86,7 +87,13 @@ class OutputABL(OutputBase):
 
         sgs = avail_sgs_models[params.sgs_model]
         sources["sgs"].append(sgs.sources)
-        if sgs.name in ("constant", "shear_imp", "vreman", "mixing_len"):
+        if sgs.name in (
+            "constant",
+            "shear_imp",
+            "vreman",
+            "mixing_len",
+            "channel_mixing_len",
+        ):
             sources["toolbox"].append(("stat_extras_dummy.f",))
 
         bc = avail_boundary_conds[params.boundary_cond]
