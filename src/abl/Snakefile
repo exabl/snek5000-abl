@@ -1,43 +1,29 @@
-import importlib.resources
-import itertools
-import os
-from glob import iglob
-from pathlib import Path
-
 import snek5000
 from abl.output import OutputABL as Output
-from snek5000.util import now
-from snek5000.util.archive import tar_name, archive, clean_simul
 
 
 # Case name
 CASE = "abl"
 CONFIG = Output.get_configfile()
-ROOT = Output.get_root()
-NEK_SOURCE_ROOT = snek5000.source_root()
 
 
-# TODO: define configuration files for SNIC clusters
+snek5000.ensure_env()
+
+
 configfile: CONFIG
 
-
-if os.getenv("SNEK_DEBUG"):
-    config["CFLAGS"] += " -O0 -g"
-    config[
-        "FFLAGS"
-    ] += " -O0 -g -DDEBUG -Wall -ffpe-trap=invalid,zero,overflow"  # ,underflow
-
-if not os.getenv("NEK_SOURCE_ROOT"):
-    os.environ["NEK_SOURCE_ROOT"] = NEK_SOURCE_ROOT
-
-if NEK_SOURCE_ROOT not in os.getenv("PATH"):
-    os.environ["PATH"] = ":".join([NEK_SOURCE_ROOT, os.getenv("PATH")])
+# Necessary to pass configuration to other Snakemake modules
+config.update(
+    {
+        "CASE": CASE,
+        "file": CONFIG,
+        "includes": " ".join(Output().fortran_inc_flags),
+        "objects": " ".join(Output().makefile_usr_obj),
+    }
+)
 
 
-subworkflow Nek5000:
-    workdir: NEK_SOURCE_ROOT
-    snakefile: snek5000.get_asset("nek5000.smk")
-    configfile: CONFIG
+snek5000.append_gcc_debug_flags(config)
 
 
 # default rule
@@ -53,165 +39,34 @@ rule mesh:
         f"{CASE}.ma2",
 
 
-# gslib, lapack ...
-rule build_third_party:
-    input:
-        nekconfig=NEK_SOURCE_ROOT + "/bin/nekconfig",
-    output:
-        NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a",
-        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a",
-    shell:
-        "{input.nekconfig} -build-dep"
+# compiler and run rules
+# ======================
+module compiler:
+    snakefile:
+        snek5000.get_asset("compiler.smk")
+    config:
+        config
+
+
+use rule * from compiler
 
 
 # compile
-rule compile:
-    input:
-        "SIZE",
-        f"{CASE}.usr",
-        "makefile_usr.inc",
-        "makefile",
-        * iglob("toolbox/*"),
-        * iglob("sgs/*"),
-        NEK_SOURCE_ROOT + "/3rd_party/gslib/lib/libgs.a",
-        NEK_SOURCE_ROOT + "/3rd_party/blasLapack/libblasLapack.a",
-    output:
-        f"{CASE}.f",
-        exe="nek5000",
-    shell:
-        """
-        unbuffer make -j {output.exe} | tee -a build.log
-        """
-
-
-# run
-rule run:
-    input:
-        f"{CASE}.re2",
-        f"{CASE}.ma2",
-        f"{CASE}.par",
-        "SESSION.NAME",
-        "nek5000",
-    log:
-        "logs/run_" + now() + ".log",
+use rule compile from compiler with:
     params:
-        nproc=str(os.cpu_count()),
-        case=f"{CASE}",
-    shell:
-        """
-        ln -sf {log} {params.case}.log
-        echo "Log file: $PWD"/{params.case}.log
-        {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
-        realpath {log}
-        """
-
-# no-recompile run: useful for in-place compilation
-rule nrun:
-    input:
-        f"{CASE}.re2",
-        f"{CASE}.ma2",
-        f"{CASE}.par",
-        "SESSION.NAME",
-        "nek5000",
-    log:
-        "logs/run_" + now() + ".log",
-    params:
-        nproc=str(os.cpu_count()),
-        case=f"{CASE}",
-    shell:
-        """
-        ln -sf {log} {params.case}.log
-        {config[MPIEXEC]} -n {params.nproc} ./nek5000 > {log} &
-        echo "Log file:"
-        realpath {params.case}.log
-        """
-
-# on cluster
-rule srun:
-    input:
-        f"{CASE}.re2",
-        f"{CASE}.ma2",
-        f"{CASE}.par",
-        "SESSION.NAME",
-        "nek5000",
-    log:
-        "logs/run_" + now() + ".log",
-    params:
-        nproc=str(os.cpu_count()),
-        case=f"{CASE}",
-    shell:
-        """
-        ln -sf {log} {params.case}.log
-        echo "Log file: $PWD"/{params.case}.log
-        {config[MPIEXEC]} -n {params.nproc} ./nek5000 | tee {log}
-        """
+        make="unbuffer make"
 
 
-# clean compiler output
-rule clean:
-    params:
-        case=f"{CASE}",
-    shell:
-        """
-        echo "cleaning Nek5000 ..."
-        rm -fv {params.case}.f nek5000
-        rm -rf obj
-        rm -fv $NEK_SOURCE_ROOT/core/mpif.h
-        """
+# I/O rules
+# =========
+module io:
+    snakefile:
+        snek5000.get_asset("io.smk")
+    config:
+        config
 
 
-# clean simulation files
-rule cleansimul:
-    params:
-        case=f"{CASE}",
-        tarball=tar_name(compress_format=".zst"),
-    run:
-        clean_simul(params.case, params.tarball)
-
-
-# clean third party
-rule clean3rd:
-    params:
-        gslib_dir=NEK_SOURCE_ROOT + "/3rd_party/gslib",
-    shell:
-        """
-        nekconfig clean < <(yes)
-        rm -rf {params.gslib_dir}/{{gslib-*,*.tar.gz}}
-        """
-
-
-# clean everything
-rule cleanall:
-    shell:
-        """
-        rm -rf obj
-        snakemake clean clean3rd cleansimul -j
-        """
-
-
-# create an archive with all of our results
-rule archive:
-    params:
-        solution=sorted(
-            itertools.chain.from_iterable(
-                (iglob(f"{prefix}{CASE}0.f*") for prefix in ("", "vgr", "c2D", "sts"))
-            )
-        ),
-        rest=[
-            "SESSION.NAME",
-            "params_simul.xml",
-            "SIZE",
-            *iglob(f"rs6{CASE}0.f*"),
-            f"{CASE}.re2",
-            f"{CASE}.ma2",
-            f"{CASE}.par",
-            f"{CASE}.usr",
-        ],
-        tarball=tar_name(),
-    run:
-        archive(params.tarball, params.solution, remove=True)
-        archive(params.tarball, params.rest)
-        archive(params.tarball + ".zst", readonly=True)
+use rule * from io
 
 
 # create a release with source files
@@ -234,87 +89,24 @@ rule release:
 
 # internal rules
 # ==============
-# generate a box mesh
-rule generate_box:
-    input:
-        box=f"{CASE}.box",
-        genbox=Nek5000("bin/genbox"),
-    output:
-        "box.re2",
-    shell:
-        "echo {input.box} | "
-        "{input.genbox}"
+module internal:
+    snakefile:
+        snek5000.get_asset("internal.smk")
+    config:
+        config
 
 
-# rename mesh file re2
-rule move_box:
-    input:
-        "box.re2",
-    output:
-        f"{CASE}.re2",
-    shell:
-        "mv -f {input} {output}"
-
-
-# generate map / connectivity matrix
-rule generate_map:
-    input:
-        f"{CASE}.re2",
-        genmap=Nek5000("bin/genmap"),
-    output:
-        f"{CASE}.ma2",
-    params:
-        prefix=f"{CASE}",
-        tolerance=0.01,
-    shell:
-        'echo "{params.prefix}\n{params.tolerance}" | '
-        "{input.genmap}"
-
-
-# generate makefile
-rule generate_makefile:
-    input:
-        f"{CASE}.re2",
-        f"{CASE}.ma2",
-        f"{CASE}.usr",
-        cmd=NEK_SOURCE_ROOT + "/bin/nekconfig",
-    output:
-        "makefile",
-        ".state",
-    params:
-        case=f"{CASE}",
-        inc=" ".join(Output().fortran_inc_flags),
-        usr=" ".join(Output().makefile_usr_obj),
-    shell:
-        """
-        set +u  # Do not error on undefined bash variables
-        export CC="{config[MPICC]}" FC="{config[MPIFC]}" \
-            CFLAGS="{config[CFLAGS]}" FFLAGS="{config[FFLAGS]} {params.inc}" \
-            USR="{params.usr}"
-        {input.cmd} {params.case}
-        """
+use rule * from internal as internal_*
 
 
 # generate compile.sh
 rule generate_compile_sh:
     output:
         "compile.sh",
-    params:
-        case=f"{CASE}",
-        inc=" ".join(Output().fortran_inc_flags),
-        usr=" ".join(Output().makefile_usr_obj),
     run:
-        import stat
         from abl.templates import compile_sh as template
 
-        with open(str(output), "w") as fp:
-            fp.write(
-                template.render(
-                    CASE=params.case, INC=params.inc, USR=params.usr, **config
-                )
-            )
-
-        os.chmod(str(output), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        Output.write_compile_sh(template, config, path=output)
 
 
 # generate sessionfile

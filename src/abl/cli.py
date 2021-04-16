@@ -341,7 +341,8 @@ def cli(
     # ===================
     params.short_name_type_run = name_run
     params.output.sub_directory = sub_dir
-    params.compile_in_place = in_place
+    logger.info("params.compile_in_feature is ignored")
+    #  params.compile_in_place = in_place
 
     # Channel flow overides
     # =====================

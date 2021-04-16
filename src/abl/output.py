@@ -100,10 +100,6 @@ class OutputABL(OutputBase):
         sources["bc"].append(bc.sources)
         return sources
 
-    @property
-    def fortran_inc_flags(self):
-        return (f"-I{inc_dir}" for inc_dir in self.makefile_usr_sources)
-
     @staticmethod
     def _complete_params_with_default(params, info_solver):
         OutputBase._complete_params_with_default(params, info_solver)
