@@ -40,11 +40,11 @@ module compiler:
 
 use rule * from compiler
 
-
-# compile
-use rule compile from compiler with:
-    params:
-        make="unbuffer make"
+# # Bug: https://github.com/snakemake/snakemake/issues/958
+# # unbuffered compile for colours
+# use rule compile from compiler with:
+#     params:
+#         make="unbuffer make"
 
 
 # I/O rules
@@ -97,17 +97,3 @@ rule generate_compile_sh:
         from abl.templates import compile_sh as template
 
         Output.write_compile_sh(template, config, path=output)
-
-
-# generate sessionfile
-rule generate_session:
-    output:
-        "SESSION.NAME",
-    params:
-        case=f"{CASE}",
-    shell:
-        """
-        touch SESSION.NAME
-        echo {params.case} > SESSION.NAME
-        echo `pwd`'/' >>  SESSION.NAME
-        """
