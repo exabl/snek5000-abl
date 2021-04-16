@@ -251,8 +251,6 @@ def cli(
     # ====================
     apply_case(case, params)
 
-    # Channel flow overides
-    # =====================
     general.user_params.update(
         {
             5: oper.Lx,
@@ -296,7 +294,7 @@ def launch(ctx, rule):
 
 
 @cli.command()
-@click.argument("rule", default="nrun")
+@click.argument("rule", default="run")
 @click.pass_context
 def debug(ctx, rule):
     import os

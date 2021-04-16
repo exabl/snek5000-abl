@@ -30,7 +30,8 @@ def no_penalty(params):
     general.num_steps = nan
 
     general.dt = 5e-3
-    general.variable_dt = False
+    # general.variable_dt = False
+    general.variable_dt = True
 
     general.write_control = "runTime"
     general.write_interval = 50
@@ -48,18 +49,31 @@ def no_penalty(params):
     params.nek.penalty.enabled = False
 
 
+def low_re(params):
+    no_penalty(params)
+    reynolds_number = 1_250
+    params.nek.velocity.viscosity = -reynolds_number
+
+
 def with_penalty(params):
     # First populate channel flow parameters
     no_penalty(params)
+
+    params.nek.general.variable_dt = True
 
     oper = params.oper
 
     penalty = params.nek.penalty
     penalty.enabled = True
-    penalty.nregion = 1
+    penalty.nregion = 2
     penalty.eposx01 = oper.Lx
-    penalty.sposy01 = 0.05 * oper.Ly
-    penalty.eposy01 = 0.3 * oper.Ly
-    # float(oper.coords_y.split()[1])  # boundary of first element
+    penalty.sposy01 = 0.05 * oper.Ly / 2
+    penalty.eposy01 = 0.3 * oper.Ly / 2
     penalty.eposz01 = oper.Lz
     penalty.smthy01 = penalty.eposy01 - penalty.sposy01
+
+    penalty.eposx02 = oper.Lx
+    penalty.sposy02 = oper.Ly - 0.3 * oper.Ly / 2
+    penalty.eposy02 = oper.Ly - 0.05 * oper.Ly / 2
+    penalty.eposz02 = oper.Lz
+    penalty.smthy02 = penalty.eposy01 - penalty.sposy01
