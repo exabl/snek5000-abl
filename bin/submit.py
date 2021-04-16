@@ -36,7 +36,7 @@ for (
     ["channel_mixing_len"],
     #  ["vreman", "constant", "shear_imp"],
     # "dynamic"],
-    ["moeng"],
+    ["channel"],
     [0.000],
     [3.4289e-5],
     #  [-(10 ** p) for p in range(6)],

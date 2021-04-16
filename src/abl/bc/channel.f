@@ -34,7 +34,7 @@ c      if (cbc(iside,gllel(eg),ifield).eq.'v01')
 c--------Calculate Moeng's model parameters
       ie=gllel(eg)
 
-      if (y < uparam(6) / 2) then
+      if (y < half_channel) then
          ! Less than half channel, bottom wall
          idx1 = wmles_bc_z_index  !< @var index where the velocities and mesh coordinate is evaluated
          idx2 = idx1 + 1
@@ -71,6 +71,9 @@ c--------Calculate Moeng's model parameters
       endif
 
       y1_2=(ym1(ix, idx1, iz, ie) + ym1(ix, idx2, iz, ie))/2
+      if (y > half_channel) then
+         y1_2 = uparam(6) - y1_2
+      endif
 
       uh = sqrt(u1_2**2 + w1_2**2)
       u_star = (uh * kappa) / log(y1_2 / y0)
