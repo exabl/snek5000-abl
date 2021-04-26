@@ -21,7 +21,7 @@
 
 !     max number of regions in the mesh where penalty is applied
       integer pen_regions_max
-      parameter (pen_regions_max=1)
+      parameter (pen_regions_max=2)
 !     max number of random phase sets stored; 1- time independent, 2, 3 and 4 - time dependent
 !     I keep two old random pahase sets to get correct restart after AMR refinement
       integer pen_nset_max

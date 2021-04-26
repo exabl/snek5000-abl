@@ -267,7 +267,6 @@
       include 'GEOM'  ! ym1
       include 'TSTEP'
       include 'PENALTY'
-      include 'WMLES'  ! wmles_bc_z0
 
       ! argument list
       logical ifreset
@@ -280,10 +279,14 @@
       ! variables necessary to reset velocity projection for P_n-P_n-2
       include 'VPROJ'
 #endif
+
+      ! function defined in boundary condition module
+      real abl_pen_k
+      external abl_pen_k
+
       ! local variables
       integer il, jl, kl, ll, ntot_frcs
       integer istart
-      real y
 
 !-----------------------------------------------------------------------
       ntot_frcs = lx1*ly1*lz1*lelt * pen_nset_max * pen_regions_max
@@ -301,22 +304,22 @@
 
          ! compute K array
          print *, "Computing penalty K array"
-        !      do ll=1, nelv
-        !         do kl=1, nz1
-        !            do jl=1, ny1
-        !               do il=1, nx1
-        !                  y = ym1(il, jl, kl, ll)
-        !                  pen_k_len(il, jl, kl, ll) = (
-        !  &                  y * log(y / wmles_bc_z0))
-        !               enddo
-        !            enddo
-        !         enddo
-        !     enddo
-        pen_k_len(:nx1,:ny1,:nz1,:nelv) = (
-     &       ym1(:nx1,:ny1,:nz1,:nelv) * log(
-     &          ym1(:nx1,:ny1,:nz1,:nelv) / wmles_bc_z0
-     &       )
-     &   )
+         do ll=1, nelv
+            do kl=1, nz1
+               do jl=1, ny1
+                  do il=1, nx1
+                     pen_k_len(il, jl, kl, ll) = (
+     &                  abl_pen_k(ym1(il, jl, kl, ll))
+     &               )
+                  enddo
+               enddo
+            enddo
+        enddo
+        !    pen_k_len(:nx1,:ny1,:nz1,:nelv) = (
+        ! &       ym1(:nx1,:ny1,:nz1,:nelv) * log(
+        ! &          ym1(:nx1,:ny1,:nz1,:nelv) / wmles_bc_z0
+        ! &       )
+        ! &   )
       ! else
          ! reset only time dependent part if needed
 
@@ -343,7 +346,7 @@
       call outpost(
      &   pen_k_len,  ! x: VERIFIED!
      &   pen_fsmth(:,:,:,:,1),  ! y: VERIFIED!
-     &   pen_frcs(:,1,1),  ! z
+     &   pen_fsmth(:,:,:,:,2),  ! z: VERIFIED?  &   pen_frcs(:,1,1),  ! z
      &   pen_famp(:,1),  ! pr
      &   pen_map(:,:,:,:,1),  ! temp
      &   'pen')

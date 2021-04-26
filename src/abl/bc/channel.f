@@ -103,3 +103,20 @@ c--------Calculate Stresses
       return
       end
 c----------------------------------------------------------------------
+c> Compute the K term in penalty forcing
+      real function abl_pen_k(y_coord)
+      implicit none
+
+      include 'SIZE'
+      include 'INPUT'  ! uparam
+      include 'WMLES'  ! wmles_bc_z0
+
+      real y_coord  !< @var mesh coordinate where the coefficient is evaluated
+
+      y_coord = min(y_coord, uparam(6) - y_coord)  ! Shortest distance from the wall
+
+      y_coord = max(y_coord, 1e-14)  ! Avoid log(0)
+      abl_pen_k = y_coord * log(y_coord / wmles_bc_z0)
+
+      return
+      end function

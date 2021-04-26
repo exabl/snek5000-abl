@@ -24,7 +24,7 @@ def no_penalty(params):
 
     general = params.nek.general
 
-    general.start_from = "ics.f00000"
+    #  general.start_from = "ics.f00000"
     general.stop_at = "end_time"
     general.end_time = 1500
     general.num_steps = nan
