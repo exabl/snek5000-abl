@@ -20,7 +20,7 @@ def apply_case(case, params):
     func(params)
 
 
-@click.group()
+@click.group(context_settings={"help_option_names": ("-h", "--help")})
 @click.option("-d", "--sub-dir", default="test")
 @click.option(
     "-c",
