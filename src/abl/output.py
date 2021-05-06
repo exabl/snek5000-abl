@@ -1,3 +1,4 @@
+import os
 from collections import namedtuple
 
 from abl.templates import box, makefile_usr, size
@@ -60,8 +61,17 @@ class OutputABL(OutputBase):
                 ("wmles_init.f", "WMLES", "../toolbox/FRAMELP"),
             ],
             "forcing": [
-                ("penalty_mini.f", "PENALTY", "../sgs/SGS", "../sgs/WMLES",),
-                ("penalty_par.f", "PENALTY", "../toolbox/FRAMELP",),
+                (
+                    "penalty_mini.f",
+                    "PENALTY",
+                    "../sgs/SGS",
+                    "../sgs/WMLES",
+                ),
+                (
+                    "penalty_par.f",
+                    "PENALTY",
+                    "../toolbox/FRAMELP",
+                ),
             ],
             "bc": [],
         }
@@ -104,6 +114,18 @@ class OutputABL(OutputBase):
     def _complete_params_with_default(params, info_solver):
         OutputBase._complete_params_with_default(params, info_solver)
         params.output._set_attribs({"sgs_model": "constant", "boundary_cond": "moeng"})
+
+    def write_makefile_usr(self, template, fp=None, **template_vars):
+        if os.getenv("SNEK_DEBUG"):
+            custom_fortran_flags = (
+                "$(subst -w,,$(FL2)) -fcheck=all -Wall -Wextra -Waliasing -Wsurprising "
+                "-Wcharacter-truncation -Wno-unused-parameter"
+            )
+        else:
+            custom_fortran_flags = "$(FL2)"
+
+        template_vars["custom_fortran_flags"] = custom_fortran_flags
+        super().write_makefile_usr(template, fp, **template_vars)
 
     def post_init(self):
         params = self.sim.params
