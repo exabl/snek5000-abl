@@ -82,7 +82,7 @@ c--------Calculate Stresses
       endif
 
       ! Save u_star anyway for spatial_means
-      u_star_bc(ix, iy, iz, ie) = u_star
+      u_star_bc(ix, 1, iz, ie) = u_star
 
       u_star_max = max(u_star, u_star_max)
 

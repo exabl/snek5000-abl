@@ -10,7 +10,7 @@ c> @note This subroutine MAY NOT be called by every process
       implicit none
 
 
-      integer ix, iy, iz, iside, eg, ie, idx1, idx2
+      integer ix, iy, iz, iside, eg, ie, idx1, idx2, nlev
       real u1_2, w1_2, y1_2, y0, uh, u_star, alpha
       real eps, Tf, half_channel
 
@@ -38,10 +38,12 @@ c--------Calculate Moeng's model parameters
          ! Less than half channel, bottom wall
          idx1 = wmles_bc_z_index  !< @var index where the velocities and mesh coordinate is evaluated
          idx2 = idx1 + 1
+         nlev = 1
       else
          ! More than half channel, top wall
          idx1 = iy - (wmles_bc_z_index - 1)
          idx2 = idx1 - 1
+         nlev = 2
       endif
 
       u1_2=(vx(ix, idx1, iz, ie) + vx(ix, idx2, iz, ie))/2
@@ -86,17 +88,12 @@ c--------Calculate Stresses
       temp = 0.0
 
       if (wmles_sgs_bc) then
-#ifdef DEBUG
-        if (iy > nlev_bc) then
-          call exitti("iy exceeded allocated shape: ", iy)
-        endif
-#endif
         ! Save and later use it in gij_from_bc
         alpha_bc(ix, iy, iz, ie) = alpha
       endif
 
       ! Save u_star anyway for spatial_means
-      u_star_bc(ix, iy, iz, ie) = u_star
+      u_star_bc(ix, nlev, iz, ie) = u_star
 
       u_star_max = max(u_star, u_star_max)
 

@@ -2,7 +2,7 @@ c
 c     Storage for BC in userbc to be read by eddy_visc subroutine
 c
       integer nlev_bc
-      parameter(nlev_bc=1)  ! number of levels of boundary condition
+      parameter(nlev_bc=2)  ! number of levels of boundary condition
 
       real u_star_bc(lx1,nlev_bc,lz1,lelv)  ! friction velocity
       real alpha_bc(lx1,nlev_bc,lz1,lelv)  ! arctan(spanwise vel / streamwise vel)

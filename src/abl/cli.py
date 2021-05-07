@@ -299,8 +299,8 @@ def launch(ctx, rule):
 def debug(ctx, rule):
     import os
 
-    import matplotlib.pyplot as plt  # noqa
-    from pymech.dataset import open_dataset
+    # import matplotlib.pyplot as plt  # noqa
+    # from pymech.dataset import open_dataset
 
     os.environ["SNEK_DEBUG"] = "true"
 
@@ -320,19 +320,9 @@ def debug(ctx, rule):
 
     files = sorted(sim.path_run.glob("abl0.f*"))
     stat_files = sorted(sim.path_run.glob("stsabl0.f*"))
-    if files:
-        ds = open_dataset(files[-1])
-        dsx = ds.isel(x=ds.x.size // 2)  # noqa
-        dsy = ds.isel(y=20)  # noqa
-        dsz = ds.isel(z=ds.z.size // 2)  # noqa
-        #  for ds_slice in dsx, dsy, dsz:
-        #      ds_slice.ux.plot()
-        #      plt.show()
-    if stat_files:
-        ds_stat = open_dataset(stat_files[0])  # noqa
 
     if not (files or stat_files):
-        logger.error("Simulation failed!")
+        logger.error("Simulation produced no output files!")
 
     breakpoint()
 
