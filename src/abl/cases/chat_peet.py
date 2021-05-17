@@ -24,6 +24,9 @@ def _common(params):
     oper.Ly = 1.0
     oper.Lz = round(pi, 4)
 
+    reynolds_number = 1e10
+    params.nek.velocity.viscosity = -reynolds_number
+
 
 def small(params):
     oper = params.oper

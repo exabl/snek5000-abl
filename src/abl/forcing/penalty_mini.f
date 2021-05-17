@@ -150,7 +150,9 @@
       integer nxy, nxyz, ntot !< @var number of points in xy face of an element, whole element and whole mesh
       integer itmp, jtmp, ktmp, eltmp
       integer il, jl
-      real xl, yl, zl, xr, yr, zr !< @var left and right extents of the region
+      real xr, yr, zr !< @var coordinates
+      real x_cen, y_cen, z_cen !< @var centers of the region
+      real x_len, y_len, z_len  !@ var half extents of the region
       real rota, epsl
       real rtmp !< @var temporary variable: distance**2 from starting position (pen_spos)
       parameter (epsl = 1.0e-10)
@@ -209,6 +211,15 @@
          ! get smoothing profile
          ! rota = pen_rota(il)
 
+         x_len = (pen_epos(1,il) - pen_spos(1,il)) * 0.5
+         y_len = (pen_epos(2,il) - pen_spos(2,il)) * 0.5
+         x_cen = (pen_epos(1,il) + pen_spos(1,il)) * 0.5
+         y_cen = (pen_epos(2,il) + pen_spos(2,il)) * 0.5
+         if (IF3D) then
+            z_len = (pen_epos(3,il) - pen_spos(3,il)) * 0.5
+            z_cen = (pen_epos(3,il) + pen_spos(3,il)) * 0.5
+         endif
+
          do jl=1,ntot
             itmp = jl-1
             eltmp = itmp/nxyz + 1
@@ -218,18 +229,13 @@
             jtmp = itmp/nx1 + 1
             itmp = itmp - nx1*(jtmp-1) + 1
 
-            ! calculate distances
-            xl = xm1(itmp,jtmp,ktmp,eltmp)-pen_spos(1,il)
-            yl = ym1(itmp,jtmp,ktmp,eltmp)-pen_spos(2,il)
+            ! calculate distances, normalized
+            xr = (xm1(itmp,jtmp,ktmp,eltmp) - x_cen) / x_len
+            yr = (ym1(itmp,jtmp,ktmp,eltmp) - y_cen) / y_len
 
             if (IF3D) then
-                zl = zm1(itmp,jtmp,ktmp,eltmp)-pen_spos(3,il)
+               zr = (zm1(itmp,jtmp,ktmp,eltmp) - z_cen) / z_len
             endif
-
-            ! no rotation
-            xr = xl
-            yr = yl
-            zr = zl
 
             ! For isolated 3D masks
             !         rtmp = xr**2 + yr**2 + zr**2
@@ -242,7 +248,7 @@
             rtmp = abs(yr * pen_ismth(2, il))
 
             ! Delta function masking. NOTE: not smooth
-            if (rtmp.lt.1.0) then
+            if (rtmp.le.1.0) then
                pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 1.0
             else
                pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 0.0

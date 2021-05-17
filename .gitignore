@@ -90,3 +90,4 @@ bin/*.stdout
 bin/*.stderr
 bin/launcher_*.*
 bin/*_JOB.md
+.mypy_cache
