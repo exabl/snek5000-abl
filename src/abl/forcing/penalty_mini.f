@@ -273,6 +273,7 @@
       include 'GEOM'  ! ym1
       include 'TSTEP'
       include 'PENALTY'
+      include 'WMLES'  ! wmles_bc_z0
 
       ! argument list
       logical ifreset
@@ -315,7 +316,7 @@
                do jl=1, ny1
                   do il=1, nx1
                      pen_k_len(il, jl, kl, ll) = (
-     &                  abl_pen_k(ym1(il, jl, kl, ll))
+     &                  abl_pen_k(ym1(il, jl, kl, ll), wmles_bc_z0)
      &               )
                   enddo
                enddo
