@@ -65,11 +65,12 @@ def check_penalty_debug_output(sim, regions):
         y_start = getattr(pen, f"sposy{idx}")
         y_end = getattr(pen, f"eposy{idx}")
 
-        y_len = (y_start - y_end) * 0.5
-        y_cen = (y_start + y_end) * 0.5
+        y_len = (y_end - y_start) * 0.5
+        y_cen = (y_end + y_start) * 0.5
+        breakpoint()
 
         yr = (ds1.y - y_cen) / y_len
-        mask = abs(yr * y_smth) <= 1.0
+        mask = ~(abs(yr / y_smth) > 1.0)
         # (y_start <= ds1.y) & (ds1.y <= y_end)
         return mask
 

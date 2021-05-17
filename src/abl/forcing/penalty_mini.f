@@ -248,10 +248,10 @@
             rtmp = abs(yr * pen_ismth(2, il))
 
             ! Delta function masking. NOTE: not smooth
-            if (rtmp.le.1.0) then
-               pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 1.0
-            else
+            if (rtmp > 1.0) then
                pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 0.0
+            else
+               pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 1.0
             endif
          enddo
       enddo
