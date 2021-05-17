@@ -70,10 +70,10 @@ def with_penalty(params):
     penalty.sposy01 = 0.05 * oper.Ly / 2
     penalty.eposy01 = 0.3 * oper.Ly / 2
     penalty.eposz01 = oper.Lz
-    penalty.smthy01 = penalty.eposy01 - penalty.sposy01
+    penalty.smthy01 = 1.0
 
     penalty.eposx02 = oper.Lx
     penalty.sposy02 = oper.Ly - 0.3 * oper.Ly / 2
     penalty.eposy02 = oper.Ly - 0.05 * oper.Ly / 2
     penalty.eposz02 = oper.Lz
-    penalty.smthy02 = penalty.eposy01 - penalty.sposy01
+    penalty.smthy02 = 1.2

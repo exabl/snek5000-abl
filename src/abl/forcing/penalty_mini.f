@@ -83,7 +83,7 @@
 
       if (pen_enabled) then
          do il=1, pen_regions_max
-           ipos = pen_map(ix,iy,iz,iel,il)
+           ! ipos = pen_map(ix,iy,iz,iel,il)
            ffn = ffn + (
      &          binvm1(ix, iy, iz, iel)  !  P^{-1}
      &          * pen_tiamp  !* pen_famp(ipos,il) *    ! sigma
