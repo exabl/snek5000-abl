@@ -78,10 +78,11 @@
 !-----------------------------------------------------------------------
       iel=GLLEL(ieg)
 
-      k_len = pen_k_len(ix,iy,iz,iel)
       ffn = 0
 
       if (pen_enabled) then
+         k_len = pen_k_len(ix,iy,iz,iel)
+
          do il=1, pen_regions_max
            ! ipos = pen_map(ix,iy,iz,iel,il)
            ffn = ffn + (
