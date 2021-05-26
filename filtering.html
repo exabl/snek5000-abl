@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -49,9 +50,9 @@
   
   
     <title>Filtering &#8212; main docs</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -380,14 +381,14 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="filtering">
 <h1 id="filtering--page-root">Filtering<a class="headerlink" href="#filtering--page-root" title="Permalink to this headline">¶</a></h1>
 <p>Filtering in Nek5000 is controlled by</p>
 <p>We prefer to use HPFRT (high-pass filtering with relaxation term) in Nek5000.
 There is also an</p>
-
+<section id="hpfrt-vs-explicit-filtering">
 <h2 id="hpfrt-vs-explicit-filtering">HPFRT vs explicit filtering<a class="headerlink" href="#hpfrt-vs-explicit-filtering" title="Permalink to this headline">¶</a></h2>
-
+<section id="similarities">
 <h3 id="similarities">Similarities<a class="headerlink" href="#similarities" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Both methods aims to extract energy from higher modes of the solution.</p></li>
@@ -395,8 +396,8 @@ There is also an</p>
 <li><p>Filter cut-off ratio determines the what part of the spectrum is diffused
 numerically by the filter,</p></li>
 </ul>
-
-
+</section>
+<section id="differences">
 <h3 id="differences">Differences<a class="headerlink" href="#differences" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>HPFRT introduces a term in the RHS of the governing equations, thereby
@@ -405,14 +406,14 @@ or sink.</p></li>
 <li><p>Explicit filtering is performed at the end of the time step, and very likely
 could result in velocity divergence.</p></li>
 </ul>
-
-
-
+</section>
+</section>
+<section id="filtering-as-a-sponge-layer">
 <h2 id="filtering-as-a-sponge-layer">Filtering as a sponge-layer<a class="headerlink" href="#filtering-as-a-sponge-layer" title="Permalink to this headline">¶</a></h2>
 <p>Filter weight can be varied within the domain, and this would allow the filter to
 behave like a sponge-layer if needed.</p>
-
-
+</section>
+</section>
 
 
           </article>
@@ -457,11 +458,11 @@ behave like a sponge-layer if needed.</p>
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-03-30.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-05-26.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

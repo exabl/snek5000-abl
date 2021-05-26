@@ -1,4 +1,0 @@
-<map id="eddy_visc" name="eddy_visc">
-<area shape="rect" id="node1" title="Compute eddy viscosity using dynamic smagorinsky model." alt="" coords="127,5,213,32"/>
-<area shape="rect" id="node2" href="$group__abl.html#gaab7e65383186bbbe5e8ee746f763b233" title="Compute the turbulent stress tensors and write statistics." alt="" coords="5,5,79,32"/>
-</map>

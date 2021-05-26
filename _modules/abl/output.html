@@ -49,9 +49,9 @@
   
   
     <title>abl.output &#8212; main docs</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/material.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -233,7 +233,8 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <h1 id="modules-abl-output--page-root">Source code for abl.output</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
 <span class="kn">from</span> <span class="nn">abl.templates</span> <span class="kn">import</span> <span class="n">box</span><span class="p">,</span> <span class="n">makefile_usr</span><span class="p">,</span> <span class="n">size</span>
 <span class="kn">from</span> <span class="nn">snek5000</span> <span class="kn">import</span> <span class="n">mpi</span>
@@ -246,9 +247,11 @@
 <span class="n">shear_imp</span> <span class="o">=</span> <span class="n">SGS</span><span class="p">(</span><span class="s2">"shear_imp"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"shear_imp_smag.f"</span><span class="p">,</span> <span class="s2">"SGS"</span><span class="p">,</span> <span class="s2">"WMLES"</span><span class="p">))</span>
 <span class="n">vreman</span> <span class="o">=</span> <span class="n">SGS</span><span class="p">(</span><span class="s2">"vreman"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"vreman.f"</span><span class="p">,</span> <span class="s2">"SGS"</span><span class="p">,</span> <span class="s2">"WMLES"</span><span class="p">))</span>
 <span class="n">mixing_len</span> <span class="o">=</span> <span class="n">SGS</span><span class="p">(</span><span class="s2">"mixing_len"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"mixing_len.f"</span><span class="p">,</span> <span class="s2">"SGS"</span><span class="p">,</span> <span class="s2">"WMLES"</span><span class="p">))</span>
+<span class="n">channel_mixing_len</span> <span class="o">=</span> <span class="n">SGS</span><span class="p">(</span><span class="s2">"channel_mixing_len"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"channel_mixing_len.f"</span><span class="p">,</span> <span class="s2">"SGS"</span><span class="p">,</span> <span class="s2">"WMLES"</span><span class="p">))</span>
 
 <span class="n">BC</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">"BC"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"sources"</span><span class="p">])</span>
 <span class="c1"># Specific boundary conditions</span>
+<span class="n">channel</span> <span class="o">=</span> <span class="n">BC</span><span class="p">(</span><span class="s2">"channel"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"channel.f"</span><span class="p">,</span> <span class="s2">"../sgs/SGS"</span><span class="p">,</span> <span class="s2">"../sgs/WMLES"</span><span class="p">))</span>
 <span class="n">moeng</span> <span class="o">=</span> <span class="n">BC</span><span class="p">(</span><span class="s2">"moeng"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"moeng.f"</span><span class="p">,</span> <span class="s2">"../sgs/SGS"</span><span class="p">,</span> <span class="s2">"../sgs/WMLES"</span><span class="p">))</span>
 <span class="n">noslip</span> <span class="o">=</span> <span class="n">BC</span><span class="p">(</span><span class="s2">"noslip"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"noslip.f"</span><span class="p">,</span> <span class="s2">"../sgs/SGS"</span><span class="p">,</span> <span class="s2">"../sgs/WMLES"</span><span class="p">))</span>
 
@@ -293,8 +296,17 @@
                 <span class="p">(</span><span class="s2">"wmles_init.f"</span><span class="p">,</span> <span class="s2">"WMLES"</span><span class="p">,</span> <span class="s2">"../toolbox/FRAMELP"</span><span class="p">),</span>
             <span class="p">],</span>
             <span class="s2">"forcing"</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">(</span><span class="s2">"penalty_mini.f"</span><span class="p">,</span> <span class="s2">"PENALTY"</span><span class="p">,</span> <span class="s2">"../sgs/SGS"</span><span class="p">,</span> <span class="s2">"../sgs/WMLES"</span><span class="p">,),</span>
-                <span class="p">(</span><span class="s2">"penalty_par.f"</span><span class="p">,</span> <span class="s2">"PENALTY"</span><span class="p">,</span> <span class="s2">"../toolbox/FRAMELP"</span><span class="p">,),</span>
+                <span class="p">(</span>
+                    <span class="s2">"penalty_mini.f"</span><span class="p">,</span>
+                    <span class="s2">"PENALTY"</span><span class="p">,</span>
+                    <span class="s2">"../sgs/SGS"</span><span class="p">,</span>
+                    <span class="s2">"../sgs/WMLES"</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="s2">"penalty_par.f"</span><span class="p">,</span>
+                    <span class="s2">"PENALTY"</span><span class="p">,</span>
+                    <span class="s2">"../toolbox/FRAMELP"</span><span class="p">,</span>
+                <span class="p">),</span>
             <span class="p">],</span>
             <span class="s2">"bc"</span><span class="p">:</span> <span class="p">[],</span>
         <span class="p">}</span>
@@ -320,21 +332,35 @@
 
         <span class="n">sgs</span> <span class="o">=</span> <span class="n">avail_sgs_models</span><span class="p">[</span><span class="n">params</span><span class="o">.</span><span class="n">sgs_model</span><span class="p">]</span>
         <span class="n">sources</span><span class="p">[</span><span class="s2">"sgs"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sgs</span><span class="o">.</span><span class="n">sources</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">sgs</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"constant"</span><span class="p">,</span> <span class="s2">"shear_imp"</span><span class="p">,</span> <span class="s2">"vreman"</span><span class="p">,</span> <span class="s2">"mixing_len"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sgs</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="s2">"constant"</span><span class="p">,</span>
+            <span class="s2">"shear_imp"</span><span class="p">,</span>
+            <span class="s2">"vreman"</span><span class="p">,</span>
+            <span class="s2">"mixing_len"</span><span class="p">,</span>
+            <span class="s2">"channel_mixing_len"</span><span class="p">,</span>
+        <span class="p">):</span>
             <span class="n">sources</span><span class="p">[</span><span class="s2">"toolbox"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">"stat_extras_dummy.f"</span><span class="p">,))</span>
 
         <span class="n">bc</span> <span class="o">=</span> <span class="n">avail_boundary_conds</span><span class="p">[</span><span class="n">params</span><span class="o">.</span><span class="n">boundary_cond</span><span class="p">]</span>
         <span class="n">sources</span><span class="p">[</span><span class="s2">"bc"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bc</span><span class="o">.</span><span class="n">sources</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sources</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">fortran_inc_flags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">"-I</span><span class="si">{</span><span class="n">inc_dir</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">inc_dir</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">makefile_usr_sources</span><span class="p">)</span>
-
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_complete_params_with_default</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">info_solver</span><span class="p">):</span>
         <span class="n">OutputBase</span><span class="o">.</span><span class="n">_complete_params_with_default</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">info_solver</span><span class="p">)</span>
         <span class="n">params</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">_set_attribs</span><span class="p">({</span><span class="s2">"sgs_model"</span><span class="p">:</span> <span class="s2">"constant"</span><span class="p">,</span> <span class="s2">"boundary_cond"</span><span class="p">:</span> <span class="s2">"moeng"</span><span class="p">})</span>
+
+<div class="viewcode-block" id="OutputABL.write_makefile_usr"><a class="viewcode-back" href="../../_generated/abl.output.html#abl.output.OutputABL.write_makefile_usr">[docs]</a>    <span class="k">def</span> <span class="nf">write_makefile_usr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">template_vars</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"SNEK_DEBUG"</span><span class="p">):</span>
+            <span class="n">custom_fortran_flags</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">"$(subst -w,,$(FL2)) -fcheck=all -Wall -Wextra -Waliasing -Wsurprising "</span>
+                <span class="s2">"-Wcharacter-truncation -Wno-unused-parameter"</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">custom_fortran_flags</span> <span class="o">=</span> <span class="s2">"$(FL2)"</span>
+
+        <span class="n">template_vars</span><span class="p">[</span><span class="s2">"custom_fortran_flags"</span><span class="p">]</span> <span class="o">=</span> <span class="n">custom_fortran_flags</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">write_makefile_usr</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">template_vars</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OutputABL.post_init"><a class="viewcode-back" href="../../_generated/abl.output.html#abl.output.OutputABL.post_init">[docs]</a>    <span class="k">def</span> <span class="nf">post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">params</span>
@@ -369,11 +395,11 @@
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-03-30.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-05-26.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

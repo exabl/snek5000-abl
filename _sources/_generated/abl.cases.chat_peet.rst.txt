@@ -1,0 +1,34 @@
+abl.cases.chat\_peet
+====================
+
+.. automodule:: abl.cases.chat_peet
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      large
+      large_stretch
+      medium
+      medium_stretch
+      small
+      small_stretch
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

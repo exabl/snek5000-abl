@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -49,16 +50,16 @@
   
   
     <title>abl.output &#8212; main docs</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/material.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="abl.templates" href="abl.templates.html" />
+    <link rel="next" title="abl.operators" href="abl.operators.html" />
     <link rel="prev" title="abl.solver" href="abl.solver.html" />
   
     <link rel="apple-touch-icon" href="../_static/_static/favicon.ico"/>
@@ -235,7 +236,7 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="module-abl.output">
 <span id="abl-output"></span><h1 id="generated-abl-output--page-root">abl.output<a class="headerlink" href="#generated-abl-output--page-root" title="Permalink to this headline">¶</a></h1>
 <p class="rubric">Classes</p>
 <table class="longtable docutils align-default">
@@ -247,7 +248,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#abl.output.BC" title="abl.output.BC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BC</span></code></a>(name, sources)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#abl.output.OutputABL" title="abl.output.OutputABL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputABL</span></code></a>([sim])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#abl.output.OutputABL" title="abl.output.OutputABL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OutputABL</span></code></a>([sim, params])</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#abl.output.SGS" title="abl.output.SGS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SGS</span></code></a>(name, sources)</p></td>
@@ -256,50 +257,66 @@
 </tbody>
 </table>
 <dl class="py class">
-<dt id="abl.output.BC">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">abl.output.</span></code><code class="sig-name descname"><span class="pre">BC</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abl.output.BC" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="abl.output.BC.name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#abl.output.BC.name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="abl.output.BC">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">abl.output.</span></span><span class="sig-name descname"><span class="pre">BC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abl.output.BC" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="abl.output.BC.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#abl.output.BC.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
-<dl class="py method">
-<dt id="abl.output.BC.sources">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">sources</span></code><a class="headerlink" href="#abl.output.BC.sources" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="abl.output.BC.sources">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">sources</span></span><a class="headerlink" href="#abl.output.BC.sources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 </dd></dl>
 <dl class="py class">
-<dt id="abl.output.OutputABL">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">abl.output.</span></code><code class="sig-name descname"><span class="pre">OutputABL</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/output.html#OutputABL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.output.OutputABL" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="abl.output.OutputABL.makefile_usr_sources">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">makefile_usr_sources</span></code><a class="headerlink" href="#abl.output.OutputABL.makefile_usr_sources" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="abl.output.OutputABL">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">abl.output.</span></span><span class="sig-name descname"><span class="pre">OutputABL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/output.html#OutputABL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.output.OutputABL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="abl.output.OutputABL.makefile_usr_sources">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">makefile_usr_sources</span></span><a class="headerlink" href="#abl.output.OutputABL.makefile_usr_sources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sources for inclusion to makefile_usr.inc
 Dict[directory]  -&gt; list of source files</p>
 </dd></dl>
 <dl class="py method">
-<dt id="abl.output.OutputABL.post_init">
-<code class="sig-name descname"><span class="pre">post_init</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/output.html#OutputABL.post_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.output.OutputABL.post_init" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="abl.output.OutputABL.post_init">
+<span class="sig-name descname"><span class="pre">post_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/output.html#OutputABL.post_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.output.OutputABL.post_init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute once the sim object is injected with all child classes.
 Typically used to print descriptive initialization messages.</p>
 </dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="abl.output.OutputABL.write_makefile_usr">
+<span class="sig-name descname"><span class="pre">write_makefile_usr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">template_vars</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/output.html#OutputABL.write_makefile_usr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.output.OutputABL.write_makefile_usr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the makefile_usr.inc file which gets included in the main
+makefile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template</strong> (<em>jinja2.environment.Template</em>) – Template instance loaded from something like <code class="docutils literal notranslate"><span class="pre">makefile_usr.inc.j2</span></code></p></li>
+<li><p><strong>fp</strong> (<a class="reference external" href="https://docs.python.org/3/library/io.html#io.TextIOWrapper" title="(in Python v3.9)"><em>io.TextIOWrapper</em></a>) – File handler to write to</p></li>
+<li><p><strong>comments</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Comments on top of the box file</p></li>
+<li><p><strong>template_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Keyword arguments passed while rendering the Jinja templates</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 </dd></dl>
 <dl class="py class">
-<dt id="abl.output.SGS">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">abl.output.</span></code><code class="sig-name descname"><span class="pre">SGS</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abl.output.SGS" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="abl.output.SGS.name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#abl.output.SGS.name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="abl.output.SGS">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">abl.output.</span></span><span class="sig-name descname"><span class="pre">SGS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abl.output.SGS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="abl.output.SGS.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#abl.output.SGS.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
-<dl class="py method">
-<dt id="abl.output.SGS.sources">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">sources</span></code><a class="headerlink" href="#abl.output.SGS.sources" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="abl.output.SGS.sources">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">sources</span></span><a class="headerlink" href="#abl.output.SGS.sources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 </dd></dl>
-
+</section>
 
 
           </article>
@@ -325,12 +342,12 @@ Typically used to print descriptive initialization messages.</p>
             </a>
           
           
-            <a href="abl.templates.html" title="abl.templates"
+            <a href="abl.operators.html" title="abl.operators"
                class="md-flex md-footer-nav__link md-footer-nav__link--next"
                rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
                 class="md-flex__ellipsis"> <span
-                class="md-footer-nav__direction"> Next </span> abl.templates </span>
+                class="md-footer-nav__direction"> Next </span> abl.operators </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink"><i
                 class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
@@ -344,11 +361,11 @@ Typically used to print descriptive initialization messages.</p>
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-03-30.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-05-26.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

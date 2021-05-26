@@ -49,7 +49,7 @@
     <link rel="apple-touch-icon" href="../_static/_static/favicon.ico"/>
   
   
-    <title>abl &#8212; main docs</title>
+    <title>abl.operators &#8212; main docs</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/material.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -59,8 +59,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="abl.solver" href="abl.solver.html" />
-    <link rel="prev" title="Nek5000 core library" href="../nek5000.html" />
+    <link rel="next" title="abl.templates" href="abl.templates.html" />
+    <link rel="prev" title="abl.output" href="abl.output.html" />
   
     <link rel="apple-touch-icon" href="../_static/_static/favicon.ico"/>
   
@@ -81,7 +81,7 @@
   <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
   <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
   <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
-  <a href="#_generated/abl" tabindex="1" class="md-skip"> Skip to content </a>
+  <a href="#_generated/abl.operators" tabindex="1" class="md-skip"> Skip to content </a>
   <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid">
     <div class="md-flex navheader">
@@ -99,7 +99,7 @@
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           <span class="md-header-nav__topic">snek5000-abl documentation</span>
-          <span class="md-header-nav__topic"> abl </span>
+          <span class="md-header-nav__topic"> abl.operators </span>
         </div>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
@@ -175,6 +175,7 @@
           <li class="md-tabs__item"><a href="../index.html" class="md-tabs__link">main docs</a></li>
             
             <li class="md-tabs__item"><a href="../doxygen/modules.html" class="md-tabs__link">fortran docs</a></li>
+          <li class="md-tabs__item"><a href="abl.html" class="md-tabs__link">abl</a></li>
       </ul>
     </div>
   </nav>
@@ -222,7 +223,7 @@
 <nav class="md-nav md-nav--secondary">
   <ul class="md-nav__list" data-md-scrollfix="">
     
-<li class="md-nav__item"><a class="md-nav__extra_link" href="../_sources/_generated/abl.rst.txt">Show Source</a> </li>
+<li class="md-nav__item"><a class="md-nav__extra_link" href="../_sources/_generated/abl.operators.rst.txt">Show Source</a> </li>
 
 <li id="searchbox" class="md-nav__item"></li>
 
@@ -235,36 +236,37 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  <section id="module-abl">
-<span id="abl"></span><h1 id="generated-abl--page-root">abl<a class="headerlink" href="#generated-abl--page-root" title="Permalink to this headline">¶</a></h1>
-<p>Python package for managing case files.</p>
-<p><strong>Contents</strong></p>
+  <section id="module-abl.operators">
+<span id="abl-operators"></span><h1 id="generated-abl-operators--page-root">abl.operators<a class="headerlink" href="#generated-abl-operators--page-root" title="Permalink to this headline">¶</a></h1>
+<p class="rubric">Classes</p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%"/>
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="abl.solver.html#module-abl.solver" title="abl.solver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solver</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#abl.operators.OperatorsABL" title="abl.operators.OperatorsABL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OperatorsABL</span></code></a>([sim, params])</p></td>
 <td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="abl.output.html#module-abl.output" title="abl.output"><code class="xref py py-obj docutils literal notranslate"><span class="pre">output</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="abl.operators.html#module-abl.operators" title="abl.operators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operators</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="abl.templates.html#module-abl.templates" title="abl.templates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">templates</span></code></a></p></td>
-<td><p>Jinja templates for rendering case files</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="abl.cli.html#module-abl.cli" title="abl.cli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cli</span></code></a></p></td>
-<td><p>Make a simulation of with solver abl.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="abl.cases.html#module-abl.cases" title="abl.cases"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cases</span></code></a></p></td>
-<td><p>Simulation cases</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="abl.operators.OperatorsABL">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">abl.operators.</span></span><span class="sig-name descname"><span class="pre">OperatorsABL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/operators.html#OperatorsABL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.operators.OperatorsABL" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="abl.operators.OperatorsABL.info_box">
+<span class="sig-name descname"><span class="pre">info_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/operators.html#OperatorsABL.info_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.operators.OperatorsABL.info_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gather information for writing a box file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
 </section>
 
 
@@ -277,7 +279,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
           
-            <a href="../nek5000.html" title="Nek5000 core library"
+            <a href="abl.output.html" title="abl.output"
                class="md-flex md-footer-nav__link md-footer-nav__link--prev"
                rel="prev">
               <div class="md-flex__cell md-flex__cell--shrink">
@@ -286,17 +288,17 @@
               <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
                 <span class="md-flex__ellipsis">
                   <span
-                      class="md-footer-nav__direction"> Previous </span> Nek5000 core library </span>
+                      class="md-footer-nav__direction"> Previous </span> abl.output </span>
               </div>
             </a>
           
           
-            <a href="abl.solver.html" title="abl.solver"
+            <a href="abl.templates.html" title="abl.templates"
                class="md-flex md-footer-nav__link md-footer-nav__link--next"
                rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
                 class="md-flex__ellipsis"> <span
-                class="md-footer-nav__direction"> Next </span> abl.solver </span>
+                class="md-footer-nav__direction"> Next </span> abl.templates </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink"><i
                 class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>

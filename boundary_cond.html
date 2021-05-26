@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -49,9 +50,9 @@
   
   
     <title>Boundary condition &#8212; main docs</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/material.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -412,9 +413,9 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
+  <section id="boundary-condition">
 <h1 id="boundary-cond--page-root">Boundary condition<a class="headerlink" href="#boundary-cond--page-root" title="Permalink to this headline">¶</a></h1>
-
+<section id="algorithm">
 <h2 id="algorithm">Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
 <p>The following describes the flow of logic in setting the boundary
 conditions.</p>
@@ -472,11 +473,11 @@ neutral -&gt; <code class="docutils literal notranslate"><span class="pre">bdry.
 </ul>
 </li>
 </ul>
-
-
+</section>
+<section id="boundary-conditions">
 <h2 id="boundary-conditions">Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Permalink to this headline">¶</a></h2>
 <p>Periodicity: node numbering</p>
-
+<section id="bcdirvc">
 <h3 id="bcdirvc"><code class="docutils literal notranslate"><span class="pre">bcdirvc</span></code><a class="headerlink" href="#bcdirvc" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">CB</span> <span class="pre">=</span> <span class="pre">V</span> <span class="pre">(Constant</span> <span class="pre">Dirichlet</span> <span class="pre">in</span> <span class="pre">rea</span> <span class="pre">file)</span></code></p></li>
@@ -497,8 +498,8 @@ neutral -&gt; <code class="docutils literal notranslate"><span class="pre">bdry.
 </ul>
 </li>
 </ul>
-
-
+</section>
+<section id="bcneutr-neumann-transient">
 <h3 id="bcneutr-neumann-transient"><code class="docutils literal notranslate"><span class="pre">bcneutr</span></code>: Neumann transient?<a class="headerlink" href="#bcneutr-neumann-transient" title="Permalink to this headline">¶</a></h3>
 <p>No mask</p>
 <ul class="simple">
@@ -520,35 +521,35 @@ acceleration</p></li>
 </ul>
 <p>Velocity should be <code class="docutils literal notranslate"><span class="pre">v=0</span></code></p>
 <p>Caution: Pressure preconditioner BC are related</p>
-
-
+</section>
+<section id="to-do">
 <h3 id="to-do">To Do<a class="headerlink" href="#to-do" title="Permalink to this headline">¶</a></h3>
 <p>Set velocity v=0, normal component of velocity is zero, opposite of
 <code class="docutils literal notranslate"><span class="pre">on</span></code> boundary condition.</p>
-
-
-
-
+</section>
+</section>
+</section>
+<section id="faq">
 <h1 id="faq">FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h1>
-
+<section id="time-stepping-algebra">
 <h2 id="time-stepping-algebra">Time-stepping algebra<a class="headerlink" href="#time-stepping-algebra" title="Permalink to this headline">¶</a></h2>
 <p>Mass matrix requires time levels (n, n-1, n-2): extrapolated Conv /
 Stiffness requires time levels (n-1, n-2): explicit</p>
-
+<section id="comparison-with-adams-bashforth">
 <h3 id="comparison-with-adams-bashforth">Comparison with Adams-Bashforth<a class="headerlink" href="#comparison-with-adams-bashforth" title="Permalink to this headline">¶</a></h3>
 <p>AB2: needs previous RHS BDF: needs previous LHS</p>
-
-
+</section>
+<section id="why-not-runge-kutta">
 <h3 id="why-not-runge-kutta">Why not: Runge-Kutta?<a class="headerlink" href="#why-not-runge-kutta" title="Permalink to this headline">¶</a></h3>
 <p>According to mathematicians, it is not clear because you have a pressure
 correction in each sub-step.</p>
-
-
+</section>
+<section id="cfl-number">
 <h3 id="cfl-number">CFL number<a class="headerlink" href="#cfl-number" title="Permalink to this headline">¶</a></h3>
 <p>BDF3/EXT3: CFL=0.6. Characteristic emthod</p>
-
-
-
+</section>
+</section>
+</section>
 
 
           </article>
@@ -593,11 +594,11 @@ correction in each sub-step.</p>
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-03-30.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-05-26.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

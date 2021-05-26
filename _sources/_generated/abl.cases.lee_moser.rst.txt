@@ -1,0 +1,31 @@
+abl.cases.lee\_moser
+====================
+
+.. automodule:: abl.cases.lee_moser
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      low_re
+      no_penalty
+      with_penalty
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

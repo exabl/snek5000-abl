@@ -1,0 +1,30 @@
+abl.cases.maronga\_etal
+=======================
+
+.. automodule:: abl.cases.maronga_etal
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      large
+      small
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

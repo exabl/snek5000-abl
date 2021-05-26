@@ -1,9 +1,0 @@
-<map id="mxm" name="mxm">
-<area shape="rect" id="node1" title="Compute matrix&#45;matrix product C = A*B for contiguously packed matrices A,B, and C." alt="" coords="5,132,61,159"/>
-<area shape="rect" id="node2" href="$comm__mpi_8f.html#af06ec29f06aac3f8809e19de2a7e8946" title=" " alt="" coords="121,5,209,32"/>
-<area shape="rect" id="node3" href="$mxm__bgq_8f.html#a8a70163b4dbfdbfcce7bff170597fcad" title=" " alt="" coords="109,56,220,83"/>
-<area shape="rect" id="node4" href="$mxm__bgq_8f.html#a3fda9ea4bc7a5713a19d6939fa2b541f" title=" " alt="" coords="109,107,220,133"/>
-<area shape="rect" id="node5" href="$mxm__bgq_8f.html#af192c3c8b982aa5bbc2a757156718a91" title=" " alt="" coords="113,157,216,184"/>
-<area shape="rect" id="node6" href="$mxm__bgq_8f.html#a8faaef428336095704ece51624bbfe92" title=" " alt="" coords="113,208,216,235"/>
-<area shape="rect" id="node7" href="$mxm__std_8f.html#aa9e8685c4a72f18fb5d1ee88ed17a3d6" title=" " alt="" coords="130,259,199,285"/>
-</map>
