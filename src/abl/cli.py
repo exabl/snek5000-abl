@@ -252,6 +252,12 @@ def cli(
     # ====================
     apply_case(case, params)
 
+    if params.output.boundary_cond == "noslip" and penalty.enabled:
+        if any(spos <= z_wall for spos in (penalty.sposy01, penalty.sposy02)):
+            logger.warning(
+                "Ensure that the penalty regions are sufficiently away from the wall."
+            )
+
     general.user_params.update(
         {
             5: oper.Lx,

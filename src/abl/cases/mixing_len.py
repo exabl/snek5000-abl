@@ -56,7 +56,7 @@ def with_penalty(params):
     penalty.enabled = True
     penalty.nregion = 1
     penalty.eposx01 = oper.Lx
-    penalty.sposy01 = oper.origin_y
+    penalty.sposy01 = 0.02
     penalty.eposy01 = 0.1
     penalty.eposz01 = oper.Lz
     penalty.smthy01 = 1.0
