@@ -2,6 +2,8 @@ import pytest
 from click.testing import CliRunner
 
 
+# FIXME: Remove this when the mysterious bug which causes other test to fail stops
+@pytest.mark.last
 @pytest.mark.parametrize(
     "case",
     [f"lee_moser:{c}_penalty" for c in ("with", "no")]
