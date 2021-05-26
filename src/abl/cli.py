@@ -135,6 +135,7 @@ def cli(
 
     # SGS and BC
     # ==========
+    oper.origin_y = z_wall
     output = params.output
 
     output.sgs_model = sgs_model
