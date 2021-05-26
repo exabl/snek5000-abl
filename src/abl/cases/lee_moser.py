@@ -38,6 +38,7 @@ def no_penalty(params):
 
     general.filter_weight = 10
     general.filter_cutoff_ratio = nan
+    general.filter_modes = 2
     general.user_params.update({3: 1.0, 4: 0.00})
 
     reynolds_number = 125_000
