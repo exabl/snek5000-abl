@@ -60,5 +60,3 @@ def with_penalty(params):
     penalty.eposy01 = 0.1
     penalty.eposz01 = oper.Lz
     penalty.smthy01 = 1.0
-
-    penalty.tiamp = 0.0

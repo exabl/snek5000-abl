@@ -67,7 +67,6 @@ def check_penalty_debug_output(sim, regions):
 
         y_len = (y_end - y_start) * 0.5
         y_cen = (y_end + y_start) * 0.5
-        breakpoint()
 
         yr = (ds1.y - y_cen) / y_len
         mask = ~(abs(yr / y_smth) > 1.0)
