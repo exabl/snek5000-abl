@@ -22,6 +22,14 @@ rule env_update:
         "conda env update --file environment.yml"
 
 
+rule req:
+    shell: 'pip-df sync --extras dev --use-pip-constraints --editable'
+
+
+rule req_update:
+    shell: 'pip-df sync --extras dev --use-pip-constraints --editable --update-all'
+
+
 rule develop:
     shell:
         "pip install -e .[dev]"

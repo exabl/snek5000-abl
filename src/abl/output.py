@@ -1,3 +1,4 @@
+import os
 from collections import namedtuple
 
 from abl.templates import box, makefile_usr, size
@@ -11,9 +12,11 @@ dynamic = SGS("dynamic", ("dyn_smag.f", "DYN", "SGS", "WMLES"))
 shear_imp = SGS("shear_imp", ("shear_imp_smag.f", "SGS", "WMLES"))
 vreman = SGS("vreman", ("vreman.f", "SGS", "WMLES"))
 mixing_len = SGS("mixing_len", ("mixing_len.f", "SGS", "WMLES"))
+channel_mixing_len = SGS("channel_mixing_len", ("channel_mixing_len.f", "SGS", "WMLES"))
 
 BC = namedtuple("BC", ["name", "sources"])
 # Specific boundary conditions
+channel = BC("channel", ("channel.f", "../sgs/SGS", "../sgs/WMLES"))
 moeng = BC("moeng", ("moeng.f", "../sgs/SGS", "../sgs/WMLES"))
 noslip = BC("noslip", ("noslip.f", "../sgs/SGS", "../sgs/WMLES"))
 
@@ -58,8 +61,17 @@ class OutputABL(OutputBase):
                 ("wmles_init.f", "WMLES", "../toolbox/FRAMELP"),
             ],
             "forcing": [
-                ("penalty_mini.f", "PENALTY", "../sgs/SGS", "../sgs/WMLES",),
-                ("penalty_par.f", "PENALTY", "../toolbox/FRAMELP",),
+                (
+                    "penalty_mini.f",
+                    "PENALTY",
+                    "../sgs/SGS",
+                    "../sgs/WMLES",
+                ),
+                (
+                    "penalty_par.f",
+                    "PENALTY",
+                    "../toolbox/FRAMELP",
+                ),
             ],
             "bc": [],
         }
@@ -85,21 +97,35 @@ class OutputABL(OutputBase):
 
         sgs = avail_sgs_models[params.sgs_model]
         sources["sgs"].append(sgs.sources)
-        if sgs.name in ("constant", "shear_imp", "vreman", "mixing_len"):
+        if sgs.name in (
+            "constant",
+            "shear_imp",
+            "vreman",
+            "mixing_len",
+            "channel_mixing_len",
+        ):
             sources["toolbox"].append(("stat_extras_dummy.f",))
 
         bc = avail_boundary_conds[params.boundary_cond]
         sources["bc"].append(bc.sources)
         return sources
 
-    @property
-    def fortran_inc_flags(self):
-        return (f"-I{inc_dir}" for inc_dir in self.makefile_usr_sources)
-
     @staticmethod
     def _complete_params_with_default(params, info_solver):
         OutputBase._complete_params_with_default(params, info_solver)
         params.output._set_attribs({"sgs_model": "constant", "boundary_cond": "moeng"})
+
+    def write_makefile_usr(self, template, fp=None, **template_vars):
+        if os.getenv("SNEK_DEBUG"):
+            custom_fortran_flags = (
+                "$(subst -w,,$(FL2)) -fcheck=all -Wall -Wextra -Waliasing -Wsurprising "
+                "-Wcharacter-truncation -Wno-unused-parameter"
+            )
+        else:
+            custom_fortran_flags = "$(FL2)"
+
+        template_vars["custom_fortran_flags"] = custom_fortran_flags
+        super().write_makefile_usr(template, fp, **template_vars)
 
     def post_init(self):
         params = self.sim.params

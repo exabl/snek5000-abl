@@ -10,11 +10,12 @@ c> @note This subroutine MAY NOT be called by every process
       implicit none
 
 
-      integer ix, iy, iz, iside, eg, ie, idx
+      integer ix, iy, iz, iside, eg, ie, idx1, idx2, nlev
       real u1_2, w1_2, y1_2, y0, uh, u_star, alpha
-      real eps, Tf
+      real eps, Tf, half_channel
 
       include 'SIZE'
+      include 'INPUT'  ! uparam
       include 'NEKUSE'  ! trx, try, trz, temp
       include 'PARALLEL'  ! gllel
       include 'SOLN'  ! vx, vz
@@ -28,13 +29,25 @@ c> @note This subroutine MAY NOT be called by every process
 c      if (cbc(iside,gllel(eg),ifield).eq.'v01')
 
       ! Use value from par file for index to sample velocities at and roughness parameter
-      idx = wmles_bc_z_index
-      y0 = wmles_bc_z0
+      y0 = wmles_bc_z0  !< @var aerodynamic roughness length
+      half_channel = uparam(6) / 2
 c--------Calculate Moeng's model parameters
       ie=gllel(eg)
 
-      u1_2=(vx(ix, idx+1, iz, ie) + vx(ix, idx, iz, ie))/2
-      w1_2=(vz(ix, idx+1, iz, ie) + vz(ix, idx, iz, ie))/2
+      if (y < half_channel) then
+         ! Less than half channel, bottom wall
+         idx1 = wmles_bc_z_index  !< @var index where the velocities and mesh coordinate is evaluated
+         idx2 = idx1 + 1
+         nlev = 1
+      else
+         ! More than half channel, top wall
+         idx1 = iy - (wmles_bc_z_index - 1)
+         idx2 = idx1 - 1
+         nlev = 2
+      endif
+
+      u1_2=(vx(ix, idx1, iz, ie) + vx(ix, idx2, iz, ie))/2
+      w1_2=(vz(ix, idx1, iz, ie) + vz(ix, idx2, iz, ie))/2
 
       if (wmles_bc_temp_filt) then
         if (istep .le . 5) then
@@ -59,7 +72,10 @@ c--------Calculate Moeng's model parameters
         w_wm(ix, iz, ie) = w1_2
       endif
 
-      y1_2=(ym1(ix, idx+1, iz, ie) + ym1(ix, idx, iz, ie))/2
+      y1_2=(ym1(ix, idx1, iz, ie) + ym1(ix, idx2, iz, ie))/2
+      if (y > half_channel) then
+         y1_2 = uparam(6) - y1_2
+      endif
 
       uh = sqrt(u1_2**2 + w1_2**2)
       u_star = (uh * kappa) / log(y1_2 / y0)
@@ -72,17 +88,12 @@ c--------Calculate Stresses
       temp = 0.0
 
       if (wmles_sgs_bc) then
-#ifdef DEBUG
-        if (iy > nlev_bc) then
-          call exitti("iy exceeded allocated shape: ", iy)
-        endif
-#endif
         ! Save and later use it in gij_from_bc
         alpha_bc(ix, iy, iz, ie) = alpha
       endif
 
       ! Save u_star anyway for spatial_means
-      u_star_bc(ix, 1, iz, ie) = u_star
+      u_star_bc(ix, nlev, iz, ie) = u_star
 
       u_star_max = max(u_star, u_star_max)
 
@@ -93,12 +104,18 @@ c> Compute the K term in penalty forcing
       real function abl_pen_k(y_coord, z0)
       implicit none
 
+      include 'SIZE'
+      include 'INPUT'  ! uparam
+
       real y_coord    !< @var mesh coordinate where the coefficient is evaluated
       real z0         !< @var roughness length
+      real y_wall     !< @var distance from nearest wall
       real y_nonzero  !< @var avoid zero
 
-      y_nonzero = max(y_coord, 1e-14)  ! Avoid log(0)
-      abl_pen_k = y_coord * log(y_nonzero / z0)
+      y_wall = min(y_coord, uparam(6) - y_coord)  ! Shortest distance from the wall
+
+      y_nonzero = max(y_wall, 1e-14)  ! Avoid log(0)
+      abl_pen_k = y_wall * log(y_nonzero / z0)
 
       return
       end function

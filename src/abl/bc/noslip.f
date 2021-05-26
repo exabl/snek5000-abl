@@ -27,13 +27,13 @@ c> No slip and no penetration condition
       ! ie = gllel(eg)
       ! y1_2 = (ym1(ix, idx+1, iz, ie) + ym1(ix, idx, iz, ie))/2
       ! ! u_star = kappa * y1_2 * du_dy(ix, iy, iz, ie)
- 
+
       ! u1_2 = (vx(ix, idx+1, iz, ie) + vx(ix, idx, iz, ie))/2
       ! w1_2 = (vz(ix, idx+1, iz, ie) + vz(ix, idx, iz, ie))/2
-  
+
       ! uh = sqrt(u1_2**2 + w1_2**2)
       ! u_star = (uh * kappa) / log(y1_2 / y0)
-  
+
       !! Save u_star for spatial_means
 
       ! u_star_bc(ix, iy, iz, ie) = u_star
@@ -42,3 +42,16 @@ c> No slip and no penetration condition
       return
       end
 !-----------------------------------------------------------------------
+c> Compute the K term in penalty forcing
+      real function abl_pen_k(y_coord, z0)
+      implicit none
+
+      real y_coord    !< @var mesh coordinate where the coefficient is evaluated
+      real z0         !< @var roughness length
+      real y_nonzero  !< @var avoid zero
+
+      y_nonzero = max(y_coord, 1e-14)  ! Avoid log(0)
+      abl_pen_k = y_coord * log(y_nonzero / z0)
+
+      return
+      end function

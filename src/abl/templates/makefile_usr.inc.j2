@@ -1,11 +1,19 @@
-# vim: set ft=make
 {% for comment in comments.splitlines() -%}
 # {{ comment }}
 {% endfor -%}
-{% macro make(sources) -%}
+CUSTOM_FFLAGS = {{ custom_fortran_flags }}
+
+{# override usrfile directive only if custom flags are used -#}
+{% if custom_fortran_flags != "$(FL2)" -%}
+usrfile:
+	@env CASENAME=$(CASENAME) PPS="$(PPS)" $S/mkuserfile
+	$(FC) $(CUSTOM_FFLAGS) -Wno-unused-dummy-argument $(VISITNEK_INCLUDES) -c $(CASEDIR)/${CASENAME}.f
+{% endif -%}
+
+{% macro make(sources) %}
 {# A cosmetic macro to indent comments nicely #}
 {%- set target = sources[0].replace(".f", ".o").split("/")[-1] -%}
-{%- set rule_string = "$(OBJDIR)/{}:{}\n\t$(F77) -c $(FL2) -I./ $< -o $@".format(
+{%- set rule_string = "$(OBJDIR)/{}:{}\n\t$(F77) -c $(CUSTOM_FFLAGS) -I./ $< -o $@".format(
 		target.ljust(20),
 		" ".join(sources),
 	)
@@ -16,3 +24,4 @@
 {% for sources in list_of_sources -%}
 {{ make(sources) }}
 {% endfor -%}
+# vim: set ft=make

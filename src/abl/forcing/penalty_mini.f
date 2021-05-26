@@ -22,8 +22,6 @@
           return
       endif
 
-
-
       ! timing
       ltim = dnekclock()
 
@@ -80,17 +78,18 @@
 !-----------------------------------------------------------------------
       iel=GLLEL(ieg)
 
-      k_len = pen_k_len(ix,iy,iz,iel)
       ffn = 0
 
       if (pen_enabled) then
+         k_len = pen_k_len(ix,iy,iz,iel)
+
          do il=1, pen_regions_max
-           ipos = pen_map(ix,iy,iz,iel,il)
+           ! ipos = pen_map(ix,iy,iz,iel,il)
            ffn = ffn + (
      &          binvm1(ix, iy, iz, iel)  !  P^{-1}
-     &          * pen_famp(ipos,il) * pen_fsmth(ix,iy,iz,iel,il)  ! sigma * E_{i,j}
+     &          * pen_tiamp  !* pen_famp(ipos,il) *    ! sigma
+     &          * pen_fsmth(ix,iy,iz,iel,il)  ! E_{i,j}
      &          * (ux - k_len * du_dy(ix,iy,iz,iel)))
-
          enddo
       endif
 
@@ -152,7 +151,9 @@
       integer nxy, nxyz, ntot !< @var number of points in xy face of an element, whole element and whole mesh
       integer itmp, jtmp, ktmp, eltmp
       integer il, jl
-      real xl, yl, zl, xr, yr, zr !< @var left and right extents of the region
+      real xr, yr, zr !< @var coordinates
+      real x_cen, y_cen, z_cen !< @var centers of the region
+      real x_len, y_len, z_len  !@ var half extents of the region
       real rota, epsl
       real rtmp !< @var temporary variable: distance**2 from starting position (pen_spos)
       parameter (epsl = 1.0e-10)
@@ -211,6 +212,15 @@
          ! get smoothing profile
          ! rota = pen_rota(il)
 
+         x_len = (pen_epos(1,il) - pen_spos(1,il)) * 0.5
+         y_len = (pen_epos(2,il) - pen_spos(2,il)) * 0.5
+         x_cen = (pen_epos(1,il) + pen_spos(1,il)) * 0.5
+         y_cen = (pen_epos(2,il) + pen_spos(2,il)) * 0.5
+         if (IF3D) then
+            z_len = (pen_epos(3,il) - pen_spos(3,il)) * 0.5
+            z_cen = (pen_epos(3,il) + pen_spos(3,il)) * 0.5
+         endif
+
          do jl=1,ntot
             itmp = jl-1
             eltmp = itmp/nxyz + 1
@@ -220,18 +230,13 @@
             jtmp = itmp/nx1 + 1
             itmp = itmp - nx1*(jtmp-1) + 1
 
-            ! calculate distances
-            xl = xm1(itmp,jtmp,ktmp,eltmp)-pen_spos(1,il)
-            yl = ym1(itmp,jtmp,ktmp,eltmp)-pen_spos(2,il)
+            ! calculate distances, normalized
+            xr = (xm1(itmp,jtmp,ktmp,eltmp) - x_cen) / x_len
+            yr = (ym1(itmp,jtmp,ktmp,eltmp) - y_cen) / y_len
 
             if (IF3D) then
-                zl = zm1(itmp,jtmp,ktmp,eltmp)-pen_spos(3,il)
+               zr = (zm1(itmp,jtmp,ktmp,eltmp) - z_cen) / z_len
             endif
-
-            ! no rotation
-            xr = xl
-            yr = yl
-            zr = zl
 
             ! For isolated 3D masks
             !         rtmp = xr**2 + yr**2 + zr**2
@@ -244,10 +249,10 @@
             rtmp = abs(yr * pen_ismth(2, il))
 
             ! Delta function masking. NOTE: not smooth
-            if (rtmp.lt.1.0) then
-               pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 1.0
-            else
+            if (rtmp > 1.0) then
                pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 0.0
+            else
+               pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 1.0
             endif
          enddo
       enddo
@@ -282,87 +287,77 @@
       ! variables necessary to reset velocity projection for P_n-P_n-2
       include 'VPROJ'
 #endif
-      ! local variables
-      integer il, jl, kl, ll
-      integer istart
-      real y
 
-#ifdef DEBUG
-      character*3 str1, str2
-      integer iunit, ierr
-      ! call number
-      integer icalldl
-      save icalldl
-      data icalldl /0/
-#endif
+      ! function defined in boundary condition module
+      real abl_pen_k
+      external abl_pen_k
+
+      ! local variables
+      integer il, jl, kl, ll, ntot_frcs
+      integer istart
+
 !-----------------------------------------------------------------------
+      ntot_frcs = lx1*ly1*lz1*lelt * pen_nset_max * pen_regions_max
       ! reset all
       if (ifreset) then
-        ! something to do with Fourier modes, instead we compute
-        ! penalties for log-law
-         do il= 1, pen_regions
-            do jl = istart, pen_nset_max
-               call cfill(pen_frcs(1,jl,il),1.0,pen_npoint(il))
-            enddo
-         enddo
+         ! Initialize amplitude penalties
+         call cfill(pen_frcs, 1.0, ntot_frcs)
+
          ! rescale time independent part
-         if (pen_tiamp.ne.0.0) then
-            do il= 1, pen_regions
-               call cmult(pen_frcs(1,1,il),pen_tiamp,pen_npoint(il))
-            enddo
+         if (pen_tiamp >= 1e-15) then
+            ! do il= 1, pen_regions
+            call cmult(pen_frcs, pen_tiamp, ntot_frcs)
+            ! enddo
          endif
 
          ! compute K array
          print *, "Computing penalty K array"
-        !      do ll=1, nelv
-        !         do kl=1, nz1
-        !            do jl=1, ny1
-        !               do il=1, nx1
-        !                  y = ym1(il, jl, kl, ll)
-        !                  pen_k_len(il, jl, kl, ll) = (
-        !  &                  y * log(y / wmles_bc_z0))
-        !               enddo
-        !            enddo
-        !         enddo
-        !     enddo
-        pen_k_len(:nx1,:ny1,:nz1,:nelv) = (
-     &       ym1(:nx1,:ny1,:nz1,:nelv) * log(
-     &          ym1(:nx1,:ny1,:nz1,:nelv) / wmles_bc_z0
-     &       )
-     &   )
+         do ll=1, nelv
+            do kl=1, nz1
+               do jl=1, ny1
+                  do il=1, nx1
+                     pen_k_len(il, jl, kl, ll) = (
+     &                  abl_pen_k(ym1(il, jl, kl, ll), wmles_bc_z0)
+     &               )
+                  enddo
+               enddo
+            enddo
+        enddo
+        !    pen_k_len(:nx1,:ny1,:nz1,:nelv) = (
+        ! &       ym1(:nx1,:ny1,:nz1,:nelv) * log(
+        ! &          ym1(:nx1,:ny1,:nz1,:nelv) / wmles_bc_z0
+        ! &       )
+        ! &   )
       ! else
          ! reset only time dependent part if needed
-      endif
 
-      ! get penalty for current time step
-      if (pen_tiamp.ne.0.0) then
-         ! copy pen_tiamp stored in pen_frcs (see above) -> pen_famp
-         do il= 1, pen_regions
-           call copy(pen_famp(1,il),pen_frcs(1,1,il),pen_npoint(il))
-         enddo
-      else
-         ! fill zeros -> pen_famp
-         do il= 1, pen_regions
-            call rzero(pen_famp(1,il),pen_npoint(il))
-         enddo
+         ! get penalty for current time step
+         if (pen_tiamp.ne.0.0) then
+            ! copy pen_tiamp stored in pen_frcs (see above) -> pen_famp
+            do il= 1, pen_regions
+              call copy(pen_famp(1,il),pen_frcs(1,1,il),pen_npoint(il))
+            enddo
+         else
+            ! fill zeros -> pen_famp
+            do il= 1, pen_regions
+               call rzero(pen_famp(1,il),pen_npoint(il))
+            enddo
+         endif
+
       endif
-      ! interpolation in time: disabled
+      ! time dependent amplitude: disabled
 
 #ifdef DEBUG
       ! for testing
-      ! to output refinement
-      icalldl = icalldl+1
-      call io_file_freeid(iunit, ierr)
-      write(str1,'(i3.3)') NID
-      write(str2,'(i3.3)') icalldl
-      open(unit=iunit,file='trp_fcr.txt'//str1//'i'//str2)
-
-      do il=1,pen_npoint(1)
-         write(iunit,*) il,pen_prj(il,1),pen_famp(il,1),
-     $        pen_frcs(il,:,1)
-      enddo
-
-      close(iunit)
+      print *,
+     &   "Rank=", nid, "Penalty number of grid points=", pen_npoint
+      call outpost(
+     &   pen_k_len,  ! x: VERIFIED!
+     &   pen_fsmth(:,:,:,:,1),  ! y: VERIFIED!
+     &   pen_fsmth(:,:,:,:,2),  ! z: VERIFIED?  &   pen_frcs(:,1,1),  ! z
+     &   pen_famp(:,1),  ! pr
+     &   pen_map(:,:,:,:,1),  ! temp
+     &   'pen')
 #endif
 
       return

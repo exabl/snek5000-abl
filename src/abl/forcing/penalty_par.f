@@ -5,7 +5,7 @@
 !! @ingroup penalty_mini
 !! @brief Penalty for ABL user code of nek5000
 !! @note This module is derived from the forcing module in KTH
-!!   framework 
+!!   framework
 !=======================================================================
 !> @brief Register penalty module
 !! @ingroup penalty_mini
@@ -75,7 +75,7 @@
 
          call rprm_rp_reg(pen_spos_id(1,il),pen_sec_id,'SPOSX'//str,
      $     'Starting point X',rpar_real,0,0.0,.false.,' ')
-         
+
          call rprm_rp_reg(pen_spos_id(2,il),pen_sec_id,'SPOSY'//str,
      $     'Starting point Y',rpar_real,0,0.0,.false.,' ')
 
@@ -84,10 +84,10 @@
      $           'SPOSZ'//str,'Starting point Z',
      $           rpar_real,0,0.0,.false.,' ')
          endif
-        
+
          call rprm_rp_reg(pen_epos_id(1,il),pen_sec_id,'EPOSX'//str,
      $     'Ending point X',rpar_real,0,0.0,.false.,' ')
-         
+
          call rprm_rp_reg(pen_epos_id(2,il),pen_sec_id,'EPOSY'//str,
      $     'Ending point Y',rpar_real,0,0.0,.false.,' ')
 
@@ -99,7 +99,7 @@
 
          call rprm_rp_reg(pen_smth_id(1,il),pen_sec_id,'SMTHX'//str,
      $     'Smoothing length X',rpar_real,0,0.0,.false.,' ')
-         
+
          call rprm_rp_reg(pen_smth_id(2,il),pen_sec_id,'SMTHY'//str,
      $     'Smoothing length Y',rpar_real,0,0.0,.false.,' ')
 
@@ -108,7 +108,7 @@
      $           'SMTHZ'//str,'Smoothing length Z',
      $           rpar_real,0,0.0,.false.,' ')
          endif
-      
+
          call rprm_rp_reg(pen_rota_id(il),pen_sec_id,'ROTA'//str,
      $        'Rotation angle',rpar_real,0,0.0,.false.,' ')
          call rprm_rp_reg(pen_nmode_id(il),pen_sec_id,'NMODE'//str,
@@ -122,7 +122,7 @@
 
       ! set initialisation flag
       pen_ifinit=.false.
-      
+
       ! timing
       ltim = dnekclock() - ltim
       call mntr_tmr_add(pen_tmr_id,1,ltim)
@@ -159,7 +159,7 @@
      $        'module ['//trim(pen_sec_name)//'] already initiaised.')
          return
       endif
-      
+
       ! timing
       ltim = dnekclock()
 
@@ -225,13 +225,13 @@
       enddo
       pen_nfdt = 1 - pen_nset_max
       pen_nfdt_old = pen_nfdt
-      
+
       ! generate random phases (time independent and time dependent)
       ! call pen_rphs_get
 
       ! get forcing
-      call pen_frcs_get(.true.)
-      
+      if (pen_enabled) call pen_frcs_get(.true.)
+
       ! everything is initialised
       pen_ifinit=.true.
 

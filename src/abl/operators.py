@@ -6,8 +6,7 @@ from snek5000.operators import Operators as _Operators
 class OperatorsABL(_Operators):
     @staticmethod
     def _complete_params_with_default(params):
-        """This static method is used to complete the *params.oper* container.
-        """
+        """This static method is used to complete the *params.oper* container."""
         _Operators._complete_params_with_default(params)
         params.oper._set_attribs({"coords_x": "", "coords_y": "", "coords_z": ""})
 
@@ -41,8 +40,13 @@ class OperatorsABL(_Operators):
 
                 str_nb_elem += str(nax) + " "
             else:
+                grid_info.move_to_end(f"{ax}0 {ax}1 ratio")
                 str_nb_elem += str(-nax) + " "
 
         grid_info["nelx nely nelz"] = str_nb_elem
+        grid_info.move_to_end("Velocity BCs")
+
+        if self.params.oper.boundary_scalars:
+            grid_info.move_to_end("Temperature / scalar BCs")
 
         return info

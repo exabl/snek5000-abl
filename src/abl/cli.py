@@ -1,19 +1,34 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
 import sys
-from math import pi
+from importlib import import_module
 from pathlib import Path
 from pprint import pprint
 
 import click
+
 from abl.output import avail_boundary_conds, avail_sgs_models
 from abl.solver import Simul
 from snek5000.log import logger
 
 
-@click.group()
+def apply_case(case, params):
+    """Apply case specific parameters. See :mod:`abl.cases`"""
+    module_name, func_name = case.split(":")
+    module = import_module(f".{module_name}", package="abl.cases")
+    func = getattr(module, func_name)
+    func(params)
+
+
+@click.group(context_settings={"help_option_names": ("-h", "--help")})
 @click.option("-d", "--sub-dir", default="test")
-@click.option("-m", "--mesh", default=11, type=int, help="mesh configuration")
+@click.option(
+    "-c",
+    "--case",
+    default="default:do_nothing",
+    type=str,
+    help="case config (syntax: <module name under snek5000.cases>:<function>)",
+)
 @click.option("-n", "--name-run", default="demo", help="short description of the run")
 @click.option("-o", "--nodes", default=1, type=int, help="number of nodes")
 @click.option("-w", "--walltime", default="30:00")
@@ -21,7 +36,11 @@ from snek5000.log import logger
 @click.option("-zw", "--z-wall", default=0.0, type=float, help="wall position")
 @click.option("-z0", "--z-rough", default=0.1, type=float, help="roughness parameter")
 @click.option(
-    "-fw", "--filter-weight", default=0.05, type=float, help="filter weight parameter",
+    "-fw",
+    "--filter-weight",
+    default=0.05,
+    type=float,
+    help="filter weight parameter",
 )
 @click.option(
     "-fc", "--filter-cutoff", default=0.75, type=float, help="filter cutoff ratio"
@@ -65,7 +84,7 @@ from snek5000.log import logger
 def cli(
     ctx,
     sub_dir,
-    mesh,
+    case,
     name_run,
     nodes,
     walltime,
@@ -90,98 +109,6 @@ def cli(
     params = Simul.create_default_params()
 
     oper = params.oper
-
-    # Nek5000: abl.box
-    # ================
-    M = mesh
-    if M == 1:
-        oper.nx = 6
-        oper.ny = 20
-        oper.nz = 6
-    elif M == 2:
-        oper.nx = 12
-        oper.ny = 24
-        oper.nz = 12
-    elif M == 3:
-        oper.nx = 24
-        oper.ny = 48
-        oper.nz = 24
-    elif M in (11, 111):
-        oper.ny = 32
-        oper.coords_y = (
-            f"{z_wall} 5.4 11.6 18.7 26.8 36 46.5 58.5 72 87.5 105 125 147 173 201 "
-            "233 269 310 354 404 458 518 583 654 731 812 900 991 1088 1187 "
-            "1290 1394 1500"
-        )
-        if M == 11:
-            oper.nx = oper.nz = 4
-        elif M == 111:
-            oper.nx = oper.nz = 8
-    elif M in (12, 112, 212):
-        oper.ny = 20
-        oper.coords_y = (
-            f"{z_wall} 34.6 72.8 115. 161. 211. 266. 326. 390. 459. 534. 613. 697. "
-            "786. 879. 976. 1076. 1180. 1285. 1392. 1500."
-        )
-        if M == 12:
-            oper.nx = oper.nz = 4
-        elif M == 112:
-            oper.nx = oper.nz = 8
-        elif M == 212:
-            oper.nx = oper.nz = 3
-    elif M == 21:
-        # Similar to M 11 - scaled by 1500
-        oper.nx = 4
-        oper.ny = 32
-        oper.nz = 4
-        oper.coords_y = (
-            f"{z_wall} 0.0036 0.0077 0.0125 0.0179 0.0240 0.0310 0.0390 0.0480 "
-            "0.0583 0.0700 0.0833 0.0980 0.1153 0.1340 0.1553 0.1793 0.2067 "
-            "0.2360 0.2693 0.3053 0.3453 0.3887 0.4360 0.4873 0.5413 0.6000 "
-            "0.6607 0.7253 0.7913 0.8600 0.9293 1.000"
-        )
-    elif M in (22, 122, 222):
-        # Similar to M 12 - scaled by 1500
-        oper.ny = 20
-        oper.coords_y = (
-            f"{z_wall} 0.0231 0.0485 0.0767 0.1073 0.1407 0.1773 0.2173 0.2600 "
-            "0.3060 0.3560 0.4087 0.4647 0.5240 0.5860 0.6507 0.7173 0.7867 "
-            "0.8567 0.9280 1.000"
-        )
-        if M == 22:
-            oper.nx = oper.nz = 4
-        elif M == 122:
-            oper.nx = oper.nz = 8
-        elif M == 222:
-            oper.nx = 3
-            oper.nz = 3
-            # FIXME: try reducing it further
-            # Now causes WARNINGb: Detected non-right-handed element and erros
-            # See connect1.f line: 954
-
-    if M <= 9:
-        oper.origin_y = z_wall
-        oper.Lx = 1280
-        oper.Ly = 1500
-        oper.Lz = 1280
-    elif M % 100 <= 19:  # 11, 12, 111, 112, 212
-        oper.origin_y = float(oper.coords_y.split()[0])
-        oper.Lx = 640
-        oper.Ly = 1500
-        oper.Lz = 640
-        if M == 212:
-            oper.Lx = oper.Lz = 300
-    elif M % 100 <= 29:  # 21, 22, 122, 222
-        # Chatterjee & Peet:
-        oper.origin_y = float(oper.coords_y.split()[0])
-        oper.Ly = 1.0
-        if M in (22, 122):
-            oper.Lx = round(2 * pi, 4)
-            oper.Lz = round(pi, 4)
-        elif M == 222:
-            oper.Lx = oper.Lz = 0.1
-
-    oper.boundary = "P P sh SYM P P".split()
 
     save_freq = 1_000
 
@@ -208,6 +135,7 @@ def cli(
 
     # SGS and BC
     # ==========
+    oper.origin_y = z_wall
     output = params.output
 
     output.sgs_model = sgs_model
@@ -243,13 +171,6 @@ def cli(
         general.filtering = "hpfrt"
     general.filter_weight = filter_weight
     general.filter_cutoff_ratio = filter_cutoff
-    general.user_params = {
-        3: 5.0,
-        4: 0.0014,
-        5: oper.Lx,
-        6: oper.Ly,
-        7: oper.Lz,
-    }
 
     problem_type = params.nek.problemtype
     problem_type.variable_properties = True
@@ -260,6 +181,9 @@ def cli(
     elif params.output.boundary_cond == "moeng":
         problem_type.stress_formulation = True
         params.oper.boundary = ["P", "P", "sh", "SYM", "P", "P"]
+    elif params.output.boundary_cond == "channel":
+        problem_type.stress_formulation = True
+        params.oper.boundary = ["P", "P", "sh", "sh", "P", "P"]
     else:
         raise NotImplementedError("Stress formulation or not?")
 
@@ -277,6 +201,8 @@ def cli(
     #
     if params.output.boundary_cond == "noslip":
         reynolds_number = 1e3
+    elif params.output.boundary_cond == "channel":
+        reynolds_number = 125_000
     else:
         reynolds_number = 1e10
 
@@ -313,21 +239,32 @@ def cli(
     # ==================
     assert pen_tiamp >= 0.0, f"Penalty amplitude {pen_tiamp} should not be negative!"
     penalty = params.nek.penalty
-    penalty.enabled = True
-    penalty.nregion = 1
     penalty.tiamp = pen_tiamp
-    penalty.eposx01 = oper.Lx
-    penalty.sposy01 = 0.05 * oper.Ly
-    penalty.eposy01 = 0.3 * oper.Ly
-    # float(oper.coords_y.split()[1])  # boundary of first element
-    penalty.eposz01 = oper.Lz
-    penalty.smthy01 = penalty.eposy01 - penalty.sposy01
 
     # Fluidsim parameters
     # ===================
     params.short_name_type_run = name_run
     params.output.sub_directory = sub_dir
-    params.compile_in_place = in_place
+    logger.info("params.compile_in_feature is ignored")
+    #  params.compile_in_place = in_place
+
+    # Case specific params
+    # ====================
+    apply_case(case, params)
+
+    if params.output.boundary_cond == "noslip" and penalty.enabled:
+        if any(spos <= z_wall for spos in (penalty.sposy01, penalty.sposy02)):
+            logger.warning(
+                "Ensure that the penalty regions are sufficiently away from the wall."
+            )
+
+    general.user_params.update(
+        {
+            5: oper.Lx,
+            6: oper.Ly,
+            7: oper.Lz,
+        }
+    )
 
     ctx.ensure_object(dict)
 
@@ -347,6 +284,7 @@ def launch(ctx, rule):
     assert sim.make.exec([rule], scheduler="greedy")
     if rule == "release":
         import shutil
+
         from setuptools_scm.file_finder_git import _git_toplevel
         from setuptools_scm.git import GitWorkdir
 
@@ -363,12 +301,13 @@ def launch(ctx, rule):
 
 
 @cli.command()
-@click.argument("rule", default="nrun")
+@click.argument("rule", default="run")
 @click.pass_context
 def debug(ctx, rule):
     import os
-    import matplotlib.pyplot as plt  # noqa
-    from pymech.dataset import open_dataset
+
+    # import matplotlib.pyplot as plt  # noqa
+    # from pymech.dataset import open_dataset
 
     os.environ["SNEK_DEBUG"] = "true"
 
@@ -388,19 +327,9 @@ def debug(ctx, rule):
 
     files = sorted(sim.path_run.glob("abl0.f*"))
     stat_files = sorted(sim.path_run.glob("stsabl0.f*"))
-    if files:
-        ds = open_dataset(files[-1])
-        dsx = ds.isel(x=ds.x.size // 2)  # noqa
-        dsy = ds.isel(y=20)  # noqa
-        dsz = ds.isel(z=ds.z.size // 2)  # noqa
-        #  for ds_slice in dsx, dsy, dsz:
-        #      ds_slice.ux.plot()
-        #      plt.show()
-    if stat_files:
-        ds_stat = open_dataset(stat_files[0])  # noqa
 
     if not (files or stat_files):
-        logger.error("Simulation failed!")
+        logger.error("Simulation produced no output files!")
 
     breakpoint()
 
@@ -413,8 +342,9 @@ _show_options = ("xml", "par", "size", "box", "makefile_usr", "config")
 @click.pass_context
 def show(ctx, file):
     import yaml
-    from abl.output import OutputABL as Output
+
     from abl import templates
+    from abl.output import OutputABL as Output
 
     params = ctx.obj["params"]
     file = file.lower()

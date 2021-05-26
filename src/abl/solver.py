@@ -57,19 +57,28 @@ class SimulABL(SimulKTH):
             dict(
                 enabled=False,  # Enable penalty term
                 nregion=0,  # Number of penalty regions
-                tiamp=0.0e0,  # Time independent amplitude
+                tiamp=0.0,  # Time independent amplitude
                 #  tdamp=0.e+00,  # Time dependent amplitude
-                sposx01=0.0e00,  # Starting point X
-                sposy01=0.0e00,  # Starting point Y
-                sposz01=0.0e00,  # Starting point Z
-                eposx01=0.0e00,  # Ending point X
-                eposy01=0.0e00,  # Ending point Y
-                eposz01=0.0e00,  # Ending point Z
-                smthx01=0.0e00,  # Smoothing length X
-                smthy01=0.0e00,  # Smoothing length Y
-                smthz01=0.0e00,  # Smoothing length Z
+                sposx01=0.0,  # Starting point X
+                sposy01=0.0,  # Starting point Y
+                sposz01=0.0,  # Starting point Z
+                eposx01=0.0,  # Ending point X
+                eposy01=0.0,  # Ending point Y
+                eposz01=0.0,  # Ending point Z
+                smthx01=0.0,  # Smoothing length X
+                smthy01=0.0,  # Smoothing length Y
+                smthz01=0.0,  # Smoothing length Z
                 #  rota01=0.e+00,  # Rotation angle
                 #  fdt01=0.e+00,  # Time step for penalty
+                sposx02=0.0,  # Starting point X
+                sposy02=0.0,  # Starting point Y
+                sposz02=0.0,  # Starting point Z
+                eposx02=0.0,  # Ending point X
+                eposy02=0.0,  # Ending point Y
+                eposz02=0.0,  # Ending point Z
+                smthx02=0.0,  # Smoothing length X
+                smthy02=0.0,  # Smoothing length Y
+                smthz02=0.0,  # Smoothing length Z
             ),
         )
 

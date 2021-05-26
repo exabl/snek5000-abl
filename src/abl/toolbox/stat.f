@@ -1,7 +1,7 @@
 !> @file stat.f
 !! @ingroup stat
 !! @brief 2D and 3D statistics module
-!! @details 
+!! @details
 !! @note This code works for extruded meshes only
 !! @author Prabal Negi, Adam Peplinski
 !! @date Aug 15, 2018
@@ -35,7 +35,7 @@
      $        'module ['//trim(stat_name)//'] already registered')
          return
       endif
-      
+
       ! find parent module
       call mntr_mod_is_name_reg(lpmid,'FRAME')
       if (lpmid.le.0) then
@@ -43,7 +43,7 @@
          call mntr_abort(lpmid,
      $        'parent module ['//'FRAME'//'] not registered')
       endif
-      
+
       ! register module
       call mntr_mod_reg(stat_id,lpmid,stat_name,
      $      '2D and 3D statistics')
@@ -90,7 +90,7 @@
 
       call rprm_rp_reg(stat_IOstep_id,stat_sec_id,'IOSTEP',
      $     'Frequency of filed saving',rpar_int,100,0.0,.false.,' ')
-      
+
       ! set initialisation flag
       stat_ifinit=.false.
 
@@ -136,7 +136,7 @@
 
       ! timing
       ltim = dnekclock()
-      
+
       ! get runtime parameters
       call rprm_rp_get(itmp,rtmp,ltmp,ctmp,stat_avstep_id,rpar_int)
       stat_avstep = itmp
@@ -157,14 +157,14 @@
       ! reset statistics variables
       itmp = lx1**(LDIM-stat_rdim)*lelt*stat_lvar
       call rzero(stat_ruavg,itmp)
-      
+
       ! everything is initialised
       stat_ifinit=.true.
 
       ! timing
       ltim = dnekclock() - ltim
       call mntr_tmr_add(stat_tmr_ini_id,1,ltim)
-      
+
       return
       end subroutine
 !=======================================================================
@@ -187,7 +187,7 @@
 !! @details This routine performs time averaging and file writing.
 !! @note This routine should be called in userchk during every step
       subroutine stat_avg
-      implicit none 
+      implicit none
 
       include 'SIZE'
       include 'FRAMELP'
@@ -215,7 +215,7 @@
       endif
 
       ! save statistics file and restart statistics variables
-      if (ISTEP.gt.0.and.mod(ISTEP,stat_IOstep).eq.0) then            
+      if (ISTEP.gt.0.and.mod(ISTEP,stat_IOstep).eq.0) then
          if (stat_rdim.eq.1) then
 
             ltim = dnekclock()
@@ -243,11 +243,11 @@
 
       return
       end subroutine
-!====================================================================== 
+!======================================================================
 !> @brief Get local integration coefficients
 !! @ingroup stat
 !! @details This version does 1D integration over one of the directions
-!!  R,S,T. It supports curved coordinate systems, however 
+!!  R,S,T. It supports curved coordinate systems, however
 !!  axisymmetric 2.5D cases are not supported
 !! @remark This routine uses global scratch space \a SCRSF
       subroutine stat_init_int1D()
@@ -361,7 +361,7 @@
             call vsq(lxyzd(1,1,1,el,1),il)
             call vsq(lxyzd(1,1,1,el,2),il)
             if (if3d) call vsq(lxyzd(1,1,1,el,3),il)
-      
+
             call add2(lxyzd(1,1,1,el,1),lxyzd(1,1,1,el,2),il)
             if (if3d) call add2(lxyzd(1,1,1,el,1),lxyzd(1,1,1,el,3),il)
 
@@ -432,7 +432,7 @@
 !=======================================================================
 !> @brief Array reshuffle
 !! @ingroup stat
-!! @details Reorder directions in such a way that the uniform direction 
+!! @details Reorder directions in such a way that the uniform direction
 !!   corresponds to the the first index
 !! @param[out]  rvar   reshuffled array
 !! @param[in]   var    input array
@@ -496,7 +496,7 @@
             enddo
          endif
       endif
-         
+
       return
       end subroutine
 !=======================================================================
@@ -651,7 +651,7 @@
 !-----------------------------------------------------------------------
       ! if no space averaging return
       if (stat_rdim.eq.0) return
-      
+
       ! stamp logs
       call mntr_log(stat_id,lp_vrb,'Global statistics summation.')
 
@@ -686,7 +686,7 @@
             endif
          enddo
       endif
-      
+
       return
       end subroutine
 !=======================================================================
@@ -728,7 +728,7 @@
 !-----------------------------------------------------------------------
       ! stamp logs
       call mntr_log(stat_id,lp_vrb,'Average fields.')
-      
+
       ! Calculate time span of current statistical sample
       dtime=time-stat_atime-stat_tstart
 
@@ -740,7 +740,7 @@
       ! Calculate alpha and beta
       beta=dtime/STAT_ATIME
       alpha=1.0-beta
-      
+
       ! Map pressure to velocity mesh
       call mappr(tmppr,PR,tmpvel(1,1,1,1,2),tmpvel(1,1,1,1,3))
 
@@ -799,7 +799,7 @@
 
 !=======================================================================
       ! Computation of statistics
-      
+
       ! <u>t
       lnvar = lnvar + 1
       npos = lnvar
@@ -1008,7 +1008,7 @@
       npos = lnvar
       itmp = LX1*LY1*LZ1*LELT
       call col3(tmppr(1,1,1,1),slp(1,1,1,1),slp(1,1,1,1),
-     $     itmp) 
+     $     itmp)
       call stat_compute_1Dav2(tmppr(1,1,1,1),slp(1,1,1,1),
      $     npos,alpha,beta)
 
@@ -1026,7 +1026,7 @@
       ! copy uv to tmppr (do not need pp anymore)
       itmp = LX1*LY1*LZ1*LELT
       call col3(tmppr(1,1,1,1),slvel(1,1,1,1,1),slvel(1,1,1,1,2),
-     $     itmp) 
+     $     itmp)
       call stat_compute_1Dav2(tmppr(1,1,1,1),slvel(1,1,1,1,3),
      $     npos,alpha,beta)
 
@@ -1071,7 +1071,7 @@
       lnvar = lnvar + 1
       npos = lnvar
       call stat_compute_1Dav1(tmpvel(1,1,1,1,1),npos,alpha,beta)
-      
+
       ! <e33>t: (dw/dx)^2 + (dw/dy)^2 + (dw/dz)^2
       itmp = LX1*LY1*LZ1*LELT*LDIM
       call col3(tmpvel(1,1,1,1,1),dwdx(1,1,1,1,1),dwdx(1,1,1,1,1),
@@ -1082,7 +1082,7 @@
       lnvar = lnvar + 1
       npos = lnvar
       call stat_compute_1Dav1(tmpvel(1,1,1,1,1),npos,alpha,beta)
-      
+
 !-----------------------------------------------------------------------
       ! <e12>t: (du/dx)*(dv/dx) + (du/dy)*(dv/dy) + (du/dz)*(dv/dz)
       itmp = LX1*LY1*LZ1*LELT*LDIM
@@ -1105,7 +1105,7 @@
       lnvar = lnvar + 1
       npos = lnvar
       call stat_compute_1Dav1(tmpvel(1,1,1,1,1),npos,alpha,beta)
-      
+
       ! <e23>t: (dv/dx)*(dw/dx) + (dv/dy)*(dw/dy) + (dv/dz)*(dw/dz)
       itmp = LX1*LY1*LZ1*LELT*LDIM
       call col3(tmpvel(1,1,1,1,1),dvdx(1,1,1,1,1),dwdx(1,1,1,1,1),
@@ -1116,74 +1116,80 @@
       lnvar = lnvar + 1
       npos = lnvar
       call stat_compute_1Dav1(tmpvel(1,1,1,1,1),npos,alpha,beta)
-      
+
 !-----------------------------------------------------------------------
+      ! Reshuffle total viscosity array to match averaging axis
+      call stat_reshufflev(tmppr(1,1,1,1),ediff(1,1,1,1),NELV)
+
       ! <(nu+nu_t)dudx>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav2(ediff(1,1,1,1),dudx(1,1,1,1,1),
+      call stat_compute_1Dav2(tmppr(1,1,1,1),dudx(1,1,1,1,1),
      $     npos,alpha,beta)
 
       ! <(nu+nu_t)dudy>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav2(ediff(1,1,1,1),dudx(1,1,1,1,2),
+      call stat_compute_1Dav2(tmppr(1,1,1,1),dudx(1,1,1,1,2),
      $     npos,alpha,beta)
 
       ! <(nu+nu_t)dudz>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav2(ediff(1,1,1,1),dudx(1,1,1,1,3),
+      call stat_compute_1Dav2(tmppr(1,1,1,1),dudx(1,1,1,1,3),
      $     npos,alpha,beta)
 
 !-----------------------------------------------------------------------
       ! <(nu+nu_t)dvdx>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav2(ediff(1,1,1,1),dvdx(1,1,1,1,1),
+      call stat_compute_1Dav2(tmppr(1,1,1,1),dvdx(1,1,1,1,1),
      $     npos,alpha,beta)
 
       ! <(nu+nu_t)dvdy>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav2(ediff(1,1,1,1),dvdx(1,1,1,1,2),
+      call stat_compute_1Dav2(tmppr(1,1,1,1),dvdx(1,1,1,1,2),
      $     npos,alpha,beta)
 
       ! <(nu+nu_t)dvdz>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav2(ediff(1,1,1,1),dvdx(1,1,1,1,3),
+      call stat_compute_1Dav2(tmppr(1,1,1,1),dvdx(1,1,1,1,3),
      $     npos,alpha,beta)
 
 !-----------------------------------------------------------------------
       ! <(nu+nu_t)dwdx>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav2(ediff(1,1,1,1),dwdx(1,1,1,1,1),
+      call stat_compute_1Dav2(tmppr(1,1,1,1),dwdx(1,1,1,1,1),
      $     npos,alpha,beta)
 
       ! <(nu+nu_t)dwdy>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav2(ediff(1,1,1,1),dwdx(1,1,1,1,2),
+      call stat_compute_1Dav2(tmppr(1,1,1,1),dwdx(1,1,1,1,2),
      $     npos,alpha,beta)
 
       ! <(nu+nu_t)dwdz>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav2(ediff(1,1,1,1),dwdx(1,1,1,1,3),
+      call stat_compute_1Dav2(tmppr(1,1,1,1),dwdx(1,1,1,1,3),
      $     npos,alpha,beta)
 
 !-----------------------------------------------------------------------
       ! <(nu+nu_t)>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav1(ediff(1,1,1,1),npos,alpha,beta)
+      call stat_compute_1Dav1(tmppr(1,1,1,1),npos,alpha,beta)
 !-----------------------------------------------------------------------
+      ! Reshuffle norm of strain to match averaging axis
+      call stat_reshufflev(tmppr(1,1,1,1),snrm(1,1),NELV)
+
       ! <|S_ij|>t
       lnvar = lnvar + 1
       npos = lnvar
-      call stat_compute_1Dav1(snrm(1,1),npos,alpha,beta)
+      call stat_compute_1Dav1(tmppr(1,1,1,1),npos,alpha,beta)
 !=======================================================================
       !End of local compute
 

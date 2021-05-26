@@ -34,7 +34,14 @@ Security in case of vulnerabilities.
 - Add more boundary conditions, including no-slip.
 - Utilities module.
 - Output u_star and other global statistics in to spatial_means.txt
+- Added cases Python sub package to save different configurations
+- Added penalty modules
 
+### Changed
+
+- Disabled Coriolis forcing for the time being
+- Debug flags during compilations
+- Use Snakemake modules
 
 ## [0.5.0b0] - 2020-09-02
 
