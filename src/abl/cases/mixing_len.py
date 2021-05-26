@@ -50,6 +50,9 @@ def with_penalty(params):
     # First populate common parameters
     no_penalty(params)
 
+    params.nek.general.variable_dt = False
+    params.nek.general.dt = 1e-4
+
     oper = params.oper
 
     penalty = params.nek.penalty
