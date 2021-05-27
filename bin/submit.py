@@ -12,7 +12,7 @@ sub_command = "launch"
 # sub_command = "launch release"; cluster.cmd_run = "echo"
 # sub_command = "debug"
 # sub_command = "show box"
-dry_run = True
+dry_run = not True
 
 for (
     mesh_nb_nodes_walltime,

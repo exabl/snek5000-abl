@@ -7,20 +7,20 @@ from snek5000.log import logger
 from snek5000.util import prepare_for_restart
 
 cluster = Cluster()
-base_name_run = "lo"
+base_name_run = "ch"
 snakemake_rules = "srun"
 modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "november"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "channel_tests"
 for path in filter(
     lambda path: path.name
     not in [
         # exceptions
     ]
     and path.is_dir()
-    and base_name_run in path.name
-    and not (path / "abl.log").exists(),
+    and base_name_run in path.name,
+    # and not (path / "abl.log").exists(),
     subdir.glob("abl*"),
 ):
     try:
@@ -32,7 +32,7 @@ for path in filter(
         logger.info(f"OK {path}")
 
     name_run = base_name_run + path.name[6:]
-    name_run = name_run[:name_run.index('_4x32x4')]
+    name_run = name_run[:name_run.index('_14x4x7')]
 
     if modify_params:
         logger.info("Modifying I/O parameters ...")
@@ -41,14 +41,14 @@ for path in filter(
         params.nek.pressure.residual_tol = 1e-10
         params.nek.general.num_steps = 1000
 
-    nb_nodes = 1 if params.oper.nx <= 15 else 2
+    nb_nodes = 1 if params.oper.nx <= 10 else 2
     # nb_nodes = 3 if "24x48" in path.name else 1
 
     cmd = f"""
 cd {path}
-snakemake {snakemake_rules} -j
+mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
 """
-    # mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
+    # snakemake {snakemake_rules} -j
 
     if dryrun:
         if list(path.glob("rs6*")):
@@ -72,7 +72,7 @@ snakemake {snakemake_rules} -j
             command=cmd,
             name_run=name_run,
             # walltime="7-00:00:00",
-            walltime="3-00:00:00",
+            walltime="03:00:00",
             signal_num=False,
             ask=False,
             bash=False,
