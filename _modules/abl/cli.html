@@ -472,7 +472,7 @@
 
     <span class="c1"># Penalty parameters</span>
     <span class="c1"># ==================</span>
-    <span class="k">assert</span> <span class="n">pen_tiamp</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Penalty amplitude </span><span class="si">{</span><span class="n">pen_tiamp</span><span class="si">}</span><span class="s2"> should not be negative!"</span>
+    <span class="k">assert</span> <span class="n">pen_tiamp</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Penalty amplitude </span><span class="si">{</span><span class="n">pen_tiamp</span><span class="si">}</span><span class="s2"> cannot be positive!"</span>
     <span class="n">penalty</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">penalty</span>
     <span class="n">penalty</span><span class="o">.</span><span class="n">tiamp</span> <span class="o">=</span> <span class="n">pen_tiamp</span>
 
@@ -632,7 +632,7 @@
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-05-26.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-05-31.
               
           </div>
             Created using
