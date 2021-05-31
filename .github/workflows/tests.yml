@@ -49,3 +49,4 @@ jobs:
       run: |
         source activate.sh
         pytest -s
+        SNEK_DEBUG=1 pytest tests/test_penalty.py

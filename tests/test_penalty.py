@@ -24,6 +24,7 @@ def test_penalty_regions(nb_regions):
     params.oper.boundary = ["P", "P", "sh", "W", "P", "P"]
 
     params.nek.penalty.nregion = nb_regions
+    params.nek.penalty.tiamp = -1e-6
 
     general = params.nek.general
     general.stop_at = "num_steps"

@@ -237,7 +237,7 @@ def cli(
 
     # Penalty parameters
     # ==================
-    assert pen_tiamp >= 0.0, f"Penalty amplitude {pen_tiamp} should not be negative!"
+    assert pen_tiamp <= 0.0, f"Penalty amplitude {pen_tiamp} cannot be positive!"
     penalty = params.nek.penalty
     penalty.tiamp = pen_tiamp
 

@@ -304,7 +304,7 @@
          call cfill(pen_frcs, 1.0, ntot_frcs)
 
          ! rescale time independent part
-         if (pen_tiamp >= 1e-15) then
+         if (pen_tiamp <= -1e-15) then
             ! do il= 1, pen_regions
             call cmult(pen_frcs, pen_tiamp, ntot_frcs)
             ! enddo
