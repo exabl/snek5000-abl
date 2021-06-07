@@ -223,6 +223,7 @@ c> @callgraph
       call chkpt_main
 
       ! compute velocity gradient
+      ! NOTE: cartesian mesh assumed here!
       call cart_diff_y(du_dy, vx, .true.)
 #ifdef DEBUG
       call gradm1(du_dx, du_dy_test, du_dz, vx)

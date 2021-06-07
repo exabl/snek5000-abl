@@ -1,3 +1,4 @@
+import itertools
 import os
 from collections import namedtuple
 
@@ -117,14 +118,28 @@ class OutputABL(OutputBase):
         params.output._set_attribs({"sgs_model": "constant", "boundary_cond": "moeng"})
 
     def write_makefile_usr(self, template, fp=None, **template_vars):
+        # Prepare dictionary for overriding custom fortran flags
+        flags_var = {
+            sources[0]: "$(CUSTOM_FFLAGS)"
+            for sources in itertools.chain.from_iterable(
+                self.makefile_usr_sources.values()
+            )
+        }
+
         if os.getenv("SNEK_DEBUG"):
             custom_fortran_flags = (
-                "$(subst -w,,$(FL2)) -fcheck=all -Wall -Wextra -Waliasing -Wsurprising "
-                "-Wcharacter-truncation -Wno-unused-parameter"
+                "$(subst -w,,$(FL2)) -fcheck=all -Wall -Wextra -Waliasing "
+                "-Wsurprising -Wcharacter-truncation -Wno-unused-parameter"
+            )
+
+            # NOTE: special overrides
+            flags_var["penalty_utils.f"] = custom_fortran_flags.replace(
+                "-fcheck=all", ""
             )
         else:
             custom_fortran_flags = "$(FL2)"
 
+        template_vars["flags_var"] = flags_var
         template_vars["custom_fortran_flags"] = custom_fortran_flags
         super().write_makefile_usr(template, fp, **template_vars)
 
