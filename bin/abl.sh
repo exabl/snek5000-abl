@@ -7,5 +7,5 @@ abl -d mixing_len -c $CASE -n penalty -o 1 -w 7-00:00:00 --in-place False \
   -s mixing_len \
   -b noslip \
   -zw $ROUGH -z0 $ROUGH \
-  -p -1e-7 \
+  -p -1e-9 \
   $*

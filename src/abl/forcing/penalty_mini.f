@@ -14,10 +14,7 @@
       ! functions
       real dnekclock
 !-----------------------------------------------------------------------
-      if (
-     &      (.not. pen_enabled) .or.
-     &      (istep > 0 .and. pen_tdamp < 1.e-14)  ! no need to recompute forcing arrays
-     &) then
+      if (.not. pen_enabled) then
           ! Do nothing!
           return
       endif
