@@ -78,3 +78,12 @@ def with_penalty(params):
     penalty.eposy02 = oper.Ly - 0.05 * oper.Ly / 2
     penalty.eposz02 = oper.Lz
     penalty.smthy02 = 1.2
+
+
+def small_with_penalty(params):
+    with_penalty(params)
+
+    oper = params.oper
+    oper.nx = 4
+    oper.ny = 4
+    oper.nz = 4

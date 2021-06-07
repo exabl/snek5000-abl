@@ -216,21 +216,21 @@
          enddo
       enddo
 
-      ! get 1D projection and array mapping
-      call pen_1dprj
+      ! get penalty forcing mask
+      call pen_fmask_get
 
       ! initialise random generator seed and number of time intervals
-      do il=1,pen_regions
-         pen_seed(il) = -32*il
-      enddo
-      pen_nfdt = 1 - pen_nset_max
-      pen_nfdt_old = pen_nfdt
+      ! do il=1,pen_regions
+      !    pen_seed(il) = -32*il
+      ! enddo
+      ! pen_nfdt = 1 - pen_nset_max
+      ! pen_nfdt_old = pen_nfdt
 
       ! generate random phases (time independent and time dependent)
       ! call pen_rphs_get
 
-      ! get forcing
-      if (pen_enabled) call pen_frcs_get(.true.)
+      ! get penalty forcing terms
+      if (pen_enabled) call pen_fterms_get(.true.)
 
       ! everything is initialised
       pen_ifinit=.true.
