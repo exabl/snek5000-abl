@@ -203,6 +203,11 @@ c> @callgraph
       include 'WMLES'  ! KAPPA
 
       integer e, n
+#ifdef DEBUG
+      integer i
+      real diff_dy
+      real du_dy_test(lx1,ly1,lz1,lelv)
+#endif
 
       n=nx1*ny1*nz1*nelv
 
@@ -218,7 +223,16 @@ c> @callgraph
       call chkpt_main
 
       ! compute velocity gradient
-      call gradm1(du_dx, du_dy, du_dz, vx)
+      call cart_diff_y(du_dy, vx, .true.)
+#ifdef DEBUG
+      call gradm1(du_dx, du_dy_test, du_dz, vx)
+      do i=1,n
+         diff_dy = abs(du_dy(i,1,1,1) - du_dy_test(i,1,1,1))
+         if (diff_dy >= 1e-14) call exittr(
+     &         "Result of gradm1 and cart_diff_y are not equivalent$",
+     &         diff_dy, 0)
+      enddo
+#endif
 
 !     for penalty
       call pen_update

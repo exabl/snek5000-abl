@@ -67,6 +67,7 @@ class OutputABL(OutputBase):
                     "../sgs/SGS",
                     "../sgs/WMLES",
                 ),
+                ("penalty_utils.f",),
                 (
                     "penalty_par.f",
                     "PENALTY",
