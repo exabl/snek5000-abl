@@ -58,11 +58,12 @@
 
       real pen_ismth(LDIM,pen_regions_max) !< @var inverse smoothing radius
 
-      real pen_fstab(lx1,ly1,lz1,lelt) !< @var numerical stability term
+      real pen_fstab(lx1,ly1,lz1,lelv,pen_regions_max) !< @var numerical stability term
+      real pen_floglaw(lx1,ly1,lz1,lelv,pen_regions_max)  !< @var log-law term
 
-      real pen_fmask(lx1,ly1,lz1,lelt,pen_regions_max) !< @var function for smoothing and masking of the forcing
+      real pen_fmask(lx1,ly1,lz1,lelv,pen_regions_max) !< @var function for smoothing and masking of the forcing
 
-      real pen_k_len(lx1,ly1,lz1,lelt) !< @var a term, K, with dimensions of length which multiplies with velocity gradient in a penalty forcing.
+      real pen_k_len(lx1,ly1,lz1,lelv) !< @var a term, K, with dimensions of length which multiplies with velocity gradient in a penalty forcing.
 
 !     common block section
       common /peni/ pen_id, pen_tmr_id, pen_sec_id, pen_regions,
@@ -72,7 +73,7 @@
 
       common /penr/ pen_tiamp, pen_tdamp, pen_fdt, pen_spos,
      $     pen_epos, pen_smth, pen_rota, pen_ilngt, pen_ismth,
-     $     pen_fstab, pen_fmask, pen_k_len
+     $     pen_fstab, pen_floglaw, pen_fmask, pen_k_len
 
       common /penl/ pen_ifinit, pen_enabled
 !> @}

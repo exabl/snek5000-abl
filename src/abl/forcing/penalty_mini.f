@@ -39,6 +39,8 @@
       print *,  "pen_regions = ", pen_regions
       print *,  "pen_k_len (min/max) = ", minval(pen_k_len),
      &   maxval(pen_k_len)
+      print *,  "pen_floglaw (min/max) = ", minval(pen_floglaw),
+     &   maxval(pen_floglaw)
       print *,  "pen_fstab (min/max) = ", minval(pen_fstab),
      &   maxval(pen_fstab)
       print *,  "pen_fmask (min/max) = ", minval(pen_fmask),
@@ -75,18 +77,18 @@
 !-----------------------------------------------------------------------
       iel=GLLEL(ieg)
 
-      ffn = 0
+      ffn = 0.
 
       if (pen_enabled) then
-         k_len = pen_k_len(ix,iy,iz,iel)
 
          do il=1, pen_regions_max
            ! ipos = pen_map(ix,iy,iz,iel,il)
            ffn = ffn + (
      &          binvm1(ix, iy, iz, iel)  !  P^{-1}
      &          * pen_tiamp  !* pen_famp(ipos,il) *    ! sigma
-     &          * pen_fmask(ix,iy,iz,iel,il)  ! E_{i,j}
-     &          * (ux - k_len * du_dy(ix,iy,iz,iel)))
+     &          * (pen_floglaw(ix,iy,iz,iel,il)
+     &             - pen_fstab(ix,iy,iz,iel,il))
+     &     )
          enddo
       endif
 
@@ -158,6 +160,8 @@
       nxyz = nxy*NZ1
       ntot = nxyz*NELV
 
+      call rzero(pen_fmask, ntot*pen_regions)
+
       ! for each region
       do il=1,pen_regions
       ! Get coordinates and sort them
@@ -217,7 +221,7 @@
 !! @details This used to also initializes the pen_famp array. This was to allow for
 !!    spatio-temporally varying forcing, which has been removed in this version.
 !! @ingroup penalty_mini
-!! @param[in] ifreset    reset flag
+!! @param[in] ifreset    reset flag to reinitialize geometry term pen_k_len
 !! @callgraph @callergraph
       subroutine pen_fterms_get(ifreset)
       implicit none
@@ -227,6 +231,8 @@
       include 'GEOM'  ! ym1
       ! include 'TSTEP'
       include 'PENALTY'
+      include 'SOLN'   ! vx
+      include 'SGS'    ! du_dy
       include 'WMLES'  ! wmles_bc_z0
 
       ! argument list
@@ -239,6 +245,9 @@
       ! local variables
       integer il, jl, kl, ll
       integer istart
+
+      real loglaw_err(lx1,ly1,lz1,lelv)
+      common /ctmp0/ loglaw_err
 
 !-----------------------------------------------------------------------
       ! reset all
@@ -270,14 +279,35 @@
       endif
       ! time dependent amplitude: disabled
 
+!-----------------------------------------------------------------------
+
+      ! Compute the forcing terms
+      loglaw_err = (vx - pen_k_len * du_dy)
+
+      do il=1,pen_regions
+
+         ! compute log law term: pen_floglaw
+         pen_floglaw(:nx1,:ny1,:nz1,:nelv,il) = (
+     &      pen_fmask(:nx1,:ny1,:nz1,:nelv,il)
+     &      * loglaw_err(:nx1,:ny1,:nz1,:nelv))
+
+         ! compute numerical stability term: pen_fstab
+         call cart_diff_y(
+     &      pen_fstab(:nx1,:ny1,:nz1,:nelv,il),
+     &      (pen_k_len(:nx1,:ny1,:nz1,:nelv)
+     &       * pen_floglaw(:nx1,:ny1,:nz1,:nelv,il)),
+     &      .false.)
+
+      enddo
+
 #ifdef DEBUG
       ! for testing
       call outpost(
      &   pen_k_len,  ! x: VERIFIED!
      &   pen_fmask(:,:,:,:,1),  ! y: VERIFIED!
-     &   pen_fmask(:,:,:,:,2),  ! z: VERIFIED?  &   pen_frcs(:,1,1),  ! z
-     &   pen_k_len,  ! pr
-     &   pen_fstab,  ! temp
+     &   pen_fmask(:,:,:,:,2),  ! z: VERIFIED?
+     &   pen_floglaw(:,:,:,:,1),  ! pr
+     &   pen_fstab(:,:,:,:,1),  ! temp
      &   'pen')
 #endif
 
