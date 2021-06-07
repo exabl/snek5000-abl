@@ -14,9 +14,9 @@ from math import nan, pi
 def no_penalty(params):
     oper = params.oper
 
-    oper.nx = 14
+    oper.nx = 8
     oper.ny = 4
-    oper.nz = 7
+    oper.nz = 4
 
     oper.Lx = round(2 * pi, 4)
     oper.Ly = 2.0
