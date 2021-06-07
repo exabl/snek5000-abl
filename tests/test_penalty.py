@@ -9,7 +9,7 @@ from numpy.testing import assert_allclose
 @pytest.mark.skipif(not os.getenv("SNEK_DEBUG"), reason="Requires debug penalty files")
 @pytest.mark.parametrize("nb_regions", [1, 2])
 def test_penalty_regions(nb_regions):
-    from abl.cases.lee_moser import with_penalty as case
+    from abl.cases.lee_moser import small_with_penalty as case
     from abl.solver import Simul
 
     # from abl.cases.chat_peet import small as case
