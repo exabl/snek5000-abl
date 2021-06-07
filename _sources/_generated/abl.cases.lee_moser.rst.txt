@@ -15,6 +15,7 @@ abl.cases.lee\_moser
    
       low_re
       no_penalty
+      small_with_penalty
       with_penalty
    
    
