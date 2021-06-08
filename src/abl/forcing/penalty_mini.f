@@ -97,36 +97,6 @@
       return
       end subroutine
 !=======================================================================
-!> @brief Reset penalty
-!! @ingroup penalty_mini
-      subroutine pen_reset()
-      implicit none
-
-      include 'SIZE'
-      include 'PENALTY'
-
-      ! local variables
-      real ltim
-
-      ! functions
-      real dnekclock
-!-----------------------------------------------------------------------
-      ! timing
-      ltim = dnekclock()
-
-      ! get mask
-      call pen_fmask_get
-
-      ! update forcing terms
-      call pen_fterms_get(.true.)
-
-      ! timing
-      ltim = dnekclock() - ltim
-      call mntr_tmr_add(pen_tmr_id,1,ltim)
-
-      return
-      end subroutine
-!=======================================================================
 !> @brief Get 1D projection, array mapping and forcing smoothing
 !! @ingroup penalty_mini
 !! @details This routine is just a simple version supporting only lines
