@@ -21,7 +21,7 @@ c> @param ix x-index
 c> @param iy y-index
 c> @param iz z-index
 c> @param ieg element index
-c> @todo implement ifield = 2 case for temperature
+c> @todo Implement turbulent Prandtl number parameter
       subroutine uservp(ix,iy,iz,ieg) ! set variable properties
 
       implicit none
@@ -41,7 +41,7 @@ c> @todo implement ifield = 2 case for temperature
         udiff = ediff(ix,iy,iz,iel)  ! dynamic viscosity
         utrans = 1.0  ! density
       else if (ifield.eq.2) then  ! temperature when IFHEAT = .true.
-        udiff = 1.0  ! conductivity
+        udiff = 2.0 * ediff(ix,iy,iz,iel)  ! conductivity
         utrans = 1.0  ! rho*cp
       endif
 
@@ -73,14 +73,15 @@ c
       integer ix,iy,iz,eg
 
       ! local variables
-      real U_GEO, f_corio
+      real U_GEO, f_corio, Ri
 
 
       U_GEO = uparam(3)
       f_corio = uparam(4)
+      Ri = uparam(8)
 
       ffx = 0.0 ! f_corio * uz
-      ffy = 0.0
+      ffy = Ri*temp
       ffz = 0.0 ! -f_corio * (ux - U_GEO)
 
       call pen_forcing(ix, iy, iz, eg)
@@ -99,13 +100,14 @@ c-----------------------------------------------------------------------
 
 c      integer e
 c     e = gllel(eg)
-      ! source = 0.0
+c      source = 0.0
       qvol   = 0.0
 
       return
       end
 c-----------------------------------------------------------------------
 c> Set up initial conditions
+c> @todo Reactivate perturbations in the initial condition
 c> @callgraph
       subroutine useric(ix,iy,iz,eg)
 
@@ -126,7 +128,8 @@ c> @callgraph
 c      ux   = 1.0
 c      uy   = 0.0
 c      uz   = 0.0
-      temp = 0.0
+c      temp = 0.0
+      temp = y
 
 c     Geostrophic velocity
       U_GEO = uparam(3)
@@ -183,6 +186,8 @@ c> @callgraph
       integer ix, iy, iz, iside, eg
 
       call abl_userbc(ix, iy, iz, iside, eg)
+      flux = 10.
+      temp = y
 
       return
       end
