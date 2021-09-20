@@ -282,22 +282,28 @@ def launch(ctx, rule):
 
     sim = Simul(ctx.obj["params"])
     assert sim.make.exec([rule], scheduler="greedy")
-    if rule == "release":
-        import shutil
-
-        from setuptools_scm.file_finder_git import _git_toplevel
-        from setuptools_scm.git import GitWorkdir
-
-        wd = GitWorkdir.from_potential_worktree(_git_toplevel(None))
-        assert wd is not None, "Failed to obtain git work directory"
-        branch = wd.get_branch().replace("/", "-")
-        version = wd.do_ex("git describe --tags")[0]
-        output = Path.cwd() / f"abl_{version}_{branch}.tar.gz"
-
-        logger.info(f"Release: {output}")
-        shutil.move(sim.path_run / "abl-release.tar.gz", output)
-
     return sim
+
+
+@cli.command()
+@click.pass_context
+def release(ctx):
+    import shutil
+
+    from setuptools_scm.file_finder_git import _git_toplevel
+    from setuptools_scm.git import GitWorkdir
+
+    sim = Simul(ctx.obj["params"])
+    assert sim.make.exec(["release"], scheduler="greedy")
+
+    wd = GitWorkdir.from_potential_worktree(_git_toplevel(None))
+    assert wd is not None, "Failed to obtain git work directory"
+    branch = wd.get_branch().replace("/", "-")
+    version = wd.do_ex("git describe --tags")[0]
+    output = Path.cwd() / f"abl_{version}_{branch}.tar.gz"
+
+    logger.info(f"Release: {output}")
+    shutil.move(sim.path_run / "abl-release.tar.gz", output)
 
 
 @cli.command()
