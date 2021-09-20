@@ -28,10 +28,23 @@ avail_sgs_models = {
 avail_boundary_conds = {
     model.name: model for model in locals().values() if isinstance(model, BC)
 }
+avail_temp_boundary_conds = {"isotherm", "flux"}
 
 
 class OutputABL(OutputBase):
     name_pkg = "abl"
+
+    @staticmethod
+    def _complete_params_with_default(params, info_solver):
+        OutputBase._complete_params_with_default(params, info_solver)
+        params.output._set_attribs(
+            {
+                "sgs_model": "constant",
+                "boundary_cond": "moeng",
+                "buoyancy_bottom": "isotherm",
+                "buoyancy_top": "isotherm",
+            }
+        )
 
     @property
     def makefile_usr_sources(self):
@@ -111,11 +124,6 @@ class OutputABL(OutputBase):
         bc = avail_boundary_conds[params.boundary_cond]
         sources["bc"].append(bc.sources)
         return sources
-
-    @staticmethod
-    def _complete_params_with_default(params, info_solver):
-        OutputBase._complete_params_with_default(params, info_solver)
-        params.output._set_attribs({"sgs_model": "constant", "boundary_cond": "moeng"})
 
     def write_makefile_usr(self, template, fp=None, **template_vars):
         # Prepare dictionary for overriding custom fortran flags
