@@ -67,7 +67,7 @@ c
       include 'SIZE'
       include 'INPUT'           ! uparam
       include 'PARALLEL'        ! GLLEL
-      include 'NEKUSE'            ! ffx, ffy, ffz, ux, uz
+      include 'NEKUSE'            ! ffx, ffy, ffz, ux, uz, temp
 
       ! argument list
       integer ix,iy,iz,eg
@@ -180,9 +180,15 @@ c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
       end
 c-----------------------------------------------------------------------
 c> Compute the boundary condition. See subdirectory bc/
+c> @note it is OK to define both flux and temp here since only one would
+c>      be used at the same time. See BCNEUSC(), BCDIRSC() and FACEIS()
 c> @callgraph
       subroutine userbc(ix,iy,iz,iside,eg)
       implicit none
+
+      include 'SIZE'
+      include 'NEKUSE'  ! flux, temp
+
       integer ix, iy, iz, iside, eg
 
       call abl_userbc(ix, iy, iz, iside, eg)
