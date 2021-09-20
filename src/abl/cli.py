@@ -7,14 +7,20 @@ from pprint import pprint
 
 import click
 
-from abl.output import avail_boundary_conds, avail_sgs_models
+from abl.output import (
+    avail_boundary_conds,
+    avail_sgs_models,
+    avail_temp_boundary_conds,
+)
 from abl.solver import Simul
 from snek5000.log import logger
 
 
 def apply_case(case, params):
     """Apply case specific parameters. See :mod:`abl.cases`"""
-    module_name, func_name = case.split(":")
+    module_name, _, func_name = case.partition(":")
+    func_name = func_name or "_common"  # Default to _common if empty
+
     module = import_module(f".{module_name}", package="abl.cases")
     func = getattr(module, func_name)
     func(params)
@@ -60,6 +66,27 @@ def apply_case(case, params):
     help="boundary condition",
 )
 @click.option(
+    "-bb",
+    "--buoyancy-bottom",
+    default="isotherm",
+    type=click.Choice(avail_temp_boundary_conds),
+    help="temperature boundary condition (bottom)",
+)
+@click.option(
+    "-bt",
+    "--buoyancy-top",
+    default="isotherm",
+    type=click.Choice(avail_temp_boundary_conds),
+    help="temperature boundary condition (top)",
+)
+@click.option(
+    "-ri",
+    "--richardson",
+    default=0.0,
+    type=float,
+    help="Richardson number (EXPERIMENTAL: requires scaling) for buoyancy forcing term",
+)
+@click.option(
     "-s",
     "--sgs-model",
     default="constant",
@@ -95,6 +122,9 @@ def cli(
     filter_cutoff,
     filter_temporal,
     boundary_cond,
+    buoyancy_bottom,
+    buoyancy_top,
+    richardson,
     sgs_model,
     sgs_boundary,
     pen_tiamp,
@@ -140,7 +170,8 @@ def cli(
 
     output.sgs_model = sgs_model
     output.boundary_cond = boundary_cond
-    # output.boundary_cond = "noslip"
+    output.buoyancy_bottom = buoyancy_bottom
+    output.buoyancy_top = buoyancy_top
 
     # Nek5000: abl.par
     # ================
@@ -186,6 +217,14 @@ def cli(
         params.oper.boundary = ["P", "P", "sh", "sh", "P", "P"]
     else:
         raise NotImplementedError("Stress formulation or not?")
+
+    params.oper.boundary_scalars = ["P"] * 6
+
+    for boundary, index in (("buoyancy_bottom", 2), ("buoyancy_top", 3)):
+        if getattr(params.output, boundary) == "isotherm":
+            params.oper.boundary_scalars[index] = "t"
+        elif getattr(params.output, boundary) == "flux":
+            params.oper.boundary_scalars[index] = "f"
 
     pressure = params.nek.pressure
     velocity = params.nek.velocity
@@ -263,6 +302,7 @@ def cli(
             5: oper.Lx,
             6: oper.Ly,
             7: oper.Lz,
+            8: richardson,
         }
     )
 
