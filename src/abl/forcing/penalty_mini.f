@@ -14,10 +14,7 @@
       ! functions
       real dnekclock
 !-----------------------------------------------------------------------
-      if (
-     &      (.not. pen_enabled) .or.
-     &      (istep > 0 .and. pen_tdamp < 1.e-14)  ! no need to recompute forcing arrays
-     &) then
+      if (.not. pen_enabled) then
           ! Do nothing!
           return
       endif
@@ -28,8 +25,8 @@
       ! update random phases (time independent and time dependent)
       ! call pen_rphs_get
 
-      ! update forcing
-      call pen_frcs_get(.false.)
+      ! update forcing terms
+      call pen_fterms_get(.false.)
 
       ! timing
       ltim = dnekclock() - ltim
@@ -37,15 +34,14 @@
 
 #ifdef DEBUG
       print *,  "pen_regions = ", pen_regions
-      print *,  "pen_npoint = ", pen_npoint
       print *,  "pen_k_len (min/max) = ", minval(pen_k_len),
      &   maxval(pen_k_len)
-      print *,  "pen_frcs (min/max) = ", minval(pen_frcs),
-     &   maxval(pen_frcs)
-      print *,  "pen_famp (min/max) = ", minval(pen_famp),
-     &   maxval(pen_famp)
-      print *,  "pen_fsmth (min/max) = ", minval(pen_fsmth),
-     &   maxval(pen_fsmth)
+      print *,  "pen_floglaw (min/max) = ", minval(pen_floglaw),
+     &   maxval(pen_floglaw)
+      print *,  "pen_fstab (min/max) = ", minval(pen_fstab),
+     &   maxval(pen_fstab)
+      print *,  "pen_fmask (min/max) = ", minval(pen_fmask),
+     &   maxval(pen_fmask)
 #endif
       return
       end subroutine
@@ -78,18 +74,18 @@
 !-----------------------------------------------------------------------
       iel=GLLEL(ieg)
 
-      ffn = 0
+      ffn = 0.
 
       if (pen_enabled) then
-         k_len = pen_k_len(ix,iy,iz,iel)
 
          do il=1, pen_regions_max
            ! ipos = pen_map(ix,iy,iz,iel,il)
            ffn = ffn + (
      &          binvm1(ix, iy, iz, iel)  !  P^{-1}
      &          * pen_tiamp  !* pen_famp(ipos,il) *    ! sigma
-     &          * pen_fsmth(ix,iy,iz,iel,il)  ! E_{i,j}
-     &          * (ux - k_len * du_dy(ix,iy,iz,iel)))
+     &          * (pen_floglaw(ix,iy,iz,iel,il)
+     &             - pen_fstab(ix,iy,iz,iel,il))
+     &     )
          enddo
       endif
 
@@ -97,36 +93,6 @@
       ! print *, "Penalty ffn = ", ffn
 #endif
       ffx = ffx + ffn
-
-      return
-      end subroutine
-!=======================================================================
-!> @brief Reset penalty
-!! @ingroup penalty_mini
-      subroutine pen_reset()
-      implicit none
-
-      include 'SIZE'
-      include 'PENALTY'
-
-      ! local variables
-      real ltim
-
-      ! functions
-      real dnekclock
-!-----------------------------------------------------------------------
-      ! timing
-      ltim = dnekclock()
-
-      ! get 1D projection and array mapping
-      call pen_1dprj
-
-      ! update forcing
-      call pen_frcs_get(.true.)
-
-      ! timing
-      ltim = dnekclock() - ltim
-      call mntr_tmr_add(pen_tmr_id,1,ltim)
 
       return
       end subroutine
@@ -139,7 +105,7 @@
 !! @see Schlatter and Örlü, “Turbulent Boundary Layers at Moderate Reynolds Numbers.”
 !!   pg. 12
 !! @remark This routine uses global scratch space \a CTMP0 and \a CTMP1
-      subroutine pen_1dprj()
+      subroutine pen_fmask_get()
       implicit none
 
       include 'SIZE'
@@ -154,64 +120,21 @@
       real xr, yr, zr !< @var coordinates
       real x_cen, y_cen, z_cen !< @var centers of the region
       real x_len, y_len, z_len  !@ var half extents of the region
-      real rota, epsl
       real rtmp !< @var temporary variable: distance**2 from starting position (pen_spos)
-      parameter (epsl = 1.0e-10)
 
-      real lcoord(LX1*LY1*LZ1*LELT)  ! @var NOTE: distance along
-      common /CTMP0/ lcoord
-      integer lmap(LX1*LY1*LZ1*LELT)
-      common /CTMP1/ lmap
 !-----------------------------------------------------------------------
       nxy = NX1*NY1
       nxyz = nxy*NZ1
       ntot = nxyz*NELV
 
+      call rzero(pen_fmask, ntot*pen_regions)
+
       ! for each region
       do il=1,pen_regions
       ! Get coordinates and sort them
-         call copy(lcoord,ym1,ntot)
-         call sort(lcoord,lmap,ntot)
 
-         ! find unique entrances and provide mapping
-         pen_npoint(il) = 1
-         pen_prj(pen_npoint(il),il) = lcoord(1)
-         itmp = lmap(1)-1
-         eltmp = itmp/nxyz + 1
-         itmp = itmp - nxyz*(eltmp-1)
-         ktmp = itmp/nxy + 1
-         itmp = itmp - nxy*(ktmp-1)
-         jtmp = itmp/nx1 + 1
-         itmp = itmp - nx1*(jtmp-1) + 1
-         pen_map(itmp,jtmp,ktmp,eltmp,il) = pen_npoint(il)
-         do jl=2,ntot
-            if(
-     &          (lcoord(jl) - pen_prj(pen_npoint(il),il)) .gt.
-     &           max(epsl, abs(epsl * lcoord(jl)))
-     &       ) then
-               pen_npoint(il) = pen_npoint(il) + 1
-               pen_prj(pen_npoint(il),il) = lcoord(jl)
-            endif
-
-            itmp = lmap(jl)-1
-            eltmp = itmp/nxyz + 1
-            itmp = itmp - nxyz*(eltmp-1)
-            ktmp = itmp/nxy + 1
-            itmp = itmp - nxy*(ktmp-1)
-            jtmp = itmp/nx1 + 1
-            itmp = itmp - nx1*(jtmp-1) + 1
-            pen_map(itmp,jtmp,ktmp,eltmp,il) = pen_npoint(il)
-         enddo
-
-         ! rescale 1D array
-         do jl=1,pen_npoint(il)
-            pen_prj(jl,il) = (pen_prj(jl,il) - pen_spos(ldim,il))
-     $           *pen_ilngt(il)
-         enddo
-
-         ! get smoothing profile
-         ! rota = pen_rota(il)
-
+         ! define masks / extraction functions where penalty should be
+         ! imposed
          x_len = (pen_epos(1,il) - pen_spos(1,il)) * 0.5
          y_len = (pen_epos(2,il) - pen_spos(2,il)) * 0.5
          x_cen = (pen_epos(1,il) + pen_spos(1,il)) * 0.5
@@ -231,12 +154,13 @@
             itmp = itmp - nx1*(jtmp-1) + 1
 
             ! calculate distances, normalized
-            xr = (xm1(itmp,jtmp,ktmp,eltmp) - x_cen) / x_len
+            ! NOTE: xr and zr are commented for now
+            ! xr = (xm1(itmp,jtmp,ktmp,eltmp) - x_cen) / x_len
             yr = (ym1(itmp,jtmp,ktmp,eltmp) - y_cen) / y_len
 
-            if (IF3D) then
-               zr = (zm1(itmp,jtmp,ktmp,eltmp) - z_cen) / z_len
-            endif
+            ! if (IF3D) then
+            !    zr = (zm1(itmp,jtmp,ktmp,eltmp) - z_cen) / z_len
+            ! endif
 
             ! For isolated 3D masks
             !         rtmp = xr**2 + yr**2 + zr**2
@@ -250,9 +174,9 @@
 
             ! Delta function masking. NOTE: not smooth
             if (rtmp > 1.0) then
-               pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 0.0
+               pen_fmask(itmp,jtmp,ktmp,eltmp,il) = 0.0
             else
-               pen_fsmth(itmp,jtmp,ktmp,eltmp,il) = 1.0
+               pen_fmask(itmp,jtmp,ktmp,eltmp,il) = 1.0
             endif
          enddo
       enddo
@@ -260,55 +184,41 @@
       return
       end subroutine
 !=======================================================================
-!> @brief Generate forcing along 1D line
-!! @details Initializes the pen_famp array. The facility to use
-!!    temporal history has been removed in this version.
+!> @brief Generate forcing terms: pen_k_len and pen_fstab
+!! @details This used to also initializes the pen_famp array. This was to allow for
+!!    spatio-temporally varying forcing, which has been removed in this version.
 !! @ingroup penalty_mini
-!! @param[in] ifreset    reset flag
+!! @param[in] ifreset    reset flag to reinitialize geometry term pen_k_len
 !! @callgraph @callergraph
-      subroutine pen_frcs_get(ifreset)
+      subroutine pen_fterms_get(ifreset)
       implicit none
 
       include 'SIZE'
-      include 'INPUT'
+      ! include 'INPUT'
       include 'GEOM'  ! ym1
-      include 'TSTEP'
+      ! include 'TSTEP'
       include 'PENALTY'
+      include 'SOLN'   ! vx
+      include 'SGS'    ! du_dy
       include 'WMLES'  ! wmles_bc_z0
 
       ! argument list
       logical ifreset
-
-#ifdef PENALTY_PR_RST
-      ! variables necessary to reset pressure projection for P_n-P_n-2
-      integer nprv(2)
-      common /orthbi/ nprv
-
-      ! variables necessary to reset velocity projection for P_n-P_n-2
-      include 'VPROJ'
-#endif
 
       ! function defined in boundary condition module
       real abl_pen_k
       external abl_pen_k
 
       ! local variables
-      integer il, jl, kl, ll, ntot_frcs
+      integer il, jl, kl, ll
       integer istart
 
+      real loglaw_err(lx1,ly1,lz1,lelv)
+      common /ctmp0/ loglaw_err
+
 !-----------------------------------------------------------------------
-      ntot_frcs = lx1*ly1*lz1*lelt * pen_nset_max * pen_regions_max
       ! reset all
       if (ifreset) then
-         ! Initialize amplitude penalties
-         call cfill(pen_frcs, 1.0, ntot_frcs)
-
-         ! rescale time independent part
-         if (pen_tiamp <= -1e-15) then
-            ! do il= 1, pen_regions
-            call cmult(pen_frcs, pen_tiamp, ntot_frcs)
-            ! enddo
-         endif
 
          ! compute K array
          print *, "Computing penalty K array"
@@ -331,32 +241,40 @@
       ! else
          ! reset only time dependent part if needed
 
-         ! get penalty for current time step
-         if (pen_tiamp.ne.0.0) then
-            ! copy pen_tiamp stored in pen_frcs (see above) -> pen_famp
-            do il= 1, pen_regions
-              call copy(pen_famp(1,il),pen_frcs(1,1,il),pen_npoint(il))
-            enddo
-         else
-            ! fill zeros -> pen_famp
-            do il= 1, pen_regions
-               call rzero(pen_famp(1,il),pen_npoint(il))
-            enddo
-         endif
+         ! space dependent amplitude: disabled
 
       endif
       ! time dependent amplitude: disabled
 
+!-----------------------------------------------------------------------
+
+      ! Compute the forcing terms
+      loglaw_err = (vx - pen_k_len * du_dy)
+
+      do il=1,pen_regions
+
+         ! compute log law term: pen_floglaw
+         pen_floglaw(:nx1,:ny1,:nz1,:nelv,il) = (
+     &      pen_fmask(:nx1,:ny1,:nz1,:nelv,il)
+     &      * loglaw_err(:nx1,:ny1,:nz1,:nelv))
+
+         ! compute numerical stability term: pen_fstab
+         call cart_diff_y(
+     &      pen_fstab(:nx1,:ny1,:nz1,:nelv,il),
+     &      (pen_k_len(:nx1,:ny1,:nz1,:nelv)
+     &       * pen_floglaw(:nx1,:ny1,:nz1,:nelv,il)),
+     &      .false.)
+
+      enddo
+
 #ifdef DEBUG
       ! for testing
-      print *,
-     &   "Rank=", nid, "Penalty number of grid points=", pen_npoint
       call outpost(
      &   pen_k_len,  ! x: VERIFIED!
-     &   pen_fsmth(:,:,:,:,1),  ! y: VERIFIED!
-     &   pen_fsmth(:,:,:,:,2),  ! z: VERIFIED?  &   pen_frcs(:,1,1),  ! z
-     &   pen_famp(:,1),  ! pr
-     &   pen_map(:,:,:,:,1),  ! temp
+     &   pen_fmask(:,:,:,:,1),  ! y: VERIFIED!
+     &   pen_fmask(:,:,:,:,2),  ! z: VERIFIED?
+     &   pen_floglaw(:,:,:,:,1),  ! pr
+     &   pen_fstab(:,:,:,:,1),  ! temp
      &   'pen')
 #endif
 

@@ -58,36 +58,22 @@
 
       real pen_ismth(LDIM,pen_regions_max) !< @var inverse smoothing radius
 
-      real pen_prj(lx1*ly1*lz1*lelt,pen_regions_max) !< @var projection of 3D pionts on 1D line
+      real pen_fstab(lx1,ly1,lz1,lelv,pen_regions_max) !< @var numerical stability term
+      real pen_floglaw(lx1,ly1,lz1,lelv,pen_regions_max)  !< @var log-law term
 
-      integer pen_npoint(pen_regions_max) !< @var number of points in 1D projection
+      real pen_fmask(lx1,ly1,lz1,lelv,pen_regions_max) !< @var function for smoothing and masking of the forcing
 
-      integer pen_map(lx1,ly1,lz1,lelt,pen_regions_max) !< @var mapping of 3D array to 1D projection array
-
-      real pen_fsmth(lx1,ly1,lz1,lelt,pen_regions_max) !< @var function for smoothing and masking of the forcing
-
-      integer pen_seed(pen_regions_max) !< @var seed for random number generator; different for each line
-
-      integer pen_nfdt, pen_nfdt_old !< @var number of forcing time intervals
-
-      ! real pen_rphs(pen_nmode_max,pen_nset_max,pen_regions_max) !< @var set of random phases (static, current and prevoious)
-
-      real pen_frcs(lx1*ly1*lz1*lelt,pen_nset_max,pen_regions_max) !< @var set of forcing arrays with temporal history (static, current and prevoious)
-
-      real pen_famp(lx1*ly1*lz1*lelt,pen_regions_max) !< @var forcing amplitude array; interpolated value to set in 3D arrays
-
-      real pen_k_len(lx1,ly1,lz1,lelt) !< @var a term, K, with dimensions of length which multiplies with velocity gradient in a penalty forcing.
+      real pen_k_len(lx1,ly1,lz1,lelv) !< @var a term, K, with dimensions of length which multiplies with velocity gradient in a penalty forcing.
 
 !     common block section
       common /peni/ pen_id, pen_tmr_id, pen_sec_id, pen_regions,
      $     pen_regions_id, pen_nmode, pen_nmode_id, pen_tiamp_id,
      $     pen_tdamp_id, pen_fdt_id, pen_spos_id, pen_epos_id,
-     $     pen_smth_id, pen_rota_id, pen_enabled_id,
-     $     pen_npoint, pen_map, pen_seed, pen_nfdt, pen_nfdt_old
+     $     pen_smth_id, pen_rota_id, pen_enabled_id
 
       common /penr/ pen_tiamp, pen_tdamp, pen_fdt, pen_spos,
      $     pen_epos, pen_smth, pen_rota, pen_ilngt, pen_ismth,
-     $     pen_prj, pen_fsmth, pen_frcs, pen_famp, pen_k_len
+     $     pen_fstab, pen_floglaw, pen_fmask, pen_k_len
 
       common /penl/ pen_ifinit, pen_enabled
 !> @}

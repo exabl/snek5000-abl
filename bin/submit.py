@@ -2,7 +2,7 @@
 import itertools
 import sys
 
-from snek5000.clusters import Cluster
+from abl.clusters import Cluster
 
 cluster = Cluster()
 sub_dir = "channel_tests"
