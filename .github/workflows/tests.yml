@@ -20,6 +20,7 @@ jobs:
       with:
         token: ${{ secrets.SNEK_ABL_PAT }}
         submodules: recursive
+        fetch-depth: 0
 
     - name: Install apt packages
       run: |
