@@ -2,17 +2,17 @@
 from pathlib import Path
 
 from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
-from snek5000.clusters import Cluster
+from abl.clusters import Cluster
 from snek5000.log import logger
 from snek5000.util import prepare_for_restart
 
 cluster = Cluster()
-base_name_run = "ch"
-snakemake_rules = "srun"
+base_name_run = "penalty"
+snakemake_rules = "run_fg"
 modify_params = False
-dryrun = False
+dryrun = not True
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "channel_tests"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "buoy"
 for path in filter(
     lambda path: path.name
     not in [
@@ -31,8 +31,8 @@ for path in filter(
     else:
         logger.info(f"OK {path}")
 
-    name_run = base_name_run + path.name[6:]
-    name_run = name_run[:name_run.index('_14x4x7')]
+    name_run = path.name[-8:]
+    # name_run = name_run[:name_run.index('_14x4x7')]
 
     if modify_params:
         logger.info("Modifying I/O parameters ...")
@@ -46,10 +46,10 @@ for path in filter(
 
     cmd = f"""
 cd {path}
-mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
+snakemake {snakemake_rules} -j all
 """
-    # snakemake {snakemake_rules} -j
 
+# mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
     if dryrun:
         if list(path.glob("rs6*")):
             logger.info(
