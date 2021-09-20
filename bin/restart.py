@@ -7,12 +7,12 @@ from snek5000.log import logger
 from snek5000.util import prepare_for_restart
 
 cluster = Cluster()
-base_name_run = "ch"
+base_name_run = "mpen"
 snakemake_rules = "srun"
 modify_params = False
 dryrun = False
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "channel_tests"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "mixing_len"
 for path in filter(
     lambda path: path.name
     not in [
@@ -32,7 +32,7 @@ for path in filter(
         logger.info(f"OK {path}")
 
     name_run = base_name_run + path.name[6:]
-    name_run = name_run[:name_run.index('_14x4x7')]
+    name_run = name_run[:name_run.index('_3x20x3')]
 
     if modify_params:
         logger.info("Modifying I/O parameters ...")
@@ -46,21 +46,21 @@ for path in filter(
 
     cmd = f"""
 cd {path}
-mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
+snakemake {snakemake_rules} -j
 """
-    # snakemake {snakemake_rules} -j
+    # mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
 
     if dryrun:
         if list(path.glob("rs6*")):
             logger.info(
-                "Has restart files... modified parameters will be written to abl.par"
+                "Has restart files... restart parameters will be written to abl.par"
             )
 
         print("name_run =", name_run)
         print(cmd)
     else:
         if list(path.glob("rs6*")):
-            logger.info("Has restart files... writing modified parameters to abl.par")
+            logger.info("Has restart files... writing restart parameters to abl.par")
             try:
                 params.nek._write_par(path / "abl.par")
             except NameError:
@@ -72,7 +72,7 @@ mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
             command=cmd,
             name_run=name_run,
             # walltime="7-00:00:00",
-            walltime="03:00:00",
+            walltime="1-12:00:00",
             signal_num=False,
             ask=False,
             bash=False,
