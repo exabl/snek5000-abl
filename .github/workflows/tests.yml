@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7]
+        python-version: [3.8]
 
     steps:
     - name: Checkout
@@ -27,18 +27,23 @@ jobs:
         sudo apt-get install gfortran libopenmpi-dev ccache
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Cache pip requirements
       id: pip-cache
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ${{ env.PIP_CACHE_DIR }}
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.*') }}
         restore-keys: |
           ${{ runner.os }}-pip-
+
+    - name: Verify Python environment
+      run: |
+        pip list
+        pip cache list
 
     - name: Install dependencies
       run: |
