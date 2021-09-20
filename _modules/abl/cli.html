@@ -517,22 +517,28 @@
 
     <span class="n">sim</span> <span class="o">=</span> <span class="n">Simul</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">obj</span><span class="p">[</span><span class="s2">"params"</span><span class="p">])</span>
     <span class="k">assert</span> <span class="n">sim</span><span class="o">.</span><span class="n">make</span><span class="o">.</span><span class="n">exec</span><span class="p">([</span><span class="n">rule</span><span class="p">],</span> <span class="n">scheduler</span><span class="o">=</span><span class="s2">"greedy"</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">rule</span> <span class="o">==</span> <span class="s2">"release"</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">shutil</span>
-
-        <span class="kn">from</span> <span class="nn">setuptools_scm.file_finder_git</span> <span class="kn">import</span> <span class="n">_git_toplevel</span>
-        <span class="kn">from</span> <span class="nn">setuptools_scm.git</span> <span class="kn">import</span> <span class="n">GitWorkdir</span>
-
-        <span class="n">wd</span> <span class="o">=</span> <span class="n">GitWorkdir</span><span class="o">.</span><span class="n">from_potential_worktree</span><span class="p">(</span><span class="n">_git_toplevel</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
-        <span class="k">assert</span> <span class="n">wd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"Failed to obtain git work directory"</span>
-        <span class="n">branch</span> <span class="o">=</span> <span class="n">wd</span><span class="o">.</span><span class="n">get_branch</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">)</span>
-        <span class="n">version</span> <span class="o">=</span> <span class="n">wd</span><span class="o">.</span><span class="n">do_ex</span><span class="p">(</span><span class="s2">"git describe --tags"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"abl_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">branch</span><span class="si">}</span><span class="s2">.tar.gz"</span>
-
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Release: </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">path_run</span> <span class="o">/</span> <span class="s2">"abl-release.tar.gz"</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="n">sim</span>
+
+
+<span class="nd">@cli</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">pass_context</span>
+<span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">shutil</span>
+
+    <span class="kn">from</span> <span class="nn">setuptools_scm.file_finder_git</span> <span class="kn">import</span> <span class="n">_git_toplevel</span>
+    <span class="kn">from</span> <span class="nn">setuptools_scm.git</span> <span class="kn">import</span> <span class="n">GitWorkdir</span>
+
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">Simul</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">obj</span><span class="p">[</span><span class="s2">"params"</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="n">sim</span><span class="o">.</span><span class="n">make</span><span class="o">.</span><span class="n">exec</span><span class="p">([</span><span class="s2">"release"</span><span class="p">],</span> <span class="n">scheduler</span><span class="o">=</span><span class="s2">"greedy"</span><span class="p">)</span>
+
+    <span class="n">wd</span> <span class="o">=</span> <span class="n">GitWorkdir</span><span class="o">.</span><span class="n">from_potential_worktree</span><span class="p">(</span><span class="n">_git_toplevel</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="n">wd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"Failed to obtain git work directory"</span>
+    <span class="n">branch</span> <span class="o">=</span> <span class="n">wd</span><span class="o">.</span><span class="n">get_branch</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">)</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">wd</span><span class="o">.</span><span class="n">do_ex</span><span class="p">(</span><span class="s2">"git describe --tags"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"abl_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">branch</span><span class="si">}</span><span class="s2">.tar.gz"</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Release: </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">path_run</span> <span class="o">/</span> <span class="s2">"abl-release.tar.gz"</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
 
 
 <span class="nd">@cli</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
@@ -632,11 +638,11 @@
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-09-07.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-09-20.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>
