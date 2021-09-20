@@ -11,7 +11,8 @@ from click.testing import CliRunner
     + [
         f"chat_peet:{c}"
         for c in ("small", "small_stretch", "medium", "large", "large_stretch")
-    ],
+    ]
+    + ["buoy_test"],
 )
 @pytest.mark.parametrize("file", ["box", "size", "par"])
 def test_parameters(case, file):
