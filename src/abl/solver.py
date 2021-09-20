@@ -1,5 +1,3 @@
-import math
-
 from snek5000 import logger, mpi
 from snek5000.info import InfoSolverMake
 from snek5000.solvers.kth import SimulKTH
@@ -42,10 +40,6 @@ class SimulABL(SimulKTH):
         params = SimulKTH._complete_params_with_default(params)
         params.nek.velocity._set_attribs({"advection": True, "density": 1.0})
         params.nek.temperature._set_internal_attr("_enabled", True)
-
-        params.nek.temperature._set_attribs(
-            {"conductivity": math.nan, "rho_cp": math.nan}
-        )
 
         params.nek._set_child(
             "wmles",
