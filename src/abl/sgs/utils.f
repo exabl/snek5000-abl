@@ -10,9 +10,9 @@ c> @callgraph @callergraph
 
       integer e
       integer n, i, j, k, im, ip, jm, jp, km, kp
-      real di, dj, dk, ndim_inv
+      real di, dj, dk, two_over_ndim
 
-      ndim_inv = 1./ndim
+      two_over_ndim = 2./ndim
 
       n = nx1*ny1*nz1*nelv
       call rone(dg2,n)
@@ -43,10 +43,10 @@ c     return               ! Comment this line for a non-trivial Delta defn
      $            + (ym1(i,j,kp,e)-ym1(i,j,km,e))**2
      $            + (zm1(i,j,kp,e)-zm1(i,j,km,e))**2
 c               write(6,*) ip,im,jp,jm
-               di = di/(ip-im)
-               dj = dj/(jp-jm)
-               dk = dk/(kp-km)
-               dg2(i,j,k,e) = (di*dj*dk)**ndim_inv
+               di = sqrt(di) / (ip-im)
+               dj = sqrt(dj) / (jp-jm)
+               dk = sqrt(dk) / (kp-km)
+               dg2(i,j,k,e) = (di*dj*dk)**(two_over_ndim)
 
              enddo
            enddo
