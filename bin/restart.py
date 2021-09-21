@@ -7,7 +7,7 @@ from snek5000.log import logger
 from snek5000.util import prepare_for_restart
 
 cluster = Cluster()
-base_name_run = "penalty"
+base_name_run = "vreman"
 snakemake_rules = "run_fg"
 modify_params = False
 dryrun = not True
