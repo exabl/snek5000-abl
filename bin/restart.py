@@ -7,7 +7,7 @@ from snek5000.log import logger
 from snek5000.util import prepare_for_restart
 
 cluster = Cluster()
-base_name_run = "vreman"
+base_name_run = "_"
 snakemake_rules = "run_fg"
 modify_params = False
 dryrun = not True
@@ -72,7 +72,7 @@ snakemake {snakemake_rules} -j all
             command=cmd,
             name_run=name_run,
             # walltime="7-00:00:00",
-            walltime="03:00:00",
+            walltime="1-00:00:00",
             signal_num=False,
             ask=False,
             bash=False,
