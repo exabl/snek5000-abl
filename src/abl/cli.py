@@ -315,7 +315,7 @@ def cli(
 
 
 @cli.command()
-@click.argument("rule", default="srun")
+@click.argument("rule", default="run_fg")
 @click.pass_context
 def launch(ctx, rule):
     logger.info("Initializing simulation launch...")
