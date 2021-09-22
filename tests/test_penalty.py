@@ -31,7 +31,7 @@ def test_penalty_regions(nb_regions):
     general.num_steps = 9
 
     sim = Simul(params)
-    assert sim.make.exec(["srun"]), "Debug run with penalties failed to complete"
+    assert sim.make.exec(["run_fg"]), "Debug run with penalties failed to complete"
     check_mesh_coords(sim)
     check_penalty_debug_output(sim, tuple(range(1, nb_regions + 1)))
 

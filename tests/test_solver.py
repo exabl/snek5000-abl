@@ -1,4 +1,5 @@
 import pytest
+
 from snek5000.util import prepare_for_restart
 
 
@@ -24,7 +25,7 @@ def test_make(sim):
 @pytest.mark.slow
 def test_make_run(sim):
     # Run in foreground
-    assert sim.make.exec(["srun"])
+    assert sim.make.exec(["run_fg"])
 
     # test outputs
     print(sim.output.print_stdout.file)
