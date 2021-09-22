@@ -140,7 +140,7 @@ def cli(
 
     oper = params.oper
 
-    save_freq = 1_000
+    save_freq = 10_000
 
     # Nek5000: SIZE
     # ===============
