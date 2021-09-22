@@ -27,6 +27,7 @@ c> @todo Implement turbulent Prandtl number parameter
       implicit none
 
       include 'SIZE'
+      include 'INPUT'  ! param
       include 'NEKUSE'  ! udiff, utrans
       include 'PARALLEL'  ! gllel
       include 'SGS'  ! ediff
@@ -41,7 +42,8 @@ c> @todo Implement turbulent Prandtl number parameter
         udiff = ediff(ix,iy,iz,iel)  ! dynamic viscosity
         utrans = 1.0  ! density
       else if (ifield.eq.2) then  ! temperature when IFHEAT = .true.
-        udiff = 2.0 * ediff(ix,iy,iz,iel)  ! conductivity
+        udiff = param(8)  ! read conductivity from par file
+        ! udiff = 2.0 * ediff(ix,iy,iz,iel)  ! conductivity
         utrans = 1.0  ! rho*cp
       endif
 
