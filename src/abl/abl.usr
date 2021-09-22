@@ -174,9 +174,9 @@ c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
 
       !- a boundary-layer-like profile
       !- eps * (large scale sinusoidal field + random noise)
-      ux  = ux !+ eps*(beta * sin(alpha*x)*cos(beta*z) + rand1 * 1e-1)
-      uy  = 0. !+ eps*(       sin(alpha*x)*sin(beta*z) + rand2 * 1e-1)
-      uz  = 0. !- eps*(alpha * cos(alpha*x)*sin(beta*z) + rand3 * 1e-1)
+      ux  = ux + eps*(beta * sin(alpha*x)*cos(beta*z) + rand1 * 1e-1)
+      uy  = 0. + eps*(       sin(alpha*x)*sin(beta*z) + rand2 * 1e-1)
+      uz  = 0. - eps*(alpha * cos(alpha*x)*sin(beta*z) + rand3 * 1e-1)
 
       return
       end
