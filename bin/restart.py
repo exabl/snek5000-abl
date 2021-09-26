@@ -4,7 +4,7 @@ from pathlib import Path
 from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
 from abl.clusters import Cluster
 from snek5000.log import logger
-from snek5000.util import prepare_for_restart
+from snek5000.util import get_status, prepare_for_restart
 
 cluster = Cluster()
 base_name_run = "_"
@@ -23,6 +23,12 @@ for path in filter(
     # and not (path / "abl.log").exists(),
     subdir.glob("abl*"),
 ):
+    # Skip if locked
+    status_code, err = get_status(path)
+    if status_code in (423,):
+        logger.error(f"{err} : Skipping...")
+        continue
+
     try:
         params = prepare_for_restart(path)
     except IOError as err:
