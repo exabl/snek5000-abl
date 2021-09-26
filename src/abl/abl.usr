@@ -149,19 +149,20 @@ c     perturbation tries!! (not working)
 c> Use standard subroutine RANDOM_NUMBER.
 c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
 
-      kx  = 11
-      kz  = 11
+      kx  = 2
+      kz  = 2
 
-      alpha = kx * 2 * PI_* 40 / XLEN
-      beta  = kz * 2 * PI_* 40 / ZLEN
+      alpha = kx * 2 * PI_* 2 / XLEN
+      beta  = kz * 2 * PI_* 2 / ZLEN
 
       ! estimated boundary layer thickness, which might vary
-      perturb_thick = 0.4 * YLEN
+      perturb_thick = 1.0 * YLEN
       ! See: Beare et al., “An Intercomparison of Large-Eddy Simulations of the
       ! Stable Boundary Layer.” pp. 4
       if (y < perturb_thick) then
         ! fills ~2 / 3 of perturb_thick and smoothly decays
-        eps = (1. - tanh(3 * y / perturb_thick)) * 1e-3
+        ! eps = (1. - tanh(3 * y / perturb_thick)) * 1e-3
+        eps = 1e-1
         call random_number(rand1)
         call random_number(rand2)
         call random_number(rand3)
