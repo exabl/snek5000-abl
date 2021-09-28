@@ -12,7 +12,7 @@ snakemake_rules = "run_fg"
 modify_params = False
 dryrun = not True
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "buoy"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "buoy_ic"
 for path in filter(
     lambda path: path.name
     not in [
@@ -78,7 +78,7 @@ snakemake {snakemake_rules} -j all
             command=cmd,
             name_run=name_run,
             # walltime="7-00:00:00",
-            walltime="1-00:00:00",
+            walltime="12:00:00",
             signal_num=False,
             ask=False,
             bash=False,
