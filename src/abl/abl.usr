@@ -109,7 +109,6 @@ c      source = 0.0
       end
 c-----------------------------------------------------------------------
 c> Set up initial conditions
-c> @todo Reactivate perturbations in the initial condition
 c> @callgraph
       subroutine useric(ix,iy,iz,eg)
 
@@ -131,7 +130,10 @@ c      ux   = 1.0
 c      uy   = 0.0
 c      uz   = 0.0
 c      temp = 0.0
-      temp = y
+c      temp = y
+      a = 0.3
+      b = 1.-a
+      temp = max(0.0,4.*(y-a)/b)
 
 c     Geostrophic velocity
       U_GEO = uparam(3)
@@ -175,9 +177,9 @@ c> See https://gcc.gnu.org/onlinedocs/gfortran/RANDOM_005fNUMBER.html
 
       !- a boundary-layer-like profile
       !- eps * (large scale sinusoidal field + random noise)
-      ux  = ux + eps*(beta * sin(alpha*x)*cos(beta*z) + rand1 * 1e-1)
-      uy  = 0. + eps*(       sin(alpha*x)*sin(beta*z) + rand2 * 1e-1)
-      uz  = 0. - eps*(alpha * cos(alpha*x)*sin(beta*z) + rand3 * 1e-1)
+      ux  = ux  + eps*(beta * sin(alpha*x)*cos(beta*z) + rand1 * 1e-3)
+      uy  = 0.  + eps*(       sin(alpha*x)*sin(beta*z) + rand2 * 1e-3)
+      uz  = 0.  - eps*(alpha * cos(alpha*x)*sin(beta*z) + rand3 * 1e-3)
 
       return
       end
@@ -193,10 +195,21 @@ c> @callgraph
       include 'NEKUSE'  ! flux, temp
 
       integer ix, iy, iz, iside, eg
+      real a,fl
 
+      parameter(a=3.0)
+      parameter(fl=0.0002)
       call abl_userbc(ix, iy, iz, iside, eg)
-      flux = 10.
-      temp = y
+      flux = -fl
+      if((x.ge.1.).and.(x.le.(1.+a)))then
+        flux = fl*(15.-a)/a
+      endif
+c      temp = y
+      if(y.lt.0.01)then
+        temp = 1.
+      elseif(y.gt.0.99)then
+        temp = 4.
+      endif
 
       return
       end
