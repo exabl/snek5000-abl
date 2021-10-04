@@ -82,7 +82,24 @@ class SimulABL(SimulKTH):
                 smthz02=0.0,  # Smoothing length Z
             ),
         )
-
+        params.nek._set_child(
+            "spongebx",
+            dict(
+                strength=1.0,
+                width_lx=4.0,
+                width_ly=0.0,
+                width_lz=0.0,
+                width_rx=4.0,
+                width_ry=0.0,
+                width_rz=0.0,
+                drop_lx=2.0,
+                drop_ly=0.0,
+                drop_lz=0.0,
+                drop_rx=2.0,
+                drop_ry=0.0,
+                drop_rz=0.0,
+            ),
+        )
         params.nek.wmles._set_internal_attr("_enabled", True)
         return params
 
