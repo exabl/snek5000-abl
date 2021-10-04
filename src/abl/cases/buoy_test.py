@@ -24,12 +24,12 @@ def _common(params):
     general.filter_weight = 12.0
     general.user_params.update({3: 1.0, 4: 0.0014})
 
-    reynolds_number = 5_000
+    reynolds_number = 10_000
     params.nek.velocity.viscosity = -reynolds_number
 
     temperature = params.nek.temperature
     temperature.rho_cp = 1.0
-    temperature.conductivity = -5000.0
+    temperature.conductivity = -reynolds_number
 
     # Not relevant while using no-slip BC + mixing length SGS.
     wmles = params.nek.wmles
@@ -45,3 +45,16 @@ def variable_properties(params):
 def no_variable_properties(params):
     params.nek.problemtype.variable_properties = False
     _common(params)
+
+
+def no_vp_long_box(params):
+    no_variable_properties(params)
+
+    oper = params.oper
+    oper.nx = 16
+    oper.ny = 4
+    oper.nz = 4
+
+    oper.Lx = 15.0
+    oper.Ly = 1.0
+    oper.Lz = 1.5
