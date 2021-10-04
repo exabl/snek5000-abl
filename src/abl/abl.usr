@@ -87,6 +87,7 @@ c
       ffz = 0.0 ! -f_corio * (ux - U_GEO)
 
       call pen_forcing(ix, iy, iz, eg)
+      call spng_forcing(ffx,ffy,ffz,ix,iy,iz,ieg)
 
       return
       end
@@ -404,6 +405,7 @@ c> @{
       call stat_register
       call wmles_register
       call pen_register
+      call spng_register
 
       return
       end subroutine
@@ -415,12 +417,22 @@ c> @{
       include 'SIZE'
       include 'FRAMELP'
       include 'SOLN'
+
+      ! local variables for sponge_box module
+      integer nn
+      real vtmp(lx1*ly1*lz1*lelt,ldim)
+      common /ctmp1/ vtmp
 !-----------------------------------------------------------------------
 !     initialise modules
       call chkpt_init
       call stat_init
       call wmles_init
       call pen_init
+
+      ! initialise sponge_box module
+      nn = lx1*ly1*lz1*lelt*ldim
+      call rzero(vtmp,nn)
+      call spng_init(vtmp(1,1),vtmp(1,2),vtmp(1,ndim))
 
       return
       end subroutine

@@ -85,19 +85,19 @@ class SimulABL(SimulKTH):
         params.nek._set_child(
             "spongebx",
             dict(
-                strength=1.0,
-                width_lx=4.0,
-                width_ly=0.0,
-                width_lz=0.0,
-                width_rx=4.0,
-                width_ry=0.0,
-                width_rz=0.0,
-                drop_lx=2.0,
-                drop_ly=0.0,
-                drop_lz=0.0,
-                drop_rx=2.0,
-                drop_ry=0.0,
-                drop_rz=0.0,
+                strength=0.0,  # sponge strength
+                width_lx=0.0,  # sponge left section width; dimension X
+                width_ly=0.0,  # sponge left section width; dimension Y
+                width_lz=0.0,  # sponge left section width; dimension Z
+                width_rx=0.0,  # sponge right section width; dimension X
+                width_ry=0.0,  # sponge right section width; dimension Y
+                width_rz=0.0,  # sponge right section width; dimension Z
+                drop_lx=0.0,  # sponge left drop/rise section width; dimension X
+                drop_ly=0.0,  # sponge left drop/rise section width; dimension Y
+                drop_lz=0.0,  # sponge left drop/rise section width; dimension Z
+                drop_rx=0.0,  # sponge right drop/rise section width; dimension X
+                drop_ry=0.0,  # sponge right drop/rise section width; dimension Y
+                drop_rz=0.0,  # sponge right drop/rise section width; dimension Z
             ),
         )
         params.nek.wmles._set_internal_attr("_enabled", True)
