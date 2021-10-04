@@ -88,7 +88,7 @@ class OutputABL(OutputBase):
                     "../toolbox/FRAMELP",
                 ),
             ],
-            "sponge_box": [("spongebx.f", "SPONGEBXD")],
+            "sponge_box": [("spongebx.f", "SPONGEBXD", "../toolbox/math_tools.f")],
             "bc": [],
         }
 
