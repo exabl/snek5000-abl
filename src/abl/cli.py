@@ -322,6 +322,13 @@ def launch(ctx, rule):
 
     sim = Simul(ctx.obj["params"])
     assert sim.make.exec([rule], scheduler="greedy")
+    #  import pymech as pm
+    #  import matplotlib.pyplot as plt
+    #
+    #  ds = pm.open_dataset(sim.path_run / 'spgabl0.f00001')
+    #  ds.mean(('x', 'z')).temperature.plot()
+    #  plt.show()
+
     if rule == "release":
         import shutil
 

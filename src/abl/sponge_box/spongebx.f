@@ -244,15 +244,30 @@
      $              spng_wr(il).lt.spng_dr(il)) then
                   call mntr_abort(spng_id,"Wrong sponge parameters")
                endif
+c
+c                        spng_fun
+c                        *********
+c
+c            bmin   xxmin_c         xxmax_c  bmax
+c              |     |  xxmin     xxmax |    |
+c              |_____|  |          |    |____|
+c            ^       \                 /
+c            |        \     x->       /
+c    spng_str|         \             /
+c            v          \___________/
+c              <-------->           <-------->
+c                  wl                   wr
+c                    <-->           <-->
+c                     dl             dr
 
-               ! sponge beginning (rise at xmax; right)
-               xxmax = bmax(il) - spng_wr(il)
-               ! end (drop at xmin; left)
+               ! sponge end (drop at xxmin; left)
                xxmin = bmin(il) + spng_wl(il)
-               ! beginnign of constant part (right)
-               xxmax_c = xxmax + spng_dr(il)
-               ! beginnign of constant part (left)
+               ! beginning of constant part (left)
                xxmin_c = xxmin - spng_dl(il)
+               ! sponge beginning (rise at xxmax; right)
+               xxmax = bmax(il) - spng_wr(il)
+               ! beginning of constant part (right)
+               xxmax_c = xxmax + spng_dr(il)
 
                ! get SPNG_FUN
                if (xxmax.le.xxmin) then
@@ -269,15 +284,17 @@
 
                   do jl=1,ntot
                      rtmp = lcoord(jl)
-                     if(rtmp.le.xxmin_c) then ! constant; xmin
+                     if(rtmp .eq. bmin(il)) then ! FIXME: hack at left boundary
+                        rtmp = 0.0
+                     elseif(rtmp.le.xxmin_c) then ! constant; xmin
                         rtmp=spng_str
                      elseif(rtmp.lt.xxmin) then ! fall; xmin
-                        arg = (xxmin-rtmp)/(spng_wl(il)-spng_dl(il))
+                        arg = (xxmin-rtmp) / (spng_wl(il)-spng_dl(il))
                         rtmp = spng_str*math_stepf(arg)
                      elseif (rtmp.le.xxmax) then ! zero
                         rtmp = 0.0
                      elseif (rtmp.lt.xxmax_c) then ! rise
-                        arg = (rtmp-xxmax)/(spng_wr(il)-spng_dr(il))
+                        arg = (rtmp-xxmax) / (spng_wr(il)-spng_dr(il))
                         rtmp = spng_str*math_stepf(arg)
                      else    ! constant
                         rtmp = spng_str

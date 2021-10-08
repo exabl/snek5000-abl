@@ -258,7 +258,7 @@ c> @callgraph
       call gradm1(du_dx, du_dy_test, du_dz, vx)
       do i=1,n
          diff_dy = abs(du_dy(i,1,1,1) - du_dy_test(i,1,1,1))
-         if (diff_dy >= 1e-14) call exittr(
+         if (diff_dy >= 1e-10) call exittr(
      &         "Result of gradm1 and cart_diff_y are not equivalent$",
      &         diff_dy, 0)
       enddo
@@ -419,10 +419,6 @@ c> @{
       include 'FRAMELP'
       include 'SOLN'
 
-      ! local variables for sponge_box module
-      integer nn
-      real vtmp(lx1*ly1*lz1*lelt,ldim)
-      common /ctmp1/ vtmp
 !-----------------------------------------------------------------------
 !     initialise modules
       call chkpt_init
@@ -430,10 +426,9 @@ c> @{
       call wmles_init
       call pen_init
 
-      ! initialise sponge_box module
-      nn = lx1*ly1*lz1*lelt*ldim
-      call rzero(vtmp,nn)
-      call spng_init(vtmp(1,1),vtmp(1,2),vtmp(1,ndim))
+      ! initialise sponge_box module with reference velocities (initial
+      ! condition)
+      call spng_init(vx,vy,vz)
 
       return
       end subroutine

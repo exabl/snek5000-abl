@@ -5,15 +5,15 @@ set -eu
 
 ROUGH=0.0; Ri=-5.0
 
-for CASE in buoy_test:no_vp_long_box
+for CASE in buoy_test:no_vp_sponge
   do
-abl -d buoy_ic -c $CASE -n sponge -o 1 -w 1-00:00:00 --in-place False \
+abl -d buoy_test_sponge -c $CASE -n sponge -o 1 -w 1-00:00:00 --in-place False \
   -s mixing_len \
   -b noslip \
   -ri $Ri \
   -zw $ROUGH -z0 $ROUGH \
   -bb flux \
   -p 0.0 \
-  $* &
+  $* # &
 sleep 5
   done
