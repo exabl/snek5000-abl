@@ -47,7 +47,7 @@ def no_variable_properties(params):
     _common(params)
 
 
-def no_vp_long_box(params):
+def no_vp_sponge(params):
     no_variable_properties(params)
 
     oper = params.oper
@@ -58,3 +58,12 @@ def no_vp_long_box(params):
     oper.Lx = 15.0
     oper.Ly = 1.0
     oper.Lz = 1.5
+    general = params.nek.general
+    general.num_steps = 11
+
+    spongebx = params.nek.spongebx
+
+    spongebx.strength = 1.0
+    sponge_height = 0.4
+    spongebx.width_ry = sponge_height
+    spongebx.drop_ry = sponge_height * 0.5
