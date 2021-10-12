@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
+import shutil
 import sys
 from importlib import import_module
 from pathlib import Path
-from pprint import pprint
 
 import click
+from rich.pretty import pprint
 
 from abl.output import (
     avail_boundary_conds,
@@ -107,6 +108,13 @@ def apply_case(case, params):
     type=float,
     help="penalty time independent amplitude",
 )
+@click.option(
+    "-ss",
+    "--sponge-strength",
+    default=0.0,
+    type=float,
+    help="sponge strength",
+)
 @click.pass_context
 def cli(
     ctx,
@@ -128,6 +136,7 @@ def cli(
     sgs_model,
     sgs_boundary,
     pen_tiamp,
+    sponge_strength,
 ):
     """\b
     Notes
@@ -280,6 +289,11 @@ def cli(
     penalty = params.nek.penalty
     penalty.tiamp = pen_tiamp
 
+    assert (
+        sponge_strength <= 0.0
+    ), f"Sponge strength {sponge_strength} cannot be positive!"
+    params.nek.spongebx.strength = sponge_strength
+
     # Fluidsim parameters
     # ===================
     params.short_name_type_run = name_run
@@ -308,16 +322,29 @@ def cli(
 
     ctx.ensure_object(dict)
 
-    if ctx.invoked_subcommand is None:
-        print(params)
+    if ctx.invoked_subcommand == "args":
+        terminal_width, _ = shutil.get_terminal_size()
+        print("-" * terminal_width)
+        logger.info("CLI arguments: ")
+        pprint(ctx.params)
+        print("-" * terminal_width)
     else:
         ctx.obj["params"] = params
+
+
+@cli.command()
+@click.pass_context
+def args(ctx):
+    """Print CLI arguments"""
+    # See end of function cli above
+    pass
 
 
 @cli.command()
 @click.argument("rule", default="run_fg")
 @click.pass_context
 def launch(ctx, rule):
+    """Launch a simulation with a snakemake rule"""
     logger.info("Initializing simulation launch...")
 
     sim = Simul(ctx.obj["params"])
@@ -351,6 +378,7 @@ def launch(ctx, rule):
 @click.argument("rule", default="run")
 @click.pass_context
 def debug(ctx, rule):
+    """Launch a debug simulation with a snakemake rule"""
     import os
 
     # import matplotlib.pyplot as plt  # noqa
@@ -388,6 +416,7 @@ _show_options = ("xml", "par", "size", "box", "makefile_usr", "config")
 @click.argument("file", default="par", type=click.Choice(_show_options))
 @click.pass_context
 def show(ctx, file):
+    """Display generated files without writing into filesystem"""
     import yaml
 
     from abl import templates
