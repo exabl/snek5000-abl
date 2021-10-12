@@ -1,8 +1,5 @@
-from snek5000 import logger, mpi
 from snek5000.info import InfoSolverMake
 from snek5000.solvers.kth import SimulKTH
-
-from .output import OutputABL
 
 
 class InfoSolverABL(InfoSolverMake):
@@ -113,11 +110,11 @@ class SimulABL(SimulKTH):
 
         # Synchronize baseline parameters as follows:
         # -----------------------------------------------------------------
-        primary_par_file = OutputABL.get_root() / "abl.par"
-        if mpi.rank == 0:
-            logger.info(f"Reading baseline parameters from {primary_par_file}")
-
-        params.nek._read_par(primary_par_file)
+        #  primary_par_file = OutputABL.get_root() / "abl.par"
+        #  if mpi.rank == 0:
+        #      logger.info(f"Reading baseline parameters from {primary_par_file}")
+        #
+        #  params.nek._read_par(primary_par_file)
 
         return params
 
