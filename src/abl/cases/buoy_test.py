@@ -59,7 +59,6 @@ def no_vp_sponge(params):
     oper.Ly = 1.0
     oper.Lz = 1.5
     general = params.nek.general
-    general.num_steps = 11
 
     spongebx = params.nek.spongebx
 
