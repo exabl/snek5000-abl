@@ -27,6 +27,13 @@ function pwd-nek() {
   pwdx $(pgrep -af nek5000 | awk '(NR==1){print $1}')
 }
 
+function scancel-all() {
+    squeue -u $USER | awk '(NR>1){print $1}' | xargs scancel
+}
+function seff-all() {
+    squeue -u $USER | awk '(NR>1){print $1}' | xargs -0 seff
+}
+
 if [ -d venv ]; then
   source venv/bin/activate
 elif [[ -z "$CONDA_PREFIX" ]] && [[ -z "$VIRTUAL_ENV" ]]; then

@@ -428,7 +428,7 @@ def show(ctx, file):
     if file == "par":
         params.nek._write_par()
     elif file == "xml":
-        print(params)
+        pprint(params)
     elif file == "config":
         with Output.get_configfile().open() as fp:
             config = yaml.safe_load(fp)
