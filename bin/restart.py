@@ -12,7 +12,7 @@ snakemake_rules = "run_fg"
 modify_params = False
 dryrun = not True
 
-subdir = Path(FLUIDDYN_PATH_SCRATCH) / "buoy_ic"
+subdir = Path(FLUIDDYN_PATH_SCRATCH) / "buoy_test_sponge"
 for path in filter(
     lambda path: path.name
     not in [
@@ -50,12 +50,15 @@ for path in filter(
     nb_nodes = 1 if params.oper.nx <= 10 else 2
     # nb_nodes = 3 if "24x48" in path.name else 1
 
+    nproc = min(nb_nodes * cluster.nb_cores_per_node, params.oper.nproc_max)
+    nb_nodes = nproc // cluster.nb_cores_per_node
+
     cmd = f"""
 cd {path}
 snakemake {snakemake_rules} -j all
 """
+# mpiexec -n {nproc} ./nek5000 > abl.log
 
-# mpiexec -n {nb_nodes * cluster.nb_cores_per_node} ./nek5000 > abl.log
     if dryrun:
         if list(path.glob("rs6*")):
             logger.info(
