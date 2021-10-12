@@ -47,7 +47,7 @@ for path in filter(
         params.nek.pressure.residual_tol = 1e-10
         params.nek.general.num_steps = 1000
 
-    nb_nodes = 1 if params.oper.nx <= 10 else 2
+    nb_nodes = 1 if params.oper.nx <= 16 else 2
     # nb_nodes = 3 if "24x48" in path.name else 1
 
     nproc = min(nb_nodes * cluster.nb_cores_per_node, params.oper.nproc_max)
@@ -66,6 +66,7 @@ snakemake {snakemake_rules} -j all
             )
 
         print("name_run =", name_run)
+        print("nb_nodes =", nb_nodes)
         print(cmd)
     else:
         if list(path.glob("rs6*")):
