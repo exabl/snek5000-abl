@@ -63,7 +63,6 @@ def no_vp_sponge(params):
 
     spongebx = params.nek.spongebx
 
-    spongebx.strength = 1.0
     sponge_height = 0.4
     spongebx.width_ry = sponge_height
     spongebx.drop_ry = sponge_height * 0.5
