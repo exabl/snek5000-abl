@@ -6,7 +6,7 @@ set -eu
 ROUGH=0.0; Ri=6.0
 
 for CASE in buoy_test:no_vp_sponge; do
-  for SPONGE_STRENGTH in "1.0"; do
+  for SPONGE_STRENGTH in "0.01" "0.1" "1.0" "10.0"; do
 abl -d buoy_test_sponge -c $CASE -n sponge -o 2 -w 1-00:00:00 --in-place False \
   -s mixing_len \
   -b noslip \
