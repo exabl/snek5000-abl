@@ -412,6 +412,8 @@ c> @{
       end subroutine
 !======================================================================
 !> @brief Initialise user specified modules
+!> @todo The spng_init reference velocities are ignored at the moment.
+!>       See also spng_forcing()
       subroutine frame_usr_init
       implicit none
 
@@ -428,6 +430,8 @@ c> @{
 
       ! initialise sponge_box module with reference velocities (initial
       ! condition)
+      ! FIXME: not good enough. Initial condition may contain
+      ! disturbances.
       call spng_init(vx,vy,vz)
 
       return

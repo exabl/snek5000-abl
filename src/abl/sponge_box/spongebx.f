@@ -370,10 +370,14 @@ c                     dl             dr
 
          if (JP.eq.0) then
             ! dns
-            ffx = ffx + SPNG_FUN(ip)*(SPNG_VR(ip,1) - VX(ix,iy,iz,iel))
-            ffy = ffy + SPNG_FUN(ip)*(SPNG_VR(ip,2) - VY(ix,iy,iz,iel))
-            if (IF3D) ffz = ffz + SPNG_FUN(ip)*
-     $           (SPNG_VR(ip,NDIM) - VZ(ix,iy,iz,iel))
+            ffy = ffy + SPNG_FUN(ip) * (0.0 - VY(ix,iy,iz,iel))
+
+      ! TODO: revert back to this block after making the implementation
+      ! more generic
+      !        ffx = ffx + SPNG_FUN(ip)*(SPNG_VR(ip,1) - VX(ix,iy,iz,iel))
+      !        ffy = ffy + SPNG_FUN(ip)*(SPNG_VR(ip,2) - VY(ix,iy,iz,iel))
+      !        if (IF3D) ffz = ffz + SPNG_FUN(ip)*
+      ! $           (SPNG_VR(ip,NDIM) - VZ(ix,iy,iz,iel))
          else
             ! perturbation
             ffx = ffx - SPNG_FUN(ip)*VXP(ip,JP)

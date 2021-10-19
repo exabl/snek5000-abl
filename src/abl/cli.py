@@ -290,8 +290,8 @@ def cli(
     penalty.tiamp = pen_tiamp
 
     assert (
-        sponge_strength <= 0.0
-    ), f"Sponge strength {sponge_strength} cannot be positive!"
+        sponge_strength >= 0.0
+    ), f"Sponge strength {sponge_strength} cannot be negative!"
     params.nek.spongebx.strength = sponge_strength
 
     # Fluidsim parameters
@@ -375,7 +375,7 @@ def launch(ctx, rule):
 
 
 @cli.command()
-@click.argument("rule", default="run")
+@click.argument("rule", default="run_fg")
 @click.pass_context
 def debug(ctx, rule):
     """Launch a debug simulation with a snakemake rule"""
