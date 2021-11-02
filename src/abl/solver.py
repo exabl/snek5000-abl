@@ -31,10 +31,10 @@ class SimulABL(SimulKTH):
 
     InfoSolver = InfoSolverABL
 
-    @staticmethod
-    def _complete_params_with_default(params):
+    @classmethod
+    def _complete_params_with_default(cls, params):
         """Add missing default parameters."""
-        params = SimulKTH._complete_params_with_default(params)
+        params = super()._complete_params_with_default(params)
         params.nek.velocity._set_attribs({"advection": True, "density": 1.0})
         params.nek.temperature._set_internal_attr("_enabled", True)
 
