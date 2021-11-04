@@ -133,9 +133,10 @@ c      uy   = 0.0
 c      uz   = 0.0
 c      temp = 0.0
 c      temp = y
-      a = 0.3
-      b = 1.-a
-      temp = max(0.0,4.*(y-a)/b)
+      ! a = 0.3
+      ! b = 1.-a
+      ! temp = max(0.0,4.*(y-a)/b)
+      temp = 1.0
 
 c     Geostrophic velocity
       U_GEO = uparam(3)
@@ -202,16 +203,17 @@ c> @callgraph
       parameter(a=3.0)
       parameter(fl=0.0002)
       call abl_userbc(ix, iy, iz, iside, eg)
-      flux = -fl
-      if((x.ge.1.).and.(x.le.(1.+a)))then
-        flux = fl*(15.-a)/a
-      endif
+      ! flux = -fl
+      ! if((x.ge.1.).and.(x.le.(1.+a)))then
+      !   flux = fl*(15.-a)/a
+      ! endif
 c      temp = y
-      if(y.lt.0.01)then
-        temp = 1.
-      elseif(y.gt.0.99)then
-        temp = 4.
-      endif
+
+      ! if(y.lt.0.01)then
+      !   temp = 0.
+      ! elseif(y.gt.0.99)then
+      !   temp = 4.
+      ! endif
 
       return
       end

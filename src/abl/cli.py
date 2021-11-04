@@ -234,6 +234,8 @@ def cli(
             params.oper.boundary_scalars[index] = "t"
         elif getattr(params.output, boundary) == "flux":
             params.oper.boundary_scalars[index] = "f"
+        elif getattr(params.output, boundary) == "insulated":
+            params.oper.boundary_scalars[index] = "I"
 
     pressure = params.nek.pressure
     velocity = params.nek.velocity
@@ -253,8 +255,6 @@ def cli(
         reynolds_number = 125_000
     else:
         reynolds_number = 1e10
-
-        assert output.sgs_model != "mixing_len", "May not work with moeng and high Re!"
 
     velocity.viscosity = -reynolds_number
 
@@ -310,6 +310,13 @@ def cli(
             logger.warning(
                 "Ensure that the penalty regions are sufficiently away from the wall."
             )
+
+    if (
+        -params.nek.velocity.viscosity > 1e5
+        and params.problem_type.variable_properties
+        and output.sgs_model != "mixing_len"
+    ):
+        logger.warning("May not work with high Re!")
 
     general.user_params.update(
         {

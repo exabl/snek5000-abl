@@ -28,7 +28,7 @@ avail_sgs_models = {
 avail_boundary_conds = {
     model.name: model for model in locals().values() if isinstance(model, BC)
 }
-avail_temp_boundary_conds = {"isotherm", "flux"}
+avail_temp_boundary_conds = {"isotherm", "flux", "insulated"}
 
 
 class OutputABL(OutputBase):

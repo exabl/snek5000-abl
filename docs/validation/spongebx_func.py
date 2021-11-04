@@ -63,4 +63,5 @@ for i, rtmp in enumerate(lcoord):
 
 plt.plot(lcoord, spng_fun)
 plt.title("Sponge function")
+plt.xlabel("z (vertical direction)")
 plt.show()
