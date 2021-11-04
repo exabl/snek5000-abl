@@ -3,19 +3,21 @@ set -eu
 # CASE=mixing_len:with_penalty; ROUGH="0.0001"
 # CASE=mixing_len:no_penalty; ROUGH="0.0001"
 
-ROUGH=0.0; Ri=6.0
+ROUGH=0.0; Ri=0.01
 
 for CASE in buoy_test:no_vp_sponge; do
-  for SPONGE_STRENGTH in "0.01" "0.1" "1.0" "10.0"; do
+  for SPONGE_STRENGTH in 0.0; do
+    #"0.01" "0.1" "1.0" "10.0"; do
 abl -d buoy_test_sponge -c $CASE -n sponge -o 2 -w 1-00:00:00 --in-place False \
   -s mixing_len \
-  -b noslip \
+  -b moeng \
   -ri $Ri \
   -zw $ROUGH -z0 $ROUGH \
   -bb flux \
+  -bt insulated \
   -p 0.0 \
   -ss $SPONGE_STRENGTH \
   $* &
-sleep 5
+# sleep 5
   done
 done
