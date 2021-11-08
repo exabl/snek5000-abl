@@ -1,7 +1,5 @@
 import pytest
 
-from snek5000.util import prepare_for_restart
-
 
 def test_init():
     from abl.solver import Simul
@@ -11,9 +9,14 @@ def test_init():
     sim = Simul(params)
     # Check params for errors
     params = sim.params
-    assert params.oper.Lx == params.nek.general.user_params[5]
-    assert params.oper.Ly == params.nek.general.user_params[6]
-    assert params.oper.Lz == params.nek.general.user_params[7]
+    assert {
+        "u_geo",
+        "corio_freq",
+        "richardson",
+        "oper.Lx",
+        "oper.Ly",
+        "oper.Lz",
+    }.issubset(params.nek.general._recorded_user_params.values())
     print(sim.info_solver)
 
 
@@ -24,6 +27,8 @@ def test_make(sim):
 
 @pytest.mark.slow
 def test_make_run(sim):
+    from snek5000.util import load_for_restart
+
     # Run in foreground
     assert sim.make.exec(["run_fg"])
 
@@ -33,6 +38,9 @@ def test_make_run(sim):
     # number of time steps executed, see conftest.py
     assert dt.size == 9
 
+    from abl.solver import Simul
+
     # check if simulation can be restarted
     # TODO: try restart with modified params
-    _ = prepare_for_restart(sim.path_run)
+    params, re_Simul = load_for_restart(sim.path_run, use_checkpoint=True)
+    assert Simul is re_Simul

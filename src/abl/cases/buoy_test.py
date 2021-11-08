@@ -22,7 +22,8 @@ def _common(params):
     general = params.nek.general
     general.filter_cutoff_ratio = nan
     general.filter_weight = 12.0
-    general.user_params.update({3: 1.0, 4: 0.0014})
+
+    params.corio_freq = 0.0014
 
     reynolds_number = 10_000
     params.nek.velocity.viscosity = -reynolds_number
@@ -58,7 +59,6 @@ def no_vp_sponge(params):
     oper.Lx = 15.0
     oper.Ly = 1.0
     oper.Lz = 1.5
-    general = params.nek.general
 
     spongebx = params.nek.spongebx
 
