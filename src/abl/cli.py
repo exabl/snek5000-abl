@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 """Make a simulation of with solver abl."""
 import shutil
-import sys
 from importlib import import_module
+from io import StringIO
 from pathlib import Path
 
 import click
+from rich import get_console
 from rich.pretty import pprint
+from rich.syntax import Syntax
 
 from abl.output import (
     avail_boundary_conds,
@@ -15,6 +17,7 @@ from abl.output import (
 )
 from abl.solver import Simul
 from snek5000.log import logger
+from snek5000.params import _str_par_file
 
 
 def apply_case(case, params):
@@ -313,19 +316,12 @@ def cli(
 
     if (
         -params.nek.velocity.viscosity > 1e5
-        and params.problem_type.variable_properties
+        and params.nek.problemtype.variable_properties
         and output.sgs_model != "mixing_len"
     ):
         logger.warning("May not work with high Re!")
 
-    general.user_params.update(
-        {
-            5: oper.Lx,
-            6: oper.Ly,
-            7: oper.Lz,
-            8: richardson,
-        }
-    )
+    params.richardson = richardson
 
     ctx.ensure_object(dict)
 
@@ -431,9 +427,11 @@ def show(ctx, file):
 
     params = ctx.obj["params"]
     file = file.lower()
+    console = get_console()
 
     if file == "par":
-        params.nek._write_par()
+        par = Syntax(_str_par_file(params), "ini")
+        console.print(par)
     elif file == "xml":
         pprint(params)
     elif file == "config":
@@ -442,14 +440,24 @@ def show(ctx, file):
         pprint(config)
     elif file == "makefile_usr":
         output = Output(params=params)
-        output.write_makefile_usr(templates.makefile_usr, sys.stdout)
+        with StringIO() as buffer:
+            output.write_makefile_usr(templates.makefile_usr, buffer)
+            makefile_usr = Syntax(buffer.getvalue(), "make")
+
+        console.print(makefile_usr)
     elif file in ("size", "box"):
         from abl.operators import OperatorsABL
 
         oper = OperatorsABL(params=params)
         template = getattr(templates, file)
-        write_to_stdout = getattr(oper, f"write_{file}")
-        write_to_stdout(template)
+        if file == "size":
+            with StringIO() as buffer:
+                oper.write_size(template, buffer)
+                size = Syntax(buffer.getvalue(), "fortran")
+
+            console.print(size)
+        else:
+            oper.write_box(template)
     else:
         raise ValueError(f"The CLI argument file should be one of {_show_options}")
 

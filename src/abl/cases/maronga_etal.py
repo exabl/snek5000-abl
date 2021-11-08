@@ -18,11 +18,8 @@ def _common(params):
     oper.Ly = 1500
     oper.Lz = 640
 
-    general = params.nek.general
-    general.user_params = {
-        3: 5.0,  # Bulk mean velocity
-        4: 0.0014,  # Coriolis freq turned off?
-    }
+    params.u_geo = 5.0
+    params.corio_freq = 0.00014
 
 
 def small(params):

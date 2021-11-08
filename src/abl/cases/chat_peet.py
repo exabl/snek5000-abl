@@ -13,11 +13,7 @@ from math import pi
 
 
 def _common(params):
-    general = params.nek.general
-    general.user_params = {
-        3: 1.0,  # Bulk mean velocity
-        4: 0.0,  # Coriolis freq turned off?
-    }
+    params.corio_freq = 0.0  # Coriolis freq turned off?
 
     oper = params.oper
     oper.Lx = round(2 * pi, 4)

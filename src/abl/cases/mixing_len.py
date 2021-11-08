@@ -35,7 +35,9 @@ def no_penalty(params):
     general.filter_weight = 5.0
     general.filter_cutoff_ratio = nan
     general.filter_modes = 2
-    general.user_params.update({3: 5.0, 4: 0.0014})
+
+    params.u_geo = 5.0
+    params.corio_freq = 0.00014
 
     reynolds_number = 10_000
     params.nek.velocity.viscosity = -reynolds_number

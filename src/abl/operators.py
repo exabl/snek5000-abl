@@ -9,6 +9,7 @@ class OperatorsABL(_Operators):
         """This static method is used to complete the *params.oper* container."""
         _Operators._complete_params_with_default(params)
         params.oper._set_attribs({"coords_x": "", "coords_y": "", "coords_z": ""})
+        params.oper._record_nek_user_params({"Lx": 5, "Ly": 6, "Lz": 7})
 
     def info_box(self, comments=""):
         info = super().info_box(comments)

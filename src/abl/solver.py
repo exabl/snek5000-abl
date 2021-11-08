@@ -35,6 +35,10 @@ class SimulABL(SimulKTH):
     def _complete_params_with_default(cls, params):
         """Add missing default parameters."""
         params = super()._complete_params_with_default(params)
+
+        params._set_attribs({"u_geo": 1.0, "corio_freq": 0.0, "richardson": 0.0})
+        params._record_nek_user_params({"u_geo": 3, "corio_freq": 4, "richardson": 8})
+
         params.nek.velocity._set_attribs({"advection": True, "density": 1.0})
         params.nek.temperature._set_internal_attr("_enabled", True)
 

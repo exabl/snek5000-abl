@@ -5,6 +5,7 @@ from collections import namedtuple
 from abl.templates import box, makefile_usr, size
 from snek5000 import mpi
 from snek5000.output.base import Output as OutputBase
+from snek5000.params import load_params
 
 SGS = namedtuple("SGS", ["name", "sources"])
 # Specific SGS models
@@ -94,9 +95,7 @@ class OutputABL(OutputBase):
 
         if not self.sim and not self.params:
             # Hack to load params from params.xml in current directory
-            from abl.solver import Simul
-
-            params = Simul.load_params_from_file(path_xml="params_simul.xml").output
+            params = load_params().output
         else:
             params = self.params
 
@@ -153,11 +152,6 @@ class OutputABL(OutputBase):
         super().write_makefile_usr(template, fp, **template_vars)
 
     def post_init(self):
-        params = self.sim.params
-        params.nek.general.user_params[5] = params.oper.Lx
-        params.nek.general.user_params[6] = params.oper.Ly
-        params.nek.general.user_params[7] = params.oper.Lz
-
         super().post_init()
 
         # Write additional source files to compile the simulation
