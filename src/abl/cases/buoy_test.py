@@ -34,7 +34,8 @@ def _common(params):
 
     # Not relevant while using no-slip BC + mixing length SGS.
     wmles = params.nek.wmles
-    wmles.bc_z_index = 12
+    wmles.bc_z_index = 1
+    wmles.bc_z0 = 0.000456
     wmles.sgs_c0 = 0.15
 
 

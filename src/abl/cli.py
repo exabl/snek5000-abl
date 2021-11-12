@@ -403,8 +403,8 @@ def debug(ctx, rule):
     sim.make.exec([rule])
     logger.info("Finished simulation...")
 
-    files = sorted(sim.path_run.glob("abl0.f*"))
-    stat_files = sorted(sim.path_run.glob("stsabl0.f*"))
+    files = sorted(sim.output.path_session.glob("abl0.f*"))
+    stat_files = sorted(sim.output.path_session.glob("stsabl0.f*"))
 
     if not (files or stat_files):
         logger.error("Simulation produced no output files!")
