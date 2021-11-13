@@ -344,14 +344,17 @@ def args(ctx):
 
 
 @cli.command()
-@click.argument("rule", default="run_fg")
+@click.argument("rules", nargs=-1)
 @click.pass_context
-def launch(ctx, rule):
+def launch(ctx, rules):
     """Launch a simulation with a snakemake rule"""
     logger.info("Initializing simulation launch...")
 
+    if not rules:
+        rules = ("run_fg",)
+
     sim = Simul(ctx.obj["params"])
-    assert sim.make.exec([rule], scheduler="greedy")
+    assert sim.make.exec(*rules, scheduler="greedy")
     #  import pymech as pm
     #  import matplotlib.pyplot as plt
     #
@@ -359,7 +362,7 @@ def launch(ctx, rule):
     #  ds.mean(('x', 'z')).temperature.plot()
     #  plt.show()
 
-    if rule == "release":
+    if rules[0] == "release":
         import shutil
 
         from setuptools_scm.file_finder_git import _git_toplevel
@@ -400,7 +403,7 @@ def debug(ctx, rule):
 
     sim = Simul(params)
     logger.info("Executing simulation...")
-    sim.make.exec([rule])
+    sim.make.exec(rule)
     logger.info("Finished simulation...")
 
     files = sorted(sim.output.path_session.glob("abl0.f*"))
