@@ -113,7 +113,7 @@ c> @todo Correction for stratification
       real delta_z, z_os
 
       thermal_flux = u_star * kappa * (T_surf - T) / (
-     &  log(0.5 * delta_z / z_os)
+     &  log(delta_z / z_os)
      &)
       return
       end function
