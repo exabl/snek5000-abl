@@ -1,3 +1,4 @@
+from functools import partial
 from pathlib import Path
 
 import pandas as pd
@@ -12,4 +13,5 @@ class SpatialMeansABL:
         df["hours"] = df.t / 3600
         self.df = df
 
-        self.plot = self.df.plot
+        self.plot = partial(self.df.plot, x="t")
+        return df
