@@ -1,6 +1,9 @@
 import itertools
 import os
 from collections import namedtuple
+from contextlib import suppress
+
+from inflection import underscore
 
 from abl.templates import box, makefile_usr, size
 from snek5000 import mpi
@@ -34,6 +37,23 @@ avail_temp_boundary_conds = {"isotherm", "flux", "insulated"}
 
 class OutputABL(OutputBase):
     name_pkg = "abl"
+
+    @staticmethod
+    def _complete_info_solver(info_solver):
+        """Complete the ParamContainer info_solver."""
+        OutputBase._complete_info_solver(info_solver)
+
+        classes = info_solver.classes.Output.classes
+        classes._set_child(
+            "SpatialMeans",
+            attribs={
+                "module_name": "abl.postproc.spatial_means",
+                "class_name": "SpatialMeansABL",
+            },
+        )
+
+        classes.PhysFields.module_name = "abl.postproc.phys_fields"
+        classes.PhysFields.class_name = "PhysFieldsABL"
 
     @staticmethod
     def _complete_params_with_default(params, info_solver):
@@ -124,6 +144,15 @@ class OutputABL(OutputBase):
         bc = avail_boundary_conds[params.boundary_cond]
         sources["bc"].append(bc.sources)
         return sources
+
+    def load_results(self):
+        """Load results for postprocessing."""
+        dict_classes = self.sim.info_solver.classes.Output.import_classes()
+
+        for cls_name in dict_classes:
+            with suppress(AttributeError):
+                cls = getattr(self, underscore(cls_name))
+                cls.load()
 
     def write_makefile_usr(self, template, fp=None, **template_vars):
         # Prepare dictionary for overriding custom fortran flags
