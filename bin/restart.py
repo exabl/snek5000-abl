@@ -9,10 +9,10 @@ from snek5000.make import unlock
 from snek5000.util.restart import get_status, load_for_restart, SnekRestartError
 
 cluster = Cluster()
-base_name_run = "2021-11-14_00-3"
+base_name_run = "2021-11-15"
 snakemake_rules = "run_fg"
 modify_params = False
-dryrun = not True
+dryrun = True
 
 subdir = Path(FLUIDDYN_PATH_SCRATCH) / "buoy_test_sponge"
 for path in filter(
@@ -58,7 +58,7 @@ for path in filter(
 
     cmd = f"""
 cd {path}
-mpiexec -n {nproc} ./nek5000 > abl.log
+~/.conda/envs/snek/bin/python ./simul_restart.py {path}
 """
 # ~/.conda/envs/snek/bin/python ./simul_restart.py {path}
 # snakemake {snakemake_rules} -j all
