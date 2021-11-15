@@ -4,10 +4,12 @@ from pathlib import Path
 from fluiddyn.io import FLUIDDYN_PATH_SCRATCH
 from abl.clusters import Cluster
 from snek5000.log import logger
-from snek5000.util import get_status, prepare_for_restart
+from snek5000.params import load_params
+from snek5000.make import unlock
+from snek5000.util.restart import get_status, load_for_restart, SnekRestartError
 
 cluster = Cluster()
-base_name_run = "_"
+base_name_run = "2021-11-14_00-3"
 snakemake_rules = "run_fg"
 modify_params = False
 dryrun = not True
@@ -24,18 +26,19 @@ for path in filter(
     subdir.glob("abl*"),
 ):
     # Skip if locked
-    status_code, err = get_status(path)
-    if status_code in (423,):
-        logger.error(f"{err} : Skipping...")
-        continue
+    status  = get_status(path)
+    if status.code == 423:
+        unlock(path)
+        logger.error(f"Unlocking {path}: {status}")
+        # continue
 
-    try:
-        params = prepare_for_restart(path)
-    except IOError as err:
+    if status.code >= 400:
         logger.error(f"{err} : Skipping...")
         # continue
     else:
         logger.info(f"OK {path}")
+
+    params = load_params(path)
 
     name_run = path.name[-8:]
     # name_run = name_run[:name_run.index('_14x4x7')]
@@ -47,7 +50,7 @@ for path in filter(
         params.nek.pressure.residual_tol = 1e-10
         params.nek.general.num_steps = 1000
 
-    nb_nodes = 1 if params.oper.nx <= 16 else 2
+    nb_nodes = 1 if params.oper.nx <= 12 else 2
     # nb_nodes = 3 if "24x48" in path.name else 1
 
     nproc = min(nb_nodes * cluster.nb_cores_per_node, params.oper.nproc_max)
@@ -55,8 +58,10 @@ for path in filter(
 
     cmd = f"""
 cd {path}
-snakemake {snakemake_rules} -j all
+mpiexec -n {nproc} ./nek5000 > abl.log
 """
+# ~/.conda/envs/snek/bin/python ./simul_restart.py {path}
+# snakemake {snakemake_rules} -j all
 # mpiexec -n {nproc} ./nek5000 > abl.log
 
     if dryrun:
@@ -82,7 +87,7 @@ snakemake {snakemake_rules} -j all
             command=cmd,
             name_run=name_run,
             # walltime="7-00:00:00",
-            walltime="12:00:00",
+            walltime="23:00:00",
             signal_num=False,
             ask=False,
             bash=False,

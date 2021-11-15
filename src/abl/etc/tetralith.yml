@@ -3,6 +3,7 @@ FC: ifort
 MPICC: mpiicc
 MPIFC: mpiifort
 MPIEXEC: "mpiexec"
+MPIEXEC_FLAGS: ""
 CFLAGS: "-march=native -xHost"
 FFLAGS: "-march=native -xHost -mcmodel=medium"
 

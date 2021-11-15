@@ -2,13 +2,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from snek5000.output.phys_fields import PhysFields
-from snek5000.output.readers.pymech_avg import PymechStatsAvg
+from ..readers.pymech_avg import ReaderPymechStatsAvg
 
 
 class PhysFieldsABL(PhysFields):
     @staticmethod
     def _complete_info_solver(info_solver, classes=None):
-        PhysFields._complete_info_solver(info_solver, classes=(PymechStatsAvg,))
+        PhysFields._complete_info_solver(info_solver, classes=(ReaderPymechStatsAvg,))
 
     @classmethod
     def _complete_params_with_default(cls, params, info_solver):
@@ -31,17 +31,19 @@ class PhysFieldsABL(PhysFields):
     def plot_turb_mom_flux(self, marker="x"):
         fix, ax = plt.subplots()
         data = self.data
-        ax.plot("s11", "y", marker=marker, label="u'w'", data=data)
-        ax.plot("s10", "y", marker=marker, label="v'w'", data=data)
+        ax.plot("s11", "y", "", marker=marker, label="u'w'", data=data)
+        ax.plot("s10", "y", "", marker=marker, label="v'w'", data=data)
         ax.set(ylabel="$z$")
+        ax.legend()
         return ax
 
     def plot_mean_vel(self, marker="x"):
         fix, ax = plt.subplots()
         data = self.data
-        ax.plot("s01", "y", marker=marker, label="U", data=data)
-        ax.plot("s02", "y", marker=marker, label="V", data=data)
+        ax.plot("s01", "y", "", marker=marker, label="U", data=data)
+        ax.plot("s02", "y", "", marker=marker, label="V", data=data)
         ax.set(ylabel="$z$")
+        ax.legend()
         return ax
 
     def plot_stress(self):
@@ -69,13 +71,13 @@ class PhysFieldsABL(PhysFields):
         """
         z = self.data.y
 
-        z0 = self.sim.params.nek.wmles.bc_z0
+        z0 = self.output.sim.params.nek.wmles.bc_z0
         u_star = self.u_star
         kappa = 0.41
         idx = slice(start_idx, None)
 
         if scaled:
-            Re = abs(self.sim.params.nek.velocity.viscosity)
+            Re = abs(self.output.sim.params.nek.velocity.viscosity)
             nu = 1 / Re
             u_scale = u_star
             z_scale = nu / float(u_star)
@@ -89,7 +91,7 @@ class PhysFieldsABL(PhysFields):
         U = self.u_mean
         U_most = u_star / kappa * np.log(z / z0)
 
-        fig, ax = plt.subplots(dpi=120)
+        fig, ax = plt.subplots()
         ax.plot(
             (U / u_scale)[idx],
             z[idx] / z_scale,
@@ -108,7 +110,7 @@ class PhysFieldsABL(PhysFields):
             ax.plot(
                 (U_eff / u_scale)[idx],
                 z[idx] / z_scale,
-                linestyle=".",
+                linestyle=":",
                 label=r"$U$: effective",
             )
             title = f", $z_{{0,eff}}$={z0_eff:0.1e}"
