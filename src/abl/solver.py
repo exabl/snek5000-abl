@@ -111,6 +111,7 @@ class SimulABL(SimulKTH):
         """
         params = super().create_default_params()
 
+        params.output.phys_fields.reader = "pymech_stats_avg"
         # Synchronize baseline parameters as follows:
         # -----------------------------------------------------------------
         #  primary_par_file = OutputABL.get_root() / "abl.par"

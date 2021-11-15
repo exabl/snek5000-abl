@@ -10,10 +10,6 @@ class PhysFieldsABL(PhysFields):
     def _complete_info_solver(info_solver, classes=None):
         PhysFields._complete_info_solver(info_solver, classes=(ReaderPymechStatsAvg,))
 
-    @classmethod
-    def _complete_params_with_default(cls, params, info_solver):
-        params.output.phys_fields.reader = PymechStatsAvg.tag
-
     @property
     def u_mean(self):
         data = self.data
