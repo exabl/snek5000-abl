@@ -20,6 +20,9 @@ class InfoSolverABL(InfoSolverMake):
         self.classes.Output.module_name = "abl.output"
         self.classes.Output.class_name = "OutputABL"
 
+        # Enable temperature section
+        self.par_sections_disabled.remove("temperature")
+
 
 class SimulABL(SimulKTH):
     """A solver which compiles and runs using a Snakefile."""
@@ -35,7 +38,8 @@ class SimulABL(SimulKTH):
         params._record_nek_user_params({"u_geo": 3, "corio_freq": 4, "richardson": 8})
 
         params.nek.velocity._set_attribs({"advection": True, "density": 1.0})
-        params.nek.temperature._set_internal_attr("_enabled", True)
+        # NOTE: old method to enable temperature section
+        # params.nek.temperature._set_internal_attr("_enabled", True)
 
         params.nek._set_child(
             "wmles",
