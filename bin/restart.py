@@ -12,7 +12,7 @@ cluster = Cluster()
 base_name_run = "2021-11-15"
 snakemake_rules = "run_fg"
 modify_params = False
-dryrun = True
+dryrun = not True
 
 subdir = Path(FLUIDDYN_PATH_SCRATCH) / "buoy_test_sponge"
 for path in filter(
@@ -50,19 +50,18 @@ for path in filter(
         params.nek.pressure.residual_tol = 1e-10
         params.nek.general.num_steps = 1000
 
-    nb_nodes = 1 if params.oper.nx <= 12 else 2
+    nb_nodes = 1 if params.oper.nx <= 18 else 2
     # nb_nodes = 3 if "24x48" in path.name else 1
 
     nproc = min(nb_nodes * cluster.nb_cores_per_node, params.oper.nproc_max)
     nb_nodes = nproc // cluster.nb_cores_per_node
 
     cmd = f"""
-cd {path}
 ~/.conda/envs/snek/bin/python ./simul_restart.py {path}
 """
 # ~/.conda/envs/snek/bin/python ./simul_restart.py {path}
-# snakemake {snakemake_rules} -j all
-# mpiexec -n {nproc} ./nek5000 > abl.log
+# cd {path} && snakemake {snakemake_rules} -j all
+# cd {path} && mpiexec -n {nproc} ./nek5000 > abl.log
 
     if dryrun:
         if list(path.glob("rs6*")):
