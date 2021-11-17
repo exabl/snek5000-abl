@@ -9,6 +9,6 @@ class ReaderPymechStatsAvg(ReaderPymechStats):
     def load(self, prefix="sts", index="all", t_stat=None, **kwargs):
         ds = super().load(prefix, index, **kwargs)
 
-        avg_dims = ("x", "time")
-        self.data = ds.sel(z=0, time=slice(t_stat, None)).mean(avg_dims)
+        avg_dims = ("x", "z", "time")
+        self.data = ds.sel(time=slice(t_stat, None)).mean(avg_dims)
         return self.data
