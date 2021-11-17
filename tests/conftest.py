@@ -22,8 +22,19 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(skip_slow)
 
 
-@pytest.fixture(scope="session", params=["constant", "dynamic", "shear_imp", "vreman"])
+@pytest.fixture(
+    scope="session",
+    params=[
+        "vreman",
+        pytest.param("constant", marks=pytest.mark.slow),
+        # Unconditional skip below, because these models will not be used
+        pytest.param("shear_imp", marks=pytest.mark.skip),
+        pytest.param("dynamic", marks=pytest.mark.skip),
+    ],
+)
 def sim(request):
+    sgs_model = request.param
+
     from abl.solver import Simul
 
     params = Simul.create_default_params()
@@ -36,7 +47,7 @@ def sim(request):
     params.oper.Lx = params.oper.Ly = params.oper.Lz = 1280
     params.oper.nx = params.oper.ny = params.oper.nz = 6
 
-    params.output.sgs_model = request.param
+    params.output.sgs_model = sgs_model
 
     params.nek.stat.av_step = 3
     params.nek.stat.io_step = 9
