@@ -39,24 +39,6 @@ class OutputABL(OutputBase):
     name_pkg = "abl"
 
     @staticmethod
-    def _complete_info_solver(info_solver):
-        """Complete the ParamContainer info_solver."""
-        OutputBase._complete_info_solver(info_solver)
-
-        classes = info_solver.classes.Output.classes
-        classes._set_child(
-            "SpatialMeans",
-            attribs={
-                "module_name": "abl.postproc.spatial_means",
-                "class_name": "SpatialMeansABL",
-            },
-        )
-
-        classes.PhysFields.module_name = "abl.postproc.phys_fields"
-        classes.PhysFields.class_name = "PhysFieldsABL"
-
-
-    @staticmethod
     def _complete_params_with_default(params, info_solver):
         OutputBase._complete_params_with_default(params, info_solver)
         params.output._set_attribs(
@@ -67,6 +49,21 @@ class OutputABL(OutputBase):
                 "buoyancy_top": "isotherm",
             }
         )
+
+    @classmethod
+    def _set_info_solver_classes(cls, classes):
+        """Complete the ParamContainer info_solver."""
+        super()._set_info_solver_classes(classes)
+        classes._set_child(
+            "SpatialMeans",
+            attribs={
+                "module_name": "abl.postproc.spatial_means",
+                "class_name": "SpatialMeansABL",
+            },
+        )
+
+        classes.PhysFields.module_name = "abl.postproc.phys_fields"
+        classes.PhysFields.class_name = "PhysFieldsABL"
 
     @property
     def makefile_usr_sources(self):
