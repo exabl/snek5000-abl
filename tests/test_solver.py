@@ -1,5 +1,7 @@
 import pytest
 
+import snek5000
+
 
 def test_init():
     from abl.solver import Simul
@@ -21,8 +23,13 @@ def test_init():
 
 
 def test_make(sim):
-    assert sim.make.exec(["mesh", "compile"])
-    assert sim.make.exec(["run"], dryrun=True)
+    assert sim.make.exec("mesh", "compile")
+    assert sim.make.exec("run", dryrun=True)
+
+
+def test_load(sim):
+    snek5000.load(sim.path_run)
+    snek5000.load_for_restart(sim.output.path_session)
 
 
 @pytest.mark.slow
@@ -30,7 +37,7 @@ def test_make_run(sim):
     from snek5000.util import load_for_restart
 
     # Run in foreground
-    assert sim.make.exec(["run_fg"])
+    assert sim.make.exec("run_fg")
 
     # test outputs
     print(sim.output.print_stdout.file)
