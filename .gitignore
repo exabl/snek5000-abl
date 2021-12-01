@@ -65,6 +65,7 @@ build/
 .nox
 .coverage
 dask-worker-space
+.virtual_documents
 
 # Jupyter
 .ipynb_checkpoints
