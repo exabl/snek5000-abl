@@ -278,7 +278,6 @@ c       - chkpt_main would load velocity data required for calculating ediff
         do e=1,nelv
            call eddy_visc(e)
         enddo
-        call copy(t,ediff,n)
       endif
 
 #ifdef DEBUG
