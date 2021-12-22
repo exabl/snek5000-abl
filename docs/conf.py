@@ -15,14 +15,16 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import os
+import runpy
 import subprocess
 import sys
 from datetime import date
 from pathlib import Path
 from subprocess import PIPE
 
-import abl
 import breathe
+
+import abl
 from snek5000 import util
 
 
@@ -157,65 +159,58 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_material"
+html_theme = "sphinx_rtd_theme"
 
 
 # Set link name generated in the top bar.
-html_title = "main docs"
-
-html_sidebars = {
-    "*[!index]*": [
-        "logo-text.html",
-        "globaltoc.html",
-        "localtoc.html",
-        "searchbox.html",
-    ]
-}
+html_title = ""
 
 html_favicon = "_static/favicon.ico"
-
-# Material theme options (see theme.conf for more information)
-html_theme_options = {
-    # Set the name of the project to appear in the navigation.
-    "nav_title": f"{project} documentation",
-    # ??
-    "touch_icon": html_favicon,
-    # Logo to the left of the title
-    "logo_icon": "&#x1F30A",  # https://emojipedia.org/water-wave/
-    #
-    "nav_links": [
-        {"href": "doxygen/modules", "title": "fortran docs", "internal": True}
-    ],
-    # Specify a base_url used to generate sitemap.xml. If not
-    # specified, then no sitemap will be built.
-    "base_url": f"https://exabl.github.io/{project}",
-    # Set the color and the accent color
-    "color_primary": "teal",
-    "color_accent": "dark-green",
-    # Set the repo location to get a badge with stats
-    "repo_url": f"https://github.com/exabl/{project}/",
-    "repo_name": project,
-    # Visible levels of the global TOC; -1 means unlimited
-    "globaltoc_depth": 1,
-    # If False, expand all TOC entries
-    "globaltoc_collapse": True,
-    # If True, show hidden TOC entries
-    "globaltoc_includehidden": False,
-}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
+# Values to pass into the template engine's context for all pages.
+html_context = {
+    "sidebar_external_links_caption": "Links",
+    "sidebar_external_links": [
+        #  (
+        #      '<i class="fa fa-cube fa-fw"></i> PyPI',
+        #      f"https://pypi.org/project/{project.lower()}",
+        #  ),
+        #  (
+        #      '<i class="fa fa-cube fa-fw"></i> Conda forge',
+        #      f"https://anaconda.org/conda-forge/{project.lower()}",
+        #  ),
+        (
+            '<i class="fa fa-book fa-fw"></i> Fortran docs',
+            f"https://exabl.github.io/{project.lower()}/doxygen/modules",
+        ),
+        (
+            '<i class="fa fa-code fa-fw"></i> Source code',
+            f"https://github.com/exabl/{project.lower()}",
+        ),
+        (
+            '<i class="fa fa-bug fa-fw"></i> Issue tracker',
+            f"https://github.com/exabl/{project.lower()}/issues",
+        ),
+        #  ('<i class="fa fa-rss fa-fw"></i> Blog', 'https://...'),
+        #  (
+        #      '<i class="fa fa-comments fa-fw"></i> Chat',
+        #      "https://matrix.to/#/#snek5000:matrix.org",
+        #  ),
+        #  (
+        #      '<i class="fa fa-file-text fa-fw"></i> Citation',
+        #      "https://doi.org/10.5334/jors.237",
+        #  ),
+    ],
+}
+
 
 # -- Options for Intersphinx -------------------------------------------------
-
-intersphinx_mapping = dict(
-    python=("https://docs.python.org/3", None),
-    nek=("https://nek5000.github.io/NekDoc", None),
-    jinja2=("https://jinja.palletsprojects.com/en/2.10.x", None),
-)
+intersphinx_mapping = runpy.run_path("ls_intersphinx_targets.py")["intersphinx_mapping"]
 
 # -- Other options ------------------------------------------------------------
 autosummary_generate = True
