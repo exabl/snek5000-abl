@@ -16,7 +16,8 @@ To do
 -----
 
 - Varying thermal roughness height of the Moeng-like thermal flux BC at the bottom to trigger some motions.
-  _Don't do it_. :math:`z_os = z_0 / 10`
+  *Don't do it*. :math:`z_{os} = z_0 / 10`
+
     + In reality either we iterate between Obhukhov length and the fluxes get
       an agreement. Issue when there is large SGS scale then one can have the
       same flux (:math:`w'\theta'`) for two different  :math:`z / L`.
@@ -27,6 +28,26 @@ To do
 - Bug fixes on penalty
 
 - Outflow BC
+
+- Implement horizontal spectra postprocessing
+
+     + Simulate with decaying grid turbulence and compare spectra (Rozema et al., 2015)
+
+- First LES + stratification using Vreman SGS model + Turbulent Prandtl number
+
+     + Convectively neutral case
+     + GABLS1 moderately stable stratification case
+
+- Explore replacements for a sponge region with outflow boundary conditions.
+
+- Explore other SGS models if needed. For example (Deardorff, 1980) model, Algebraic Minimum Dissipation (Rozema et al., 2015)
+
+- LES of unstable, convective boundary layer
+
+- LES of strong stratification:
+  + GABLS4 case (Couvreux et al., 2020)
+
+- Diurnal cycle setup
 
 .. todolist::
 

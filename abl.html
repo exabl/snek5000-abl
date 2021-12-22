@@ -1,359 +1,130 @@
 
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="lang:clipboard.copy" content="Copy to clipboard">
-  <meta name="lang:clipboard.copied" content="Copied to clipboard">
-  <meta name="lang:search.language" content="en">
-  <meta name="lang:search.pipeline.stopwords" content="True">
-  <meta name="lang:search.pipeline.trimmer" content="True">
-  <meta name="lang:search.result.none" content="No matching documents">
-  <meta name="lang:search.result.one" content="1 matching document">
-  <meta name="lang:search.result.other" content="# matching documents">
-  <meta name="lang:search.tokenizer" content="[\s\-]+">
-
-  
-    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
-
-    <style>
-      body,
-      input {
-        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
-      }
-
-      code,
-      kbd,
-      pre {
-        font-family: "Roboto Mono", "Courier New", Courier, monospace
-      }
-    </style>
-  
-
-  <link rel="stylesheet" href="_static/stylesheets/application.css"/>
-  <link rel="stylesheet" href="_static/stylesheets/application-palette.css"/>
-  <link rel="stylesheet" href="_static/stylesheets/application-fixes.css"/>
-  
-  <link rel="stylesheet" href="_static/fonts/material-icons.css"/>
-  
-  <meta name="theme-color" content="#3f51b5">
-  <script src="_static/javascripts/modernizr.js"></script>
-  
-  
-    <link rel="apple-touch-icon" href="_static/_static/favicon.ico"/>
-  
-  
-    <title>ABL case files &#8212; main docs</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/material.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABL case files</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="KTH Framework" href="framework.html" />
-    <link rel="prev" title="snek5000-abl" href="README.html" />
-  
-    <link rel="apple-touch-icon" href="_static/_static/favicon.ico"/>
-  
-   
+    <link rel="prev" title="snek5000-abl" href="README.html" /> 
+</head>
 
-  </head>
-  <body dir=ltr
-        data-md-color-primary=teal data-md-color-accent=dark-green>
-  
-  <svg class="md-svg">
-    <defs data-children-count="0">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
-      
-    </defs>
-  </svg>
-  
-  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
-  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
-  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
-  <a href="#abl" tabindex="1" class="md-skip"> Skip to content </a>
-  <header class="md-header" data-md-component="header">
-  <nav class="md-header-nav md-grid">
-    <div class="md-flex navheader">
-      <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="index.html" title="main docs"
-           class="md-header-nav__button md-logo">
-          
-            <i class="md-icon">&#x1F30A</i>
-          
-        </a>
-      </div>
-      <div class="md-flex__cell md-flex__cell--shrink">
-        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
-      </div>
-      <div class="md-flex__cell md-flex__cell--stretch">
-        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">snek5000-abl documentation</span>
-          <span class="md-header-nav__topic"> ABL case files </span>
-        </div>
-      </div>
-      <div class="md-flex__cell md-flex__cell--shrink">
-        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
-        
-<div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" action="search.html" method="get" name="search">
-      <input type="text" class="md-search__input" name="q" placeholder="Search"
-             autocapitalize="off" autocomplete="off" spellcheck="false"
-             data-md-component="query" data-md-state="active">
-      <label class="md-icon md-search__icon" for="__search"></label>
-      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
-        &#xE5CD;
-      </button>
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="result">
-          <div class="md-search-result__meta">
-            Type to start searching
-          </div>
-          <ol class="md-search-result__list"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> snek5000-abl
+          </a>
+              <div class="version">
+                0.1.dev1+gcc0c5cf
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
 </div>
-
-      </div>
-      
-        <div class="md-flex__cell md-flex__cell--shrink">
-          <div class="md-header-nav__source">
-            <a href="https://github.com/exabl/snek5000-abl/" title="Go to repository" class="md-source" data-md-source="github">
-
-    <div class="md-source__icon">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
-        <use xlink:href="#__github" width="24" height="24"></use>
-      </svg>
-    </div>
-  
-  <div class="md-source__repository">
-    snek5000-abl
-  </div>
-</a>
-          </div>
-        </div>
-      
-      
-  
-  <script src="_static/javascripts/version_dropdown.js"></script>
-  <script>
-    var json_loc = ""versions.json"",
-        target_loc = "../",
-        text = "Versions";
-    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
-  </script>
-  
-
-    </div>
-  </nav>
-</header>
-
-  
-  <div class="md-container">
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
     
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">snek5000-abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ABL case files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#boundary-conditions">Boundary conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#forcing">Forcing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="framework.html">KTH Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nek5000.html">Nek5000 core library</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_generated/abl.html">abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help &amp; Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_cond.html">Boundary condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_cond.html#faq">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filtering.html">Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+
     
-    
-  <nav class="md-tabs" data-md-component="tabs">
-    <div class="md-tabs__inner md-grid">
-      <ul class="md-tabs__list">
-          <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">main docs</a></li>
+        <p class="caption">
+            <span class="caption-text">
             
-            <li class="md-tabs__item"><a href="doxygen/modules.html" class="md-tabs__link">fortran docs</a></li>
-      </ul>
-    </div>
-  </nav>
-    <main class="md-main">
-      <div class="md-main__inner md-grid" data-md-component="container">
-        
-          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
-            <div class="md-sidebar__scrollwrap">
-              <div class="md-sidebar__inner">
-                <nav class="md-nav md-nav--primary" data-md-level="0">
-  <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="index.html" title="main docs" class="md-nav__button md-logo">
-      
-        <i class="md-icon">&#x1F30A</i>
-      
-    </a>
-    <a href="index.html"
-       title="main docs">snek5000-abl documentation</a>
-  </label>
-    <div class="md-nav__source">
-      <a href="https://github.com/exabl/snek5000-abl/" title="Go to repository" class="md-source" data-md-source="github">
-
-    <div class="md-source__icon">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
-        <use xlink:href="#__github" width="24" height="24"></use>
-      </svg>
-    </div>
-  
-  <div class="md-source__repository">
-    snek5000-abl
-  </div>
-</a>
-    </div>
-  
-  
-
-  
-  <ul class="md-nav__list">
-    <li class="md-nav__item">
-    
-      <span class="md-nav__link caption"><span class="caption-text">Getting Started</span></span>
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="README.html" class="md-nav__link">snek5000-abl</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-      <span class="md-nav__link caption"><span class="caption-text">User Guide</span></span>
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    <label class="md-nav__link md-nav__link--active" for="__toc"> ABL case files </label>
-    
-      <a href="#" class="md-nav__link md-nav__link--active">ABL case files</a>
-      
-        
-<nav class="md-nav md-nav--secondary">
-  <ul class="md-nav__list" data-md-scrollfix="">
-    
-<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/abl.rst.txt">Show Source</a> </li>
-
-  </ul>
-</nav>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="framework.html" class="md-nav__link">KTH Framework</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="nek5000.html" class="md-nav__link">Nek5000 core library</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="_generated/abl.html" class="md-nav__link">abl</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-      <span class="md-nav__link caption"><span class="caption-text">Help &amp; Reference</span></span>
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="roadmap.html" class="md-nav__link">Roadmap</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="boundary_cond.html" class="md-nav__link">Boundary condition</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="boundary_cond.html#faq" class="md-nav__link">FAQ</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="filtering.html" class="md-nav__link">Filtering</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="CONTRIBUTING.html" class="md-nav__link">Developer guide</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="CHANGELOG.html" class="md-nav__link">Changelog</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="license.html" class="md-nav__link">License</a>
-      
-    
-    </li>
-  </ul>
-  
-
-</nav>
-              </div>
-            </div>
-          </div>
-          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
-            <div class="md-sidebar__scrollwrap">
-              <div class="md-sidebar__inner">
+                Links
+            
+            </span>
+        </p>
+        <ul>
+            
                 
-<nav class="md-nav md-nav--secondary">
-  <ul class="md-nav__list" data-md-scrollfix="">
-    
-<li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/abl.rst.txt">Show Source</a> </li>
-
-<li id="searchbox" class="md-nav__item"></li>
-
-  </ul>
-</nav>
-              </div>
-            </div>
-          </div>
-        
-        <div class="md-content">
-          <article class="md-content__inner md-typeset" role="main">
+                    <li class="toctree-l1"><a href="https://exabl.github.io/snek5000-abl/doxygen/modules"><i class="fa fa-book fa-fw"></i> Fortran docs</a></li>
+                
             
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl"><i class="fa fa-code fa-fw"></i> Source code</a></li>
+                
+            
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl/issues"><i class="fa fa-bug fa-fw"></i> Issue tracker</a></li>
+                
+            
+        </ul>
+    
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">snek5000-abl</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>ABL case files</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/abl.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="abl-case-files">
-<h1 id="abl--page-root">ABL case files<a class="headerlink" href="#abl--page-root" title="Permalink to this headline">¶</a></h1>
+<h1>ABL case files<a class="headerlink" href="#abl-case-files" title="Permalink to this headline"></a></h1>
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__abl"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">abl</span></span></dt>
@@ -375,13 +146,14 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv46uservp2ix2iy2iz3ieg">
-<span id="_CPPv36uservp2ix2iy2iz3ieg"></span><span id="_CPPv26uservp2ix2iy2iz3ieg"></span><span id="uservp__ix.iy.iz.ieg"></span><span class="target" id="group__abl_1ga32657b69f54f96dc5aea199db3658bc3"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uservp</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::ieg"><span class="n"><span class="pre">ieg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ieg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46uservp2ix2iy2iz3ieg" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv36uservp2ix2iy2iz3ieg"></span><span id="_CPPv26uservp2ix2iy2iz3ieg"></span><span id="uservp__ix.iy.iz.ieg"></span><span class="target" id="group__abl_1ga32657b69f54f96dc5aea199db3658bc3"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uservp</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv46uservp2ix2iy2iz3ieg" title="uservp::ieg"><span class="n"><span class="pre">ieg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ieg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46uservp2ix2iy2iz3ieg" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Set variable properties, does not call any subroutines / functions. </p>
 <p><dl>
 <dt class="sig sig-object cpp">
 <em><span class="pre">Todo:</span></em></dt>
 <dd><p>Implement turbulent Prandtl number parameter </p>
 </dd></dl>
+
 </p>
 <dl class="field-list simple">
 <dt class="field-odd">param ix</dt>
@@ -398,9 +170,10 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv45userf2ix2iy2iz2eg">
-<span id="_CPPv35userf2ix2iy2iz2eg"></span><span id="_CPPv25userf2ix2iy2iz2eg"></span><span id="userf__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga1172abb68180ad165a8080d73ee2a378"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userf</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv45userf2ix2iy2iz2eg" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv35userf2ix2iy2iz2eg"></span><span id="_CPPv25userf2ix2iy2iz2eg"></span><span id="userf__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga1172abb68180ad165a8080d73ee2a378"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userf</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv45userf2ix2iy2iz2eg" title="userf::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv45userf2ix2iy2iz2eg" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Compute Coriolis acceleration. </p>
 <p><div class="math notranslate nohighlight">
 \[ F_x, F_z = - f\hat{e}_y \times \vec{u} \]</div>
@@ -418,44 +191,52 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv45userq2ix2iy2iz2eg">
-<span id="_CPPv35userq2ix2iy2iz2eg"></span><span id="_CPPv25userq2ix2iy2iz2eg"></span><span id="userq__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga79dd81f06a46a7f8a1637ec998781930"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv45userq2ix2iy2iz2eg" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv35userq2ix2iy2iz2eg"></span><span id="_CPPv25userq2ix2iy2iz2eg"></span><span id="userq__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga79dd81f06a46a7f8a1637ec998781930"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userq</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv45userq2ix2iy2iz2eg" title="userq::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv45userq2ix2iy2iz2eg" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv46useric2ix2iy2iz2eg">
-<span id="_CPPv36useric2ix2iy2iz2eg"></span><span id="_CPPv26useric2ix2iy2iz2eg"></span><span id="useric__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga9fca046e76d53cec863a2ef596ded5d8"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">useric</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46useric2ix2iy2iz2eg" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv36useric2ix2iy2iz2eg"></span><span id="_CPPv26useric2ix2iy2iz2eg"></span><span id="useric__ix.iy.iz.eg"></span><span class="target" id="group__abl_1ga9fca046e76d53cec863a2ef596ded5d8"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">useric</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv46useric2ix2iy2iz2eg" title="useric::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46useric2ix2iy2iz2eg" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Set up initial conditions. </p>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv46userbc2ix2iy2iz5iside2eg">
-<span id="_CPPv36userbc2ix2iy2iz5iside2eg"></span><span id="_CPPv26userbc2ix2iy2iz5iside2eg"></span><span id="userbc__ix.iy.iz.iside.eg"></span><span class="target" id="group__abl_1ga5bc9a35082ab7f7115cd6ba8685682fd"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userbc</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iside"><span class="n"><span class="pre">iside</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iside</span></span>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv36userbc2ix2iy2iz5iside2eg"></span><span id="_CPPv26userbc2ix2iy2iz5iside2eg"></span><span id="userbc__ix.iy.iz.iside.eg"></span><span class="target" id="group__abl_1ga5bc9a35082ab7f7115cd6ba8685682fd"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userbc</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::iside"><span class="n"><span class="pre">iside</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iside</span></span>, <a class="reference internal" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="userbc::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46userbc2ix2iy2iz5iside2eg" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Compute the boundary condition. See subdirectory bc/. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>it is OK to define both flux and temp here since only one would be used at the same time. See BCNEUSC(), BCDIRSC() and FACEIS() </p>
 </div>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv47userchkv">
-<span id="_CPPv37userchkv"></span><span id="_CPPv27userchkv"></span><span id="userchk"></span><span class="target" id="group__abl_1gaab7e65383186bbbe5e8ee746f763b233"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userchk</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47userchkv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv37userchkv"></span><span id="_CPPv27userchkv"></span><span id="userchk"></span><span class="target" id="group__abl_1gaab7e65383186bbbe5e8ee746f763b233"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userchk</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47userchkv" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Compute the turbulent stress tensors and write statistics. </p>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv47userqtlv">
-<span id="_CPPv37userqtlv"></span><span id="_CPPv27userqtlv"></span><span id="userqtl"></span><span class="target" id="group__abl_1gac0c73a81b4be0f60b83a1f188bd8be50"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userqtl</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47userqtlv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv37userqtlv"></span><span id="_CPPv27userqtlv"></span><span id="userqtl"></span><span class="target" id="group__abl_1gac0c73a81b4be0f60b83a1f188bd8be50"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">userqtl</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47userqtlv" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv46usrdatv">
-<span id="_CPPv36usrdatv"></span><span id="_CPPv26usrdatv"></span><span id="usrdat"></span><span class="target" id="group__abl_1ga684b0320d82a6ae155bf7e0b53826cd3"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usrdat</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46usrdatv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv36usrdatv"></span><span id="_CPPv26usrdatv"></span><span id="usrdat"></span><span class="target" id="group__abl_1ga684b0320d82a6ae155bf7e0b53826cd3"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usrdat</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46usrdatv" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv47usrdat2v">
-<span id="_CPPv37usrdat2v"></span><span id="_CPPv27usrdat2v"></span><span id="usrdat2"></span><span class="target" id="group__abl_1gad0bac908131bab7fa82d65be4229e976"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usrdat2</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47usrdat2v" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv37usrdat2v"></span><span id="_CPPv27usrdat2v"></span><span id="usrdat2"></span><span class="target" id="group__abl_1gad0bac908131bab7fa82d65be4229e976"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usrdat2</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47usrdat2v" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv47usrdat3v">
-<span id="_CPPv37usrdat3v"></span><span id="_CPPv27usrdat3v"></span><span id="usrdat3"></span><span class="target" id="group__abl_1gae8e951758ca4752cd88bc9c5330c9ebe"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usrdat3</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47usrdat3v" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv37usrdat3v"></span><span id="_CPPv27usrdat3v"></span><span id="usrdat3"></span><span class="target" id="group__abl_1gae8e951758ca4752cd88bc9c5330c9ebe"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usrdat3</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47usrdat3v" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Compute inflow / outflow conditions a.k.a. driving force. Ubar=1 Not required when coriolis force is specified in userf. </p>
 <p><dl class="simple">
 <dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386">https://github.com/Nek5000/NekExamples/blob/70a5792b04b7a4c2da16463f517863b10627398f/turbChannel/turbChannel.usr#L375-L386</a> </p>
@@ -463,66 +244,322 @@
 </dl>
 </p>
 </dd></dl>
+
 </div>
 </dd></dl>
+
+<section id="boundary-conditions">
+<h2>Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Permalink to this headline"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__moeng"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">bc_moeng</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410abl_userbc2ix2iy2iz5iside2eg">
+<span id="_CPPv310abl_userbc2ix2iy2iz5iside2eg"></span><span id="_CPPv210abl_userbc2ix2iy2iz5iside2eg"></span><span id="abl_userbc__ix.iy.iz.iside.eg"></span><span class="target" id="group__bc__moeng_1ga7ce4720eca38e4ff768aa26217859d45"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">abl_userbc</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::iside"><span class="n"><span class="pre">iside</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iside</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Stress boundary condition as formulated by Moeng (1984) Also has optional temporal filtering c.f: Yang et al. Physical Review Fluids 2, no. 10 (2017): 104601. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://journals.ametsoc.org/doi/abs/10.1175/1520-0469(1984)041%3C2052:ALESMF%3E2.0.CO%3B2">https://journals.ametsoc.org/doi/abs/10.1175/1520-0469(1984)041%3C2052:ALESMF%3E2.0.CO%3B2</a> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://doi.org/10.1103/PhysRevFluids.2.104601">https://doi.org/10.1103/PhysRevFluids.2.104601</a>.</p>
+</dd>
+</dl>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Boundary condition evaluated at higher nodes, may need to be corrected for Ekmann turning </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This subroutine MAY NOT be called by every process </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__moeng_1gacf8c5071d34e33ca4c89d4f797d4b113"></span><span class="sig-name descname"><span class="pre">real</span> <span class="pre">function</span> <span class="pre">thermal_flux(u_star</span> <span class="pre">u_star,</span> <span class="pre">kappa</span> <span class="pre">kappa,</span> <span class="pre">T_surf</span> <span class="pre">T_surf,</span> <span class="pre">T</span> <span class="pre">T,</span> <span class="pre">delta_z</span> <span class="pre">delta_z,</span> <span class="pre">z_os</span> <span class="pre">z_os)</span></span></dt>
+<dd><p>Complute thermal flux. </p>
+<p><dl>
+<dt class="sig sig-object cpp">
+<em><span class="pre">Todo:</span></em></dt>
+<dd><p>Correction for stratification </p>
+</dd></dl>
+
+<dl class="simple">
+<dt><strong>See</strong></dt><dd><p>Eq. 14 in Gadde et al. (2020) doi:10.1007/s10546-020-00570-5 </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__moeng_1ga1e151624fb337cc548e930ba9ffee688"></span><span class="sig-name descname"><span class="pre">real</span> <span class="pre">function</span> <span class="pre">thermal_flux_fixed(x</span> <span class="pre">x)</span></span></dt>
+<dd><p>Set thermal flux which varies along x, but is constant in time. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__moeng_1ga53ce0c5748e061e976a8fc2563998d25"></span><span class="sig-name descname"><span class="pre">real</span> <span class="pre">function</span> <span class="pre">temp_strat(t_surf</span> <span class="pre">t_surf,</span> <span class="pre">y</span> <span class="pre">y,</span> <span class="pre">half_ymax</span> <span class="pre">half_ymax)</span></span></dt>
+<dd><p>Set temperature dirichlet boundary conditions at bottom and top boundaries. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__moeng_1ga254f23587dbb1681663a4611ef44bef4"></span><span class="sig-name descname"><span class="pre">real</span> <span class="pre">function</span> <span class="pre">abl_pen_k(y_coord</span> <span class="pre">y_coord,</span> <span class="pre">z0</span> <span class="pre">z0)</span></span></dt>
+<dd><p>Compute the K term in penalty forcing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">param y_coord</dt>
+<dd class="field-odd"><p>mesh coordinate where the coefficient is evaluated </p>
+</dd>
+<dt class="field-even">param z0</dt>
+<dd class="field-even"><p>roughness length </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__channel"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">bc_channel</span></span></dt>
+<dd><p>Variant of <a class="reference internal" href="#group__bc__moeng"><span class="std std-ref">Moeng boundary condition</span></a> which also allows to have a wall function at the top boundary. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__channel_1ga7ce4720eca38e4ff768aa26217859d45"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">abl_userbc</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::iside"><span class="n"><span class="pre">iside</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iside</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Stress boundary condition as formulated by Moeng (1984) Also has optional temporal filtering c.f: Yang et al. Physical Review Fluids 2, no. 10 (2017): 104601. <a class="reference external" href="https://doi.org/10.1103/PhysRevFluids.2.104601">https://doi.org/10.1103/PhysRevFluids.2.104601</a>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Boundary condition evaluated at higher nodes, may need to be corrected for Ekmann turning </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This subroutine MAY NOT be called by every process </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__channel_1ga254f23587dbb1681663a4611ef44bef4"></span><span class="sig-name descname"><span class="pre">real</span> <span class="pre">function</span> <span class="pre">abl_pen_k(y_coord</span> <span class="pre">y_coord,</span> <span class="pre">z0</span> <span class="pre">z0)</span></span></dt>
+<dd><p>Compute the K term in penalty forcing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">param y_coord</dt>
+<dd class="field-odd"><p>mesh coordinate where the coefficient is evaluated </p>
+</dd>
+<dt class="field-even">param z0</dt>
+<dd class="field-even"><p>roughness length </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__noslip"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">bc_noslip</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__noslip_1ga7ce4720eca38e4ff768aa26217859d45"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">abl_userbc</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::iside"><span class="n"><span class="pre">iside</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iside</span></span>, <a class="reference internal" href="#_CPPv410abl_userbc2ix2iy2iz5iside2eg" title="abl_userbc::eg"><span class="n"><span class="pre">eg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eg</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>No slip and no penetration condition. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="group__bc__noslip_1ga254f23587dbb1681663a4611ef44bef4"></span><span class="sig-name descname"><span class="pre">real</span> <span class="pre">function</span> <span class="pre">abl_pen_k(y_coord</span> <span class="pre">y_coord,</span> <span class="pre">z0</span> <span class="pre">z0)</span></span></dt>
+<dd><p>Compute the K term in penalty forcing. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Be careful in specifying the penalty region, should be away from the wall </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">param y_coord</dt>
+<dd class="field-odd"><p>mesh coordinate where the coefficient is evaluated </p>
+</dd>
+<dt class="field-even">param z0</dt>
+<dd class="field-even"><p>roughness length </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="forcing">
+<h2>Forcing<a class="headerlink" href="#forcing" title="Permalink to this headline"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__penalty__mini"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">penalty_mini</span></span></dt>
+<dd><p>A BC which appears as a/forcing”: the mini version. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410pen_updatev">
+<span id="_CPPv310pen_updatev"></span><span id="_CPPv210pen_updatev"></span><span id="pen_update"></span><span class="target" id="group__penalty__mini_1gaad698038b43804d17a718e007d0dd8a9"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pen_update</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410pen_updatev" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Update penalty. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411pen_forcing2ix2iy2iz3ieg">
+<span id="_CPPv311pen_forcing2ix2iy2iz3ieg"></span><span id="_CPPv211pen_forcing2ix2iy2iz3ieg"></span><span id="pen_forcing__ix.iy.iz.ieg"></span><span class="target" id="group__penalty__mini_1gab29eabec41313b420926002af9f747f0"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pen_forcing</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411pen_forcing2ix2iy2iz3ieg" title="pen_forcing::ix"><span class="n"><span class="pre">ix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ix</span></span>, <a class="reference internal" href="#_CPPv411pen_forcing2ix2iy2iz3ieg" title="pen_forcing::iy"><span class="n"><span class="pre">iy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iy</span></span>, <a class="reference internal" href="#_CPPv411pen_forcing2ix2iy2iz3ieg" title="pen_forcing::iz"><span class="n"><span class="pre">iz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">iz</span></span>, <a class="reference internal" href="#_CPPv411pen_forcing2ix2iy2iz3ieg" title="pen_forcing::ieg"><span class="n"><span class="pre">ieg</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ieg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411pen_forcing2ix2iy2iz3ieg" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Compute penalty forcing. </p>
+<p><dl>
+<dt class="sig sig-object cpp">
+<em><span class="pre">Todo:</span></em></dt>
+<dd><p>add ffy component and rotation</p>
+</dd></dl>
+
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">param ffx, ffy, ffz</dt>
+<dd class="field-odd"><p><strong>[inout]</strong> forcing; x,y,z component </p>
+</dd>
+<dt class="field-even">param ix, iy, iz</dt>
+<dd class="field-even"><p><strong>[in]</strong> GLL point index </p>
+</dd>
+<dt class="field-odd">param ieg</dt>
+<dd class="field-odd"><p><strong>[in]</strong> global element number </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413pen_fmask_getv">
+<span id="_CPPv313pen_fmask_getv"></span><span id="_CPPv213pen_fmask_getv"></span><span id="pen_fmask_get"></span><span class="target" id="group__penalty__mini_1gaa48126191ec24c4aa1d1158d48a4a525"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pen_fmask_get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413pen_fmask_getv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Get 1D projection, array mapping and forcing smoothing. </p>
+<p>This routine is just a simple version supporting only lines paralles to z axis. In future it can be generalised. The subroutine initializes pen_prj, pen_map and pen_npoint <dl class="simple">
+<dt><strong>See</strong></dt><dd><p>Schlatter and Örlü, “Turbulent Boundary Layers at Moderate Reynolds Numbers.” pg. 12 </p>
+</dd>
+<dt><strong>Remark</strong></dt><dd><p>This routine uses global scratch space <em>CTMP0</em> and <em>CTMP1</em> </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414pen_fterms_get7ifreset">
+<span id="_CPPv314pen_fterms_get7ifreset"></span><span id="_CPPv214pen_fterms_get7ifreset"></span><span id="pen_fterms_get__ifreset"></span><span class="target" id="group__penalty__mini_1ga0aa813592cb2c1cb049ab22531179489"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pen_fterms_get</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414pen_fterms_get7ifreset" title="pen_fterms_get::ifreset"><span class="n"><span class="pre">ifreset</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ifreset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414pen_fterms_get7ifreset" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Generate forcing terms: pen_k_len and pen_fstab. </p>
+<p>This used to also initializes the pen_famp array. This was to allow for spatio-temporally varying forcing, which has been removed in this version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param ifreset</dt>
+<dd class="field-odd"><p><strong>[in]</strong> reset flag to reinitialize geometry term pen_k_len </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412pen_registerv">
+<span id="_CPPv312pen_registerv"></span><span id="_CPPv212pen_registerv"></span><span id="pen_register"></span><span class="target" id="group__penalty__mini_1ga6eb01b9729b455f0f9c08b3560290493"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pen_register</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412pen_registerv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Register penalty module. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This routine should be called in frame_usr_register </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv48pen_initv">
+<span id="_CPPv38pen_initv"></span><span id="_CPPv28pen_initv"></span><span id="pen_init"></span><span class="target" id="group__penalty__mini_1ga15121d5db02b3accc55625bb9893ddbe"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pen_init</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48pen_initv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Initilise penalty module. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This routine should be called in frame_usr_init </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="group__penalty__mini_1ga231bc69c8c491d64522bb1997a4a7960"></span><span class="sig-name descname"><span class="pre">logical</span> <span class="pre">function</span> <span class="pre">pen_is_initialised()</span></span></dt>
+<dd><p>Check if module was initialised. </p>
+<dl class="field-list simple">
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>pen_is_initialised </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413local_cart_dy2us1u1N1e2Dt">
+<span id="_CPPv313local_cart_dy2us1u1N1e2Dt"></span><span id="_CPPv213local_cart_dy2us1u1N1e2Dt"></span><span id="local_cart_dy__us.u.N.e.Dt"></span><span class="target" id="group__penalty__mini_1ga0ce4b99b400fee68110bae64c6a6277c"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">local_cart_dy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413local_cart_dy2us1u1N1e2Dt" title="local_cart_dy::us"><span class="n"><span class="pre">us</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">us</span></span>, <a class="reference internal" href="#_CPPv413local_cart_dy2us1u1N1e2Dt" title="local_cart_dy::u"><span class="n"><span class="pre">u</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <a class="reference internal" href="#_CPPv413local_cart_dy2us1u1N1e2Dt" title="local_cart_dy::N"><span class="n"><span class="pre">N</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <a class="reference internal" href="#_CPPv413local_cart_dy2us1u1N1e2Dt" title="local_cart_dy::e"><span class="n"><span class="pre">e</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span>, <a class="reference internal" href="#_CPPv413local_cart_dy2us1u1N1e2Dt" title="local_cart_dy::Dt"><span class="n"><span class="pre">Dt</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">Dt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413local_cart_dy2us1u1N1e2Dt" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Assuming the mesh is cartesian, compute exact y-derivative for an element, by operating. </p>
+<p><div class="math notranslate nohighlight">
+\[ \mathbf{u} D^T \]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">param us</dt>
+<dd class="field-odd"><p><strong>[out]</strong> </p>
+</dd>
+<dt class="field-even">param u, N, e, Dt</dt>
+<dd class="field-even"><p><strong>[in]</strong> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420local_cart_dy_pseudo2us1u1N1e2Dt">
+<span id="_CPPv320local_cart_dy_pseudo2us1u1N1e2Dt"></span><span id="_CPPv220local_cart_dy_pseudo2us1u1N1e2Dt"></span><span id="local_cart_dy_pseudo__us.u.N.e.Dt"></span><span class="target" id="group__penalty__mini_1gaa8eaa7869bcd674f01457cb5dd2eb012"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">local_cart_dy_pseudo</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv420local_cart_dy_pseudo2us1u1N1e2Dt" title="local_cart_dy_pseudo::us"><span class="n"><span class="pre">us</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">us</span></span>, <a class="reference internal" href="#_CPPv420local_cart_dy_pseudo2us1u1N1e2Dt" title="local_cart_dy_pseudo::u"><span class="n"><span class="pre">u</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <a class="reference internal" href="#_CPPv420local_cart_dy_pseudo2us1u1N1e2Dt" title="local_cart_dy_pseudo::N"><span class="n"><span class="pre">N</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <a class="reference internal" href="#_CPPv420local_cart_dy_pseudo2us1u1N1e2Dt" title="local_cart_dy_pseudo::e"><span class="n"><span class="pre">e</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span>, <a class="reference internal" href="#_CPPv420local_cart_dy_pseudo2us1u1N1e2Dt" title="local_cart_dy_pseudo::Dt"><span class="n"><span class="pre">Dt</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">Dt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420local_cart_dy_pseudo2us1u1N1e2Dt" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Assuming the mesh is cartesian, compute pseudo(?) y-derivative along y-axis for an element, by operating. </p>
+<p><div class="math notranslate nohighlight">
+\[ Dt \mathbf{u} \]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">param us</dt>
+<dd class="field-odd"><p><strong>[out]</strong> </p>
+</dd>
+<dt class="field-even">param u, N, e, Dt</dt>
+<dd class="field-even"><p><strong>[in]</strong> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411cart_diff_y2uy1u7ifexact">
+<span id="_CPPv311cart_diff_y2uy1u7ifexact"></span><span id="_CPPv211cart_diff_y2uy1u7ifexact"></span><span id="cart_diff_y__uy.u.ifexact"></span><span class="target" id="group__penalty__mini_1ga689a6a1fa1bd03e4bd215f4877e5bd86"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cart_diff_y</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411cart_diff_y2uy1u7ifexact" title="cart_diff_y::uy"><span class="n"><span class="pre">uy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">uy</span></span>, <a class="reference internal" href="#_CPPv411cart_diff_y2uy1u7ifexact" title="cart_diff_y::u"><span class="n"><span class="pre">u</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <a class="reference internal" href="#_CPPv411cart_diff_y2uy1u7ifexact" title="cart_diff_y::ifexact"><span class="n"><span class="pre">ifexact</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ifexact</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411cart_diff_y2uy1u7ifexact" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
 </section>
 
 
-          </article>
-        </div>
-      </div>
-    </main>
-  </div>
-  <footer class="md-footer">
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid">
-          
-            <a href="README.html" title="snek5000-abl"
-               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
-               rel="prev">
-              <div class="md-flex__cell md-flex__cell--shrink">
-                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
-              </div>
-              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-                <span class="md-flex__ellipsis">
-                  <span
-                      class="md-footer-nav__direction"> Previous </span> snek5000-abl </span>
-              </div>
-            </a>
-          
-          
-            <a href="framework.html" title="KTH Framework"
-               class="md-flex md-footer-nav__link md-footer-nav__link--next"
-               rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
-                class="md-flex__ellipsis"> <span
-                class="md-footer-nav__direction"> Next </span> KTH Framework </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink"><i
-                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          
-        </a>
-        
-      </nav>
-    </div>
-    <div class="md-footer-meta md-typeset">
-      <div class="md-footer-meta__inner md-grid">
-        <div class="md-footer-copyright">
-          <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-12-22.
-              
+           </div>
           </div>
-            Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
-             and
-            <a href="https://github.com/bashtage/sphinx-material/">Material for
-              Sphinx</a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="README.html" class="btn btn-neutral float-left" title="snek5000-abl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="framework.html" class="btn btn-neutral float-right" title="KTH Framework" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-12-22.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-    </div>
-  </footer>
-  <script src="_static/javascripts/application.js"></script>
-  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
