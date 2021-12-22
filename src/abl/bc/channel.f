@@ -1,3 +1,7 @@
+c> @defgroup bc_channel Channel flow boundary condition
+c> Variant of @ref bc_moeng which also allows to have a wall function
+c>   at the top boundary
+c> @{
 c-----------------------------------------------------------------------
 c> Stress boundary condition as formulated by Moeng (1984)
 c> Also has optional temporal filtering c.f: Yang et al. Physical Review
@@ -101,16 +105,18 @@ c--------Calculate Stresses
       end
 c----------------------------------------------------------------------
 c> Compute the K term in penalty forcing
+c> @param y_coord mesh coordinate where the coefficient is evaluated
+c> @param z0 roughness length
       real function abl_pen_k(y_coord, z0)
       implicit none
 
       include 'SIZE'
       include 'INPUT'  ! uparam
 
-      real y_coord    !< @var mesh coordinate where the coefficient is evaluated
-      real z0         !< @var roughness length
-      real y_wall     !< @var distance from nearest wall
-      real y_nonzero  !< @var avoid zero
+      real y_coord
+      real z0
+      real y_wall
+      real y_nonzero
 
       y_wall = min(y_coord, uparam(6) - y_coord)  ! Shortest distance from the wall
 
@@ -119,3 +125,4 @@ c> Compute the K term in penalty forcing
 
       return
       end function
+c> @}

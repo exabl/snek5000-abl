@@ -870,10 +870,10 @@ WARN_LOGFILE           =
 INPUT                  = .. \
                          ../lib/Nek5000/core \
                          ../src/abl \
+                         ../src/abl/bc \
                          ../src/abl/toolbox \
                          ../src/abl/sgs \
                          ../src/abl/forcing
-                         # ../src/abl/bc \
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

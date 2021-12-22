@@ -1,8 +1,11 @@
-c-----------------------------------------------------------------------
-c> Stress boundary condition as formulated by Moeng (1984)
+c> @defgroup bc_moeng Moeng boundary condition
+c> @{
+c
+c> @brief Stress boundary condition as formulated by Moeng (1984)
 c> Also has optional temporal filtering c.f: Yang et al. Physical Review
 c>      Fluids 2, no. 10 (2017): 104601.
-c>      https://doi.org/10.1103/PhysRevFluids.2.104601.
+c> @see https://journals.ametsoc.org/doi/abs/10.1175/1520-0469(1984)041%3C2052:ALESMF%3E2.0.CO%3B2
+c> @see https://doi.org/10.1103/PhysRevFluids.2.104601.
 c>
 c> @note Boundary condition evaluated at higher nodes, may need to be corrected for Ekmann turning
 c> @note This subroutine MAY NOT be called by every process
@@ -12,9 +15,10 @@ c> @note This subroutine MAY NOT be called by every process
 
       integer ix, iy, iz, iside, eg, ie, idx
       real u1_2, w1_2, y1_2, y0, uh, u_star, alpha
-      real eps, Tf
+      real eps, Tf, half_ymax
       real t1_2, t_surf
       real thermal_flux
+c>    @todo Make t_surf a parameter in the .par file under WMLES section?
       parameter(t_surf=0.0)
 
       include 'SIZE'
@@ -58,7 +62,7 @@ c--------Calculate Moeng's model parameters
         u1_2 = (1.-eps)*u_wm(ix, iz, ie) + eps*u1_2
         w1_2 = (1.-eps)*w_wm(ix, iz, ie) + eps*w1_2
 
-        !TODO: t_wm: temporal filtering for temperature
+c>      @todo Assign and use t_wm: temporal filtering for temperature
 
         ! Save it for next time step
         u_wm(ix, iz, ie) = u1_2
@@ -77,10 +81,18 @@ c--------Calculate Stresses
       trz = -(u_star ** 2) * sin(alpha)
 
 c--------Calculate Thermal boundary condition
-      ! temp = 0.0
-      ! TODO: Allow y0 != z_os (thermal surface roughness length)
+      ! temp = t_surf
+
+      ! Alternatively
+      ! half_ymax = uparam(6) * 0.5
+      ! temp = temp_strat(t_surf, y, half_ymax)
+
+c>    @todo Allow `y0 != z_os` (thermal surface roughness length)
       ! NOTE: Only meant for bottom boundary!!
       flux = thermal_flux(u_star, kappa, t_surf, t1_2, y1_2, y0)
+
+      ! Alternatively
+      !flux = thermal_flux_fixed(x)
 
 
       if (wmles_sgs_bc) then
@@ -118,16 +130,50 @@ c> @todo Correction for stratification
       return
       end function
 c----------------------------------------------------------------------
+c> Set thermal flux which varies along x, but is constant in time
+      real function thermal_flux_fixed(x)
+      implicit none
+
+      real x
+      real a,fl
+
+      parameter(a=3.0)
+      parameter(fl=0.0002)
+
+      thermal_flux_fixed = -fl
+      if((x.ge.1.).and.(x.le.(1.+a)))then
+        thermal_flux_fixed = fl*(15.-a)/a
+      endif
+      end function
+c----------------------------------------------------------------------
+c> Set temperature dirichlet boundary conditions at bottom and top
+c> boundaries
+      real function temp_strat(t_surf, y, half_ymax)
+      implicit none
+      real t_surf
+      real y, half_ymax
+
+      if(y .lt. half_ymax) then
+        temp_strat = t_surf
+      elseif(y .gt. half_ymax) then
+        temp_strat = t_surf + 4
+      endif
+      end function
+c----------------------------------------------------------------------
 c> Compute the K term in penalty forcing
+c> @param y_coord mesh coordinate where the coefficient is evaluated
+c> @param z0 roughness length
       real function abl_pen_k(y_coord, z0)
       implicit none
 
-      real y_coord    !< @var mesh coordinate where the coefficient is evaluated
-      real z0         !< @var roughness length
-      real y_nonzero  !< @var avoid zero
+      real y_coord
+      real z0
+      ! @var avoid zero
+      real y_nonzero
 
       y_nonzero = max(y_coord, 1e-14)  ! Avoid log(0)
       abl_pen_k = y_coord * log(y_nonzero / z0)
 
       return
       end function
+c> @}

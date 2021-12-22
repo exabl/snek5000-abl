@@ -1,3 +1,5 @@
+c> @defgroup bc_noslip No-slip Dirichlet boundary condition
+c> @{
 !-----------------------------------------------------------------------
 c> No slip and no penetration condition
       subroutine abl_userbc(ix,iy,iz,iside,eg)
@@ -19,7 +21,7 @@ c> No slip and no penetration condition
       uy =  0.0
       uz =  0.0
 
-      ! FIXME: Why does u_star -> NaN?
+c>    @todo Why does u_star -> NaN?
       !! Only for statistics: compute u_star assuming log-law
 
       ! idx = wmles_bc_z_index
@@ -43,15 +45,20 @@ c> No slip and no penetration condition
       end
 !-----------------------------------------------------------------------
 c> Compute the K term in penalty forcing
+c> @param y_coord mesh coordinate where the coefficient is evaluated
+c> @param z0 roughness length
+c> @note Be careful in specifying the penalty region, should be away
+c> from the wall
       real function abl_pen_k(y_coord, z0)
       implicit none
 
-      real y_coord    !< @var mesh coordinate where the coefficient is evaluated
-      real z0         !< @var roughness length
-      real y_nonzero  !< @var avoid zero
+      real y_coord
+      real z0
+      real y_nonzero
 
       y_nonzero = max(y_coord, 1e-14)  ! Avoid log(0)
       abl_pen_k = y_coord * log(y_nonzero / z0)
 
       return
       end function
+c> @}
