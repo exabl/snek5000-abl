@@ -36,12 +36,19 @@ Security in case of vulnerabilities.
 - Output u_star and other global statistics in to spatial_means.txt
 - Added cases Python sub package to save different configurations
 - Added penalty modules
+- Stratification
+- Sponge region
 
 ### Changed
 
 - Disabled Coriolis forcing for the time being
 - Debug flags during compilations
 - Use Snakemake modules
+- Upgrade Snek5000 API to 0.8.0
+
+### Fixed
+
+- Use of variable properties (SGS model) with temperature
 
 ## [0.5.0b0] - 2020-09-02
 
