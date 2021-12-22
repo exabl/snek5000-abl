@@ -233,11 +233,8 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <h1 id="modules-abl-solver--page-root">Source code for abl.solver</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">snek5000</span> <span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">mpi</span>
-<span class="kn">from</span> <span class="nn">snek5000.info</span> <span class="kn">import</span> <span class="n">InfoSolverMake</span>
+<span></span><span class="kn">from</span> <span class="nn">snek5000.info</span> <span class="kn">import</span> <span class="n">InfoSolverMake</span>
 <span class="kn">from</span> <span class="nn">snek5000.solvers.kth</span> <span class="kn">import</span> <span class="n">SimulKTH</span>
-
-<span class="kn">from</span> <span class="nn">.output</span> <span class="kn">import</span> <span class="n">OutputABL</span>
 
 
 <div class="viewcode-block" id="InfoSolverABL"><a class="viewcode-back" href="../../_generated/abl.solver.html#abl.solver.InfoSolverABL">[docs]</a><span class="k">class</span> <span class="nc">InfoSolverABL</span><span class="p">(</span><span class="n">InfoSolverMake</span><span class="p">):</span>
@@ -258,10 +255,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">Output</span><span class="o">.</span><span class="n">module_name</span> <span class="o">=</span> <span class="s2">"abl.output"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">Output</span><span class="o">.</span><span class="n">class_name</span> <span class="o">=</span> <span class="s2">"OutputABL"</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">_set_child</span><span class="p">(</span>
-            <span class="s2">"Postproc"</span><span class="p">,</span>
-            <span class="n">attribs</span><span class="o">=</span><span class="p">{</span><span class="s2">"module_name"</span><span class="p">:</span> <span class="s2">"abl.postproc"</span><span class="p">,</span> <span class="s2">"class_name"</span><span class="p">:</span> <span class="s2">"PostprocABL"</span><span class="p">},</span>
-        <span class="p">)</span></div>
+        <span class="c1"># Enable temperature section</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">par_sections_disabled</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">"temperature"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SimulABL"><a class="viewcode-back" href="../../_generated/abl.solver.html#abl.solver.SimulABL">[docs]</a><span class="k">class</span> <span class="nc">SimulABL</span><span class="p">(</span><span class="n">SimulKTH</span><span class="p">):</span>
@@ -269,11 +264,17 @@
 
     <span class="n">InfoSolver</span> <span class="o">=</span> <span class="n">InfoSolverABL</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_complete_params_with_default</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_complete_params_with_default</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
         <span class="sd">"""Add missing default parameters."""</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="n">SimulKTH</span><span class="o">.</span><span class="n">_complete_params_with_default</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_complete_params_with_default</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="n">params</span><span class="o">.</span><span class="n">_set_attribs</span><span class="p">({</span><span class="s2">"u_geo"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">"corio_freq"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">"richardson"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">_record_nek_user_params</span><span class="p">({</span><span class="s2">"u_geo"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"corio_freq"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">"richardson"</span><span class="p">:</span> <span class="mi">8</span><span class="p">})</span>
+
         <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">_set_attribs</span><span class="p">({</span><span class="s2">"advection"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"density"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">})</span>
+        <span class="c1"># NOTE: old method to enable temperature section</span>
+        <span class="c1"># params.nek.temperature._set_internal_attr("_enabled", True)</span>
 
         <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">_set_child</span><span class="p">(</span>
             <span class="s2">"wmles"</span><span class="p">,</span>
@@ -316,7 +317,24 @@
                 <span class="n">smthz02</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># Smoothing length Z</span>
             <span class="p">),</span>
         <span class="p">)</span>
-
+        <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">_set_child</span><span class="p">(</span>
+            <span class="s2">"spongebx"</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">strength</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge strength</span>
+                <span class="n">width_lx</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge left section width; dimension X</span>
+                <span class="n">width_ly</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge left section width; dimension Y</span>
+                <span class="n">width_lz</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge left section width; dimension Z</span>
+                <span class="n">width_rx</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge right section width; dimension X</span>
+                <span class="n">width_ry</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge right section width; dimension Y</span>
+                <span class="n">width_rz</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge right section width; dimension Z</span>
+                <span class="n">drop_lx</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge left drop/rise section width; dimension X</span>
+                <span class="n">drop_ly</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge left drop/rise section width; dimension Y</span>
+                <span class="n">drop_lz</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge left drop/rise section width; dimension Z</span>
+                <span class="n">drop_rx</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge right drop/rise section width; dimension X</span>
+                <span class="n">drop_ry</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge right drop/rise section width; dimension Y</span>
+                <span class="n">drop_rz</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># sponge right drop/rise section width; dimension Z</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
         <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">wmles</span><span class="o">.</span><span class="n">_set_internal_attr</span><span class="p">(</span><span class="s2">"_enabled"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">params</span>
 
@@ -328,20 +346,19 @@
 <span class="sd">        """</span>
         <span class="n">params</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">create_default_params</span><span class="p">()</span>
 
+        <span class="n">params</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">phys_fields</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="s2">"pymech_stats_avg"</span>
         <span class="c1"># Synchronize baseline parameters as follows:</span>
         <span class="c1"># -----------------------------------------------------------------</span>
-        <span class="n">primary_par_file</span> <span class="o">=</span> <span class="n">OutputABL</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span> <span class="o">/</span> <span class="s2">"abl.par"</span>
-        <span class="k">if</span> <span class="n">mpi</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reading baseline parameters from </span><span class="si">{</span><span class="n">primary_par_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-        <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">_read_par</span><span class="p">(</span><span class="n">primary_par_file</span><span class="p">)</span>
+        <span class="c1">#  primary_par_file = OutputABL.get_root() / "abl.par"</span>
+        <span class="c1">#  if mpi.rank == 0:</span>
+        <span class="c1">#      logger.info(f"Reading baseline parameters from {primary_par_file}")</span>
+        <span class="c1">#</span>
+        <span class="c1">#  params.nek._read_par(primary_par_file)</span>
 
         <span class="k">return</span> <span class="n">params</span></div>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">postproc</span><span class="o">.</span><span class="n">post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></div>
 
 
 <span class="n">Simul</span> <span class="o">=</span> <span class="n">SimulABL</span>
@@ -365,11 +382,11 @@
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-09-20.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-12-22.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

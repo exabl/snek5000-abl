@@ -1,0 +1,5 @@
+<map id="pen_fterms_get" name="pen_fterms_get">
+<area shape="rect" id="node1" title="Generate forcing terms: pen_k_len and pen_fstab." alt="" coords="152,31,275,57"/>
+<area shape="rect" id="node2" href="$group__penalty__mini.html#ga15121d5db02b3accc55625bb9893ddbe" title="Initilise penalty module." alt="" coords="17,5,92,32"/>
+<area shape="rect" id="node3" href="$group__penalty__mini.html#gaad698038b43804d17a718e007d0dd8a9" title="Update penalty." alt="" coords="5,56,104,83"/>
+</map>

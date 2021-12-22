@@ -1,0 +1,9 @@
+<map id="rprm_rp_reg" name="rprm_rp_reg">
+<area shape="rect" id="node1" title="Register new runtime parameter." alt="" coords="192,132,293,159"/>
+<area shape="rect" id="node2" href="$group__chkpoint.html#gab4a17862a5f644ef26e2538240fc3ae8" title="Register checkpointing module." alt="" coords="17,5,132,32"/>
+<area shape="rect" id="node3" href="$group__monitor.html#gad8a160fa3c099342abc581c5073a5744" title="Register monitor runtime parameters." alt="" coords="5,56,144,83"/>
+<area shape="rect" id="node4" href="$group__penalty__mini.html#ga6eb01b9729b455f0f9c08b3560290493" title="Register penalty module." alt="" coords="23,107,126,133"/>
+<area shape="rect" id="node5" href="$group__runparam.html#ga0a358e8c1cfec90802d0529ace7bcd4e" title="Register runtime parameters database." alt="" coords="19,157,130,184"/>
+<area shape="rect" id="node6" href="$group__stat.html#ga5b0d78dee858f1d9efcd6ce57aeb5ec8" title="Register 2D and 3D statistics module." alt="" coords="23,208,127,235"/>
+<area shape="rect" id="node7" href="$wmles__init_8f.html#a7a2c9cfc018e9645c485c2c5bce6d9ca" title="Register WMLES module." alt="" coords="13,259,136,285"/>
+</map>

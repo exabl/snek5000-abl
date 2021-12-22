@@ -59,7 +59,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="abl.output" href="abl.output.html" />
+    <link rel="next" title="abl.operators" href="abl.operators.html" />
     <link rel="prev" title="abl" href="abl.html" />
   
     <link rel="apple-touch-icon" href="../_static/_static/favicon.ico"/>
@@ -245,7 +245,7 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#abl.solver.InfoSolverABL" title="abl.solver.InfoSolverABL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InfoSolverABL</span></code></a>(**kargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#abl.solver.InfoSolverABL" title="abl.solver.InfoSolverABL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InfoSolverABL</span></code></a>([only_root])</p></td>
 <td><p>Contain the information on a <a class="reference internal" href="#abl.solver.SimulABL" title="abl.solver.SimulABL"><code class="xref py py-class docutils literal notranslate"><span class="pre">abl.solver.SimulABL</span></code></a> instance.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#abl.solver.Simul" title="abl.solver.Simul"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Simul</span></code></a></p></td>
@@ -258,7 +258,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="abl.solver.InfoSolverABL">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">abl.solver.</span></span><span class="sig-name descname"><span class="pre">InfoSolverABL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/solver.html#InfoSolverABL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.solver.InfoSolverABL" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abl.solver.</span></span><span class="sig-name descname"><span class="pre">InfoSolverABL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">only_root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/solver.html#InfoSolverABL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.solver.InfoSolverABL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contain the information on a <a class="reference internal" href="#abl.solver.SimulABL" title="abl.solver.SimulABL"><code class="xref py py-class docutils literal notranslate"><span class="pre">abl.solver.SimulABL</span></code></a>
 instance.</p>
 </dd></dl>
@@ -269,7 +269,7 @@ instance.</p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="abl.solver.SimulABL">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">abl.solver.</span></span><span class="sig-name descname"><span class="pre">SimulABL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/solver.html#SimulABL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.solver.SimulABL" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abl.solver.</span></span><span class="sig-name descname"><span class="pre">SimulABL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/solver.html#SimulABL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.solver.SimulABL" title="Permalink to this definition">¶</a></dt>
 <dd><p>A solver which compiles and runs using a Snakefile.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="abl.solver.SimulABL.InfoSolver">
@@ -278,7 +278,7 @@ instance.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="abl.solver.SimulABL.create_default_params">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">create_default_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/solver.html#SimulABL.create_default_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.solver.SimulABL.create_default_params" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_default_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/abl/solver.html#SimulABL.create_default_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abl.solver.SimulABL.create_default_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set default values of parameters as given in reference
 implementation.</p>
 </dd></dl>
@@ -309,12 +309,12 @@ implementation.</p>
             </a>
           
           
-            <a href="abl.output.html" title="abl.output"
+            <a href="abl.operators.html" title="abl.operators"
                class="md-flex md-footer-nav__link md-footer-nav__link--next"
                rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
                 class="md-flex__ellipsis"> <span
-                class="md-footer-nav__direction"> Next </span> abl.output </span>
+                class="md-footer-nav__direction"> Next </span> abl.operators </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink"><i
                 class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
@@ -328,11 +328,11 @@ implementation.</p>
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-09-20.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-12-22.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

@@ -1,0 +1,5 @@
+<map id="planar_avg_horiz" name="planar_avg_horiz">
+<area shape="rect" id="node1" title="Compute planar average of quantity u along horizontal directions." alt="" coords="5,31,139,57"/>
+<area shape="rect" id="node2" href="$dssum_8f.html#a93169b7e53973103de1372a81375375a" title=" " alt="" coords="187,5,303,32"/>
+<area shape="rect" id="node3" href="$navier5_8f.html#a43c9d798cb7be60e09268f4176c0d13f" title=" " alt="" coords="197,56,292,83"/>
+</map>

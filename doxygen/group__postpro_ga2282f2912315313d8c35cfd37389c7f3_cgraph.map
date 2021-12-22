@@ -1,0 +1,13 @@
+<map id="comp_gije" name="comp_gije">
+<area shape="rect" id="node1" title="Compute the gradient tensor G_ij := du_i/du_j, for element e." alt="" coords="5,107,95,133"/>
+<area shape="rect" id="node2" href="$byte_8c.html#a2da8eeb074dfd3ffbfb3e9a4d301cda4" title=" " alt="" coords="165,56,217,83"/>
+<area shape="rect" id="node3" href="$group__postpro.html#ga53feb767cebebba399ab3c5a50f53155" title="Uses mxm() to compute gradient of 2D arrays." alt="" coords="143,107,240,133"/>
+<area shape="rect" id="node11" href="$group__postpro.html#gad24367e4a843f60b63a2205aef1ba551" title="Uses mxm() to compute gradient of 3D arrays." alt="" coords="143,157,240,184"/>
+<area shape="rect" id="node4" href="$group__postpro.html#gab9ec2260a10061af6ce1c52f3c8a41da" title="Compute matrix&#45;matrix product C = A*B for contiguously packed matrices A,B, and C." alt="" coords="288,132,344,159"/>
+<area shape="rect" id="node5" href="$comm__mpi_8f.html#af06ec29f06aac3f8809e19de2a7e8946" title=" " alt="" coords="403,5,491,32"/>
+<area shape="rect" id="node6" href="$mxm__bgq_8f.html#a8a70163b4dbfdbfcce7bff170597fcad" title=" " alt="" coords="392,56,503,83"/>
+<area shape="rect" id="node7" href="$mxm__bgq_8f.html#a3fda9ea4bc7a5713a19d6939fa2b541f" title=" " alt="" coords="392,107,503,133"/>
+<area shape="rect" id="node8" href="$mxm__bgq_8f.html#af192c3c8b982aa5bbc2a757156718a91" title=" " alt="" coords="396,157,499,184"/>
+<area shape="rect" id="node9" href="$mxm__bgq_8f.html#a8faaef428336095704ece51624bbfe92" title=" " alt="" coords="396,208,499,235"/>
+<area shape="rect" id="node10" href="$mxm__std_8f.html#aa9e8685c4a72f18fb5d1ee88ed17a3d6" title=" " alt="" coords="413,259,482,285"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="userbc" name="userbc">
+<area shape="rect" id="node1" title="Compute the boundary condition. See subdirectory bc/." alt="" coords="5,5,71,32"/>
+<area shape="rect" id="node2" href="$group__bc__channel.html#ga7ce4720eca38e4ff768aa26217859d45" title="Stress boundary condition as formulated by Moeng (1984) Also has optional temporal filtering c...." alt="" coords="119,5,211,32"/>
+</map>

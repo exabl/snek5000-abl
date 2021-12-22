@@ -56,6 +56,7 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -273,7 +274,16 @@
       
         
 <nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">Contents</label>
   <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#roadmap--page-root" class="md-nav__link">Roadmap</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#done-so-far" class="md-nav__link">Done so far</a>
+        </li>
+        <li class="md-nav__item"><a href="#to-do" class="md-nav__link">To do</a>
+        </li></ul>
+            </nav>
+        </li>
     
 <li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/roadmap.rst.txt">Show Source</a> </li>
 
@@ -336,7 +346,16 @@
               <div class="md-sidebar__inner">
                 
 <nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">Contents</label>
   <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#roadmap--page-root" class="md-nav__link">Roadmap</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#done-so-far" class="md-nav__link">Done so far</a>
+        </li>
+        <li class="md-nav__item"><a href="#to-do" class="md-nav__link">To do</a>
+        </li></ul>
+            </nav>
+        </li>
     
 <li class="md-nav__item"><a class="md-nav__extra_link" href="_sources/roadmap.rst.txt">Show Source</a> </li>
 
@@ -353,12 +372,41 @@
             
   <section id="roadmap">
 <h1 id="roadmap--page-root">Roadmap<a class="headerlink" href="#roadmap--page-root" title="Permalink to this headline">¶</a></h1>
+<section id="done-so-far">
+<h2 id="done-so-far">Done so far<a class="headerlink" href="#done-so-far" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Neutral, open and closed channel flow, DNS and LES, with and without Coriolis force</p></li>
+<li><p>Implemented constant Smagorinsky, Vreman, shear improved Smagorinsky</p></li>
+<li><p>Specifying thermal BC - constant and dynamic fluxes at the bottom (Moeng-like)</p></li>
+<li><p>Sponge on top</p></li>
+</ul>
+</section>
+<section id="to-do">
+<h2 id="to-do">To do<a class="headerlink" href="#to-do" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Varying thermal roughness height of the Moeng-like thermal flux BC at the bottom to trigger some motions.
+_Don’t do <a href="#id1"><span class="problematic" id="id2">it_</span></a>. <span class="math notranslate nohighlight">\(z_os = z_0 / 10\)</span></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>In reality either we iterate between Obhukhov length and the fluxes get
+an agreement. Issue when there is large SGS scale then one can have the
+same flux (<span class="math notranslate nohighlight">\(w'\theta'\)</span>) for two different  <span class="math notranslate nohighlight">\(z / L\)</span>.</p></li>
+<li><p>Or use one-to-one relation between flux and gradient Richardson number.
+If this is the Businger-Dyer relation, it is only valid for unstable
+regime.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Bug fixes on penalty</p></li>
+<li><p>Outflow BC</p></li>
+</ul>
 <div class="admonition-todo admonition">
 <p class="admonition-title">Todo</p>
 <p>Use length set as a user_param in abl.par file to extrude the mesh to
 double precision values.</p>
 </div>
 <p class="todo-source">(The <a class="reference internal" href="_generated/abl.templates.html#id1"><em>original entry</em></a> is located in /opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/abl/templates/__init__.py:docstring of abl.templates, line 14.)</p>
+</section>
 </section>
 
 
@@ -404,11 +452,11 @@ double precision values.</p>
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-09-20.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-12-22.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

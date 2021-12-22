@@ -359,10 +359,118 @@
 Nek5000 v17. Only subroutines relevant to eturb project are listed here.
 The <a class="reference external" href="https://nek5000.github.io/NekDoc/appendix.html">official documentation</a> is hand-written and is more general.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygengroup: Cannot find file: /home/runner/work/snek5000-abl/snek5000-abl/docs/_build/xml/index.xml</p>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__core"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">core</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv46nektonv">
+<span id="_CPPv36nektonv"></span><span id="_CPPv26nektonv"></span><span id="nekton"></span><span class="target" id="group__core_1ga13048bf28dd0734640412d69349e3857"></span><span class="n"><span class="pre">program</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nekton</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46nektonv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p><em>Drives</em> the solver calling 3 subroutines: </p>
+<p><ul class="simple">
+<li><p><a class="reference internal" href="#group__core_1ga83f7c6d78ac4e68394f32533e847d0a3"><span class="std std-ref">nek_init()</span></a></p></li>
+<li><p><a class="reference internal" href="#group__core_1ga6ad57e0cf728f343e371ef8c9a02cd8a"><span class="std std-ref">nek_solve()</span></a></p></li>
+<li><p><a class="reference internal" href="#group__core_1ga10055f031c0ac540cc534ab2b0363206"><span class="std std-ref">nek_end()</span></a></p></li>
+<li><p>exitt0() </p></li>
+</ul>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv48nek_init4comm">
+<span id="_CPPv38nek_init4comm"></span><span id="_CPPv28nek_init4comm"></span><span id="nek_init__comm"></span><span class="target" id="group__core_1ga83f7c6d78ac4e68394f32533e847d0a3"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nek_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv48nek_init4comm" title="nek_init::comm"><span class="n"><span class="pre">comm</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">comm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48nek_init4comm" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Initializes the solver and variables. </p>
+<p>Calls the following subroutines in order:<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iniparser</span></code>: ?</p></li>
+<li><p>Session get_session_info(), dnekclock(), opcount() &lt;- 1</p></li>
+<li><p>Grid: initdim(), initdat(), files(), dnekclock(), readat()</p></li>
+<li><p>Sync: dnekclock_sync(): mpi_barrier() and mpi_wtime()</p></li>
+<li><p>Initialize variables: setvar()</p></li>
+<li><p>Mesh: setup_topo(), genwz(), usrdat()</p></li>
+<li><p>Geometry: gengeom()</p></li>
+<li><p>Setup Direct Stiffness Summation (DSS): setup_mesh_dssum(), usrdat2(), geom_reset()</p></li>
+<li><p>Verify: vrdsmsh()</p></li>
+<li><p>Optionals run if the flags are set<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dg</span></code>: dg_setup()</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifflow</span></code>: estrat(). <code class="docutils literal notranslate"><span class="pre">iftran</span></code> set_overlap()</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifcvode</span></code>: <code class="docutils literal notranslate"><span class="pre">False</span></code>?</p></li>
+</ul>
+</p></li>
+<li><p>usrdat3()</p></li>
+<li><p>Initial conditions: setics(), setprop()</p></li>
+<li><p>User check: <code class="docutils literal notranslate"><span class="pre">ifneknek</span></code>: <code class="docutils literal notranslate"><span class="pre">False</span></code>. userchk(): calculates eddy viscosity</p></li>
+<li><p>Misc functions: comment(), sstest(), dofcnt(), in_situ_init(), time00(), opcount() &lt;- 2 </p></li>
+</ul>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv49nek_solvev">
+<span id="_CPPv39nek_solvev"></span><span id="_CPPv29nek_solvev"></span><span id="nek_solve"></span><span class="target" id="group__core_1ga6ad57e0cf728f343e371ef8c9a02cd8a"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nek_solve</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49nek_solvev" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Runs post processing or time advancment based on value of <code class="docutils literal notranslate"><span class="pre">instep</span></code>. Parent subroutine to <a class="reference internal" href="#group__core_1ga18d3e839786263fc4cf91f7eeb714371"><span class="std std-ref">nek__multi_advance()</span></a> which calls <a class="reference internal" href="#group__core_1gae177ea7efac97f35241521b782a671c0"><span class="std std-ref">nek_advance()</span></a> once. Also handles: </p>
+<p><ul class="simple">
+<li><p>Set flag ::ifoutfld via set_outfld()</p></li>
+<li><p>Runs userchk() (for example, eddy viscosity)</p></li>
+<li><p>Calls prepost() </p></li>
+</ul>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411nek_advancev">
+<span id="_CPPv311nek_advancev"></span><span id="_CPPv211nek_advancev"></span><span id="nek_advance"></span><span class="target" id="group__core_1gae177ea7efac97f35241521b782a671c0"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nek_advance</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411nek_advancev" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Time advancement. What it does differs based on solver flags and formulation. Summary of calls: </p>
+<p><ul class="simple">
+<li><p>userchk_set_xfer()</p></li>
+<li><p><a class="reference internal" href="#group__core_1gab0aeca9ad3db8be87a01ba29d069d71e"><span class="std std-ref">fluid()</span></a>, heat()</p></li>
+<li><p>q_filter() with <code class="docutils literal notranslate"><span class="pre">param(103)</span></code> </p></li>
+</ul>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv47nek_endv">
+<span id="_CPPv37nek_endv"></span><span id="_CPPv27nek_endv"></span><span id="nek_end"></span><span class="target" id="group__core_1ga10055f031c0ac540cc534ab2b0363206"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nek_end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47nek_endv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Complete simulation. </p>
+<p><ul class="simple">
+<li><p>If zero steps, call runstat() which profiles different components</p></li>
+<li><p>Gather scatter library stats: fgslib_crs_stats(xxth(1))</p></li>
+<li><p>Finally, in_situ_end() shuts down VisIt with visit_end() </p></li>
+</ul>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418nek__multi_advance5kstep6msteps">
+<span id="_CPPv318nek__multi_advance5kstep6msteps"></span><span id="_CPPv218nek__multi_advance5kstep6msteps"></span><span id="nek__multi_advance__kstep.msteps"></span><span class="target" id="group__core_1ga18d3e839786263fc4cf91f7eeb714371"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nek__multi_advance</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv418nek__multi_advance5kstep6msteps" title="nek__multi_advance::kstep"><span class="n"><span class="pre">kstep</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">kstep</span></span>, <a class="reference internal" href="#_CPPv418nek__multi_advance5kstep6msteps" title="nek__multi_advance::msteps"><span class="n"><span class="pre">msteps</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">msteps</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418nek__multi_advance5kstep6msteps" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Multi-level time advancement. Calls <a class="reference internal" href="#group__core_1gae177ea7efac97f35241521b782a671c0"><span class="std std-ref">nek_advance()</span></a> <code class="docutils literal notranslate"><span class="pre">msteps</span></code> times. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv45fluid5igeom">
+<span id="_CPPv35fluid5igeom"></span><span id="_CPPv25fluid5igeom"></span><span id="fluid__igeom"></span><span class="target" id="group__core_1gab0aeca9ad3db8be87a01ba29d069d71e"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fluid</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45fluid5igeom" title="fluid::igeom"><span class="n"><span class="pre">igeom</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">igeom</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv45fluid5igeom" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Driver for solving the incompressible Navier-Stokes equations. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv48incomprn2ux2uy2uz2up">
+<span id="_CPPv38incomprn2ux2uy2uz2up"></span><span id="_CPPv28incomprn2ux2uy2uz2up"></span><span id="incomprn__ux.uy.uz.up"></span><span class="target" id="group__core_1gaeb2c6d4ae2c98143118acce2419c034d"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">incomprn</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv48incomprn2ux2uy2uz2up" title="incomprn::ux"><span class="n"><span class="pre">ux</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ux</span></span>, <a class="reference internal" href="#_CPPv48incomprn2ux2uy2uz2up" title="incomprn::uy"><span class="n"><span class="pre">uy</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">uy</span></span>, <a class="reference internal" href="#_CPPv48incomprn2ux2uy2uz2up" title="incomprn::uz"><span class="n"><span class="pre">uz</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">uz</span></span>, <a class="reference internal" href="#_CPPv48incomprn2ux2uy2uz2up" title="incomprn::up"><span class="n"><span class="pre">up</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">up</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48incomprn2ux2uy2uz2up" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Project U onto the closest incompressible field. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv45makefv">
+<span id="_CPPv35makefv"></span><span id="_CPPv25makefv"></span><span id="makef"></span><span class="target" id="group__core_1ga83189b3d1938d87f00ace2e7e05d9e4c"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">makef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv45makefv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Compute and add</p>
+<p><ol class="arabic simple">
+<li><p>user specified forcing function (FX,FY,FZ)</p></li>
+<li><p>driving force due to natural convection</p></li>
+<li><p>convection term </p></li>
+</ol>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv45plan35IGEOM">
+<span id="_CPPv35plan35IGEOM"></span><span id="_CPPv25plan35IGEOM"></span><span id="plan3__IGEOM"></span><span class="target" id="group__core_1ga142f9186a662d3de60f09bb0ee26782d"></span><span class="n"><span class="pre">subroutine</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">plan3</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45plan35IGEOM" title="plan3::IGEOM"><span class="n"><span class="pre">IGEOM</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">IGEOM</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv45plan35IGEOM" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p><p>Compute pressure and velocity using consistent approximation spaces.</p>
+<p>Operator splitting technique.</p>
+</p>
+</dd></dl>
 </div>
+</dd></dl>
 </section>
 
 
@@ -408,11 +516,11 @@ The <a class="reference external" href="https://nek5000.github.io/NekDoc/appendi
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-09-20.
+              &#169; Copyright 2019 - 2021, Ashwin Vishnu Mohanan. Published: 2021-12-22.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>
