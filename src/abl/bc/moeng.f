@@ -89,7 +89,7 @@ c>      @todo Assign and use t_wm: temporal filtering for temperature
       call calc_L_ob(L_ob_new, L_ob_old, y0, y1_2, Ri_b)
       L_ob(ix, iz, ie) = L_ob_new
 
-      call calc_Psi(Psi_M, Psi_H, y0, y1_2, L_ob)
+      call calc_Psi(Psi_M, Psi_H, y0, y1_2, L_ob_new)
 
       ! Friction velocity
       u_star = friction_vel(uh, kappa, y1_2, y0, Psi_M)
@@ -135,7 +135,6 @@ c>    @todo Allow `y0 != z_os` (thermal surface roughness length)
       end
 c----------------------------------------------------------------------
 c> Compute friction velocity
-c> @todo Correction for stratification
       real function friction_vel(uh, kappa, delta_z, z0, Psi_M)
       implicit none
 
@@ -150,7 +149,6 @@ c> @todo Correction for stratification
 c----------------------------------------------------------------------
 c> Complute thermal flux
 c> @see Eq. 14 in Gadde et al. (2020) doi:10.1007/s10546-020-00570-5
-c> @todo Correction for stratification
       real function thermal_flux(
      &    u_star, kappa, T_surf, T, delta_z, z_os, Psi_H)
       implicit none
@@ -162,7 +160,7 @@ c> @todo Correction for stratification
       real Psi_H
 
       thermal_flux = u_star * kappa * (T_surf - T) / (
-     &  log(delta_z / z_os)
+     &  log(delta_z / z_os) - Psi_H
      &)
       return
       end function
