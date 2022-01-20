@@ -42,7 +42,13 @@ c> @license CC-BY https://faculty.washington.edu/rjl/classes/am583s2013/notes/
 
         ! evaluate function and its derivative:
         fx = f(x, z0, z1, Ri_b)
-        fxprime = max(fp(x, z0, z1, Ri_b), 1e-12)
+        fxprime = fp(x, z0, z1, Ri_b)
+
+        ! Avoid too low values for fxprime
+        if (abs(fxprime) < 1e-12) then
+           fxprime = sign(1e-12, fxprime)
+        endif
+
 #ifdef DEBUG
         ! print *, "iter=", k, "f=", fx, "f'=", fxprime
 #endif
