@@ -8,9 +8,18 @@ c
       real pi_  ! to avoid conflict with pi defined in TSTEP
       parameter (pi_=4.*atan(1.))
 
+      real g_acc
+      parameter (g_acc=9.81)        !< @var acceleration due to gravity
+
+c>    @todo Make t_surf a parameter in the .par file under WMLES section?
+      real t_surf
+      ! NOTE: 263.5 in GABLS1
+      parameter (t_surf=288)        !< @var surface temperature
+
       ! temporal filtering in boundary condition
       real u_wm(lx1, lz1, lelv), w_wm(lx1, lz1, lelv)
-      common /wmles_bc/ u_wm, w_wm
+      real L_ob(lx1, lz1, lelv)
+      common /wmles_bc/ u_wm, w_wm, L_ob
 
       ! initialisation flag
       logical wmles_ifinit

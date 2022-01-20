@@ -108,7 +108,7 @@ class OutputABL(OutputBase):
                 ),
             ],
             "sponge_box": [("spongebx.f", "SPONGEBXD", "../toolbox/math_tools.f")],
-            "bc": [],
+            "bc": [("strat_correct.f",), ("newton.f",)],
         }
 
         if not self.sim and not self.params:

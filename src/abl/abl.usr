@@ -80,6 +80,7 @@ c
 
       U_GEO = uparam(3)
       f_corio = uparam(4)
+c> @todo Choose correct Ri
       Ri = uparam(8)
 
       ffx = 0.0 ! f_corio * uz
@@ -120,13 +121,14 @@ c> @callgraph
       include 'PARALLEL'  ! gllel
       include 'GEOM'  ! ym1
       include 'INPUT'  ! uparam
-      include 'WMLES'  ! KAPPA, PI_, y0
+      include 'WMLES'  ! KAPPA, PI_, g_acc t_surf, wmles_bc_z0
 
       integer ix,iy,iz,eg
       real a,b
       real rand1, rand2, rand3
       real eps, kx, kz, alpha, beta, perturb_thick
       real U_GEO, XLEN, YLEN, ZLEN
+      real Ri_b
 
 c      ux   = 1.0
 c      uy   = 0.0
@@ -150,7 +152,11 @@ c      temp = y
       ! a = 0.3
       ! b = 1.-a
       ! temp = max(0.0,4.*(y-a)/b)
-      temp = 1.0
+      temp = 300.0
+
+      ! GABLS1 initial condition: constant temperature upto 100 m with inversion
+      ! temp = 265 + 0.01 * max(0.0, y-100.0)
+
 
 c     perturbation tries!! (not working)
 c> Use standard subroutine RANDOM_NUMBER.
@@ -308,6 +314,7 @@ c> @callgraph
       include 'SIZE'
       include 'INPUT'  ! param
       include 'SGS'  ! ediff, dg2
+      include 'WMLES'  ! L_ob
 
       integer n, u_nelt, nelt_global, nelt_
 
@@ -328,6 +335,7 @@ c> @callgraph
       n = nx1*ny1*nz1*nelt
       call cfill(ediff,param(2),n)
       call cfill(dg2,1.0,n)
+      call cfill(L_ob, -1.0, nx1*nz1*nelv)
 
       return
       end
