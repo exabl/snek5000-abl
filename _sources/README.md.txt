@@ -3,11 +3,21 @@
 [![](https://github.com/exabl/snek5000-abl/workflows/Tests/badge.svg)](https://github.com/exabl/snek5000-abl/actions?workflow=Tests)
 [![](https://github.com/exabl/snek5000-abl/workflows/Docs/badge.svg)](https://github.com/exabl/snek5000-abl/actions?workflow=Docs)
 
-**Efficient** simulations of **turbulent** atmospheric boundary layer.
+Simulations of **turbulent** atmospheric boundary layer using
+[snek5000](https://snek5000.readthedocs.io).
+
+**Documentation**: <https://exabl.github.io/snek5000-abl/>
+
+:::{warning}
+The code is a prototype and far from ready for production runs. Some parts of
+the code are well validated and some parts require rigorous testing. **Use it
+with caution**. To know the detailed status of the code, checkout the
+[roadmap](https://exabl.github.io/snek5000-abl/roadmap.html).
+:::
 
 ## Quick start
 
-Install using Python 3.6+ as follows:
+Install using Python 3.8+ as follows:
 
     git clone --recursive https://github.com/exabl/snek5000-abl.git
     cd snek5000-abl

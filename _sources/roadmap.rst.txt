@@ -12,6 +12,8 @@ Done so far
 
 - Sponge on top
 
+- Stratification correction terms in the boundary condition
+
 To do
 -----
 
