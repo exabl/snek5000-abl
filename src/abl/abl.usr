@@ -152,7 +152,7 @@ c      temp = y
       ! a = 0.3
       ! b = 1.-a
       ! temp = max(0.0,4.*(y-a)/b)
-      temp = 300.0
+      temp = 265
 
       ! GABLS1 initial condition: constant temperature upto 100 m with inversion
       ! temp = 265 + 0.01 * max(0.0, y-100.0)
