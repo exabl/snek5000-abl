@@ -25,7 +25,7 @@ Security in case of vulnerabilities.
 
 -->
 
-## [Unreleased]
+## [0.6.0b0] - 2021-01-21
 
 ### Added
 
@@ -37,6 +37,8 @@ Security in case of vulnerabilities.
 - Added cases Python sub package to save different configurations
 - Added penalty modules
 - Stratification
+- Stability functions, i.e. stratification correction terms implemented in
+  `strat_correct.f` and `newton.f` for the `moeng.f` boundary condition
 - Sponge region
 
 ### Changed
@@ -211,7 +213,9 @@ Security in case of vulnerabilities.
 - Sphinx + Doxygen + Breathe documentation
 
 
-[Unreleased]: https://github.com/exabl/snek5000-abl/compare/0.4.0b0...HEAD
+[Unreleased]: https://github.com/exabl/snek5000-abl/compare/0.6.0b0...HEAD
+[0.6.0b0]: https://github.com/exabl/snek5000-abl/compare/0.5.0a0...0.6.0b0
+[0.5.0b0]: https://github.com/exabl/snek5000-abl/compare/0.4.0a0...0.5.0b0
 [0.4.0b0]: https://github.com/exabl/snek5000-abl/compare/0.3.0a0...0.4.0b0
 [0.3.0a0]: https://github.com/exabl/snek5000-abl/compare/0.2.2...0.3.0a0
 [0.2.2]: https://github.com/exabl/snek5000-abl/compare/0.2.1...0.2.2
