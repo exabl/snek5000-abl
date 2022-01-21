@@ -69,7 +69,6 @@ extensions = [
     "sphinx.ext.viewcode",
     # "recommonmark",
     "myst_nb",
-    "sphinx_copybutton",
 ]
 
 myst_enable_extensions = [
