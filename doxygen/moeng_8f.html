@@ -111,9 +111,12 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:ga7ce4720eca38e4ff768aa26217859d45"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#ga7ce4720eca38e4ff768aa26217859d45">abl_userbc</a> (ix, iy, iz, iside, eg)</td></tr>
 <tr class="memdesc:ga7ce4720eca38e4ff768aa26217859d45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stress boundary condition as formulated by Moeng (1984) Also has optional temporal filtering c.f: Yang et al. Physical Review Fluids 2, no. 10 (2017): 104601.  <a href="group__bc__moeng.html#ga7ce4720eca38e4ff768aa26217859d45">More...</a><br /></td></tr>
 <tr class="separator:ga7ce4720eca38e4ff768aa26217859d45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacf8c5071d34e33ca4c89d4f797d4b113"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#gacf8c5071d34e33ca4c89d4f797d4b113">thermal_flux</a> (u_star, kappa, T_surf, T, delta_z, z_os)</td></tr>
-<tr class="memdesc:gacf8c5071d34e33ca4c89d4f797d4b113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complute thermal flux.  <a href="group__bc__moeng.html#gacf8c5071d34e33ca4c89d4f797d4b113">More...</a><br /></td></tr>
-<tr class="separator:gacf8c5071d34e33ca4c89d4f797d4b113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0fd125185c648c62582c12219748aa2b"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#ga0fd125185c648c62582c12219748aa2b">friction_vel</a> (uh, kappa, delta_z, z0, Psi_M)</td></tr>
+<tr class="memdesc:ga0fd125185c648c62582c12219748aa2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute friction velocity.  <a href="group__bc__moeng.html#ga0fd125185c648c62582c12219748aa2b">More...</a><br /></td></tr>
+<tr class="separator:ga0fd125185c648c62582c12219748aa2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12690b51fbb6cd5fc0d67e802741330d"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#ga12690b51fbb6cd5fc0d67e802741330d">thermal_flux</a> (u_star, kappa, T_surf, T, delta_z, z_os, Psi_H)</td></tr>
+<tr class="memdesc:ga12690b51fbb6cd5fc0d67e802741330d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complute thermal flux.  <a href="group__bc__moeng.html#ga12690b51fbb6cd5fc0d67e802741330d">More...</a><br /></td></tr>
+<tr class="separator:ga12690b51fbb6cd5fc0d67e802741330d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1e151624fb337cc548e930ba9ffee688"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#ga1e151624fb337cc548e930ba9ffee688">thermal_flux_fixed</a> (x)</td></tr>
 <tr class="memdesc:ga1e151624fb337cc548e930ba9ffee688"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set thermal flux which varies along x, but is constant in time.  <a href="group__bc__moeng.html#ga1e151624fb337cc548e930ba9ffee688">More...</a><br /></td></tr>
 <tr class="separator:ga1e151624fb337cc548e930ba9ffee688"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,7 +133,7 @@ Functions/Subroutines</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_78506c70a28dc990f8a83885f8720112.html">abl</a></li><li class="navelem"><a class="el" href="dir_93f4ff337b22d6b81f1905b44b0d6000.html">bc</a></li><li class="navelem"><a class="el" href="moeng_8f.html">moeng.f</a></li>
-    <li class="footer">Generated on Wed Dec 22 2021 22:55:25 for abl by
+    <li class="footer">Generated on Fri Jan 21 2022 09:24:56 for abl by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

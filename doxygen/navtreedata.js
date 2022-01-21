@@ -56,13 +56,13 @@ var NAVTREEINDEX =
 "ADJOINT.html",
 "connect1_8f.html#a896c0eb2573814d7c91c49bae818ac3b",
 "eigsolv_8f.html#a689203a5426a8d211e71a59beaaea225",
-"group__chkpoint__mstep.html#ga9474ac5c2ffa0845b86060b4cdc23e45",
-"group__stat.html#gaad87c54a79675d05b4ee470ae15c7781",
-"map2_8f.html#a114f983b362bec57e45b4bf1f50111e6",
-"mxm__std_8f.html#a1e16f394f0fdffd1d235e2f8a76701b0",
-"navier1_8f.html#af66b0da5eb394cfc625e8099738e70a7",
-"plan4_8f.html#a8cde16ca4292836a681d1021ada2dc28",
-"structsparse__cholesky.html#adb59617acd94417ac225586b53e29886"
+"group__chkpoint__mstep.html#ga7371e065ea8b9f2588cb12a20c570d62",
+"group__stat.html#gaa0079ba197abbb630f715440b4323069",
+"map2_8f.html",
+"mxm__std_8f.html#a15c1c6d14212214f64ace87f27e112de",
+"navier1_8f.html#aef701b732efb20e0f339a59118652b86",
+"plan4_8f.html#a5d742e26cc1633cc4148de40f621d590",
+"structid__data.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

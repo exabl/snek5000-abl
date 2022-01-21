@@ -111,9 +111,12 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:ga7ce4720eca38e4ff768aa26217859d45"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#ga7ce4720eca38e4ff768aa26217859d45">abl_userbc</a> (ix, iy, iz, iside, eg)</td></tr>
 <tr class="memdesc:ga7ce4720eca38e4ff768aa26217859d45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stress boundary condition as formulated by Moeng (1984) Also has optional temporal filtering c.f: Yang et al. Physical Review Fluids 2, no. 10 (2017): 104601.  <a href="group__bc__moeng.html#ga7ce4720eca38e4ff768aa26217859d45">More...</a><br /></td></tr>
 <tr class="separator:ga7ce4720eca38e4ff768aa26217859d45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacf8c5071d34e33ca4c89d4f797d4b113"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#gacf8c5071d34e33ca4c89d4f797d4b113">thermal_flux</a> (u_star, kappa, T_surf, T, delta_z, z_os)</td></tr>
-<tr class="memdesc:gacf8c5071d34e33ca4c89d4f797d4b113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complute thermal flux.  <a href="group__bc__moeng.html#gacf8c5071d34e33ca4c89d4f797d4b113">More...</a><br /></td></tr>
-<tr class="separator:gacf8c5071d34e33ca4c89d4f797d4b113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0fd125185c648c62582c12219748aa2b"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#ga0fd125185c648c62582c12219748aa2b">friction_vel</a> (uh, kappa, delta_z, z0, Psi_M)</td></tr>
+<tr class="memdesc:ga0fd125185c648c62582c12219748aa2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute friction velocity.  <a href="group__bc__moeng.html#ga0fd125185c648c62582c12219748aa2b">More...</a><br /></td></tr>
+<tr class="separator:ga0fd125185c648c62582c12219748aa2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12690b51fbb6cd5fc0d67e802741330d"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#ga12690b51fbb6cd5fc0d67e802741330d">thermal_flux</a> (u_star, kappa, T_surf, T, delta_z, z_os, Psi_H)</td></tr>
+<tr class="memdesc:ga12690b51fbb6cd5fc0d67e802741330d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complute thermal flux.  <a href="group__bc__moeng.html#ga12690b51fbb6cd5fc0d67e802741330d">More...</a><br /></td></tr>
+<tr class="separator:ga12690b51fbb6cd5fc0d67e802741330d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1e151624fb337cc548e930ba9ffee688"><td class="memItemLeft" align="right" valign="top">real function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bc__moeng.html#ga1e151624fb337cc548e930ba9ffee688">thermal_flux_fixed</a> (x)</td></tr>
 <tr class="memdesc:ga1e151624fb337cc548e930ba9ffee688"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set thermal flux which varies along x, but is constant in time.  <a href="group__bc__moeng.html#ga1e151624fb337cc548e930ba9ffee688">More...</a><br /></td></tr>
 <tr class="separator:ga1e151624fb337cc548e930ba9ffee688"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,9 +217,56 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Boundary condition evaluated at higher nodes, may need to be corrected for Ekmann turning </dd>
 <dd>
 This subroutine MAY NOT be called by every process </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Make t_surf a parameter in the .par file under WMLES section? </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Assign and use t_wm: temporal filtering for temperature </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Allow <code>y0 != z_os</code> (thermal surface roughness length) </dd></dl>
+
+</div>
+</div>
+<a id="ga0fd125185c648c62582c12219748aa2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0fd125185c648c62582c12219748aa2b">&#9670;&nbsp;</a></span>friction_vel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">real function friction_vel </td>
+          <td>(</td>
+          <td class="paramtype">real&#160;</td>
+          <td class="paramname"><em>uh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real&#160;</td>
+          <td class="paramname"><em>kappa</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real&#160;</td>
+          <td class="paramname"><em>delta_z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real&#160;</td>
+          <td class="paramname"><em>z0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real&#160;</td>
+          <td class="paramname"><em>Psi_M</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute friction velocity. </p>
 
 </div>
 </div>
@@ -256,8 +306,8 @@ This subroutine MAY NOT be called by every process </dd></dl>
 
 </div>
 </div>
-<a id="gacf8c5071d34e33ca4c89d4f797d4b113"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacf8c5071d34e33ca4c89d4f797d4b113">&#9670;&nbsp;</a></span>thermal_flux()</h2>
+<a id="ga12690b51fbb6cd5fc0d67e802741330d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga12690b51fbb6cd5fc0d67e802741330d">&#9670;&nbsp;</a></span>thermal_flux()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -296,7 +346,13 @@ This subroutine MAY NOT be called by every process </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">real&#160;</td>
-          <td class="paramname"><em>z_os</em>&#160;</td>
+          <td class="paramname"><em>z_os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real&#160;</td>
+          <td class="paramname"><em>Psi_H</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -308,7 +364,6 @@ This subroutine MAY NOT be called by every process </dd></dl>
 
 <p>Complute thermal flux. </p>
 <dl class="section see"><dt>See also</dt><dd>Eq. 14 in Gadde et al. (2020) doi:10.1007/s10546-020-00570-5 </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Correction for stratification </dd></dl>
 
 </div>
 </div>
@@ -337,7 +392,7 @@ This subroutine MAY NOT be called by every process </dd></dl>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Dec 22 2021 22:55:25 for abl by
+    <li class="footer">Generated on Fri Jan 21 2022 09:24:56 for abl by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

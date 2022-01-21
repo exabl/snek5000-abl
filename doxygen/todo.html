@@ -105,25 +105,24 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><dl class="reflist">
 <dt>Subprogram <a class="el" href="group__bc__moeng.html#ga7ce4720eca38e4ff768aa26217859d45">abl_userbc</a>  (ix, iy, iz, iside, eg)</dt>
-<dd><p class="startdd"><a class="anchor" id="_todo000004"></a>Make t_surf a parameter in the .par file under WMLES section? </p>
-<p class="interdd"><a class="anchor" id="_todo000005"></a>Assign and use t_wm: temporal filtering for temperature </p>
+<dd><p class="startdd"><a class="anchor" id="_todo000005"></a>Assign and use t_wm: temporal filtering for temperature </p>
 <p class="interdd"><a class="anchor" id="_todo000006"></a>Allow <code>y0 != z_os</code> (thermal surface roughness length) </p>
-<p class="enddd"><a class="anchor" id="_todo000008"></a>Why does u_star -&gt; NaN? Only for statistics: compute u_star assuming log-law  </p>
+<p class="enddd"><a class="anchor" id="_todo000007"></a>Why does u_star -&gt; NaN? Only for statistics: compute u_star assuming log-law  </p>
 </dd>
 <dt>Subprogram <a class="el" href="group__framework.html#gabfa9321d0e78857e5fafb7bada7c3ae3">bounds_check</a>  (x)</dt>
-<dd><a class="anchor" id="_todo000003"></a>Why are the error messages not displayed?  </dd>
+<dd><a class="anchor" id="_todo000004"></a>Why are the error messages not displayed?  </dd>
 <dt>Subprogram <a class="el" href="group__chkpoint__mstep.html#ga3791f965a9cc62350d32b740060417c5">chkpt_dt_get</a>  </dt>
-<dd><a class="anchor" id="_todo000009"></a>Different files could have different chpm_if_pmesh, so it is not the best place to read it  </dd>
+<dd><a class="anchor" id="_todo000008"></a>Different files could have different chpm_if_pmesh, so it is not the best place to read it  </dd>
 <dt>Subprogram <a class="el" href="group__framework.html#ga8ea91c47053fcebbd35a007e093dab3b">frame_usr_init</a>  </dt>
-<dd><a class="anchor" id="_todo000002"></a>The spng_init reference velocities are ignored at the moment. See also spng_forcing()  </dd>
+<dd><a class="anchor" id="_todo000003"></a>The spng_init reference velocities are ignored at the moment. See also spng_forcing()  </dd>
 <dt>Subprogram <a class="el" href="group__penalty__mini.html#gab29eabec41313b420926002af9f747f0">pen_forcing</a>  (ix, iy, iz, ieg)</dt>
 <dd><p class="startdd"><a class="anchor" id="_todo000011"></a>add ffy component and rotation</p>
 <p class="enddd"></p>
 </dd>
 <dt>Subprogram <a class="el" href="group__stat.html#ga646a7c83620c31e3fbdd385eeeb7fd2c">stat_mfo</a>  ()</dt>
-<dd><a class="anchor" id="_todo000010"></a>Implement stat_mfo_outfld1D and 1D coords like <code>map2d_{xm1,ym1}</code>  </dd>
-<dt>Subprogram <a class="el" href="group__bc__moeng.html#gacf8c5071d34e33ca4c89d4f797d4b113">thermal_flux</a>  (u_star, kappa, T_surf, T, delta_z, z_os)</dt>
-<dd><a class="anchor" id="_todo000007"></a>Correction for stratification  </dd>
+<dd><a class="anchor" id="_todo000009"></a>Implement stat_mfo_outfld1D and 1D coords like <code>map2d_{xm1,ym1}</code>  </dd>
+<dt>Subprogram <a class="el" href="group__abl.html#ga1172abb68180ad165a8080d73ee2a378">userf</a>  (ix, iy, iz, eg)</dt>
+<dd><a class="anchor" id="_todo000002"></a>Choose correct Ri  </dd>
 <dt>Subprogram <a class="el" href="group__abl.html#ga32657b69f54f96dc5aea199db3658bc3">uservp</a>  (ix, iy, iz, ieg)</dt>
 <dd><a class="anchor" id="_todo000001"></a>Implement turbulent Prandtl number parameter </dd>
 </dl>
@@ -133,7 +132,7 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Dec 22 2021 22:55:25 for abl by
+    <li class="footer">Generated on Fri Jan 21 2022 09:24:56 for abl by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
