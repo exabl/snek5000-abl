@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HPFRT filtering</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mystnb.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Notes on the implementation in PALM" href="../../stratification_correction/PALM.html" />
+    <link rel="prev" title="Validation and verification studies" href="../../validation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> snek5000-abl
+          </a>
+              <div class="version">
+                0.1.dev1+g23ab577
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">snek5000-abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../abl.html">ABL case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../framework.html">KTH Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nek5000.html">Nek5000 core library</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_generated/abl.html">abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help &amp; Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../validation.html">Validation and verification studies</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">HPFRT filtering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-in-nek5000">Implementation in Nek5000</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-transfer-function">The transfer function</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#effects-of-filtering-parameters">Effects of filtering parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stratification_correction/PALM.html">Notes on the implementation in PALM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stratification_correction/derivation.html">Stratification corrections and Newton Raphson method to calculate Monin Obukhov length $z/L$</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stratification_correction/derivation.html#momentum">Momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stratification_correction/derivation.html#heat">Heat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stratification_correction/derivation.html#richardson-number">Richardson number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stratification_correction/derivation.html#newton-raphson">Newton Raphson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../validation/Case_Lee_Moser_2015.html">Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../validation/Case_Lee_Moser_2015.html#the-indicator-function">The indicator function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../boundary_cond.html">Boundary condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boundary_cond.html#faq">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../filtering.html">Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Links
+            
+            </span>
+        </p>
+        <ul>
+            
+                
+                    <li class="toctree-l1"><a href="https://exabl.github.io/snek5000-abl/doxygen/modules"><i class="fa fa-book fa-fw"></i> Fortran docs</a></li>
+                
+            
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl"><i class="fa fa-code fa-fw"></i> Source code</a></li>
+                
+            
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl/issues"><i class="fa fa-bug fa-fw"></i> Issue tracker</a></li>
+                
+            
+        </ul>
+    
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">snek5000-abl</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../validation.html">Validation and verification studies</a> &raquo;</li>
+      <li>HPFRT filtering</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/journal/maronga/filtering.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="hpfrt-filtering">
+<h1>HPFRT filtering<a class="headerlink" href="#hpfrt-filtering" title="Permalink to this headline"></a></h1>
+<p>For a model evolution equation:</p>
+<p>$$ \partial_t u + F(u) = 0 $$</p>
+<p>The filtering is equivalent to adding a dissipative term operating following a high-pass filter. This is otherwise termed as a relaxation term:</p>
+<p>$$ \partial_t u + F(u) = -\chi H(u) $$</p>
+<p>The high pass filter function $H$ is a function operates in the spectral / modal space ($\phi(k)$) containing $N$ modes:</p>
+<p>$$H(u_N(x)) = \Sigma_k h(k) a(k) \phi(k, x)$$</p>
+<p>where $h(k)$ is described as:</p>
+<p>$$
+h(k) = \left{
+\begin{array}{ll}
+\left( \frac{k-k_c}{N-k_c} \right)^2, &amp; k \gt k_c\
+0,&amp; k \leq k_c \
+\end{array}
+\right.
+$$</p>
+<section id="implementation-in-nek5000">
+<h2>Implementation in Nek5000<a class="headerlink" href="#implementation-in-nek5000" title="Permalink to this headline"></a></h2>
+<p>The relevant lines of code are:</p>
+<ul class="simple">
+<li><p>In <code class="docutils literal notranslate"><span class="pre">core/reader_par.f</span></code></p></li>
+</ul>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="k">call </span><span class="n">finiparser_getDbl</span><span class="p">(</span><span class="n">d_out</span><span class="p">,</span><span class="s1">&#39;general:filterWeight&#39;</span><span class="p">,</span><span class="n">ifnd</span><span class="p">)</span><span class="w"></span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ifnd</span><span class="w"> </span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">  </span><span class="n">param</span><span class="p">(</span><span class="mi">103</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d_out</span><span class="w"> </span>
+<span class="p">...</span><span class="w"></span>
+<span class="k">call </span><span class="n">finiparser_getDbl</span><span class="p">(</span><span class="n">d_out</span><span class="p">,</span><span class="s1">&#39;general:filterCutoffRatio&#39;</span><span class="p">,</span><span class="n">ifnd</span><span class="p">)</span><span class="w"></span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ifnd</span><span class="w"> </span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">  </span><span class="n">dtmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">anint</span><span class="p">(</span><span class="n">lx1</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">d_out</span><span class="p">))</span><span class="w"> </span>
+<span class="w">  </span><span class="n">param</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">dtmp</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span><span class="w"></span>
+<span class="p">...</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>In <code class="docutils literal notranslate"><span class="pre">core/hpf.f</span></code></p></li>
+</ul>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="n">hpf_kut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">param</span><span class="p">(</span><span class="mi">101</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span><span class="w"></span>
+<span class="n">hpf_chi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">param</span><span class="p">(</span><span class="mi">103</span><span class="p">))</span><span class="w"></span>
+<span class="p">...</span><span class="w"></span>
+<span class="k">call </span><span class="n">ident</span><span class="w">   </span><span class="p">(</span><span class="n">diag</span><span class="p">,</span><span class="n">nx</span><span class="p">)</span><span class="w"></span>
+<span class="n">nx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lx1</span><span class="w"></span>
+<span class="p">...</span><span class="w"></span>
+<span class="n">kut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hpf_kut</span><span class="w"></span>
+<span class="n">k0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nx</span><span class="o">-</span><span class="n">kut</span><span class="w"></span>
+<span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="n">k0</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">nx</span><span class="w"></span>
+<span class="w">  </span><span class="n">kk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="o">+</span><span class="n">nx</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">amp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">k</span><span class="o">-</span><span class="n">k0</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="n">k0</span><span class="p">)</span><span class="o">+</span><span class="mf">0.</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">kut</span><span class="o">*</span><span class="n">kut</span><span class="o">+</span><span class="mf">0.</span><span class="p">)</span><span class="w">     </span><span class="c">! Normalized amplitude. quadratic growth</span>
+<span class="w">  </span><span class="n">diag</span><span class="p">(</span><span class="n">kk</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.</span><span class="o">-</span><span class="n">amp</span><span class="w"></span>
+<span class="k">enddo</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="the-transfer-function">
+<h2>The transfer function<a class="headerlink" href="#the-transfer-function" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">transfer_function</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">):</span>
+    <span class="c1"># order = nx = lx1</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    
+    <span class="n">dtmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">order</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cutoff</span><span class="p">))</span>
+    <span class="c1"># no. of filtered wavenumber modes</span>
+    <span class="n">param_101</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dtmp</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+    <span class="c1"># print(&quot;dtmp, param(101):&quot;, dtmp, param_101)</span>
+    
+    <span class="n">kut</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">param_101</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">k0</span> <span class="o">=</span> <span class="n">order</span> <span class="o">-</span> <span class="n">kut</span>  <span class="c1"># cutoff wavenumber</span>
+    
+    <span class="n">cond</span> <span class="o">=</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">k0</span>
+    <span class="n">amp</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">k0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">kut</span><span class="o">**</span><span class="mi">2</span> 
+    <span class="n">diag</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">amp</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">diag</span>
+
+
+<span class="k">def</span> <span class="nf">weighted_transfer_function</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+    <span class="c1"># param_103 = weight</span>
+    
+    <span class="n">transf</span> <span class="o">=</span> <span class="n">transfer_function</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">transf</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">order</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">transfer_function</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.25, 1.  ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weighted_transfer_function</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.    , 0.    , 0.    , 0.    , 0.    , 0.    , 0.    , 0.0625,
+       0.25  ])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="effects-of-filtering-parameters">
+<h1>Effects of filtering parameters<a class="headerlink" href="#effects-of-filtering-parameters" title="Permalink to this headline"></a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">eturb.output.print_stdout</span> <span class="kn">import</span> <span class="n">PrintStdOut</span>
+
+<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;run_w</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">*.log&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">name</span><span class="p">)):</span>
+        <span class="n">stdout</span> <span class="o">=</span> <span class="n">PrintStdOut</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+        <span class="c1"># print(stdout.path_run)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">params</span>
+        <span class="n">fw</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">general</span><span class="o">.</span><span class="n">filter_weight</span>
+        <span class="n">fc</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">nek</span><span class="o">.</span><span class="n">general</span><span class="o">.</span><span class="n">filter_cutoff_ratio</span>
+        <span class="c1"># print(fw, fc)</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">oper</span><span class="o">.</span><span class="n">nx</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">oper</span><span class="o">.</span><span class="n">ny</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">oper</span><span class="o">.</span><span class="n">nz</span><span class="si">}</span><span class="s2">, $\chi$=</span><span class="si">{</span><span class="n">fw</span><span class="si">}</span><span class="s2">, cutoff=</span><span class="si">{</span><span class="n">fc</span><span class="si">}</span><span class="s2">&quot;</span>
+        
+        <span class="c1">#if fw &gt; 1:</span>
+        <span class="c1">#    continue</span>
+        
+        <span class="n">dt_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">stdout</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+        <span class="n">w_transf</span> <span class="o">=</span> <span class="n">weighted_transfer_function</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">oper</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">dt_median</span><span class="p">)</span>
+        
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stdout</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="c1"># ax1.hlines(dt_median, 0, 500)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stdout</span><span class="o">.</span><span class="n">dt</span> <span class="o">*</span> <span class="n">fw</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_transf</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\Delta t$&quot;</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;no. of timesteps&quot;</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\chi \Delta t$&quot;</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;no. of timesteps&quot;</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\chi \Delta t H$&quot;</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;modes&quot;</span><span class="p">)</span>
+
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Actual time step from a simulation&quot;</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Estimated filtering in highest wavenumber&quot;</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Estimated filtering transfer function&quot;</span><span class="p">)</span>
+
+        <span class="c1">#ax1.legend()</span>
+        <span class="c1">#ax2.legend()</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/filtering_9_0.png" src="../../_images/filtering_9_0.png" />
+<img alt="../../_images/filtering_9_1.png" src="../../_images/filtering_9_1.png" />
+<img alt="../../_images/filtering_9_2.png" src="../../_images/filtering_9_2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stdout</span><span class="o">.</span><span class="n">file</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../validation.html" class="btn btn-neutral float-left" title="Validation and verification studies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../stratification_correction/PALM.html" class="btn btn-neutral float-right" title="Notes on the implementation in PALM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019 - 2022, Ashwin Vishnu Mohanan. Published: 2022-01-21.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

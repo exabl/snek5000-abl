@@ -50,6 +50,7 @@ code and its Python interface made using snek5000_'s API.
    :caption: Help & Reference
 
    roadmap
+   validation
    boundary_cond
    filtering
    CONTRIBUTING

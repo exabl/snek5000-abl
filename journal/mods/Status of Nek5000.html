@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recap of the baseline implementation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mystnb.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> snek5000-abl
+          </a>
+              <div class="version">
+                0.1.dev1+g23ab577
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">snek5000-abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../abl.html">ABL case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../framework.html">KTH Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nek5000.html">Nek5000 core library</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_generated/abl.html">abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help &amp; Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../validation.html">Validation and verification studies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boundary_cond.html">Boundary condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boundary_cond.html#faq">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../filtering.html">Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Links
+            
+            </span>
+        </p>
+        <ul>
+            
+                
+                    <li class="toctree-l1"><a href="https://exabl.github.io/snek5000-abl/doxygen/modules"><i class="fa fa-book fa-fw"></i> Fortran docs</a></li>
+                
+            
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl"><i class="fa fa-code fa-fw"></i> Source code</a></li>
+                
+            
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl/issues"><i class="fa fa-bug fa-fw"></i> Issue tracker</a></li>
+                
+            
+        </ul>
+    
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">snek5000-abl</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Recap of the baseline implementation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/journal/mods/Status of Nek5000.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="recap-of-the-baseline-implementation">
+<h1>Recap of the baseline implementation<a class="headerlink" href="#recap-of-the-baseline-implementation" title="Permalink to this headline"></a></h1>
+<section id="stress-boundary-condition">
+<h2>Stress boundary condition<a class="headerlink" href="#stress-boundary-condition" title="Permalink to this headline"></a></h2>
+<p>$$\tau = \rho u_*^2 = \rho \left[ \frac{\kappa U}{\ln (z/z_0)}\right]^2$$</p>
+<p>where the velocity are evaluated from the first and second grid levels:</p>
+<ul class="simple">
+<li><p>$U = \sqrt{((u_1 +  u_2)/2)^2 + ((v_1 + v_2)/2)^2}$</p></li>
+<li><p>$z = (z_1 + z_2) / 2$</p></li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p>$\kappa = 0.41$ (von-Karman constant)</p></li>
+<li><p>$z_0 = 0.1$ (roughness length)</p></li>
+</ul>
+</section>
+<section id="constant-smagorinsky-sub-grid-scale-sgs-model-with-wall-damping">
+<h2>“Constant” Smagorinsky sub-grid scale (SGS) model with wall damping<a class="headerlink" href="#constant-smagorinsky-sub-grid-scale-sgs-model-with-wall-damping" title="Permalink to this headline"></a></h2>
+<p>Total viscosity = $\nu + \nu_t$</p>
+<p>Eddy viscosity, $$\nu_t = (C_s \Delta)^2 |S_{ij}|$$</p>
+<p>where,</p>
+<ul class="simple">
+<li><p>$S_{ij} = \frac{1}{2}(\nabla \mathbf{u} + \nabla \mathbf{u}^T)$ (symmetric part of strain tensor)</p></li>
+<li><p>$C_s$ is wall damped as:</p></li>
+</ul>
+<p>$$\frac{1}{C_s^n} = \frac{1}{C_0^n} + \left[ \frac{\Delta}{\kappa (z+z_0)} \right]^n$$</p>
+<ul class="simple">
+<li><p>$\Delta$ is the length scale set as the grid spacing</p></li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p>$\nu = 1e-10, m^2/s$ (Kinematic viscosity)</p></li>
+<li><p>$C_0 = 0.19$</p></li>
+<li><p>$n = 0.5$</p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="experiments-and-modifications-to-the-model">
+<h1>Experiments and modifications to the model<a class="headerlink" href="#experiments-and-modifications-to-the-model" title="Permalink to this headline"></a></h1>
+<ol class="simple">
+<li><p>Case: <code class="docutils literal notranslate"><span class="pre">bc-3rd</span></code>
+Evaluate boundary condition with:</p>
+<ul class="simple">
+<li><p>$U = \sqrt{((u_3 +  u_4)/2)^2 + ((v_3 + v_4)/2)^2}$</p></li>
+<li><p>$z = (z_3 + z_4)/2$</p></li>
+</ul>
+</li>
+<li><p>Case <code class="docutils literal notranslate"><span class="pre">npow</span></code>
+Set $n=3.0$ as power for SGS wall damping</p></li>
+<li><p>Case <code class="docutils literal notranslate"><span class="pre">sgs-delta</span></code>
+Vary SGS length scale gradually as the maximum grid spacing within a spectral element and reduce $C_0$ to $0.15$.</p></li>
+</ol>
+<p><img alt="" src="../../_images/aug-loglaw.png" /></p>
+<ol class="simple">
+<li><p>Case <code class="docutils literal notranslate"><span class="pre">sgs-delta-ft-True</span></code>: Modifications in case 3 + temporal filtering for $U$ while computing boundary condition as recommended in Yang et al. (PRF 2017)</p></li>
+</ol>
+<p><img alt="" src="../../_images/sept-loglaw.png" /></p>
+<ol class="simple">
+<li><p>Dynamic smagorinsky SGS model (work-in-progress)</p>
+<ul class="simple">
+<li><p><strong>Status</strong>: compiles, runs, but blows up. Implementation needs to be verified and tuned for our case.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="summary">
+<h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bc-3rd</span></code>: Shifting boundary conditions problematic because of Ekmann turning.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">npow</span></code>: Indicates SGS model has a large impact on log-layer mismatch</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sgs-delta</span></code>: Varying grid-length scale gradually has minor impact on the overall profile, but affects friction velocity $u^* = \sqrt{\tau_w}$</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sgs-delta-ft-True</span></code>: Temporal filtering of wall boundary condition has no impact</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dyn-sgs-delta</span></code>: No need for damping function</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019 - 2022, Ashwin Vishnu Mohanan. Published: 2022-01-21.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

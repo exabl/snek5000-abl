@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comparison</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Boundary condition" href="../boundary_cond.html" />
+    <link rel="prev" title="Stratification corrections and Newton Raphson method to calculate Monin Obukhov length $z/L$" href="../stratification_correction/derivation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> snek5000-abl
+          </a>
+              <div class="version">
+                0.1.dev1+g23ab577
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">snek5000-abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../abl.html">ABL case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../framework.html">KTH Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nek5000.html">Nek5000 core library</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_generated/abl.html">abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help &amp; Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../validation.html">Validation and verification studies</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../journal/maronga/filtering.html">HPFRT filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../journal/maronga/filtering.html#effects-of-filtering-parameters">Effects of filtering parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stratification_correction/PALM.html">Notes on the implementation in PALM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stratification_correction/derivation.html">Stratification corrections and Newton Raphson method to calculate Monin Obukhov length $z/L$</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stratification_correction/derivation.html#momentum">Momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stratification_correction/derivation.html#heat">Heat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stratification_correction/derivation.html#richardson-number">Richardson number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stratification_correction/derivation.html#newton-raphson">Newton Raphson</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-indicator-function">The indicator function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../boundary_cond.html">Boundary condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../boundary_cond.html#faq">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filtering.html">Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Links
+            
+            </span>
+        </p>
+        <ul>
+            
+                
+                    <li class="toctree-l1"><a href="https://exabl.github.io/snek5000-abl/doxygen/modules"><i class="fa fa-book fa-fw"></i> Fortran docs</a></li>
+                
+            
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl"><i class="fa fa-code fa-fw"></i> Source code</a></li>
+                
+            
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl/issues"><i class="fa fa-bug fa-fw"></i> Issue tracker</a></li>
+                
+            
+        </ul>
+    
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">snek5000-abl</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../validation.html">Validation and verification studies</a> &raquo;</li>
+      <li>Comparison</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/validation/Case_Lee_Moser_2015.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">pymech.dataset</span> <span class="kn">import</span> <span class="n">open_mfdataset</span>
+
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;LM_Channel_5200_mean_prof.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;%&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>y_over_delta</th>
+      <th>y_plus</th>
+      <th>U</th>
+      <th>dU_dy</th>
+      <th>W</th>
+      <th>P</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000014</td>
+      <td>0.071102</td>
+      <td>0.071102</td>
+      <td>0.999986</td>
+      <td>-0.000011</td>
+      <td>-4.717272e-09</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.000042</td>
+      <td>0.216250</td>
+      <td>0.216244</td>
+      <td>0.999947</td>
+      <td>-0.000034</td>
+      <td>-3.851045e-07</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.000085</td>
+      <td>0.438384</td>
+      <td>0.438355</td>
+      <td>0.999819</td>
+      <td>-0.000069</td>
+      <td>-6.055743e-06</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.000143</td>
+      <td>0.740447</td>
+      <td>0.740306</td>
+      <td>0.999379</td>
+      <td>-0.000117</td>
+      <td>-4.477271e-05</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>763</th>
+      <td>0.991022</td>
+      <td>5139.336002</td>
+      <td>26.574682</td>
+      <td>0.000026</td>
+      <td>-0.006544</td>
+      <td>-4.790325e-01</td>
+    </tr>
+    <tr>
+      <th>764</th>
+      <td>0.993017</td>
+      <td>5149.682732</td>
+      <td>26.574923</td>
+      <td>0.000020</td>
+      <td>-0.006553</td>
+      <td>-4.789895e-01</td>
+    </tr>
+    <tr>
+      <th>765</th>
+      <td>0.995012</td>
+      <td>5160.029605</td>
+      <td>26.575104</td>
+      <td>0.000015</td>
+      <td>-0.006562</td>
+      <td>-4.789556e-01</td>
+    </tr>
+    <tr>
+      <th>766</th>
+      <td>0.997007</td>
+      <td>5170.376581</td>
+      <td>26.575224</td>
+      <td>0.000009</td>
+      <td>-0.006568</td>
+      <td>-4.789319e-01</td>
+    </tr>
+    <tr>
+      <th>767</th>
+      <td>0.999002</td>
+      <td>5180.723618</td>
+      <td>26.575284</td>
+      <td>0.000003</td>
+      <td>-0.006571</td>
+      <td>-4.789196e-01</td>
+    </tr>
+  </tbody>
+</table>
+<p>768 rows × 6 columns</p>
+</div></div></div>
+</div>
+<p>Here:</p>
+<ul class="simple">
+<li><p>y_over_delta: $y/\delta$ Grid point in wall-normal direction, Normalized by channel half width</p></li>
+<li><p>y_plus    : Grid point in wall-normal direction</p></li>
+<li><p>U       : Mean profile of streamwise velocity (normalized with $u^*$)</p></li>
+<li><p>dU/dy     : Derivative of U in wall-normal direction</p></li>
+<li><p>W       : Mean profile of spanwise velocity</p></li>
+<li><p>P       : Mean profile of pressure</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kappa</span> <span class="o">=</span> <span class="mf">0.384</span>
+<span class="n">u_star</span> <span class="o">=</span> <span class="mf">1.</span>
+<span class="n">B</span> <span class="o">=</span> <span class="mf">4.5</span>
+<span class="n">y0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">kappa</span> <span class="o">*</span> <span class="n">B</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;U_plus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">U</span> <span class="o">/</span> <span class="n">u_star</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;log_law&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">y_plus</span> <span class="o">/</span> <span class="n">y0</span><span class="p">)</span> <span class="o">/</span> <span class="n">kappa</span>
+
+<span class="c1"># Plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s2">&quot;figure&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;y_plus&quot;</span><span class="p">,</span> <span class="s2">&quot;U_plus&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;y_plus&quot;</span><span class="p">,</span> <span class="s2">&quot;log_law&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">y0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/x_ashmo/.conda/envs/snek/lib/python3.7/site-packages/pandas/core/series.py:679: RuntimeWarning: divide by zero encountered in log
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.17763933359513495
+</pre></div>
+</div>
+<img alt="../_images/Case_Lee_Moser_2015_2_2.png" src="../_images/Case_Lee_Moser_2015_2_2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y0</span> <span class="o">/</span> <span class="n">df</span><span class="o">.</span><span class="n">y_plus</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.4288517720901714e-05
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="comparison">
+<h1>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline"></a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">proj</span><span class="o">/</span><span class="n">bolinc</span><span class="o">/</span><span class="n">users</span><span class="o">/</span><span class="n">x_ashmo</span><span class="o">/</span><span class="n">channel_tests</span><span class="o">/</span><span class="n">abl_ch</span><span class="o">-</span><span class="n">channel_mixing_len_14x4x7_V6</span><span class="mf">.283</span><span class="n">x2</span><span class="o">.</span><span class="n">x3</span><span class="mf">.142_2021</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">08_15</span><span class="o">-</span><span class="mi">23</span><span class="o">-</span><span class="mi">17</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/proj/bolinc/users/x_ashmo/channel_tests/abl_ch-channel_mixing_len_14x4x7_V6.283x2.x3.142_2021-04-08_15-23-17
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spatial_means</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;spatial_means.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spatial_means</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>it</th>
+      <th>t</th>
+      <th>ux_avg</th>
+      <th>ez_avg</th>
+      <th>u_star_avg</th>
+      <th>u_star_max</th>
+      <th>dpdx_avg</th>
+      <th>dpdy_avg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>11994</th>
+      <td>239900</td>
+      <td>1499.5</td>
+      <td>1.0</td>
+      <td>0.000521</td>
+      <td>0.026400</td>
+      <td>0.047683</td>
+      <td>-6.2832</td>
+      <td>-6.2832</td>
+    </tr>
+    <tr>
+      <th>11995</th>
+      <td>239920</td>
+      <td>1499.6</td>
+      <td>1.0</td>
+      <td>0.000521</td>
+      <td>0.026400</td>
+      <td>0.047697</td>
+      <td>-6.2832</td>
+      <td>-6.2832</td>
+    </tr>
+    <tr>
+      <th>11996</th>
+      <td>239940</td>
+      <td>1499.7</td>
+      <td>1.0</td>
+      <td>0.000520</td>
+      <td>0.026399</td>
+      <td>0.047718</td>
+      <td>-6.2832</td>
+      <td>-6.2832</td>
+    </tr>
+    <tr>
+      <th>11997</th>
+      <td>239960</td>
+      <td>1499.8</td>
+      <td>1.0</td>
+      <td>0.000520</td>
+      <td>0.026399</td>
+      <td>0.047734</td>
+      <td>-6.2832</td>
+      <td>-6.2832</td>
+    </tr>
+    <tr>
+      <th>11998</th>
+      <td>239980</td>
+      <td>1499.9</td>
+      <td>1.0</td>
+      <td>0.000519</td>
+      <td>0.026398</td>
+      <td>0.047754</td>
+      <td>-6.2832</td>
+      <td>-6.2832</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">spatial_means</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="s2">&quot;u_star_avg&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&lt;u*&gt;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0, 0.5, &#39;&lt;u*&gt;&#39;)]
+</pre></div>
+</div>
+<img alt="../_images/Case_Lee_Moser_2015_8_1.png" src="../_images/Case_Lee_Moser_2015_8_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">open_mfdataset</span><span class="p">(</span><span class="s2">&quot;stsabl0.f007??&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dss</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">))</span>
+
+<span class="n">U</span> <span class="o">=</span> <span class="p">(</span><span class="n">dss</span><span class="o">.</span><span class="n">s01</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dss</span><span class="o">.</span><span class="n">s02</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+
+<span class="n">tau</span> <span class="o">=</span> <span class="p">(</span><span class="n">dss</span><span class="o">.</span><span class="n">s47</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dss</span><span class="o">.</span><span class="n">s50</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+<span class="n">u_star</span> <span class="o">=</span> <span class="n">tau</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+<span class="nb">float</span><span class="p">(</span><span class="n">u_star</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.06669730128082715
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dss</span><span class="o">.</span><span class="n">s09</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f8664fd23d0&gt;]
+</pre></div>
+</div>
+<img alt="../_images/Case_Lee_Moser_2015_11_1.png" src="../_images/Case_Lee_Moser_2015_11_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tau</span> <span class="o">=</span> <span class="p">(</span><span class="n">dss</span><span class="o">.</span><span class="n">s47</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dss</span><span class="o">.</span><span class="n">s50</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">tau</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f8664e47190&gt;]
+</pre></div>
+</div>
+<img alt="../_images/Case_Lee_Moser_2015_13_1.png" src="../_images/Case_Lee_Moser_2015_13_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u_star</span> <span class="o">=</span> <span class="n">spatial_means</span><span class="p">[</span><span class="n">spatial_means</span><span class="o">.</span><span class="n">t</span> <span class="o">&gt;</span> <span class="mi">550</span><span class="p">]</span><span class="o">.</span><span class="n">u_star_avg</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">u_star</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.026367
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kappa</span> <span class="o">=</span> <span class="mf">0.384</span> 
+<span class="n">z</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span> <span class="c1"># + 1e-1</span>
+<span class="n">z0</span> <span class="o">=</span> <span class="mf">3.4289e-5</span>
+<span class="n">U_most</span> <span class="o">=</span>  <span class="n">u_star</span> <span class="o">/</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">z0</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;y_over_delta&quot;</span><span class="p">,</span> <span class="s2">&quot;U_plus&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;U: DNS&quot;</span><span class="p">)</span>
+
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="p">(</span><span class="n">U</span> <span class="o">/</span> <span class="n">u_star</span><span class="p">)[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$U$: computed&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="p">(</span><span class="n">U_most</span> <span class="o">/</span> <span class="n">u_star</span><span class="p">)[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$U$: MOST&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;U/u*&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/x_ashmo/.conda/envs/snek/lib/python3.7/site-packages/xarray/core/computation.py:604: RuntimeWarning: divide by zero encountered in log
+  result_data = func(*input_data)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f86650c3090&gt;
+</pre></div>
+</div>
+<img alt="../_images/Case_Lee_Moser_2015_15_2.png" src="../_images/Case_Lee_Moser_2015_15_2.png" />
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="the-indicator-function">
+<h1>The indicator function<a class="headerlink" href="#the-indicator-function" title="Permalink to this headline"></a></h1>
+<p>Theoretically $$\frac{\partial U^+}{\partial y^+} = \frac{1}{\kappa y^+}$$ in the log-law region to check this we use the indicator function $$\beta (y^+) = y^+ \frac{\partial U^+}{\partial y^+}$$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y_plus</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">dU_dy</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;one_over_kappa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">kappa</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;y_plus&quot;</span><span class="p">,</span> <span class="s2">&quot;beta&quot;</span><span class="p">)</span>
+<span class="n">ax_top</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">twiny</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;y_over_delta&quot;</span><span class="p">,</span> <span class="s2">&quot;one_over_kappa&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax_top</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\beta$&quot;</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">ax_top</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f8664411d90&gt;
+</pre></div>
+</div>
+<img alt="../_images/Case_Lee_Moser_2015_18_1.png" src="../_images/Case_Lee_Moser_2015_18_1.png" />
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../stratification_correction/derivation.html" class="btn btn-neutral float-left" title="Stratification corrections and Newton Raphson method to calculate Monin Obukhov length $z/L$" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../boundary_cond.html" class="btn btn-neutral float-right" title="Boundary condition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019 - 2022, Ashwin Vishnu Mohanan. Published: 2022-01-21.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

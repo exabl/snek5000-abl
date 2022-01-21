@@ -1,0 +1,31 @@
+abl.cases.buoy\_test
+====================
+
+.. automodule:: abl.cases.buoy_test
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      no_variable_properties
+      no_vp_sponge
+      variable_properties
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

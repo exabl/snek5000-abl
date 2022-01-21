@@ -1,0 +1,1094 @@
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stratification corrections and Newton Raphson method to calculate Monin Obukhov length $z/L$</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Comparison" href="../validation/Case_Lee_Moser_2015.html" />
+    <link rel="prev" title="Notes on the implementation in PALM" href="PALM.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> snek5000-abl
+          </a>
+              <div class="version">
+                0.1.dev1+g23ab577
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">snek5000-abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../abl.html">ABL case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../framework.html">KTH Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nek5000.html">Nek5000 core library</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_generated/abl.html">abl</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help &amp; Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../validation.html">Validation and verification studies</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../journal/maronga/filtering.html">HPFRT filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../journal/maronga/filtering.html#effects-of-filtering-parameters">Effects of filtering parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PALM.html">Notes on the implementation in PALM</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Stratification corrections and Newton Raphson method to calculate Monin Obukhov length $z/L$</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#symbols">Symbols</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#momentum">Momentum</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#computing-phi-m-xi">Computing $\phi_m(\xi)$</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#substitute-sqrt-4-1-16-z-l-to-xi-4">Substitute $\sqrt[4]{1 - 16 z/L} \to \xi_4$</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compare-with-basu-2018">Compare with Basu (2018)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#computing-psi-m-z-0-z-1-l">Computing $\Psi_M(z_0, z_1, L)$</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#heat">Heat</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#substitute-sqrt-1-16-z-l-to-xi-2">Substitute $\sqrt{1 - 16 z/L} \to \xi_2$</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#computing-psi-h-z-0-z-1-l">Computing $\Psi_H(z_0, z_1, L)$</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#richardson-number">Richardson number</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#stable">Stable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unstable">Unstable</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#substitute-sqrt-1-16-z-0-1-l-to-h-0-h-1">Substitute $\sqrt{1 - 16 z_{0,1}/L} \to h_0, h_1$</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#newton-raphson">Newton Raphson</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#note-huge-code-generated">Note: huge code generated</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/Case_Lee_Moser_2015.html">Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/Case_Lee_Moser_2015.html#the-indicator-function">The indicator function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../boundary_cond.html">Boundary condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../boundary_cond.html#faq">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filtering.html">Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Links
+            
+            </span>
+        </p>
+        <ul>
+            
+                
+                    <li class="toctree-l1"><a href="https://exabl.github.io/snek5000-abl/doxygen/modules"><i class="fa fa-book fa-fw"></i> Fortran docs</a></li>
+                
+            
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl"><i class="fa fa-code fa-fw"></i> Source code</a></li>
+                
+            
+                
+                    <li class="toctree-l1"><a href="https://github.com/exabl/snek5000-abl/issues"><i class="fa fa-bug fa-fw"></i> Issue tracker</a></li>
+                
+            
+        </ul>
+    
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">snek5000-abl</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../validation.html">Validation and verification studies</a> &raquo;</li>
+      <li>Stratification corrections and Newton Raphson method to calculate Monin Obukhov length $z/L$</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/stratification_correction/derivation.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="stratification-corrections-and-newton-raphson-method-to-calculate-monin-obukhov-length-z-l">
+<h1>Stratification corrections and Newton Raphson method to calculate Monin Obukhov length $z/L$<a class="headerlink" href="#stratification-corrections-and-newton-raphson-method-to-calculate-monin-obukhov-length-z-l" title="Permalink to this headline"></a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">init_printing</span>
+<span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="c1"># Required only in terminal</span>
+<span class="c1"># init_printing()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sympy.printing.pycode</span> <span class="kn">import</span> <span class="n">pycode</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Code</span><span class="p">,</span> <span class="n">display</span>
+
+
+<span class="k">def</span> <span class="nf">show_python</span><span class="p">(</span><span class="n">expr</span><span class="p">):</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">pycode</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;math&quot;</span><span class="p">,</span> <span class="s2">&quot;np&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\xi_&quot;</span><span class="p">,</span> <span class="s2">&quot;xi&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">display</span><span class="p">(</span><span class="n">Code</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z1</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;z_1 z_0 z&quot;</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">L</span><span class="p">,</span> <span class="n">xi</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;L \xi&quot;</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span><span class="o">.</span><span class="n">is_positive</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span><span class="o">.</span><span class="n">is_positive</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s create dummy variables depending on Monin Obukhov length $L$ (because <a class="reference external" href="https://github.com/sympy/sympy/issues/9384">Sympy cannot refine piecewise functions</a>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Lp</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Ln</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Lp</span><span class="o">.</span><span class="n">is_positive</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ln</span><span class="o">.</span><span class="n">is_positive</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="https://github.com/ashwinvis/talks/raw/master/images/most_mo_func.png" /></p>
+<section id="symbols">
+<h2>Symbols<a class="headerlink" href="#symbols" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>$\xi = z/L$</p></li>
+<li><p>$L = $ Obukhov length</p></li>
+<li><p>$Ri = $ Richardson number</p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="momentum">
+<h1>Momentum<a class="headerlink" href="#momentum" title="Permalink to this headline"></a></h1>
+<section id="computing-phi-m-xi">
+<h2>Computing $\phi_m(\xi)$<a class="headerlink" href="#computing-phi-m-xi" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phi_m</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Piecewise</span><span class="p">(</span>
+    <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">xi</span><span class="p">,</span> <span class="n">xi</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">sp</span><span class="o">.</span><span class="n">root</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">xi</span><span class="p">),</span> <span class="mi">4</span><span class="p">),</span> <span class="n">xi</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">phi_m</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \begin{cases} 5 \xi + 1 &amp; \text{for}\: \xi \geq 0 \\\frac{1}{\sqrt[4]{1 - 16 \xi}} &amp; \text{otherwise} \end{cases}\end{split}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import numpy as np</span>
+
+<span class="c1"># np.seterr(&#39;raise&#39;)</span>
+<span class="c1"># np.seterr(&#39;warn&#39;)</span>
+<span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phi_m</span><span class="p">,</span> <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">axis_center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
+</pre></div>
+</div>
+<img alt="../_images/derivation_15_1.png" src="../_images/derivation_15_1.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sympy.plotting.plot.Plot at 0x7f7c0ddd7ee0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_python</span><span class="p">(</span><span class="n">phi_m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.output_html .hll { background-color: #ffffcc }
+.output_html { background: #f8f8f8; }
+.output_html .c { color: #408080; font-style: italic } /* Comment */
+.output_html .err { border: 1px solid #FF0000 } /* Error */
+.output_html .k { color: #008000; font-weight: bold } /* Keyword */
+.output_html .o { color: #666666 } /* Operator */
+.output_html .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.output_html .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.output_html .cp { color: #BC7A00 } /* Comment.Preproc */
+.output_html .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.output_html .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.output_html .cs { color: #408080; font-style: italic } /* Comment.Special */
+.output_html .gd { color: #A00000 } /* Generic.Deleted */
+.output_html .ge { font-style: italic } /* Generic.Emph */
+.output_html .gr { color: #FF0000 } /* Generic.Error */
+.output_html .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.output_html .gi { color: #00A000 } /* Generic.Inserted */
+.output_html .go { color: #888888 } /* Generic.Output */
+.output_html .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.output_html .gs { font-weight: bold } /* Generic.Strong */
+.output_html .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.output_html .gt { color: #0044DD } /* Generic.Traceback */
+.output_html .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.output_html .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.output_html .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.output_html .kp { color: #008000 } /* Keyword.Pseudo */
+.output_html .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.output_html .kt { color: #B00040 } /* Keyword.Type */
+.output_html .m { color: #666666 } /* Literal.Number */
+.output_html .s { color: #BA2121 } /* Literal.String */
+.output_html .na { color: #7D9029 } /* Name.Attribute */
+.output_html .nb { color: #008000 } /* Name.Builtin */
+.output_html .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.output_html .no { color: #880000 } /* Name.Constant */
+.output_html .nd { color: #AA22FF } /* Name.Decorator */
+.output_html .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.output_html .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.output_html .nf { color: #0000FF } /* Name.Function */
+.output_html .nl { color: #A0A000 } /* Name.Label */
+.output_html .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.output_html .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.output_html .nv { color: #19177C } /* Name.Variable */
+.output_html .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.output_html .w { color: #bbbbbb } /* Text.Whitespace */
+.output_html .mb { color: #666666 } /* Literal.Number.Bin */
+.output_html .mf { color: #666666 } /* Literal.Number.Float */
+.output_html .mh { color: #666666 } /* Literal.Number.Hex */
+.output_html .mi { color: #666666 } /* Literal.Number.Integer */
+.output_html .mo { color: #666666 } /* Literal.Number.Oct */
+.output_html .sa { color: #BA2121 } /* Literal.String.Affix */
+.output_html .sb { color: #BA2121 } /* Literal.String.Backtick */
+.output_html .sc { color: #BA2121 } /* Literal.String.Char */
+.output_html .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.output_html .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.output_html .s2 { color: #BA2121 } /* Literal.String.Double */
+.output_html .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.output_html .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.output_html .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.output_html .sx { color: #008000 } /* Literal.String.Other */
+.output_html .sr { color: #BB6688 } /* Literal.String.Regex */
+.output_html .s1 { color: #BA2121 } /* Literal.String.Single */
+.output_html .ss { color: #19177C } /* Literal.String.Symbol */
+.output_html .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.output_html .fm { color: #0000FF } /* Name.Function.Magic */
+.output_html .vc { color: #19177C } /* Name.Variable.Class */
+.output_html .vg { color: #19177C } /* Name.Variable.Global */
+.output_html .vi { color: #19177C } /* Name.Variable.Instance */
+.output_html .vm { color: #19177C } /* Name.Variable.Magic */
+.output_html .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="highlight"><pre><span></span><span class="p">((</span><span class="mi">5</span><span class="o">*</span>\<span class="n">xi</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span>\<span class="n">xi</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">16</span><span class="o">*</span>\<span class="n">xi</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)))</span>
+</pre></div>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="nd">@np</span><span class="o">.</span><span class="n">vectorize</span>
+<span class="k">def</span> <span class="nf">phi_m_numpy</span><span class="p">(</span><span class="n">xi</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="n">pycode</span><span class="p">(</span><span class="n">phi_m</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\xi&quot;</span><span class="p">,</span> <span class="s2">&quot;xi&quot;</span><span class="p">),</span> <span class="nb">locals</span><span class="p">())</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">phi_m_numpy</span><span class="p">(</span><span class="n">xs</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f7c0da67460&gt;]
+</pre></div>
+</div>
+<img alt="../_images/derivation_17_1.png" src="../_images/derivation_17_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_m_int</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">phi_m</span><span class="p">)</span> <span class="o">/</span> <span class="n">xi</span>
+
+<span class="n">psi_m</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">psi_m_int</span><span class="p">,</span> <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span> <span class="o">/</span> <span class="n">L</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_m</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \begin{cases} 2 \log{\left(\sqrt[4]{1 - 16 \min\left(0, \frac{z}{L}\right)} + 1 \right)} + \log{\left(\sqrt{1 - 16 \min\left(0, \frac{z}{L}\right)} + 1 \right)} - 2 \operatorname{atan}{\left(\sqrt[4]{1 - 16 \min\left(0, \frac{z}{L}\right)} \right)} - 3 \log{\left(2 \right)} + \frac{\pi}{2} &amp; \text{for}\: \frac{z}{L} &lt; 0 \\5 \min\left(0, \frac{z}{L}\right) - \frac{5 z}{L} &amp; \text{otherwise} \end{cases}\end{split}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_m</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">zero</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_m_stable</span> <span class="o">=</span> <span class="n">psi_m</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">positive</span><span class="p">(</span><span class="n">L</span><span class="p">))</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">Lp</span><span class="p">)</span>
+<span class="n">psi_m_stable</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - \frac{5 z}{L}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_m_unstable</span> <span class="o">=</span> <span class="n">psi_m</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">negative</span><span class="p">(</span><span class="n">L</span><span class="p">))</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">Ln</span><span class="p">)</span>
+<span class="n">psi_m_unstable</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 \log{\left(\sqrt[4]{1 - \frac{16 z}{L}} + 1 \right)} + \log{\left(\sqrt{1 - \frac{16 z}{L}} + 1 \right)} - 2 \operatorname{atan}{\left(\sqrt[4]{1 - \frac{16 z}{L}} \right)} - 3 \log{\left(2 \right)} + \frac{\pi}{2}\]</div>
+</div>
+</div>
+<section id="substitute-sqrt-4-1-16-z-l-to-xi-4">
+<h3>Substitute $\sqrt[4]{1 - 16 z/L} \to \xi_4$<a class="headerlink" href="#substitute-sqrt-4-1-16-z-l-to-xi-4" title="Permalink to this headline"></a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xi4</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\xi_4&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">psi_m_unstable_param</span> <span class="o">:=</span> <span class="n">psi_m_unstable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">z</span> <span class="o">/</span> <span class="n">Ln</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">xi4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 \log{\left(\xi_{4} + 1 \right)} + \log{\left(\xi_{4}^{2} + 1 \right)} - 2 \operatorname{atan}{\left(\xi_{4} \right)} - 3 \log{\left(2 \right)} + \frac{\pi}{2}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_python</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">logcombine</span><span class="p">(</span><span class="n">psi_m_unstable_param</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.output_html .hll { background-color: #ffffcc }
+.output_html { background: #f8f8f8; }
+.output_html .c { color: #408080; font-style: italic } /* Comment */
+.output_html .err { border: 1px solid #FF0000 } /* Error */
+.output_html .k { color: #008000; font-weight: bold } /* Keyword */
+.output_html .o { color: #666666 } /* Operator */
+.output_html .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.output_html .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.output_html .cp { color: #BC7A00 } /* Comment.Preproc */
+.output_html .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.output_html .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.output_html .cs { color: #408080; font-style: italic } /* Comment.Special */
+.output_html .gd { color: #A00000 } /* Generic.Deleted */
+.output_html .ge { font-style: italic } /* Generic.Emph */
+.output_html .gr { color: #FF0000 } /* Generic.Error */
+.output_html .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.output_html .gi { color: #00A000 } /* Generic.Inserted */
+.output_html .go { color: #888888 } /* Generic.Output */
+.output_html .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.output_html .gs { font-weight: bold } /* Generic.Strong */
+.output_html .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.output_html .gt { color: #0044DD } /* Generic.Traceback */
+.output_html .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.output_html .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.output_html .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.output_html .kp { color: #008000 } /* Keyword.Pseudo */
+.output_html .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.output_html .kt { color: #B00040 } /* Keyword.Type */
+.output_html .m { color: #666666 } /* Literal.Number */
+.output_html .s { color: #BA2121 } /* Literal.String */
+.output_html .na { color: #7D9029 } /* Name.Attribute */
+.output_html .nb { color: #008000 } /* Name.Builtin */
+.output_html .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.output_html .no { color: #880000 } /* Name.Constant */
+.output_html .nd { color: #AA22FF } /* Name.Decorator */
+.output_html .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.output_html .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.output_html .nf { color: #0000FF } /* Name.Function */
+.output_html .nl { color: #A0A000 } /* Name.Label */
+.output_html .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.output_html .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.output_html .nv { color: #19177C } /* Name.Variable */
+.output_html .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.output_html .w { color: #bbbbbb } /* Text.Whitespace */
+.output_html .mb { color: #666666 } /* Literal.Number.Bin */
+.output_html .mf { color: #666666 } /* Literal.Number.Float */
+.output_html .mh { color: #666666 } /* Literal.Number.Hex */
+.output_html .mi { color: #666666 } /* Literal.Number.Integer */
+.output_html .mo { color: #666666 } /* Literal.Number.Oct */
+.output_html .sa { color: #BA2121 } /* Literal.String.Affix */
+.output_html .sb { color: #BA2121 } /* Literal.String.Backtick */
+.output_html .sc { color: #BA2121 } /* Literal.String.Char */
+.output_html .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.output_html .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.output_html .s2 { color: #BA2121 } /* Literal.String.Double */
+.output_html .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.output_html .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.output_html .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.output_html .sx { color: #008000 } /* Literal.String.Other */
+.output_html .sr { color: #BB6688 } /* Literal.String.Regex */
+.output_html .s1 { color: #BA2121 } /* Literal.String.Single */
+.output_html .ss { color: #19177C } /* Literal.String.Symbol */
+.output_html .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.output_html .fm { color: #0000FF } /* Name.Function.Magic */
+.output_html .vc { color: #19177C } /* Name.Variable.Class */
+.output_html .vg { color: #19177C } /* Name.Variable.Global */
+.output_html .vi { color: #19177C } /* Name.Variable.Instance */
+.output_html .vm { color: #19177C } /* Name.Variable.Magic */
+.output_html .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">xi4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">xi4</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="n">xi4</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+</pre></div>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">psi_m_unstable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">Ln</span><span class="p">,</span> <span class="n">xi</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">),</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Integrated stability functions $\int_0^{\xi} \phi_m$&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;unstable&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">psi_m_stable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">Lp</span><span class="p">,</span> <span class="n">xi</span><span class="p">),</span> <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;stable&quot;</span>
+<span class="p">)</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/derivation_27_0.png" src="../_images/derivation_27_0.png" />
+</div>
+</div>
+</section>
+<section id="compare-with-basu-2018">
+<h3>Compare with <a class="reference external" href="https://bitbucket.org/sukantabasu/hybridwind/src/master/HybridWind.m">Basu (2018)</a><a class="headerlink" href="#compare-with-basu-2018" title="Permalink to this headline"></a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">basu_unstable</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span> <span class="o">*</span> <span class="n">sp</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">xi4</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">xi4</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sp</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="n">xi4</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="p">)</span>
+<span class="n">basu_unstable</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 \log{\left(\frac{\xi_{4}}{2} + \frac{1}{2} \right)} + \log{\left(\frac{\xi_{4}^{2}}{2} + \frac{1}{2} \right)} - 2 \operatorname{atan}{\left(\xi_{4} \right)} + \frac{\pi}{2}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">basu_unstable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">xi4</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">xi</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span> <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/derivation_30_0.png" src="../_images/derivation_30_0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sympy.plotting.plot.Plot at 0x7f7c05a184f0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">psi_m_unstable_param</span> <span class="o">-</span> <span class="n">basu_unstable</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0\]</div>
+</div>
+</div>
+<p>Hence, both expressions are identical.</p>
+</section>
+</section>
+<section id="computing-psi-m-z-0-z-1-l">
+<h2>Computing $\Psi_M(z_0, z_1, L)$<a class="headerlink" href="#computing-psi-m-z-0-z-1-l" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">psi_m_stable_at</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">psi_m_stable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">Lp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+
+<span class="n">PsiM_stable</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">z0</span><span class="p">)</span> <span class="o">-</span> <span class="n">psi_m_stable_at</span><span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="n">psi_m_stable_at</span><span class="p">(</span><span class="n">z0</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span>
+<span class="n">PsiM_stable</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \log{\left(\frac{z_{1}}{z_{0}} \right)} - \frac{5 z_{0}}{L} + \frac{5 z_{1}}{L}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f_psi_m_unstable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">psi_m_unstable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">Ln</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+
+<span class="n">PsiM_unstable</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">z0</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_psi_m_unstable</span><span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="n">f_psi_m_unstable</span><span class="p">(</span><span class="n">z0</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">PsiM_unstable</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \log{\left(\frac{z_{1}}{z_{0}} \right)} + 2 \log{\left(\sqrt[4]{1 - \frac{16 z_{0}}{L}} + 1 \right)} + \log{\left(\sqrt{1 - \frac{16 z_{0}}{L}} + 1 \right)} - 2 \log{\left(\sqrt[4]{1 - \frac{16 z_{1}}{L}} + 1 \right)} - \log{\left(\sqrt{1 - \frac{16 z_{1}}{L}} + 1 \right)} - 2 \operatorname{atan}{\left(\sqrt[4]{1 - \frac{16 z_{0}}{L}} \right)} + 2 \operatorname{atan}{\left(\sqrt[4]{1 - \frac{16 z_{1}}{L}} \right)}\]</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="heat">
+<h1>Heat<a class="headerlink" href="#heat" title="Permalink to this headline"></a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phi_h</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Piecewise</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">xi</span><span class="p">,</span> <span class="n">xi</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">root</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">xi</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="n">xi</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">phi_h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \begin{cases} 5 \xi + 1 &amp; \text{for}\: \xi \geq 0 \\\frac{1}{\sqrt{1 - 16 \xi}} &amp; \text{otherwise} \end{cases}\end{split}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phi_h</span><span class="p">,</span> <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">axis_center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/derivation_38_0.png" src="../_images/derivation_38_0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sympy.plotting.plot.Plot at 0x7f7c0cce4160&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_h_int</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">phi_h</span><span class="p">)</span> <span class="o">/</span> <span class="n">xi</span>
+
+<span class="n">psi_h</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">psi_h_int</span><span class="p">,</span> <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span> <span class="o">/</span> <span class="n">L</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \begin{cases} 2 \log{\left(\sqrt{1 - 16 \min\left(0, \frac{z}{L}\right)} + 1 \right)} - 2 \log{\left(2 \right)} &amp; \text{for}\: \frac{z}{L} &lt; 0 \\5 \min\left(0, \frac{z}{L}\right) - \frac{5 z}{L} &amp; \text{otherwise} \end{cases}\end{split}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_h</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">zero</span><span class="p">(</span><span class="n">z</span><span class="p">))</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 0\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_h_stable</span> <span class="o">=</span> <span class="n">psi_h</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">positive</span><span class="p">(</span><span class="n">L</span><span class="p">))</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">Lp</span><span class="p">)</span>
+<span class="n">psi_h_stable</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle - \frac{5 z}{L}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psi_h_unstable</span> <span class="o">=</span> <span class="n">psi_h</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">negative</span><span class="p">(</span><span class="n">L</span><span class="p">))</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">Ln</span><span class="p">)</span>
+<span class="n">psi_h_unstable</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 \log{\left(\sqrt{1 - \frac{16 z}{L}} + 1 \right)} - 2 \log{\left(2 \right)}\]</div>
+</div>
+</div>
+<section id="substitute-sqrt-1-16-z-l-to-xi-2">
+<h2>Substitute $\sqrt{1 - 16 z/L} \to \xi_2$<a class="headerlink" href="#substitute-sqrt-1-16-z-l-to-xi-2" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xi2</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\xi_2&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">psi_h_unstable_param</span> <span class="o">:=</span> <span class="n">psi_h_unstable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">z</span> <span class="o">/</span> <span class="n">Ln</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">xi2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle 2 \log{\left(\xi_{2} + 1 \right)} - 2 \log{\left(2 \right)}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">psi_h_unstable_param</span> <span class="o">:=</span> <span class="n">sp</span><span class="o">.</span><span class="n">logcombine</span><span class="p">(</span><span class="n">psi_h_unstable_param</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\displaystyle \log{\left(\frac{\left(\xi_{2} + 1\right)^{2}}{4} \right)}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_python</span><span class="p">(</span><span class="n">psi_h_unstable_param</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.output_html .hll { background-color: #ffffcc }
+.output_html { background: #f8f8f8; }
+.output_html .c { color: #408080; font-style: italic } /* Comment */
+.output_html .err { border: 1px solid #FF0000 } /* Error */
+.output_html .k { color: #008000; font-weight: bold } /* Keyword */
+.output_html .o { color: #666666 } /* Operator */
+.output_html .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.output_html .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.output_html .cp { color: #BC7A00 } /* Comment.Preproc */
+.output_html .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.output_html .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.output_html .cs { color: #408080; font-style: italic } /* Comment.Special */
+.output_html .gd { color: #A00000 } /* Generic.Deleted */
+.output_html .ge { font-style: italic } /* Generic.Emph */
+.output_html .gr { color: #FF0000 } /* Generic.Error */
+.output_html .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.output_html .gi { color: #00A000 } /* Generic.Inserted */
+.output_html .go { color: #888888 } /* Generic.Output */
+.output_html .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.output_html .gs { font-weight: bold } /* Generic.Strong */
+.output_html .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.output_html .gt { color: #0044DD } /* Generic.Traceback */
+.output_html .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.output_html .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.output_html .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.output_html .kp { color: #008000 } /* Keyword.Pseudo */
+.output_html .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.output_html .kt { color: #B00040 } /* Keyword.Type */
+.output_html .m { color: #666666 } /* Literal.Number */
+.output_html .s { color: #BA2121 } /* Literal.String */
+.output_html .na { color: #7D9029 } /* Name.Attribute */
+.output_html .nb { color: #008000 } /* Name.Builtin */
+.output_html .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.output_html .no { color: #880000 } /* Name.Constant */
+.output_html .nd { color: #AA22FF } /* Name.Decorator */
+.output_html .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.output_html .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.output_html .nf { color: #0000FF } /* Name.Function */
+.output_html .nl { color: #A0A000 } /* Name.Label */
+.output_html .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.output_html .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.output_html .nv { color: #19177C } /* Name.Variable */
+.output_html .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.output_html .w { color: #bbbbbb } /* Text.Whitespace */
+.output_html .mb { color: #666666 } /* Literal.Number.Bin */
+.output_html .mf { color: #666666 } /* Literal.Number.Float */
+.output_html .mh { color: #666666 } /* Literal.Number.Hex */
+.output_html .mi { color: #666666 } /* Literal.Number.Integer */
+.output_html .mo { color: #666666 } /* Literal.Number.Oct */
+.output_html .sa { color: #BA2121 } /* Literal.String.Affix */
+.output_html .sb { color: #BA2121 } /* Literal.String.Backtick */
+.output_html .sc { color: #BA2121 } /* Literal.String.Char */
+.output_html .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.output_html .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.output_html .s2 { color: #BA2121 } /* Literal.String.Double */
+.output_html .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.output_html .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.output_html .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.output_html .sx { color: #008000 } /* Literal.String.Other */
+.output_html .sr { color: #BB6688 } /* Literal.String.Regex */
+.output_html .s1 { color: #BA2121 } /* Literal.String.Single */
+.output_html .ss { color: #19177C } /* Literal.String.Symbol */
+.output_html .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.output_html .fm { color: #0000FF } /* Name.Function.Magic */
+.output_html .vc { color: #19177C } /* Name.Variable.Class */
+.output_html .vg { color: #19177C } /* Name.Variable.Global */
+.output_html .vi { color: #19177C } /* Name.Variable.Instance */
+.output_html .vm { color: #19177C } /* Name.Variable.Magic */
+.output_html .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">xi2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">psi_h_unstable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">Ln</span><span class="p">,</span> <span class="n">xi</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">),</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Integrated stability functions $\int_0^{\xi} \phi_h$&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;unstable&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">psi_h_stable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">Lp</span><span class="p">,</span> <span class="n">xi</span><span class="p">),</span> <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;stable&quot;</span>
+<span class="p">)</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/derivation_49_0.png" src="../_images/derivation_49_0.png" />
+</div>
+</div>
+</section>
+<section id="computing-psi-h-z-0-z-1-l">
+<h2>Computing $\Psi_H(z_0, z_1, L)$<a class="headerlink" href="#computing-psi-h-z-0-z-1-l" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f_psi_h_stable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">psi_h_stable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">Lp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+
+<span class="n">PsiH_stable</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">z0</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_psi_h_stable</span><span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="n">f_psi_h_stable</span><span class="p">(</span><span class="n">z0</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span>
+<span class="n">PsiH_stable</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f_psi_h_unstable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">psi_h_unstable</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">Ln</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+
+<span class="n">PsiH_unstable</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">z0</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_psi_h_unstable</span><span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="n">f_psi_h_unstable</span><span class="p">(</span><span class="n">z0</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">PsiH_unstable</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="richardson-number">
+<h1>Richardson number<a class="headerlink" href="#richardson-number" title="Permalink to this headline"></a></h1>
+<section id="stable">
+<h2>Stable<a class="headerlink" href="#stable" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ri_b</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;Ri_b&quot;</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ri_stable</span> <span class="o">=</span> <span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">PsiH_stable</span> <span class="o">/</span> <span class="n">PsiM_stable</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">Ri_stable</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">Ri_stable_dL</span> <span class="o">:=</span> <span class="n">Ri_stable</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">L</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ri_stable_dL</span><span class="o">.</span><span class="n">factor</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ri_stable_dL</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="unstable">
+<h2>Unstable<a class="headerlink" href="#unstable" title="Permalink to this headline"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ri_unstable</span> <span class="o">=</span> <span class="p">(</span><span class="n">z1</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">PsiH_unstable</span> <span class="o">/</span> <span class="n">PsiM_unstable</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">Ri_unstable</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="substitute-sqrt-1-16-z-0-1-l-to-h-0-h-1">
+<h3>Substitute $\sqrt{1 - 16 z_{0,1}/L} \to h_0, h_1$<a class="headerlink" href="#substitute-sqrt-1-16-z-0-1-l-to-h-0-h-1" title="Permalink to this headline"></a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h0</span><span class="p">,</span> <span class="n">h1</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;h_0 h_1&quot;</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ri_unstable</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">z0</span> <span class="o">/</span> <span class="n">L</span><span class="p">):</span> <span class="n">h0</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">z1</span> <span class="o">/</span> <span class="n">L</span><span class="p">):</span> <span class="n">h1</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ri_unstable</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="newton-raphson">
+<h1>Newton Raphson<a class="headerlink" href="#newton-raphson" title="Permalink to this headline"></a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sympy.codegen.algorithms</span> <span class="kn">import</span> <span class="n">newtons_method</span>
+<span class="kn">from</span> <span class="nn">sympy.codegen.pyutils</span> <span class="kn">import</span> <span class="n">render_as_module</span>
+
+<span class="c1"># For Fortran</span>
+<span class="kn">from</span> <span class="nn">sympy.codegen.futils</span> <span class="kn">import</span> <span class="n">render_as_module</span> <span class="k">as</span> <span class="n">render_as_fortran_mod</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dL</span><span class="p">,</span> <span class="n">atol</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;dL atol&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">Ri_b</span> <span class="o">-</span> <span class="n">Ri_stable</span>
+
+<span class="n">expr</span> <span class="o">=</span> <span class="n">L</span> <span class="o">-</span> <span class="n">f</span> <span class="o">/</span> <span class="n">f</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+<span class="n">algo</span> <span class="o">=</span> <span class="n">newtons_method</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">dL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">render_as_module</span><span class="p">(</span><span class="n">algo</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">render_as_fortran_mod</span><span class="p">(</span><span class="n">algo</span><span class="p">,</span> <span class="s2">&quot;find_ob_len_stable&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">Ri_b</span> <span class="o">-</span> <span class="n">Ri_unstable</span>
+
+<span class="n">expr</span> <span class="o">=</span> <span class="n">L</span> <span class="o">-</span> <span class="n">f</span> <span class="o">/</span> <span class="n">f</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+<span class="n">algo</span> <span class="o">=</span> <span class="n">newtons_method</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">dL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="note-huge-code-generated">
+<h2>Note: huge code generated<a class="headerlink" href="#note-huge-code-generated" title="Permalink to this headline"></a></h2>
+<p>print(render_as_module(algo))</p>
+<p>print(render_as_fortran_mod(algo, ‘find_ob_len_stable’))</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="PALM.html" class="btn btn-neutral float-left" title="Notes on the implementation in PALM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../validation/Case_Lee_Moser_2015.html" class="btn btn-neutral float-right" title="Comparison" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019 - 2022, Ashwin Vishnu Mohanan. Published: 2022-01-21.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

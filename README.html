@@ -8,6 +8,8 @@
   <title>snek5000-abl</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.css" type="text/css" />
     <link rel="shortcut icon" href="_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -17,6 +19,8 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -32,7 +36,7 @@
             <a href="index.html" class="icon icon-home"> snek5000-abl
           </a>
               <div class="version">
-                0.1.dev1+gc221c46
+                0.1.dev1+g23ab577
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -63,6 +67,7 @@
 <p class="caption" role="heading"><span class="caption-text">Help &amp; Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation and verification studies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="boundary_cond.html">Boundary condition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="boundary_cond.html#faq">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filtering.html">Filtering</a></li>
@@ -122,33 +127,35 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="snek5000-abl">
+  <section class="tex2jax_ignore mathjax_ignore" id="snek5000-abl">
 <h1>snek5000-abl<a class="headerlink" href="#snek5000-abl" title="Permalink to this headline"></a></h1>
-<p><a class="reference external" href="https://github.com/exabl/snek5000-abl/actions?workflow=Tests"><img alt="https://github.com/exabl/snek5000-abl/workflows/Tests/badge.svg" src="https://github.com/exabl/snek5000-abl/workflows/Tests/badge.svg" /></a>
-<a class="reference external" href="https://github.com/exabl/snek5000-abl/actions?workflow=Docs"><img alt="https://github.com/exabl/snek5000-abl/workflows/Docs/badge.svg" src="https://github.com/exabl/snek5000-abl/workflows/Docs/badge.svg" /></a></p>
+<p><a class="reference external" href="https://github.com/exabl/snek5000-abl/actions?workflow=Tests"><img alt="" src="https://github.com/exabl/snek5000-abl/workflows/Tests/badge.svg" /></a>
+<a class="reference external" href="https://github.com/exabl/snek5000-abl/actions?workflow=Docs"><img alt="" src="https://github.com/exabl/snek5000-abl/workflows/Docs/badge.svg" /></a></p>
+<!-- badges -->
 <p>Simulations of <strong>turbulent</strong> atmospheric boundary layer using
 <a class="reference external" href="https://snek5000.readthedocs.io">snek5000</a>.</p>
 <p><strong>Documentation</strong>: <a class="reference external" href="https://exabl.github.io/snek5000-abl/">https://exabl.github.io/snek5000-abl/</a></p>
-<p>:::{warning}
-The code is a prototype and far from ready for production runs. Some parts of
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The code is a prototype and far from ready for production runs. Some parts of
 the code are well validated and some parts require rigorous testing. <strong>Use it
 with caution</strong>. To know the detailed status of the code, checkout the
-<a class="reference external" href="https://exabl.github.io/snek5000-abl/roadmap.html">roadmap</a>.
-:::</p>
+<a class="reference external" href="https://exabl.github.io/snek5000-abl/roadmap.html">roadmap</a>.</p>
+</div>
 <section id="quick-start">
 <h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h2>
 <p>Install using Python 3.8+ as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="o">--</span><span class="n">recursive</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">exabl</span><span class="o">/</span><span class="n">snek5000</span><span class="o">-</span><span class="n">abl</span><span class="o">.</span><span class="n">git</span>
-<span class="n">cd</span> <span class="n">snek5000</span><span class="o">-</span><span class="n">abl</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git clone --recursive https://github.com/exabl/snek5000-abl.git
+cd snek5000-abl
+pip install -e .
 </pre></div>
 </div>
 <p>Activate necessary environment variables</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">activate</span><span class="o">.</span><span class="n">sh</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>source activate.sh
 </pre></div>
 </div>
 <p>Use the command line tool to launch / set / inspect the simulation parameters</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">abl</span> <span class="o">--</span><span class="n">help</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>abl --help
 </pre></div>
 </div>
 </section>

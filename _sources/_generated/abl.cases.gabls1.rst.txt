@@ -1,0 +1,29 @@
+abl.cases.gabls1
+================
+
+.. automodule:: abl.cases.gabls1
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      small
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
