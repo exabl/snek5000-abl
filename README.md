@@ -3,6 +3,8 @@
 [![](https://github.com/exabl/snek5000-abl/workflows/Tests/badge.svg)](https://github.com/exabl/snek5000-abl/actions?workflow=Tests)
 [![](https://github.com/exabl/snek5000-abl/workflows/Docs/badge.svg)](https://github.com/exabl/snek5000-abl/actions?workflow=Docs)
 
+<!-- badges -->
+
 Simulations of **turbulent** atmospheric boundary layer using
 [snek5000](https://snek5000.readthedocs.io).
 

@@ -67,8 +67,24 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    "recommonmark",
+    # "recommonmark",
+    "myst_nb",
+    "sphinx_copybutton",
 ]
+
+myst_enable_extensions = [
+    "amsmath",
+    "colon_fence",
+]
+
+# The suffix of source filenames.
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".ipynb": "myst-nb",
+    ".myst": "myst-nb",
+}
+
+jupyter_execute_notebooks = "off"
 
 # Execute Doxygen
 os.makedirs("_build/html/doxygen", exist_ok=True)
@@ -145,9 +161,8 @@ templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
-#
-source_suffix = [".rst", ".md"]
 
+#  source_suffix = [".rst", ".md"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
