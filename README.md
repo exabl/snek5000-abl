@@ -10,10 +10,11 @@ Simulations of **turbulent** atmospheric boundary layer using
 
 **Documentation**: <https://exabl.github.io/snek5000-abl/>
 
+> [!WARNING]
 :::{warning}
 The code is a prototype and far from ready for production runs. Some parts of
-the code are well validated and some parts require rigorous testing. **Use it
-with caution**. To know the detailed status of the code, checkout the
+the code are well validated and some parts require rigorous testing and could
+contain bugs. **Use it with caution**. To know the detailed status of the code, checkout the
 [roadmap](https://exabl.github.io/snek5000-abl/roadmap.html).
 :::
 
