@@ -14,6 +14,8 @@ authors:
     given-names: Philipp
     orcid: https://orcid.org/0000-0001-9627-5903
 
-title:exabl/snek5000-abl: 0.6.0b0
+title: "exabl/snek5000-abl"
+doi: 10.5281/zenodo.13208690
 version: 0.6.0b0
 date-released: 2024-08-04
+url: https://github.com/exabl/snek5000-abl
