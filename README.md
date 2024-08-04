@@ -1,5 +1,6 @@
 # snek5000-abl
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13208690.svg)](https://doi.org/10.5281/zenodo.13208690)
 [![](https://github.com/exabl/snek5000-abl/workflows/Tests/badge.svg)](https://github.com/exabl/snek5000-abl/actions?workflow=Tests)
 [![](https://github.com/exabl/snek5000-abl/workflows/Docs/badge.svg)](https://github.com/exabl/snek5000-abl/actions?workflow=Docs)
 
