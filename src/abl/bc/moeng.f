@@ -110,6 +110,7 @@ c--------Calculate Thermal boundary condition
 
 c>    @todo Allow `y0 != z_os` (thermal surface roughness length)
       ! NOTE: Only meant for bottom boundary!!
+c>    @todo Applying cooling rate of 0.25 Kh^{-1} on top of reference t_surf
       flux = thermal_flux(u_star, kappa, t_surf, t1_2, y1_2, y0, Psi_H)
 
       ! Alternatively

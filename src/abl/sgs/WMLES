@@ -13,8 +13,7 @@ c
 
 c>    @todo Make t_surf a parameter in the .par file under WMLES section?
       real t_surf
-      ! NOTE: 263.5 in GABLS1
-      parameter (t_surf=288)        !< @var surface temperature
+      parameter (t_surf=263.5)        !< @var surface temperature
 
       ! temporal filtering in boundary condition
       real u_wm(lx1, lz1, lelv), w_wm(lx1, lz1, lelv)
