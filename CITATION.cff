@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+
+authors:
+  - family-names: Mohanan
+    given-names: Ashwin Vishnu
+    orcid: https://orcid.org/0000-0002-2979-6327
+
+  - family-names: Brethouwer
+    given-names: Geert
+    orcid: https://orcid.org/0000-0002-9819-2906
+
+  - family-names: Schlatter
+    given-names: Philipp
+    orcid: https://orcid.org/0000-0001-9627-5903
+
+title:exabl/snek5000-abl: 0.6.0b0
+version: 0.6.0b0
+date-released: 2024-08-04
